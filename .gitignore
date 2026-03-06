@@ -8,3 +8,6 @@ npm-debug.log*
 .env.*
 static/uploads/*
 !static/uploads/.gitkeep
+
+.tools/
+.npm-cache/

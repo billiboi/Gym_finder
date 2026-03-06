@@ -1,9 +1,24 @@
 import { json } from '@sveltejs/kit';
 import { readGyms } from '$lib/server/gym-store';
 
+function toDisciplineList(gym) {
+  if (Array.isArray(gym.disciplines)) {
+    return gym.disciplines.filter(Boolean).map((d) => String(d).trim()).filter(Boolean);
+  }
+
+  if (typeof gym.discipline === 'string' && gym.discipline.trim()) {
+    return gym.discipline
+      .split('|')
+      .map((d) => d.trim())
+      .filter(Boolean);
+  }
+
+  return [];
+}
+
 export async function GET() {
   const gyms = await readGyms();
-  const disciplines = [...new Set(gyms.map((gym) => gym.discipline).filter(Boolean))].sort((a, b) =>
+  const disciplines = [...new Set(gyms.flatMap((gym) => toDisciplineList(gym)))].sort((a, b) =>
     a.localeCompare(b, 'it')
   );
   return json(disciplines);

@@ -22,6 +22,21 @@ function clean(value) {
   return typeof value === 'string' ? value.trim() : '';
 }
 
+function disciplineList(gymOrPayload) {
+  if (Array.isArray(gymOrPayload.disciplines)) {
+    return gymOrPayload.disciplines
+      .map((d) => clean(String(d)))
+      .filter(Boolean);
+  }
+
+  const single = clean(gymOrPayload.discipline);
+  if (!single) return [];
+
+  return single
+    .split('|')
+    .map((d) => clean(d))
+    .filter(Boolean);
+}
 function parseNumber(value) {
   if (typeof value !== 'string' || !value.trim()) return null;
   const parsed = Number(value);
@@ -69,7 +84,7 @@ function resolveCoordinates({ latitude, longitude, city, previousLatitude = null
 }
 
 function getKnownDisciplines(gyms) {
-  return new Set(gyms.map((gym) => (gym.discipline || '').toLowerCase()).filter(Boolean));
+  return new Set(gyms.flatMap((gym) => disciplineList(gym).map((d) => d.toLowerCase())));
 }
 
 function toMinutes(time) {
@@ -98,31 +113,25 @@ function isGymOpenNow(gym, nowDate = new Date()) {
   return false;
 }
 
-function filterGyms(gyms, { q, discipline, userLat, userLng, radiusKm, openState }) {
+function filterGyms(gyms, { q, discipline, userLat, userLng, radiusKm }) {
   let out = gyms.map((gym) => ({
     ...gym,
     open_now: isGymOpenNow(gym)
   }));
 
   if (discipline) {
-    out = out.filter((gym) => (gym.discipline || '').toLowerCase() === discipline.toLowerCase());
+    out = out.filter((gym) => disciplineList(gym).map((d) => d.toLowerCase()).includes(discipline.toLowerCase()));
   }
 
   if (q) {
     const query = q.toLowerCase();
     out = out.filter((gym) => {
-      return [gym.name, gym.address, gym.city, gym.discipline].some((field) =>
+      return [gym.name, gym.address, gym.city, disciplineList(gym).join(' | ')].some((field) =>
         (field || '').toLowerCase().includes(query)
       );
     });
   }
 
-  if (openState === 'open') {
-    out = out.filter((gym) => gym.open_now === true);
-  }
-  if (openState === 'closed') {
-    out = out.filter((gym) => gym.open_now === false);
-  }
 
   const hasUserPosition = Number.isFinite(userLat) && Number.isFinite(userLng);
   if (hasUserPosition) {
@@ -185,14 +194,12 @@ async function saveUploadedImage(file) {
 export async function GET({ url }) {
   const q = clean(url.searchParams.get('q'));
   const discipline = clean(url.searchParams.get('discipline'));
-  const openState = clean(url.searchParams.get('open_state'));
-
-  const userLat = parseQueryNumber(url.searchParams.get('lat'));
+    const userLat = parseQueryNumber(url.searchParams.get('lat'));
   const userLng = parseQueryNumber(url.searchParams.get('lng'));
   const radiusKm = parseQueryNumber(url.searchParams.get('radius_km'));
 
   const gyms = await readGyms();
-  return json(filterGyms(gyms, { q, discipline, userLat, userLng, radiusKm, openState }));
+  return json(filterGyms(gyms, { q, discipline, userLat, userLng, radiusKm }));
 }
 
 export async function POST({ request }) {
@@ -221,8 +228,9 @@ export async function POST({ request }) {
     return json({ error: `Campi obbligatori mancanti: ${missing.join(', ')}` }, { status: 400 });
   }
 
-  if (knownDisciplines.size > 0 && !knownDisciplines.has(payload.discipline.toLowerCase())) {
-    return json({ error: 'Disciplina non valida: seleziona una disciplina esistente.' }, { status: 400 });
+  const payloadDisciplines = disciplineList(payload);
+  if (knownDisciplines.size > 0 && payloadDisciplines.some((d) => !knownDisciplines.has(d.toLowerCase()))) {
+    return json({ error: 'Disciplina non valida: seleziona disciplina/e esistenti.' }, { status: 400 });
   }
 
   let localImageUrl = '';
@@ -252,4 +260,8 @@ export async function POST({ request }) {
 
   return json(newGym, { status: 201 });
 }
+
+
+
+
 
