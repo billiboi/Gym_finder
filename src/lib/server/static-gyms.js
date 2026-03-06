@@ -1,4 +1,4 @@
-﻿import csvRaw from '../../../data/palestre.csv?raw';
+﻿import { PALESTRE_CSV } from '$lib/server/palestre-data';
 
 function splitCsvLine(line, delimiter = ',') {
   const out = [];
@@ -60,7 +60,7 @@ function toNumberOrNull(value) {
 }
 
 export function readStaticGyms() {
-  const lines = String(csvRaw || '')
+  const lines = String(PALESTRE_CSV || '')
     .replace(/^\uFEFF/, '')
     .split(/\r?\n/)
     .filter((line) => line.trim() !== '');
@@ -137,3 +137,6 @@ export function readStaticGyms() {
 
   return gyms;
 }
+
+
+
