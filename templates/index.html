@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Directory Palestre</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <p class="kicker">Directory Sportiva</p>
+      <h1>Inserisci e consulta le palestre</h1>
+      <p class="lead">Ogni palestra viene mostrata in una scheda con immagine, luogo, disciplina, orari e contatti.</p>
+    </section>
+
+    <section class="layout">
+      <article class="panel form-panel">
+        <h2>Nuova palestra</h2>
+        <form id="gymForm" class="gym-form">
+          <label>Nome palestra<input name="name" required /></label>
+          <label>Disciplina<input name="discipline" required placeholder="Es. Judo, Yoga, CrossFit" /></label>
+          <label>Indirizzo<input name="address" required /></label>
+          <label>Città<input name="city" required /></label>
+          <label>Orari<textarea name="hours_info" required rows="3" placeholder="Es. Lun-Ven 07:00-22:00 | Sab 09:00-18:00"></textarea></label>
+          <label>Telefono<input name="phone" /></label>
+          <label>Email<input name="email" type="email" /></label>
+          <label>Sito web<input name="website" type="url" placeholder="https://..." /></label>
+          <label>URL immagine<input name="image_url" type="url" placeholder="https://..." /></label>
+          <button type="submit">Salva palestra</button>
+          <p id="formMessage" class="form-message"></p>
+        </form>
+      </article>
+
+      <article class="panel list-panel">
+        <div class="list-head">
+          <h2>Palestre registrate</h2>
+          <div class="quick-filters">
+            <input id="textFilter" type="text" placeholder="Filtra per nome o luogo" />
+            <select id="disciplineFilter">
+              <option value="">Tutte le discipline</option>
+              {% for discipline in disciplines %}
+              <option value="{{ discipline }}">{{ discipline }}</option>
+              {% endfor %}
+            </select>
+            <button id="refreshBtn" type="button">Aggiorna</button>
+          </div>
+        </div>
+        <p id="resultCount" class="result-count"></p>
+        <div id="cards" class="cards"></div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById('gymForm');
+    const messageEl = document.getElementById('formMessage');
+    const cardsEl = document.getElementById('cards');
+    const resultCountEl = document.getElementById('resultCount');
+    const textFilterEl = document.getElementById('textFilter');
+    const disciplineFilterEl = document.getElementById('disciplineFilter');
+    const refreshBtn = document.getElementById('refreshBtn');
+
+    const FALLBACK_IMG = 'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?auto=format&fit=crop&w=1200&q=80';
+
+    function line(label, value) {
+      const p = document.createElement('p');
+      const strong = document.createElement('strong');
+      strong.textContent = `${label}: `;
+      p.appendChild(strong);
+      p.append(document.createTextNode(value || '-'));
+      return p;
+    }
+
+    function contactLine(gym) {
+      const p = document.createElement('p');
+      const strong = document.createElement('strong');
+      strong.textContent = 'Contatti: ';
+      p.appendChild(strong);
+
+      const chunks = [gym.phone, gym.email].filter(Boolean);
+      if (chunks.length) {
+        p.append(document.createTextNode(chunks.join(' | ')));
+      } else {
+        p.append(document.createTextNode('-'));
+      }
+
+      if (gym.website) {
+        p.append(document.createTextNode(' | '));
+        const link = document.createElement('a');
+        link.href = gym.website;
+        link.target = '_blank';
+        link.rel = 'noreferrer';
+        link.textContent = 'Sito web';
+        p.appendChild(link);
+      }
+      return p;
+    }
+
+    function renderCards(gyms) {
+      cardsEl.innerHTML = '';
+      resultCountEl.textContent = `${gyms.length} palestra/e`;
+
+      if (!gyms.length) {
+        const empty = document.createElement('p');
+        empty.className = 'empty';
+        empty.textContent = 'Nessuna palestra disponibile.';
+        cardsEl.appendChild(empty);
+        return;
+      }
+
+      for (const gym of gyms) {
+        const card = document.createElement('article');
+        card.className = 'card';
+
+        const image = document.createElement('img');
+        image.src = gym.image_url || FALLBACK_IMG;
+        image.alt = `Immagine ${gym.name}`;
+        image.loading = 'lazy';
+        image.className = 'card-image';
+
+        const body = document.createElement('div');
+        body.className = 'card-body';
+
+        const title = document.createElement('h3');
+        title.textContent = gym.name;
+
+        const badge = document.createElement('span');
+        badge.className = 'badge';
+        badge.textContent = gym.discipline;
+
+        const place = line('Luogo', `${gym.address}, ${gym.city}`);
+        const hours = line('Orari', gym.hours_info || 'Orari non specificati');
+        const contacts = contactLine(gym);
+
+        body.appendChild(title);
+        body.appendChild(badge);
+        body.appendChild(place);
+        body.appendChild(hours);
+        body.appendChild(contacts);
+
+        card.appendChild(image);
+        card.appendChild(body);
+        cardsEl.appendChild(card);
+      }
+    }
+
+    async function loadGyms() {
+      const params = new URLSearchParams();
+      const q = textFilterEl.value.trim();
+      const discipline = disciplineFilterEl.value;
+      if (q) params.set('q', q);
+      if (discipline) params.set('discipline', discipline);
+
+      const url = `/api/gyms${params.toString() ? `?${params.toString()}` : ''}`;
+      const response = await fetch(url);
+      const gyms = await response.json();
+      renderCards(gyms);
+    }
+
+    async function refreshDisciplineFilter() {
+      const response = await fetch('/api/disciplines');
+      const disciplines = await response.json();
+
+      const current = disciplineFilterEl.value;
+      disciplineFilterEl.innerHTML = '<option value="">Tutte le discipline</option>';
+
+      disciplines.forEach((discipline) => {
+        const option = document.createElement('option');
+        option.value = discipline;
+        option.textContent = discipline;
+        disciplineFilterEl.appendChild(option);
+      });
+
+      disciplineFilterEl.value = current;
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      messageEl.textContent = '';
+
+      const formData = new FormData(form);
+      const payload = Object.fromEntries(formData.entries());
+
+      const response = await fetch('/api/gyms', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        messageEl.textContent = data.error || 'Errore durante il salvataggio.';
+        messageEl.className = 'form-message error';
+        return;
+      }
+
+      messageEl.textContent = 'Palestra salvata correttamente.';
+      messageEl.className = 'form-message success';
+      form.reset();
+      await refreshDisciplineFilter();
+      await loadGyms();
+    });
+
+    textFilterEl.addEventListener('input', loadGyms);
+    disciplineFilterEl.addEventListener('change', loadGyms);
+    refreshBtn.addEventListener('click', loadGyms);
+
+    loadGyms();
+  </script>
+</body>
+</html>

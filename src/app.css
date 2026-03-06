@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+:root {
+  --bg-1: #f9f3e7;
+  --bg-2: #dde9ff;
+  --ink: #1b2430;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 8% 10%, #fff2d9 0%, transparent 33%),
+    radial-gradient(circle at 88% 20%, #dcebff 0%, transparent 40%),
+    linear-gradient(155deg, var(--bg-1), var(--bg-2));
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  animation: fadeUp 380ms ease-out both;
+}
