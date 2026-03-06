@@ -1,4 +1,4 @@
-import { randomUUID } from 'node:crypto';
+﻿import { randomUUID } from 'node:crypto';
 import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { json } from '@sveltejs/kit';
@@ -192,14 +192,18 @@ async function saveUploadedImage(file) {
 }
 
 export async function GET({ url }) {
-  const q = clean(url.searchParams.get('q'));
-  const discipline = clean(url.searchParams.get('discipline'));
+  try {
+    const q = clean(url.searchParams.get('q'));
+    const discipline = clean(url.searchParams.get('discipline'));
     const userLat = parseQueryNumber(url.searchParams.get('lat'));
-  const userLng = parseQueryNumber(url.searchParams.get('lng'));
-  const radiusKm = parseQueryNumber(url.searchParams.get('radius_km'));
+    const userLng = parseQueryNumber(url.searchParams.get('lng'));
+    const radiusKm = parseQueryNumber(url.searchParams.get('radius_km'));
 
-  const gyms = await readGyms();
-  return json(filterGyms(gyms, { q, discipline, userLat, userLng, radiusKm }));
+    const gyms = await readGyms();
+    return json(filterGyms(gyms, { q, discipline, userLat, userLng, radiusKm }));
+  } catch {
+    return json([]);
+  }
 }
 
 export async function POST({ request }) {
@@ -260,6 +264,7 @@ export async function POST({ request }) {
 
   return json(newGym, { status: 201 });
 }
+
 
 
 
