@@ -1,4 +1,4 @@
-﻿import { PALESTRE_CSV } from '$lib/server/palestre-data';
+﻿import { PALESTRE_CSV } from './palestre-data.js';
 
 function splitCsvLine(line, delimiter = ',') {
   const out = [];
@@ -137,6 +137,8 @@ export function readStaticGyms() {
 
   return gyms;
 }
+
+
 
 
 
