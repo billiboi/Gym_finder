@@ -1,7 +1,4 @@
-﻿import { json } from '@sveltejs/kit';
-import { readStaticGyms } from '$lib/server/static-gyms';
-
-export const config = { runtime: 'nodejs20.x' };
+import { json } from '@sveltejs/kit';
 
 function toDisciplineList(gym) {
   if (Array.isArray(gym.disciplines)) {
@@ -20,6 +17,7 @@ function toDisciplineList(gym) {
 
 export async function GET() {
   try {
+    const { readStaticGyms } = await import('$lib/server/static-gyms');
     const gyms = readStaticGyms();
     const disciplines = [...new Set(gyms.flatMap((gym) => toDisciplineList(gym)))].sort((a, b) =>
       a.localeCompare(b, 'it')
@@ -29,4 +27,3 @@ export async function GET() {
     return json([]);
   }
 }
-

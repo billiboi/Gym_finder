@@ -1,7 +1,4 @@
-﻿import { json } from '@sveltejs/kit';
-import { readStaticGyms } from '$lib/server/static-gyms';
-
-export const config = { runtime: 'nodejs20.x' };
+import { json } from '@sveltejs/kit';
 
 function clean(value) {
   return typeof value === 'string' ? value.trim() : '';
@@ -97,7 +94,7 @@ export async function GET({ url }) {
     const userLat = parseQueryNumber(url.searchParams.get('lat'));
     const userLng = parseQueryNumber(url.searchParams.get('lng'));
     const radiusKm = parseQueryNumber(url.searchParams.get('radius_km'));
-
+    const { readStaticGyms } = await import('$lib/server/static-gyms');
     const gyms = readStaticGyms();
     return json(filterGyms(gyms, { q, discipline, userLat, userLng, radiusKm }));
   } catch {
@@ -108,4 +105,3 @@ export async function GET({ url }) {
 export async function POST() {
   return json({ error: 'Modifica dati non disponibile in deploy pubblico.' }, { status: 501 });
 }
-
