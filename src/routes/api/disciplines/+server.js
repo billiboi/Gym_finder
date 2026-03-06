@@ -1,7 +1,7 @@
 ﻿import { json } from '@sveltejs/kit';
 import { readGyms } from '$lib/server/gym-store';
 
-export const config = { runtime: 'nodejs20.x' };
+export const runtime = 'nodejs';
 
 function toDisciplineList(gym) {
   if (Array.isArray(gym.disciplines)) {
@@ -29,6 +29,7 @@ export async function GET() {
     return json([]);
   }
 }
+
 
 
 

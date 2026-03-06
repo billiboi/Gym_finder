@@ -4,7 +4,7 @@ import path from 'node:path';
 import { json } from '@sveltejs/kit';
 import { getUploadsDir, readGyms, writeGyms } from '$lib/server/gym-store';
 
-export const config = { runtime: 'nodejs20.x' };
+export const runtime = 'nodejs';
 
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 const CITY_COORDS = {
@@ -266,6 +266,7 @@ export async function POST({ request }) {
 
   return json(newGym, { status: 201 });
 }
+
 
 
 
