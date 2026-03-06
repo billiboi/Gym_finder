@@ -1,28 +1,76 @@
 import { json } from '@sveltejs/kit';
 
-function toDisciplineList(gym) {
-  if (Array.isArray(gym.disciplines)) {
-    return gym.disciplines.filter(Boolean).map((d) => String(d).trim()).filter(Boolean);
+function splitCsvLine(line, delimiter = ',') {
+  const out = [];
+  let cur = '';
+  let inQuotes = false;
+
+  for (let i = 0; i < line.length; i += 1) {
+    const ch = line[i];
+    const next = line[i + 1];
+
+    if (ch === '"') {
+      if (inQuotes && next === '"') {
+        cur += '"';
+        i += 1;
+      } else {
+        inQuotes = !inQuotes;
+      }
+      continue;
+    }
+
+    if (ch === delimiter && !inQuotes) {
+      out.push(cur);
+      cur = '';
+      continue;
+    }
+
+    cur += ch;
   }
 
-  if (typeof gym.discipline === 'string' && gym.discipline.trim()) {
-    return gym.discipline
-      .split('|')
-      .map((d) => d.trim())
-      .filter(Boolean);
-  }
-
-  return [];
+  out.push(cur);
+  return out;
 }
 
-export async function GET() {
+function parseDisciplines(csvText) {
+  const lines = String(csvText || '')
+    .replace(/^\uFEFF/, '')
+    .split(/\r?\n/)
+    .filter((line) => line.trim() !== '');
+
+  if (lines.length === 0) return [];
+
+  const headerLine = lines[0];
+  const commaCount = splitCsvLine(headerLine, ',').length;
+  const semicolonCount = splitCsvLine(headerLine, ';').length;
+  const delimiter = semicolonCount > commaCount ? ';' : ',';
+
+  const header = splitCsvLine(headerLine, delimiter).map((h) => h.trim().toLowerCase());
+  const idx = header.findIndex((h) => ['discipline', 'martial arts', 'tipologia'].includes(h));
+  if (idx < 0) return [];
+
+  const set = new Set();
+
+  for (let i = 1; i < lines.length; i += 1) {
+    const cols = splitCsvLine(lines[i], delimiter);
+    const raw = String(cols[idx] || '');
+    raw
+      .split('|')
+      .map((d) => d.trim())
+      .filter(Boolean)
+      .forEach((d) => set.add(d));
+  }
+
+  return [...set].sort((a, b) => a.localeCompare(b, 'it'));
+}
+
+export async function GET({ fetch }) {
   try {
-    const { readStaticGyms } = await import('$lib/server/static-gyms');
-    const gyms = readStaticGyms();
-    const disciplines = [...new Set(gyms.flatMap((gym) => toDisciplineList(gym)))].sort((a, b) =>
-      a.localeCompare(b, 'it')
-    );
-    return json(disciplines);
+    const csvResponse = await fetch('/palestre.csv');
+    if (!csvResponse.ok) return json([]);
+
+    const csvText = await csvResponse.text();
+    return json(parseDisciplines(csvText));
   } catch {
     return json([]);
   }
