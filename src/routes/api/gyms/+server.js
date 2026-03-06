@@ -1,7 +1,7 @@
 ﻿import { json } from '@sveltejs/kit';
 import { readStaticGyms } from '$lib/server/static-gyms';
 
-export const runtime = 'nodejs';
+export const config = { runtime: 'nodejs20.x' };
 
 function clean(value) {
   return typeof value === 'string' ? value.trim() : '';
@@ -108,3 +108,4 @@ export async function GET({ url }) {
 export async function POST() {
   return json({ error: 'Modifica dati non disponibile in deploy pubblico.' }, { status: 501 });
 }
+
