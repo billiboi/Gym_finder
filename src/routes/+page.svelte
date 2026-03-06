@@ -1,8 +1,29 @@
 <script>
   import { onDestroy, onMount } from 'svelte';
 
-  const fallbackImage =
-    'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?auto=format&fit=crop&w=1200&q=80';
+  const disciplineImages = {
+    Boxe: 'https://images.unsplash.com/photo-1517438984742-1262db08379e?auto=format&fit=crop&w=1200&q=80',
+    Judo: 'https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=1200&q=80',
+    JiuJitsu: 'https://images.unsplash.com/photo-1591117207239-788bf8de6c3b?auto=format&fit=crop&w=1200&q=80',
+    'JiuJitsu Brasiliano': 'https://images.unsplash.com/photo-1591117207239-788bf8de6c3b?auto=format&fit=crop&w=1200&q=80',
+    Karate: 'https://images.unsplash.com/photo-1609710228159-0fa9bd7c0827?auto=format&fit=crop&w=1200&q=80',
+    Kickboxe: 'https://images.unsplash.com/photo-1552072092-7f9b8d63efcb?auto=format&fit=crop&w=1200&q=80',
+    'Muay Thai': 'https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=1200&q=80',
+    K1: 'https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=1200&q=80',
+    MMA: 'https://images.unsplash.com/photo-1517344368193-41552b6ad3f5?auto=format&fit=crop&w=1200&q=80',
+    CrossFit: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=1200&q=80',
+    Pilates: 'https://images.unsplash.com/photo-1593079831268-3381b0db4a77?auto=format&fit=crop&w=1200&q=80',
+    Yoga: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&q=80',
+    Nuoto: 'https://images.unsplash.com/photo-1600965962361-9035dbfd1c50?auto=format&fit=crop&w=1200&q=80',
+    Calisthenics: 'https://images.unsplash.com/photo-1534367610401-9f5ed68180aa?auto=format&fit=crop&w=1200&q=80',
+    Functional: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1200&q=80',
+    Bodybuilding: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=1200&q=80',
+    Fitness: 'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?auto=format&fit=crop&w=1200&q=80'
+  };
+
+  function imageForGym(gym) {
+    return gym.image_url || disciplineImages[gym.discipline] || disciplineImages.Fitness;
+  }
 
   let gyms = [];
   let disciplines = [];
@@ -301,7 +322,7 @@
       {#each gyms as gym, i}
         <article class="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl" style={`animation-delay:${i * 20}ms`}>
           <div class="relative h-44 overflow-hidden">
-            <img src={gym.image_url || fallbackImage} alt={`Immagine ${gym.name}`} class="h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
+            <img src={imageForGym(gym)} alt={`Immagine ${gym.name}`} class="h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
             <span class="absolute left-3 top-3 rounded-full bg-slate-900/85 px-2.5 py-1 text-xs font-bold text-white">{gym.discipline}</span>
             {#if gym.distance_km !== null && gym.distance_km !== undefined}
               <span class="absolute right-3 top-3 rounded-full bg-emerald-600 px-2.5 py-1 text-xs font-bold text-white">{gym.distance_km} km</span>
@@ -336,3 +357,4 @@
     {/if}
   </section>
 </main>
+
