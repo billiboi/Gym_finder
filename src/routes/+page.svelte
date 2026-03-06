@@ -1,4 +1,4 @@
-﻿<script>
+<script>
   import { onDestroy, onMount } from 'svelte';
 
   const disciplineStyle = {
@@ -80,6 +80,153 @@
   $: disciplineCount = disciplines.length;
   $: locationReady = Boolean(userLocation);
 
+  let csvGymsCache = null;
+
+  function splitCsvLine(line, delimiter = ',') {
+    const out = [];
+    let cur = '';
+    let inQuotes = false;
+
+    for (let i = 0; i < line.length; i += 1) {
+      const ch = line[i];
+      const next = line[i + 1];
+
+      if (ch === '"') {
+        if (inQuotes && next === '"') {
+          cur += '"';
+          i += 1;
+        } else {
+          inQuotes = !inQuotes;
+        }
+        continue;
+      }
+
+      if (ch === delimiter && !inQuotes) {
+        out.push(cur);
+        cur = '';
+        continue;
+      }
+
+      cur += ch;
+    }
+
+    out.push(cur);
+    return out;
+  }
+
+  function parseCsvGyms(text) {
+    const lines = String(text || '')
+      .replace(/^\uFEFF/, '')
+      .split(/\r?\n/)
+      .filter((line) => line.trim() !== '');
+
+    if (lines.length <= 1) return [];
+
+    const header = splitCsvLine(lines[0], ',').map((h) => h.trim().toLowerCase());
+    const idx = {
+      name: header.indexOf('nome palestra'),
+      disciplines: header.indexOf('discipline'),
+      address: header.indexOf('indirizzo'),
+      phone: header.indexOf('telefono'),
+      hours: header.indexOf('orari di apertura'),
+      website: header.indexOf('pagina web'),
+      lat: header.indexOf('lat'),
+      long: header.indexOf('long')
+    };
+
+    return lines
+      .slice(1)
+      .map((line, i) => {
+        const c = splitCsvLine(line, ',');
+        const fullAddress = String(c[idx.address] || '').trim();
+        const parts = fullAddress.split(',').map((p) => p.trim()).filter(Boolean);
+        const address = parts.length > 1 ? parts.slice(0, -1).join(', ') : fullAddress;
+        const city = parts.length > 1 ? parts[parts.length - 1] : '';
+        const discipline = String(c[idx.disciplines] || '').trim();
+        const latitude = Number(String(c[idx.lat] || '').trim());
+        const longitude = Number(String(c[idx.long] || '').trim());
+
+        return {
+          id: `csv-${i + 1}`,
+          name: String(c[idx.name] || '').trim(),
+          discipline,
+          disciplines: discipline
+            .split('|')
+            .map((d) => d.trim())
+            .filter(Boolean),
+          address,
+          city,
+          phone: String(c[idx.phone] || '').trim(),
+          hours_info: String(c[idx.hours] || '').trim() || 'Orari da verificare',
+          website: String(c[idx.website] || '').trim(),
+          latitude: Number.isFinite(latitude) ? latitude : null,
+          longitude: Number.isFinite(longitude) ? longitude : null
+        };
+      })
+      .filter((g) => g.name);
+  }
+
+  function toRadians(degrees) {
+    return (degrees * Math.PI) / 180;
+  }
+
+  function haversineKm(lat1, lon1, lat2, lon2) {
+    const R = 6371;
+    const dLat = toRadians(lat2 - lat1);
+    const dLon = toRadians(lon2 - lon1);
+    const a =
+      Math.sin(dLat / 2) ** 2 +
+      Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) * Math.sin(dLon / 2) ** 2;
+    return 2 * R * Math.asin(Math.sqrt(a));
+  }
+
+  function filterClientGyms(list) {
+    const q = filterText.trim().toLowerCase();
+    const d = filterDiscipline.trim().toLowerCase();
+    let out = [...list];
+
+    if (d) {
+      out = out.filter((gym) => disciplineListForGym(gym).map((x) => x.toLowerCase()).includes(d));
+    }
+
+    if (q) {
+      out = out.filter((gym) =>
+        [gym.name, gym.address, gym.city, disciplineListForGym(gym).join(' | ')]
+          .some((field) => String(field || '').toLowerCase().includes(q))
+      );
+    }
+
+    if (userLocation) {
+      out = out
+        .map((gym) => {
+          const lat = Number(gym.latitude);
+          const lng = Number(gym.longitude);
+          if (!Number.isFinite(lat) || !Number.isFinite(lng)) return { ...gym, distance_km: null };
+          const distance = haversineKm(userLocation.latitude, userLocation.longitude, lat, lng);
+          return { ...gym, distance_km: Math.round(distance * 10) / 10 };
+        })
+        .filter((gym) => !nearbyOnly || (gym.distance_km !== null && gym.distance_km <= locationRadius))
+        .sort((a, b) => {
+          if (a.distance_km === null && b.distance_km === null) return a.name.localeCompare(b.name, 'it');
+          if (a.distance_km === null) return 1;
+          if (b.distance_km === null) return -1;
+          return a.distance_km - b.distance_km;
+        });
+    } else {
+      out = out.sort((a, b) => a.name.localeCompare(b.name, 'it'));
+    }
+
+    return out;
+  }
+
+  async function getCsvGyms() {
+    if (Array.isArray(csvGymsCache)) return csvGymsCache;
+    const res = await fetch('/palestre.csv');
+    if (!res.ok) return [];
+    const text = await res.text();
+    csvGymsCache = parseCsvGyms(text);
+    return csvGymsCache;
+  }
   async function loadGyms() {
     const params = new URLSearchParams();
     if (filterText.trim()) params.set('q', filterText.trim());
@@ -93,13 +240,40 @@
       }
     }
 
-    const res = await fetch(`/api/gyms${params.toString() ? `?${params.toString()}` : ''}`);
-    gyms = await res.json();
-  }
+    try {
+      const res = await fetch(`/api/gyms${params.toString() ? `?${params.toString()}` : ''}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          gyms = data;
+          return;
+        }
+      }
+    } catch {
+      // fallback below
+    }
 
+    const csvGyms = await getCsvGyms();
+    gyms = filterClientGyms(csvGyms);
+  }
   async function loadDisciplines() {
-    const res = await fetch('/api/disciplines');
-    disciplines = await res.json();
+    try {
+      const res = await fetch('/api/disciplines');
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          disciplines = data;
+          return;
+        }
+      }
+    } catch {
+      // fallback below
+    }
+
+    const csvGyms = await getCsvGyms();
+    disciplines = [...new Set(csvGyms.flatMap((gym) => disciplineListForGym(gym)))].sort((a, b) =>
+      a.localeCompare(b, 'it')
+    );
   }
 
   async function detectLocation() {
@@ -369,6 +543,7 @@
     {/if}
   </section>
 </main>
+
 
 
 
