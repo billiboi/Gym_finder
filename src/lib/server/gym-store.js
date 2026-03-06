@@ -5,6 +5,7 @@ const dataDir = path.join(process.cwd(), 'data');
 const uploadsDir = path.join(process.cwd(), 'static', 'uploads');
 const dataFilePath = path.join(dataDir, 'gyms.json');
 const csvFilePath = path.join(dataDir, 'palestre.csv');
+const isReadOnlyRuntime = process.env.VERCEL === '1' || process.env.NODE_ENV === 'production';
 
 const CSV_HEADERS = [
   'nome palestra',
@@ -205,7 +206,9 @@ function gymsToCsv(gyms) {
 }
 
 export async function readGyms() {
-  await ensureStorage();
+  if (!isReadOnlyRuntime) {
+    await ensureStorage();
+  }
 
   try {
     const csvRaw = await readFile(csvFilePath, 'utf-8');
@@ -217,12 +220,20 @@ export async function readGyms() {
     // fallback to json
   }
 
-  const raw = await readFile(dataFilePath, 'utf-8');
-  const gyms = JSON.parse(raw);
-  return Array.isArray(gyms) ? gyms : [];
+  try {
+    const raw = await readFile(dataFilePath, 'utf-8');
+    const gyms = JSON.parse(raw);
+    return Array.isArray(gyms) ? gyms : [];
+  } catch {
+    return [];
+  }
 }
 
 export async function writeGyms(gyms) {
+  if (isReadOnlyRuntime) {
+    throw new Error('Scrittura non supportata in ambiente di deploy (filesystem read-only).');
+  }
+
   await ensureStorage();
   await writeFile(dataFilePath, JSON.stringify(gyms, null, 2), 'utf-8');
   await writeFile(csvFilePath, gymsToCsv(gyms), 'utf-8');
