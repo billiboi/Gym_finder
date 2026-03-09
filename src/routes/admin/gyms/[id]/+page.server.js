@@ -1,4 +1,4 @@
-import { error, fail, redirect } from '@sveltejs/kit';
+﻿import { error, fail, redirect } from '@sveltejs/kit';
 import { readGyms, writeGyms } from '$lib/server/gym-store';
 
 function clean(value) {
@@ -20,8 +20,22 @@ function toDisciplines(value) {
   return list.length ? list : ['Fitness'];
 }
 
-export async function load({ params }) {
+async function getGymsWithFallback(fetchFn) {
   const gyms = await readGyms();
+  if (Array.isArray(gyms) && gyms.length > 0) return gyms;
+
+  try {
+    const res = await fetchFn('/api/gyms');
+    if (!res.ok) return [];
+    const data = await res.json();
+    return Array.isArray(data) ? data : [];
+  } catch {
+    return [];
+  }
+}
+
+export async function load({ params, fetch }) {
+  const gyms = await getGymsWithFallback(fetch);
   const gym = gyms.find((item) => item.id === params.id);
 
   if (!gym) {
@@ -39,7 +53,7 @@ export async function load({ params }) {
 }
 
 export const actions = {
-  default: async ({ params, request }) => {
+  default: async ({ params, request, fetch }) => {
     const form = await request.formData();
 
     const name = clean(form.get('name'));
@@ -51,7 +65,7 @@ export const actions = {
       return fail(400, { error: 'Nome e indirizzo sono obbligatori.' });
     }
 
-    const gyms = await readGyms();
+    const gyms = await getGymsWithFallback(fetch);
     const idx = gyms.findIndex((item) => item.id === params.id);
 
     if (idx < 0) {

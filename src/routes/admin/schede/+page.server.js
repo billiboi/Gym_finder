@@ -1,8 +1,22 @@
 ﻿import { fail, redirect } from '@sveltejs/kit';
 import { readGyms, writeGyms } from '$lib/server/gym-store';
 
-export async function load({ url }) {
+async function getGymsWithFallback(fetchFn) {
   const gyms = await readGyms();
+  if (Array.isArray(gyms) && gyms.length > 0) return gyms;
+
+  try {
+    const res = await fetchFn('/api/gyms');
+    if (!res.ok) return [];
+    const data = await res.json();
+    return Array.isArray(data) ? data : [];
+  } catch {
+    return [];
+  }
+}
+
+export async function load({ url, fetch }) {
+  const gyms = await getGymsWithFallback(fetch);
 
   return {
     gyms: gyms
@@ -19,7 +33,7 @@ export async function load({ url }) {
 }
 
 export const actions = {
-  delete: async ({ request }) => {
+  delete: async ({ request, fetch }) => {
     const form = await request.formData();
     const id = String(form.get('id') ?? '').trim();
 
@@ -27,7 +41,7 @@ export const actions = {
       return fail(400, { error: 'ID palestra mancante.' });
     }
 
-    const gyms = await readGyms();
+    const gyms = await getGymsWithFallback(fetch);
     const next = gyms.filter((gym) => gym.id !== id);
 
     if (next.length === gyms.length) {
