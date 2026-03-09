@@ -1,5 +1,6 @@
 <script>
   import { onDestroy, onMount } from 'svelte';
+  import { isGymOpenNow } from '$lib/hours';
 
   const disciplineStyle = {
     Boxe: { bg: '#7f1d1d', fg: '#fee2e2', icon: 'BOX' },
@@ -62,6 +63,7 @@
 
   let filterText = '';
   let filterDiscipline = '';
+  let filterOpenState = 'all';
 
   let userLocation = null;
   let locating = false;
@@ -183,10 +185,19 @@
   function filterClientGyms(list) {
     const q = filterText.trim().toLowerCase();
     const d = filterDiscipline.trim().toLowerCase();
-    let out = [...list];
+    const openState = filterOpenState.trim().toLowerCase();
+    let out = list.map((gym) => ({ ...gym, is_open_now: isGymOpenNow(gym.hours_info) }));
 
     if (d) {
       out = out.filter((gym) => disciplineListForGym(gym).map((x) => x.toLowerCase()).includes(d));
+    }
+
+    if (openState === 'open') {
+      out = out.filter((gym) => gym.is_open_now === true);
+    }
+
+    if (openState === 'closed') {
+      out = out.filter((gym) => gym.is_open_now === false);
     }
 
     if (q) {
@@ -231,6 +242,7 @@
     const params = new URLSearchParams();
     if (filterText.trim()) params.set('q', filterText.trim());
     if (filterDiscipline) params.set('discipline', filterDiscipline);
+    if (filterOpenState !== 'all') params.set('open_state', filterOpenState);
 
     if (userLocation) {
       params.set('lat', String(userLocation.latitude));
@@ -424,7 +436,7 @@
     <p class="text-xs font-bold uppercase tracking-[0.24em] text-rose-700">Gym Finder</p>
     <div class="mt-2 flex flex-wrap items-end justify-between gap-5">
       <div class="max-w-3xl">
-        <h1 class="text-3xl font-bold leading-tight text-slate-900 sm:text-5xl">Trova la palestra più vicina a te</h1>
+        <h1 class="text-3xl font-bold leading-tight text-slate-900 sm:text-5xl">Trova la palestra piÃƒÂ¹ vicina a te</h1>
         <p class="mt-3 text-sm text-slate-600 sm:text-base">Pensata per utenti in viaggio o appena trasferiti: cerca per posizione, tipologia e distanza.</p>
       </div>
       <div class="grid min-w-[220px] grid-cols-3 gap-2 text-center text-xs sm:text-sm">
@@ -438,14 +450,14 @@
         </div>
         <div class="rounded-2xl bg-emerald-600 px-3 py-2 text-white">
           <p class="text-lg font-bold">{cityCount}</p>
-          <p class="opacity-75">Città</p>
+          <p class="opacity-75">CittÃƒÂ </p>
         </div>
       </div>
     </div>
   </section>
 
   <section class="reveal mt-5 rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sm:p-5">
-    <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
+    <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-6">
       <input
         class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none ring-slate-900 transition focus:ring-2 lg:col-span-2"
         placeholder="Cerca per nome o zona"
@@ -462,6 +474,16 @@
         {#each disciplines as discipline}
           <option value={discipline}>{discipline}</option>
         {/each}
+      </select>
+
+      <select
+        class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none ring-slate-900 transition focus:ring-2"
+        bind:value={filterOpenState}
+        on:change={loadGyms}
+      >
+        <option value="all">Aperte e chiuse</option>
+        <option value="open">Aperte adesso</option>
+        <option value="closed">Chiuse adesso</option>
       </select>
 
       <label class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
@@ -522,6 +544,9 @@
             {#if gym.distance_km !== null && gym.distance_km !== undefined}
               <span class="absolute right-3 top-3 rounded-full bg-emerald-600 px-2.5 py-1 text-xs font-bold text-white">{gym.distance_km} km</span>
             {/if}
+            <span class="absolute bottom-3 right-3 rounded-full px-2.5 py-1 text-xs font-bold text-white {gym.is_open_now === true ? 'bg-emerald-600' : gym.is_open_now === false ? 'bg-rose-700' : 'bg-slate-500'}">
+              {gym.is_open_now === true ? 'Aperta ora' : gym.is_open_now === false ? 'Chiusa ora' : 'Stato orario n/d'}
+            </span>
           </div>
 
           <div class="space-y-2 p-3">
@@ -543,6 +568,7 @@
     {/if}
   </section>
 </main>
+
 
 
 

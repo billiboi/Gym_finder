@@ -1,4 +1,5 @@
 import { json } from '@sveltejs/kit';
+import { isGymOpenNow } from '$lib/hours';
 
 function splitCsvLine(line, delimiter = ',') {
   const out = [];
@@ -157,11 +158,27 @@ function haversineKm(lat1, lon1, lat2, lon2) {
   return 2 * R * Math.asin(Math.sqrt(a));
 }
 
-function filterGyms(gyms, { q, discipline, userLat, userLng, radiusKm }) {
-  let out = [...gyms];
+function normalizeOpenState(value) {
+  const state = clean(value).toLowerCase();
+  return state === 'open' || state === 'closed' ? state : 'all';
+}
+
+function filterGyms(gyms, { q, discipline, openState, userLat, userLng, radiusKm }) {
+  let out = gyms.map((gym) => ({
+    ...gym,
+    is_open_now: isGymOpenNow(gym.hours_info)
+  }));
 
   if (discipline) {
     out = out.filter((gym) => disciplinesFromField(gym.discipline).map((d) => d.toLowerCase()).includes(discipline.toLowerCase()));
+  }
+
+  if (openState === 'open') {
+    out = out.filter((gym) => gym.is_open_now === true);
+  }
+
+  if (openState === 'closed') {
+    out = out.filter((gym) => gym.is_open_now === false);
   }
 
   if (q) {
@@ -208,6 +225,7 @@ export async function GET({ url, fetch }) {
   try {
     const q = clean(url.searchParams.get('q'));
     const discipline = clean(url.searchParams.get('discipline'));
+    const openState = normalizeOpenState(url.searchParams.get('open_state'));
     const userLat = parseQueryNumber(url.searchParams.get('lat'));
     const userLng = parseQueryNumber(url.searchParams.get('lng'));
     const radiusKm = parseQueryNumber(url.searchParams.get('radius_km'));
@@ -217,7 +235,7 @@ export async function GET({ url, fetch }) {
 
     const csvText = await csvResponse.text();
     const gyms = parseCsvToGyms(csvText);
-    return json(filterGyms(gyms, { q, discipline, userLat, userLng, radiusKm }));
+    return json(filterGyms(gyms, { q, discipline, openState, userLat, userLng, radiusKm }));
   } catch {
     return json([]);
   }
