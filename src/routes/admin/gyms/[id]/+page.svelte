@@ -45,7 +45,7 @@
       </label>
 
       <label class="grid gap-1">
-        <span class="text-sm font-semibold text-slate-700">Città/Località</span>
+        <span class="text-sm font-semibold text-slate-700">Citt&agrave;/Localit&agrave;</span>
         <input name="city" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" value={gym.city} />
       </label>
 
