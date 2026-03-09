@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+﻿import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const dataDir = path.join(process.cwd(), 'data');
@@ -9,11 +9,16 @@ const csvFilePath = path.join(dataDir, 'palestre.csv');
 const staticCsvFilePath = path.join(staticDir, 'palestre.csv');
 const isReadOnlyRuntime = process.env.VERCEL === '1' || process.env.NODE_ENV === 'production';
 
-const SUPABASE_URL = process.env.SUPABASE_URL || '';
-const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+const SUPABASE_URL = process.env.SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL || '';
+const SUPABASE_KEY =
+  process.env.SUPABASE_SERVICE_ROLE_KEY ||
+  process.env.SUPABASE_KEY ||
+  process.env.SUPABASE_ANON_KEY ||
+  process.env.PUBLIC_SUPABASE_ANON_KEY ||
+  '';
 const SUPABASE_GYMS_TABLE = process.env.SUPABASE_GYMS_TABLE || 'gyms';
 
-const hasSupabase = Boolean(SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY);
+const hasSupabase = Boolean(SUPABASE_URL && SUPABASE_KEY);
 
 const CSV_HEADERS = [
   'nome palestra',
@@ -244,8 +249,8 @@ function gymsToCsv(gyms) {
 
 function supabaseHeaders(extra = {}) {
   return {
-    apikey: SUPABASE_SERVICE_ROLE_KEY,
-    Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+    apikey: SUPABASE_KEY,
+    Authorization: `Bearer ${SUPABASE_KEY}`,
     ...extra
   };
 }
@@ -372,3 +377,5 @@ export async function writeGyms(gyms) {
 export function getUploadsDir() {
   return uploadsDir;
 }
+
+
