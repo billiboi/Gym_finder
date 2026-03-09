@@ -58,6 +58,57 @@
     return disciplineListForGym(gym)[0] || 'Fitness';
   }
 
+  function fixMojibake(value) {
+    const text = String(value || '');
+    if (!text) return '';
+
+    return text
+      .replace(/Ã€/g, 'À')
+      .replace(/Ãˆ/g, 'È')
+      .replace(/Ã‰/g, 'É')
+      .replace(/ÃŒ/g, 'Ì')
+      .replace(/Ã’/g, 'Ò')
+      .replace(/Ã™/g, 'Ù')
+      .replace(/Ã /g, 'à')
+      .replace(/Ã¨/g, 'è')
+      .replace(/Ã©/g, 'é')
+      .replace(/Ã¬/g, 'ì')
+      .replace(/Ã²/g, 'ò')
+      .replace(/Ã¹/g, 'ù')
+      .replace(/â€“/g, '-')
+      .replace(/â€”/g, '-')
+      .replace(/â€™|â€˜/g, "'")
+      .replace(/â€œ|â€\u009d/g, '"')
+      .replace(/Â/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function displayName(value) {
+    return fixMojibake(value);
+  }
+
+  function formatAddressForDisplay(gym) {
+    const raw = fixMojibake([gym?.address, gym?.city].filter(Boolean).join(', '));
+    if (!raw) return 'Indirizzo non disponibile';
+
+    let parts = raw.split(',').map((part) => part.trim()).filter(Boolean);
+    if (!parts.length) return 'Indirizzo non disponibile';
+
+    const countryTokens = ['italia', 'svizzera', 'suisse', 'schweiz', 'svizra'];
+    while (parts.length > 1 && countryTokens.includes(parts[parts.length - 1].toLowerCase())) {
+      parts = parts.slice(0, -1);
+    }
+
+    const street = parts[0] || '';
+    const remaining = parts.slice(1);
+    const cityProvRaw = remaining.length ? remaining[remaining.length - 1] : '';
+    const cityProv = cityProvRaw.replace(/\b\d{4,5}\b/g, '').replace(/\s+/g, ' ').trim();
+
+    if (street && cityProv) return street + ', ' + cityProv;
+    if (street) return street;
+    return cityProv || 'Indirizzo non disponibile';
+  }
   let gyms = [];
   let disciplines = [];
 
@@ -360,7 +411,7 @@
       if (!Number.isFinite(lat) || !Number.isFinite(lng)) continue;
 
       const distance = gym.distance_km !== null && gym.distance_km !== undefined ? `${gym.distance_km} km` : '-';
-      const rawAddress = [gym.address, gym.city].filter(Boolean).join(', ');
+      const rawAddress = formatAddressForDisplay(gym);
       const escapedName = String(gym.name || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       const namePrefix = new RegExp(`^${escapedName}\\s*,\\s*`, 'i');
       const fullAddress = (rawAddress ? rawAddress.replace(namePrefix, '') : '') || 'Indirizzo non disponibile';
@@ -436,7 +487,7 @@
     <p class="text-xs font-bold uppercase tracking-[0.24em] text-rose-700">Gym Finder</p>
     <div class="mt-2 flex flex-wrap items-end justify-between gap-5">
       <div class="max-w-3xl">
-        <h1 class="text-3xl font-bold leading-tight text-slate-900 sm:text-5xl">Trova la palestra piÃƒÂ¹ vicina a te</h1>
+        <h1 class="text-3xl font-bold leading-tight text-slate-900 sm:text-5xl">Trova la palestra piÃƒÆ’Ã‚Â¹ vicina a te</h1>
         <p class="mt-3 text-sm text-slate-600 sm:text-base">Pensata per utenti in viaggio o appena trasferiti: cerca per posizione, tipologia e distanza.</p>
       </div>
       <div class="grid min-w-[220px] grid-cols-3 gap-2 text-center text-xs sm:text-sm">
@@ -450,7 +501,7 @@
         </div>
         <div class="rounded-2xl bg-emerald-600 px-3 py-2 text-white">
           <p class="text-lg font-bold">{cityCount}</p>
-          <p class="opacity-75">CittÃƒÂ </p>
+          <p class="opacity-75">CittÃƒÆ’Ã‚Â </p>
         </div>
       </div>
     </div>
@@ -550,10 +601,10 @@
           </div>
 
           <div class="space-y-2 p-3">
-            <h3 class="text-lg font-bold text-slate-900">{gym.name}</h3>
-            <p class="text-sm text-slate-700"><strong>Indirizzo:</strong> {gym.address}, {gym.city}</p>
-            <p class="text-sm text-slate-700"><strong>Orari:</strong> {gym.hours_info}</p>
-            <p class="text-sm text-slate-700"><strong>Telefono:</strong> {gym.phone || '-'}</p>
+            <h3 class="text-lg font-bold text-slate-900">{displayName(gym.name)}</h3>
+            <p class="text-sm text-slate-700"><strong>Indirizzo:</strong> {formatAddressForDisplay(gym)}</p>
+            <p class="text-sm text-slate-700"><strong>Orari:</strong> {displayName(gym.hours_info)}</p>
+            <p class="text-sm text-slate-700"><strong>Telefono:</strong> {displayName(gym.phone) || '-'}</p>
             <p class="text-sm text-slate-700">
               <strong>Sito:</strong>
               {#if gym.website}
