@@ -1,11 +1,19 @@
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+﻿import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const dataDir = path.join(process.cwd(), 'data');
-const uploadsDir = path.join(process.cwd(), 'static', 'uploads');
+const staticDir = path.join(process.cwd(), 'static');
+const uploadsDir = path.join(staticDir, 'uploads');
 const dataFilePath = path.join(dataDir, 'gyms.json');
 const csvFilePath = path.join(dataDir, 'palestre.csv');
+const staticCsvFilePath = path.join(staticDir, 'palestre.csv');
 const isReadOnlyRuntime = process.env.VERCEL === '1' || process.env.NODE_ENV === 'production';
+
+const SUPABASE_URL = process.env.SUPABASE_URL || '';
+const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+const SUPABASE_GYMS_TABLE = process.env.SUPABASE_GYMS_TABLE || 'gyms';
+
+const hasSupabase = Boolean(SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY);
 
 const CSV_HEADERS = [
   'nome palestra',
@@ -20,6 +28,7 @@ const CSV_HEADERS = [
 
 async function ensureStorage() {
   await mkdir(dataDir, { recursive: true });
+  await mkdir(staticDir, { recursive: true });
   await mkdir(uploadsDir, { recursive: true });
 
   try {
@@ -100,6 +109,31 @@ function toNumberOrNull(value) {
   return Number.isFinite(n) ? n : null;
 }
 
+function normalizeGymRecord(gym, fallbackId) {
+  const disciplines = Array.isArray(gym?.disciplines)
+    ? gym.disciplines.map((d) => String(d).trim()).filter(Boolean)
+    : disciplinesFromField(gym?.discipline);
+
+  return {
+    id: String(gym?.id || fallbackId),
+    name: String(gym?.name || '').trim(),
+    disciplines,
+    discipline: String(gym?.discipline || primaryDiscipline(disciplines)).trim() || 'Fitness',
+    address: String(gym?.address || '').trim(),
+    city: String(gym?.city || '').trim(),
+    phone: String(gym?.phone || '').trim(),
+    hours_info: String(gym?.hours_info || '').trim() || 'Orari da verificare',
+    website: String(gym?.website || '').trim(),
+    latitude: gym?.latitude === null || gym?.latitude === undefined ? null : toNumberOrNull(gym.latitude),
+    longitude: gym?.longitude === null || gym?.longitude === undefined ? null : toNumberOrNull(gym.longitude),
+    image_url: String(gym?.image_url || '').trim(),
+    weekly_hours:
+      gym?.weekly_hours && typeof gym.weekly_hours === 'object' && !Array.isArray(gym.weekly_hours)
+        ? gym.weekly_hours
+        : {}
+  };
+}
+
 function gymsFromCsv(csvText) {
   const lines = csvText
     .replace(/^\uFEFF/, '')
@@ -159,21 +193,26 @@ function gymsFromCsv(csvText) {
     const disciplineList = disciplinesFromField(read(idx.disciplines));
     const { address, city } = parseAddress(read(idx.address));
 
-    gyms.push({
-      id: `csv-${i}`,
-      name,
-      disciplines: disciplineList,
-      discipline: primaryDiscipline(disciplineList),
-      address,
-      city,
-      phone: String(read(idx.phone) || '').trim(),
-      hours_info: String(read(idx.hours) || '').trim() || 'Orari da verificare',
-      website: String(read(idx.website) || '').trim(),
-      latitude: toNumberOrNull(read(idx.lat)),
-      longitude: toNumberOrNull(read(idx.long)),
-      image_url: '',
-      weekly_hours: {}
-    });
+    gyms.push(
+      normalizeGymRecord(
+        {
+          id: `csv-${i}`,
+          name,
+          disciplines: disciplineList,
+          discipline: primaryDiscipline(disciplineList),
+          address,
+          city,
+          phone: String(read(idx.phone) || '').trim(),
+          hours_info: String(read(idx.hours) || '').trim() || 'Orari da verificare',
+          website: String(read(idx.website) || '').trim(),
+          latitude: toNumberOrNull(read(idx.lat)),
+          longitude: toNumberOrNull(read(idx.long)),
+          image_url: '',
+          weekly_hours: {}
+        },
+        `csv-${i}`
+      )
+    );
   }
 
   return gyms;
@@ -181,31 +220,109 @@ function gymsFromCsv(csvText) {
 
 function gymsToCsv(gyms) {
   const rows = gyms.map((gym) => {
-    const disciplines = Array.isArray(gym.disciplines)
-      ? gym.disciplines.filter(Boolean)
-      : String(gym.discipline || '')
-          .split('|')
-          .map((d) => d.trim())
-          .filter(Boolean);
+    const norm = normalizeGymRecord(gym, gym?.id || '');
+    const disciplines = Array.isArray(norm.disciplines) && norm.disciplines.length
+      ? norm.disciplines
+      : disciplinesFromField(norm.discipline);
 
-    const address = [gym.address, gym.city].filter(Boolean).join(', ');
+    const address = [norm.address, norm.city].filter(Boolean).join(', ');
 
     return [
-      gym.name || '',
+      norm.name,
       disciplines.join(' | '),
       address,
-      gym.phone || '',
-      gym.hours_info || 'Orari da verificare',
-      gym.website || '',
-      gym.latitude ?? '',
-      gym.longitude ?? ''
+      norm.phone,
+      norm.hours_info || 'Orari da verificare',
+      norm.website,
+      norm.latitude ?? '',
+      norm.longitude ?? ''
     ];
   });
 
   return [CSV_HEADERS, ...rows].map((row) => row.map(csvEscape).join(',')).join('\n');
 }
 
+function supabaseHeaders(extra = {}) {
+  return {
+    apikey: SUPABASE_SERVICE_ROLE_KEY,
+    Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+    ...extra
+  };
+}
+
+function supabaseBaseUrl() {
+  return SUPABASE_URL.replace(/\/$/, '');
+}
+
+async function readGymsFromSupabase() {
+  if (!hasSupabase) return null;
+
+  const url = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?select=*`;
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: supabaseHeaders()
+  });
+
+  if (!response.ok) {
+    throw new Error(`Supabase read failed (${response.status})`);
+  }
+
+  const data = await response.json();
+  if (!Array.isArray(data)) return [];
+
+  return data.map((row, index) => normalizeGymRecord(row, `db-${index + 1}`));
+}
+
+async function replaceGymsInSupabase(gyms) {
+  if (!hasSupabase) return;
+
+  const base = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}`;
+
+  const delResponse = await fetch(`${base}?id=not.is.null`, {
+    method: 'DELETE',
+    headers: supabaseHeaders({ Prefer: 'return=minimal' })
+  });
+
+  if (!delResponse.ok) {
+    throw new Error(`Supabase delete failed (${delResponse.status})`);
+  }
+
+  const records = gyms.map((gym) => normalizeGymRecord(gym, gym?.id || ''));
+  if (!records.length) return;
+
+  const chunkSize = 300;
+  for (let i = 0; i < records.length; i += chunkSize) {
+    const chunk = records.slice(i, i + chunkSize);
+    const insResponse = await fetch(base, {
+      method: 'POST',
+      headers: supabaseHeaders({
+        'Content-Type': 'application/json',
+        Prefer: 'return=minimal'
+      }),
+      body: JSON.stringify(chunk)
+    });
+
+    if (!insResponse.ok) {
+      throw new Error(`Supabase insert failed (${insResponse.status})`);
+    }
+  }
+}
+
 export async function readGyms() {
+  if (hasSupabase) {
+    try {
+      const dbGyms = await readGymsFromSupabase();
+      if (Array.isArray(dbGyms) && dbGyms.length > 0) {
+        return dbGyms;
+      }
+      if (Array.isArray(dbGyms)) {
+        return [];
+      }
+    } catch {
+      // fallback below
+    }
+  }
+
   if (!isReadOnlyRuntime) {
     await ensureStorage();
   }
@@ -223,20 +340,34 @@ export async function readGyms() {
   try {
     const raw = await readFile(dataFilePath, 'utf-8');
     const gyms = JSON.parse(raw);
-    return Array.isArray(gyms) ? gyms : [];
+    return Array.isArray(gyms)
+      ? gyms.map((gym, index) => normalizeGymRecord(gym, `json-${index + 1}`))
+      : [];
   } catch {
     return [];
   }
 }
 
 export async function writeGyms(gyms) {
-  if (isReadOnlyRuntime) {
-    throw new Error('Scrittura non supportata in ambiente di deploy (filesystem read-only).');
+  const normalized = (Array.isArray(gyms) ? gyms : []).map((gym, index) =>
+    normalizeGymRecord(gym, `gym-${index + 1}`)
+  );
+
+  if (hasSupabase) {
+    await replaceGymsInSupabase(normalized);
   }
 
-  await ensureStorage();
-  await writeFile(dataFilePath, JSON.stringify(gyms, null, 2), 'utf-8');
-  await writeFile(csvFilePath, gymsToCsv(gyms), 'utf-8');
+  if (isReadOnlyRuntime && !hasSupabase) {
+    throw new Error('Scrittura non supportata in ambiente di deploy (filesystem read-only). Configura Supabase.');
+  }
+
+  if (!isReadOnlyRuntime) {
+    await ensureStorage();
+    const csv = gymsToCsv(normalized);
+    await writeFile(dataFilePath, JSON.stringify(normalized, null, 2), 'utf-8');
+    await writeFile(csvFilePath, csv, 'utf-8');
+    await writeFile(staticCsvFilePath, csv, 'utf-8');
+  }
 }
 
 export function getUploadsDir() {
