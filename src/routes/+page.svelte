@@ -59,29 +59,22 @@
   }
 
   function fixMojibake(value) {
-    const text = String(value || '');
+    let text = String(value || '');
     if (!text) return '';
 
-    return text
-      .replace(/Ãƒâ‚¬/g, 'Ã€')
-      .replace(/ÃƒË†/g, 'Ãˆ')
-      .replace(/Ãƒâ€°/g, 'Ã‰')
-      .replace(/ÃƒÅ’/g, 'ÃŒ')
-      .replace(/Ãƒâ€™/g, 'Ã’')
-      .replace(/Ãƒâ„¢/g, 'Ã™')
-      .replace(/Ãƒ /g, 'Ã ')
-      .replace(/ÃƒÂ¨/g, 'Ã¨')
-      .replace(/ÃƒÂ©/g, 'Ã©')
-      .replace(/ÃƒÂ¬/g, 'Ã¬')
-      .replace(/ÃƒÂ²/g, 'Ã²')
-      .replace(/ÃƒÂ¹/g, 'Ã¹')
-      .replace(/Ã¢â‚¬â€œ/g, '-')
-      .replace(/Ã¢â‚¬â€/g, '-')
-      .replace(/Ã¢â‚¬â„¢|Ã¢â‚¬Ëœ/g, "'")
-      .replace(/Ã¢â‚¬Å“|Ã¢â‚¬\u009d/g, '"')
-      .replace(/Ã‚/g, '')
-      .replace(/\s+/g, ' ')
-      .trim();
+    const replacements = [
+      ['Ã€', 'À'], ['Ãˆ', 'È'], ['Ã‰', 'É'], ['ÃŒ', 'Ì'], ['Ã’', 'Ò'], ['Ã™', 'Ù'],
+      ['Ã ', 'à'], ['Ã¨', 'è'], ['Ã©', 'é'], ['Ã¬', 'ì'], ['Ã²', 'ò'], ['Ã¹', 'ù'],
+      ['Ã¶', 'ö'], ['Ã¤', 'ä'], ['ÃŸ', 'ß'], ['Ã–', 'Ö'], ['Ã¼', 'ü'], ['Ãœ', 'Ü'],
+      ['â€“', '-'], ['â€”', '-'], ['â€˜', "'"], ['â€™', "'"], ['â€œ', '"'], ['â€', '"'],
+      ['Â', '']
+    ];
+
+    for (const [from, to] of replacements) {
+      text = text.split(from).join(to);
+    }
+
+    return text.replace(/s+/g, ' ').trim();
   }
 
   function displayName(value) {
@@ -487,7 +480,7 @@
     <p class="text-xs font-bold uppercase tracking-[0.24em] text-rose-700">Gym Finder</p>
     <div class="mt-2 flex flex-wrap items-end justify-between gap-5">
       <div class="max-w-3xl">
-        <h1 class="text-3xl font-bold leading-tight text-slate-900 sm:text-5xl">Trova la palestra piÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¹ vicina a te</h1>
+        <h1 class="text-3xl font-bold leading-tight text-slate-900 sm:text-5xl">Trova la palestra piu vicina a te</h1>
         <p class="mt-3 text-sm text-slate-600 sm:text-base">Pensata per utenti in viaggio o appena trasferiti: cerca per posizione, tipologia e distanza.</p>
       </div>
       <div class="grid min-w-[220px] grid-cols-3 gap-2 text-center text-xs sm:text-sm">
@@ -501,7 +494,7 @@
         </div>
         <div class="rounded-2xl bg-emerald-600 px-3 py-2 text-white">
           <p class="text-lg font-bold">{cityCount}</p>
-          <p class="opacity-75">CittÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â </p>
+          <p class="opacity-75">Citta</p>
         </div>
       </div>
     </div>
