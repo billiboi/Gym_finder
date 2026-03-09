@@ -324,14 +324,16 @@ export async function readGyms() {
     await ensureStorage();
   }
 
-  try {
-    const csvRaw = await readFile(csvFilePath, 'utf-8');
-    const csvGyms = gymsFromCsv(csvRaw);
-    if (csvGyms.length > 0) {
-      return csvGyms;
+  for (const candidatePath of [csvFilePath, staticCsvFilePath]) {
+    try {
+      const csvRaw = await readFile(candidatePath, 'utf-8');
+      const csvGyms = gymsFromCsv(csvRaw);
+      if (csvGyms.length > 0) {
+        return csvGyms;
+      }
+    } catch {
+      // try next source
     }
-  } catch {
-    // fallback to json
   }
 
   try {
