@@ -19,6 +19,19 @@ const SUPABASE_KEY =
 const SUPABASE_GYMS_TABLE = process.env.SUPABASE_GYMS_TABLE || 'gyms';
 
 const hasSupabase = Boolean(SUPABASE_URL && SUPABASE_KEY);
+const RUNTIME_CACHE_KEY = '__gymfinder_runtime_gyms__';
+
+function getRuntimeGyms() {
+  const cache = globalThis[RUNTIME_CACHE_KEY];
+  if (!Array.isArray(cache)) return null;
+  return cache.map((gym, index) => normalizeGymRecord(gym, `runtime-${index + 1}`));
+}
+
+function setRuntimeGyms(gyms) {
+  globalThis[RUNTIME_CACHE_KEY] = gyms.map((gym, index) =>
+    normalizeGymRecord(gym, `runtime-${index + 1}`)
+  );
+}
 
 const CSV_HEADERS = [
   'nome palestra',
@@ -314,6 +327,11 @@ async function replaceGymsInSupabase(gyms) {
 }
 
 export async function readGyms() {
+  const runtimeGyms = getRuntimeGyms();
+  if (runtimeGyms && runtimeGyms.length > 0) {
+    return runtimeGyms;
+  }
+
   if (hasSupabase) {
     try {
       const dbGyms = await readGymsFromSupabase();
@@ -362,7 +380,8 @@ export async function writeGyms(gyms) {
   }
 
   if (isReadOnlyRuntime && !hasSupabase) {
-    throw new Error('Scrittura non supportata in ambiente di deploy (filesystem read-only). Configura Supabase.');
+    setRuntimeGyms(normalized);
+    return;
   }
 
   if (!isReadOnlyRuntime) {
@@ -377,5 +396,8 @@ export async function writeGyms(gyms) {
 export function getUploadsDir() {
   return uploadsDir;
 }
+
+
+
 
 
