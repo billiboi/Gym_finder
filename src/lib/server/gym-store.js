@@ -1,4 +1,4 @@
-﻿import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const dataDir = path.join(process.cwd(), 'data');
@@ -314,9 +314,6 @@ export async function readGyms() {
       const dbGyms = await readGymsFromSupabase();
       if (Array.isArray(dbGyms) && dbGyms.length > 0) {
         return dbGyms;
-      }
-      if (Array.isArray(dbGyms)) {
-        return [];
       }
     } catch {
       // fallback below
