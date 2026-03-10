@@ -1,5 +1,23 @@
 ﻿<script>
   import { afterUpdate, onDestroy, onMount } from 'svelte';
+  const THEME_KEY = 'gymfinder-theme';
+  let theme = 'light';
+
+  function applyTheme(next) {
+    theme = next;
+    if (typeof document !== 'undefined') {
+      document.documentElement.dataset.theme = theme;
+      try {
+        localStorage.setItem(THEME_KEY, theme);
+      } catch {
+        // ignore
+      }
+    }
+  }
+
+  function toggleTheme() {
+    applyTheme(theme === 'dark' ? 'light' : 'dark');
+  }
   import { isGymOpenNow } from '$lib/hours';
 
   const disciplineStyle = {
@@ -460,6 +478,12 @@
   }
 
   onMount(async () => {
+    if (typeof window !== 'undefined') {
+      const stored = window.localStorage ? window.localStorage.getItem(THEME_KEY) : null;
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      applyTheme(stored || (prefersDark ? 'dark' : 'light'));
+    }
+
     await Promise.all([loadGyms(), loadDisciplines()]);
     await initMap();
   });
@@ -481,6 +505,11 @@
 <main class="mx-auto min-h-screen w-full max-w-7xl px-4 pb-8 pt-6 sm:px-6 lg:px-8">
   <section class="reveal rounded-3xl border border-white/80 bg-white/70 p-5 shadow-xl backdrop-blur-sm sm:p-7">
     <p class="text-xs font-bold uppercase tracking-[0.24em] text-rose-700">Gym Finder</p>
+  <div class="mt-2 flex justify-end">
+    <button type="button" class="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-bold text-slate-700 hover:bg-slate-100" on:click={toggleTheme}>
+      {theme === 'dark' ? 'Light' : 'Dark'} theme
+    </button>
+  </div>
     <div class="mt-2 flex flex-wrap items-end justify-between gap-5">
       <div class="max-w-3xl">
         <h1 class="text-3xl font-bold leading-tight text-slate-900 sm:text-5xl">Trova la palestra pi&ugrave; vicina a te</h1>
@@ -615,6 +644,10 @@
     {/if}
   </section>
 </main>
+
+
+
+
 
 
 
