@@ -285,21 +285,8 @@
     return csvGymsCache;
   }
   async function loadGyms() {
-    const params = new URLSearchParams();
-    if (filterText.trim()) params.set('q', filterText.trim());
-    if (filterDiscipline) params.set('discipline', filterDiscipline);
-    if (filterOpenState !== 'all') params.set('open_state', filterOpenState);
-
-    if (userLocation) {
-      params.set('lat', String(userLocation.latitude));
-      params.set('lng', String(userLocation.longitude));
-      if (nearbyOnly) {
-        params.set('radius_km', String(locationRadius));
-      }
-    }
-
     try {
-      const res = await fetch(`/api/gyms${params.toString() ? `?${params.toString()}` : ''}`);
+      const res = await fetch('/api/gyms');
       if (res.ok) {
         const data = await res.json();
         if (Array.isArray(data)) {
@@ -312,7 +299,7 @@
     }
 
     const csvGyms = await getCsvGyms();
-    gyms = filterClientGyms(csvGyms);
+    gyms = csvGyms;
   }
   async function loadDisciplines() {
     try {
@@ -614,6 +601,7 @@
     {/if}
   </section>
 </main>
+
 
 
 
