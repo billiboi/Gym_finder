@@ -425,7 +425,7 @@
       const fullAddress = (rawAddress ? rawAddress.replace(namePrefix, '') : '') || 'Indirizzo non disponibile';
 
       window.L.marker([lat, lng])
-        .bindPopup(`<div style="min-width:220px;line-height:1.35"><div style="font-weight:800;font-size:14px;margin-bottom:6px">${gym.name}</div><div><span style="font-weight:700">Disciplina:</span> <span style="font-weight:600">${primaryDisciplineForGym(gym)}</span></div><div><span style="font-weight:700">Indirizzo:</span> ${fullAddress}</div><div><span style="font-weight:700">Distanza:</span> <span style="font-weight:700">${distance}</span></div></div>`)
+        .bindPopup(`<div style="min-width:220px;line-height:1.35"><div style="font-weight:800;font-size:14px;margin-bottom:6px">${gym.name}</div><div><span style="font-weight:700">Disciplina:</span> <span style="font-weight:600">${disciplineListForGym(gym).join(" | ") }</span></div><div><span style="font-weight:700">Indirizzo:</span> ${fullAddress}</div><div><span style="font-weight:700">Distanza:</span> <span style="font-weight:700">${distance}</span></div></div>`)
         .addTo(markersLayer);
     }
 
@@ -622,7 +622,7 @@
         <article class="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl" style={`animation-delay:${i * 20}ms`}>
           <div class="relative h-44 overflow-hidden">
             <img src={imageForGym(gym)} alt={`Immagine ${gym.name}`} class="h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
-            <span class="absolute left-3 top-3 rounded-full bg-slate-900/85 px-2.5 py-1 text-xs font-bold text-white">{primaryDisciplineForGym(gym)}</span>
+            <span class="absolute left-3 top-3 rounded-full bg-slate-900/85 px-2.5 py-1 text-xs font-bold text-white">{disciplineListForGym(gym).join(" | ") }</span>
             {#if gym.distance_km !== null && gym.distance_km !== undefined}
               <span class="absolute right-3 top-3 rounded-full bg-emerald-600 px-2.5 py-1 text-xs font-bold text-white">{gym.distance_km} km</span>
             {/if}
@@ -657,6 +657,7 @@
     </div>
   </footer>
 </div>
+
 
 
 

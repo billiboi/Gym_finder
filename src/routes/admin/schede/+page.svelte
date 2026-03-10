@@ -1,13 +1,24 @@
-﻿<script>
+<script>
   export let data;
   export let form;
 
   let q = '';
 
+  function disciplinesForGym(gym) {
+    if (Array.isArray(gym.disciplines) && gym.disciplines.length) {
+      return gym.disciplines.filter(Boolean);
+    }
+    if (typeof gym.discipline === 'string' && gym.discipline.trim()) {
+      return gym.discipline.split('|').map((d) => d.trim()).filter(Boolean);
+    }
+    return ['Fitness'];
+  }
+
+
   $: query = q.trim().toLowerCase();
   $: filtered = data.gyms.filter((gym) => {
     if (!query) return true;
-    return [gym.name, gym.discipline, gym.address, gym.city]
+    return [gym.name, disciplinesForGym(gym).join(' | '), gym.address, gym.city]
       .join(' | ')
       .toLowerCase()
       .includes(query);
@@ -61,7 +72,7 @@
       {#each filtered as gym}
         <article class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
           <h2 class="text-base font-bold text-slate-900">{gym.name}</h2>
-          <p class="mt-1 text-sm text-slate-600">{gym.discipline}</p>
+          <p class="mt-1 text-sm text-slate-600">{disciplinesForGym(gym).join(' | ')}</p>
           <p class="mt-1 text-sm text-slate-700">{gym.address || 'Indirizzo non disponibile'}</p>
 
           <div class="mt-3 flex flex-wrap gap-2">
@@ -91,3 +102,4 @@
     {/if}
   </section>
 </main>
+
