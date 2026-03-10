@@ -1,6 +1,12 @@
 # Gym Finder
 
+[![SvelteKit](https://img.shields.io/badge/SvelteKit-FF3E00?style=for-the-badge&logo=svelte&logoColor=white)](https://kit.svelte.dev/)
+[![Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-38B2AC?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+
 Interfaccia web per cercare palestre e arti marziali in Ticino e dintorni, con filtri rapidi e mappa interattiva. Progettata per funzionare sia in locale (CSV) sia in produzione con persistenza su Supabase.
+
+![Preview](./static/preview.svg)
 
 ## Caratteristiche principali
 - Schede palestra con orari, contatti, discipline e distanza.
