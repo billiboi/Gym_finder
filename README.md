@@ -1,17 +1,36 @@
-# Gym Finder - Pagina Utente
+# Gym Finder
 
-Interfaccia utente per trovare palestre vicine con priorita' alla distanza dalla posizione corrente.
+Interfaccia web per cercare palestre e arti marziali in Ticino e dintorni, con filtri rapidi e mappa interattiva. Progettata per funzionare sia in locale (CSV) sia in produzione con persistenza su Supabase.
 
-## Funzionalita'
-- visualizzazione di tutte le palestre in schede
-- filtro per tipologia (disciplina)
-- filtro per stato aperta/chiusa (in tempo reale)
-- filtro per distanza (raggio in km)
-- ordinamento automatico per vicinanza quando la posizione utente e' disponibile
+## Caratteristiche principali
+- Schede palestra con orari, contatti, discipline e distanza.
+- Filtri per disciplina, stato apertura, testo libero e raggio km.
+- Mappa con marker sincronizzati ai filtri attivi.
+- Tema light/dark con toggle.
+- Area admin per modificare ed eliminare schede.
 
-## Dataset demo
-- 20 palestre esempio in `data/gyms.json`
-- ogni palestra include coordinate geografiche e orari settimanali
+## Flusso dati
+- In locale: lettura/scrittura su `static/palestre.csv` e `data/palestre.csv`.
+- In produzione: lettura/scrittura su Supabase (tabella `gyms`).
+
+## Stack
+- SvelteKit + Vite
+- Tailwind CSS
+- Leaflet (mappa)
+- Supabase (persistenza in produzione)
+
+## Avvio rapido
+```bash
+bun install
+bun run dev
+```
+
+## Script utili
+```bash
+bun run build
+bun run preview
+bun run check
+```
 
 ## API
 - `GET /api/gyms`
@@ -23,26 +42,20 @@ Interfaccia utente per trovare palestre vicine con priorita' alla distanza dalla
     - `radius_km`
 - `GET /api/disciplines`
 
-## Avvio
-```bash
-bun install
-bun run dev
-```
-
-
-## Admin e Persistenza
-L'area admin e' disponibile su:
+## Admin e persistenza
+Area admin:
 - `/admin`
 - `/admin/gyms/[id]`
+- `/admin/schede`
 
 Per rendere le modifiche persistenti anche in produzione (Vercel), configura Supabase.
 
-### 1) Variabili ambiente
+### Variabili ambiente
 - `SUPABASE_URL`
 - `SUPABASE_SERVICE_ROLE_KEY`
 - `SUPABASE_GYMS_TABLE` (opzionale, default: `gyms`)
 
-### 2) SQL tabella `gyms`
+### SQL tabella `gyms`
 ```sql
 create table if not exists public.gyms (
   id text primary key,
@@ -61,6 +74,11 @@ create table if not exists public.gyms (
 );
 ```
 
-Note:
-- in locale, senza Supabase, il salvataggio usa filesystem (`data/palestre.csv` e `static/palestre.csv`)
-- in produzione, se Supabase e' configurato, l'admin salva su DB e la UI legge da DB
+## Struttura progetto (principale)
+- `src/routes/+page.svelte`: UI pubblica e mappa
+- `src/routes/admin/*`: area admin
+- `src/routes/api/*`: API per palestre e discipline
+- `static/palestre.csv`: dataset di fallback
+
+## Deploy
+Consigliato Vercel. Collegare il repository e impostare le variabili Supabase in produzione.
