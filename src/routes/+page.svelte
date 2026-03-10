@@ -103,6 +103,7 @@
     return cityProv || 'Indirizzo non disponibile';
   }
   let gyms = [];
+  let filteredGyms = [];
   let disciplines = [];
 
   let filterText = '';
@@ -121,8 +122,9 @@
   let userMarker = null;
   let radiusCircle = null;
 
-  $: totalGyms = gyms.length;
-  $: cityCount = new Set(gyms.map((gym) => gym.city).filter(Boolean)).size;
+  $: filteredGyms = filterClientGyms(gyms);
+  $: totalGyms = filteredGyms.length;
+  $: cityCount = new Set(filteredGyms.map((gym) => gym.city).filter(Boolean)).size;
   $: disciplineCount = disciplines.length;
   $: locationReady = Boolean(userLocation);
 
@@ -398,7 +400,7 @@
 
     markersLayer.clearLayers();
 
-    for (const gym of gyms) {
+    for (const gym of filteredGyms) {
       const lat = Number(gym.latitude);
       const lng = Number(gym.longitude);
       if (!Number.isFinite(lat) || !Number.isFinite(lng)) continue;
@@ -575,12 +577,12 @@
   </section>
 
   <section class="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-    {#if gyms.length === 0}
+    {#if filteredGyms.length === 0}
       <div class="col-span-full rounded-2xl border border-dashed border-slate-300 p-8 text-center">
         <p class="text-slate-500">Nessuna palestra trovata con i filtri selezionati.</p>
       </div>
     {:else}
-      {#each gyms as gym, i}
+      {#each filteredGyms as gym, i}
         <article class="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl" style={`animation-delay:${i * 20}ms`}>
           <div class="relative h-44 overflow-hidden">
             <img src={imageForGym(gym)} alt={`Immagine ${gym.name}`} class="h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
@@ -612,6 +614,7 @@
     {/if}
   </section>
 </main>
+
 
 
 
