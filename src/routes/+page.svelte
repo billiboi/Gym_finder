@@ -122,7 +122,15 @@
   let userMarker = null;
   let radiusCircle = null;
 
-  $: filteredGyms = filterClientGyms(gyms);
+  $: {
+  filterText;
+  filterDiscipline;
+  filterOpenState;
+  userLocation;
+  nearbyOnly;
+  locationRadius;
+  filteredGyms = filterClientGyms(gyms);
+}
   $: totalGyms = filteredGyms.length;
   $: cityCount = new Set(filteredGyms.map((gym) => gym.city).filter(Boolean)).size;
   $: disciplineCount = disciplines.length;
@@ -601,6 +609,7 @@
     {/if}
   </section>
 </main>
+
 
 
 
