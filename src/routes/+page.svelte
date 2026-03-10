@@ -1,5 +1,5 @@
 ﻿<script>
-  import { onDestroy, onMount } from 'svelte';
+  import { afterUpdate, onDestroy, onMount } from 'svelte';
   import { isGymOpenNow } from '$lib/hours';
 
   const disciplineStyle = {
@@ -464,6 +464,12 @@
     await initMap();
   });
 
+  afterUpdate(() => {
+    if (mapInstance && markersLayer) {
+      refreshMap();
+    }
+  });
+
   onDestroy(() => {
     if (mapInstance) {
       mapInstance.remove();
@@ -609,6 +615,7 @@
     {/if}
   </section>
 </main>
+
 
 
 
