@@ -74,7 +74,7 @@
       text = text.split(from).join(to);
     }
 
-    return text.replace(/s+/g, ' ').trim();
+    return text.replace(/\s+/g, ' ').trim();
   }
 
   function displayName(value) {
@@ -612,6 +612,7 @@
     {/if}
   </section>
 </main>
+
 
 
 
