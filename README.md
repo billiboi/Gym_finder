@@ -6,7 +6,10 @@
 
 Interfaccia web per cercare palestre e arti marziali in Ticino e dintorni, con filtri rapidi e mappa interattiva. Progettata per funzionare sia in locale (CSV) sia in produzione con persistenza su Supabase.
 
-![Preview](./static/preview.svg)
+## Preview
+Sostituisci `static/preview.png` con uno screenshot reale dell'app (consigliato: home page con filtri e mappa visibili).
+
+![Preview](./static/preview.png)
 
 ## Caratteristiche principali
 - Schede palestra con orari, contatti, discipline e distanza.
