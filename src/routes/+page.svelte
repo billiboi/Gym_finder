@@ -502,14 +502,23 @@
   });
 </script>
 
-<main class="mx-auto min-h-screen w-full max-w-7xl px-4 pb-8 pt-6 sm:px-6 lg:px-8">
+<div class="min-h-screen w-full">
+  <header class="mx-auto w-full max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
+    <div class="flex flex-wrap items-center justify-between gap-3 rounded-3xl border border-white/70 bg-white/80 px-4 py-3 shadow-lg backdrop-blur-sm">
+      <div>
+        <p class="text-xs font-bold uppercase tracking-[0.24em] text-rose-700">Gym Finder</p>
+        <p class="text-sm text-slate-600">Directory palestre e arti marziali in Ticino e dintorni.</p>
+      </div>
+      <button type="button" class="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-bold text-slate-700 hover:bg-slate-100" on:click={toggleTheme}>
+        {theme === 'dark' ? 'Light' : 'Dark'} theme
+      </button>
+    </div>
+  </header>
+
+  <main class="mx-auto w-full max-w-7xl px-4 pb-8 pt-4 sm:px-6 lg:px-8">
   <section class="reveal rounded-3xl border border-white/80 bg-white/70 p-5 shadow-xl backdrop-blur-sm sm:p-7">
-    <p class="text-xs font-bold uppercase tracking-[0.24em] text-rose-700">Gym Finder</p>
-  <div class="mt-2 flex justify-end">
-    <button type="button" class="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-bold text-slate-700 hover:bg-slate-100" on:click={toggleTheme}>
-      {theme === 'dark' ? 'Light' : 'Dark'} theme
-    </button>
-  </div>
+
+
     <div class="mt-2 flex flex-wrap items-end justify-between gap-5">
       <div class="max-w-3xl">
         <h1 class="text-3xl font-bold leading-tight text-slate-900 sm:text-5xl">Trova la palestra pi&ugrave; vicina a te</h1>
@@ -643,7 +652,16 @@
       {/each}
     {/if}
   </section>
-</main>
+  </main>
+
+  <footer class="mx-auto w-full max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
+    <div class="rounded-3xl border border-white/70 bg-white/80 px-4 py-3 text-xs text-slate-500 shadow-lg backdrop-blur-sm">
+      Gym Finder · Ricerca palestre e arti marziali · © 2026
+    </div>
+  </footer>
+</div>
+
+
 
 
 
