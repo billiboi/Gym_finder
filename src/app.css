@@ -55,7 +55,7 @@ html[data-theme='dark'] body {
     linear-gradient(160deg, var(--bg-1), var(--bg-2));
 }
 
-.sc-page::before {
+.sc-page::before {\r\n  pointer-events: none;
   content: '';
   position: fixed;
   inset: 0;
@@ -67,7 +67,7 @@ html[data-theme='dark'] body {
   z-index: 0;
 }
 
-html[data-theme='dark'] .sc-page::before {
+html[data-theme='dark'] .sc-page::before {\r\n  pointer-events: none;
   opacity: 0.18;
 }
 
@@ -125,7 +125,7 @@ html[data-theme='dark'] .sc-pill {
   filter: brightness(1.05);
 }
 
-.sc-button-ghost {
+\.sc-button-ghost {\r\n  pointer-events: auto;
   background: transparent;
   border: 1px solid var(--border);
   color: var(--ink) !important;
@@ -265,7 +265,7 @@ html.theme-dark body {
     linear-gradient(160deg, var(--bg-1), var(--bg-2));
 }
 
-html.theme-dark .sc-page::before {
+html.theme-dark .sc-page::before {\r\n  pointer-events: none;
   opacity: 0.18;
 }
 
@@ -330,4 +330,12 @@ body {
     radial-gradient(circle at 85% 18%, rgba(37, 99, 235, 0.08) 0%, transparent 40%),
     linear-gradient(155deg, var(--bg-1), var(--bg-2));
 }
+
+
+.sc-header * {
+  position: relative;
+  z-index: 2;
+}
+
+
 
