@@ -14,7 +14,6 @@
     return ['Fitness'];
   }
 
-
   $: query = q.trim().toLowerCase();
   $: filtered = data.gyms.filter((gym) => {
     if (!query) return true;
@@ -45,6 +44,18 @@
       </p>
     {/if}
 
+    {#if data.created}
+      <p class="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-700">
+        Nuova scheda palestra creata con successo.
+      </p>
+    {/if}
+
+    {#if form?.createError}
+      <p class="mt-4 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm font-semibold text-red-700">
+        {form.createError}
+      </p>
+    {/if}
+
     {#if form?.error}
       <p class="mt-4 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm font-semibold text-red-700">
         {form.error}
@@ -61,6 +72,68 @@
         Risultati: <strong>{filtered.length}</strong> su {data.gyms.length}
       </div>
     </div>
+  </section>
+
+  <section class="mt-5 rounded-3xl border border-white/80 bg-white/80 p-5 shadow-xl backdrop-blur-sm sm:p-7">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <div>
+        <p class="text-xs font-bold uppercase tracking-[0.22em] text-slate-500">Nuova scheda</p>
+        <h2 class="mt-1 text-xl font-bold text-slate-900 sm:text-2xl">Aggiungi palestra</h2>
+        <p class="mt-2 text-sm text-slate-600">I dati verranno salvati nel CSV insieme alle altre schede.</p>
+      </div>
+    </div>
+
+    <form method="POST" action="?/create" class="mt-5 grid gap-3">
+      <label class="grid gap-1">
+        <span class="text-sm font-semibold text-slate-700">Nome palestra</span>
+        <input name="name" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" required />
+      </label>
+
+      <label class="grid gap-1">
+        <span class="text-sm font-semibold text-slate-700">Discipline (separate da |)</span>
+        <input name="discipline" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" placeholder="Es: Boxe | Kickboxe" />
+      </label>
+
+      <label class="grid gap-1">
+        <span class="text-sm font-semibold text-slate-700">Indirizzo</span>
+        <input name="address" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" required />
+      </label>
+
+      <label class="grid gap-1">
+        <span class="text-sm font-semibold text-slate-700">Citt&agrave;/Localit&agrave;</span>
+        <input name="city" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" />
+      </label>
+
+      <label class="grid gap-1">
+        <span class="text-sm font-semibold text-slate-700">Telefono</span>
+        <input name="phone" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" />
+      </label>
+
+      <label class="grid gap-1">
+        <span class="text-sm font-semibold text-slate-700">Orari di apertura</span>
+        <textarea name="hours_info" rows="4" class="rounded-xl border border-slate-200 px-3 py-2 text-sm"></textarea>
+      </label>
+
+      <label class="grid gap-1">
+        <span class="text-sm font-semibold text-slate-700">Sito web</span>
+        <input name="website" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" />
+      </label>
+
+      <div class="grid gap-3 sm:grid-cols-2">
+        <label class="grid gap-1">
+          <span class="text-sm font-semibold text-slate-700">Latitudine</span>
+          <input name="latitude" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" />
+        </label>
+        <label class="grid gap-1">
+          <span class="text-sm font-semibold text-slate-700">Longitudine</span>
+          <input name="longitude" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" />
+        </label>
+      </div>
+
+      <button type="submit" class="mt-2 rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700">
+        Crea scheda
+      </button>
+    </form>
   </section>
 
   <section class="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
@@ -102,4 +175,3 @@
     {/if}
   </section>
 </main>
-
