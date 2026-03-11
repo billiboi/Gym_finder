@@ -319,3 +319,14 @@ html.theme-dark .bg-slate-200 {
 html.theme-dark .bg-slate-300 {
   background-color: rgba(148, 163, 184, 0.28) !important;
 }
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 12% 12%, rgba(255, 45, 85, 0.08) 0%, transparent 35%),
+    radial-gradient(circle at 85% 18%, rgba(37, 99, 235, 0.08) 0%, transparent 40%),
+    linear-gradient(155deg, var(--bg-1), var(--bg-2));
+}
