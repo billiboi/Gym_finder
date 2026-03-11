@@ -2,34 +2,34 @@
 @import "tailwindcss";
 
 :root {
-  --bg-1: #f6f7fb;
-  --bg-2: #e9eef7;
-  --ink: #0b0f17;
+  --bg-1: #f7f4ef;
+  --bg-2: #e9ecef;
+  --ink: #0f172a;
   --surface: #ffffff;
   --surface-muted: rgba(255, 255, 255, 0.92);
-  --border: rgba(15, 23, 42, 0.12);
+  --border: rgba(15, 23, 42, 0.14);
   --ink-strong: #0b0f17;
   --ink-muted: #1f2937;
   --ink-soft: #475569;
-  --accent-red: #ff2d55;
-  --accent-blue: #2563eb;
-  --accent-gold: #f59e0b;
+  --accent-red: #c6923a;
+  --accent-blue: #1b4b5a;
+  --accent-gold: #d8b36a;
   --glow: 0 18px 50px rgba(15, 23, 42, 0.12);
 }
 
 html[data-theme='dark'] {
-  --bg-1: #070a10;
-  --bg-2: #0e1118;
+  --bg-1: #090b10;
+  --bg-2: #12151c;
   --ink: #e2e8f0;
-  --surface: #10131a;
-  --surface-muted: rgba(16, 19, 26, 0.92);
+  --surface: #11151c;
+  --surface-muted: rgba(17, 21, 28, 0.92);
   --border: rgba(148, 163, 184, 0.22);
   --ink-strong: #f8fafc;
   --ink-muted: #cbd5f5;
   --ink-soft: #94a3b8;
-  --accent-red: #ff365f;
-  --accent-blue: #38bdf8;
-  --accent-gold: #fbbf24;
+  --accent-red: #e0b15d;
+  --accent-blue: #4aa3b6;
+  --accent-gold: #f0c57d;
   --glow: 0 18px 50px rgba(0, 0, 0, 0.45);
   color-scheme: dark;
 }
@@ -43,19 +43,19 @@ body {
   font-family: 'Space Grotesk', sans-serif;
   color: var(--ink);
   background:
-    radial-gradient(circle at 12% 12%, rgba(255, 45, 85, 0.08) 0%, transparent 35%),
-    radial-gradient(circle at 85% 18%, rgba(37, 99, 235, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 12% 12%, rgba(200, 146, 58, 0.12) 0%, transparent 35%),
+    radial-gradient(circle at 85% 18%, rgba(27, 75, 90, 0.12) 0%, transparent 40%),
     linear-gradient(155deg, var(--bg-1), var(--bg-2));
 }
 
 html[data-theme='dark'] body {
   background:
-    radial-gradient(circle at 12% 12%, rgba(255, 45, 85, 0.16) 0%, transparent 38%),
-    radial-gradient(circle at 80% 20%, rgba(56, 189, 248, 0.12) 0%, transparent 42%),
+    radial-gradient(circle at 12% 12%, rgba(224, 177, 93, 0.16) 0%, transparent 38%),
+    radial-gradient(circle at 80% 20%, rgba(74, 163, 182, 0.16) 0%, transparent 42%),
     linear-gradient(160deg, var(--bg-1), var(--bg-2));
 }
 
-.sc-page::before {\r\n  pointer-events: none;
+.sc-page::before {
   content: '';
   position: fixed;
   inset: 0;
@@ -67,7 +67,7 @@ html[data-theme='dark'] body {
   z-index: 0;
 }
 
-html[data-theme='dark'] .sc-page::before {\r\n  pointer-events: none;
+html[data-theme='dark'] .sc-page::before {
   opacity: 0.18;
 }
 
@@ -90,8 +90,14 @@ html[data-theme='dark'] .sc-page::before {\r\n  pointer-events: none;
   width: 220px;
   height: 220px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 45, 85, 0.3), transparent 70%);
+  background: radial-gradient(circle, rgba(216, 179, 106, 0.4), transparent 70%);
   opacity: 0.6;
+  pointer-events: none;
+}
+
+.sc-header * {
+  position: relative;
+  z-index: 2;
 }
 
 .sc-hero h1 {
@@ -115,20 +121,21 @@ html[data-theme='dark'] .sc-pill {
 }
 
 .sc-button {
-  background: linear-gradient(120deg, var(--accent-red), var(--accent-blue));
+  background: linear-gradient(120deg, var(--accent-gold), var(--accent-blue));
   color: white !important;
   border: none;
-  box-shadow: 0 16px 30px rgba(255, 45, 85, 0.2);
+  box-shadow: 0 16px 30px rgba(216, 179, 106, 0.22);
 }
 
 .sc-button:hover {
   filter: brightness(1.05);
 }
 
-\.sc-button-ghost {\r\n  pointer-events: auto;
+.sc-button-ghost {
   background: transparent;
   border: 1px solid var(--border);
   color: var(--ink) !important;
+  pointer-events: auto;
 }
 
 .sc-button-muted {
@@ -153,11 +160,11 @@ html[data-theme='dark'] .sc-stat {
 }
 
 .sc-stat--accent {
-  background: linear-gradient(135deg, rgba(255, 45, 85, 0.95), rgba(249, 115, 22, 0.95));
+  background: linear-gradient(135deg, rgba(216, 179, 106, 0.95), rgba(200, 146, 58, 0.95));
 }
 
 .sc-stat--blue {
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.95), rgba(56, 189, 248, 0.95));
+  background: linear-gradient(135deg, rgba(27, 75, 90, 0.95), rgba(74, 163, 182, 0.95));
 }
 
 .sc-card {
@@ -172,7 +179,7 @@ html[data-theme='dark'] .sc-stat {
 }
 
 .sc-badge--accent {
-  background: linear-gradient(120deg, var(--accent-red), var(--accent-blue));
+  background: linear-gradient(120deg, var(--accent-gold), var(--accent-blue));
 }
 
 .sc-badge--open {
@@ -242,30 +249,30 @@ html[data-theme='dark'] .bg-slate-300 {
 }
 
 html.theme-dark {
-  --bg-1: #070a10;
-  --bg-2: #0e1118;
+  --bg-1: #090b10;
+  --bg-2: #12151c;
   --ink: #e2e8f0;
-  --surface: #10131a;
-  --surface-muted: rgba(16, 19, 26, 0.92);
+  --surface: #11151c;
+  --surface-muted: rgba(17, 21, 28, 0.92);
   --border: rgba(148, 163, 184, 0.22);
   --ink-strong: #f8fafc;
   --ink-muted: #cbd5f5;
   --ink-soft: #94a3b8;
-  --accent-red: #ff365f;
-  --accent-blue: #38bdf8;
-  --accent-gold: #fbbf24;
+  --accent-red: #e0b15d;
+  --accent-blue: #4aa3b6;
+  --accent-gold: #f0c57d;
   --glow: 0 18px 50px rgba(0, 0, 0, 0.45);
   color-scheme: dark;
 }
 
 html.theme-dark body {
   background:
-    radial-gradient(circle at 12% 12%, rgba(255, 45, 85, 0.16) 0%, transparent 38%),
-    radial-gradient(circle at 80% 20%, rgba(56, 189, 248, 0.12) 0%, transparent 42%),
+    radial-gradient(circle at 12% 12%, rgba(224, 177, 93, 0.16) 0%, transparent 38%),
+    radial-gradient(circle at 80% 20%, rgba(74, 163, 182, 0.16) 0%, transparent 42%),
     linear-gradient(160deg, var(--bg-1), var(--bg-2));
 }
 
-html.theme-dark .sc-page::before {\r\n  pointer-events: none;
+html.theme-dark .sc-page::before {
   opacity: 0.18;
 }
 
@@ -319,6 +326,7 @@ html.theme-dark .bg-slate-200 {
 html.theme-dark .bg-slate-300 {
   background-color: rgba(148, 163, 184, 0.28) !important;
 }
+
 :root {
   color-scheme: light dark;
 }
@@ -326,16 +334,7 @@ html.theme-dark .bg-slate-300 {
 body {
   color: var(--ink);
   background:
-    radial-gradient(circle at 12% 12%, rgba(255, 45, 85, 0.08) 0%, transparent 35%),
-    radial-gradient(circle at 85% 18%, rgba(37, 99, 235, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 12% 12%, rgba(216, 179, 106, 0.12) 0%, transparent 35%),
+    radial-gradient(circle at 85% 18%, rgba(27, 75, 90, 0.12) 0%, transparent 40%),
     linear-gradient(155deg, var(--bg-1), var(--bg-2));
 }
-
-
-.sc-header * {
-  position: relative;
-  z-index: 2;
-}
-
-
-
