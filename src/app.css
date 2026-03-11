@@ -240,3 +240,82 @@ html[data-theme='dark'] .bg-slate-200 {
 html[data-theme='dark'] .bg-slate-300 {
   background-color: rgba(148, 163, 184, 0.28) !important;
 }
+
+html.theme-dark {
+  --bg-1: #070a10;
+  --bg-2: #0e1118;
+  --ink: #e2e8f0;
+  --surface: #10131a;
+  --surface-muted: rgba(16, 19, 26, 0.92);
+  --border: rgba(148, 163, 184, 0.22);
+  --ink-strong: #f8fafc;
+  --ink-muted: #cbd5f5;
+  --ink-soft: #94a3b8;
+  --accent-red: #ff365f;
+  --accent-blue: #38bdf8;
+  --accent-gold: #fbbf24;
+  --glow: 0 18px 50px rgba(0, 0, 0, 0.45);
+  color-scheme: dark;
+}
+
+html.theme-dark body {
+  background:
+    radial-gradient(circle at 12% 12%, rgba(255, 45, 85, 0.16) 0%, transparent 38%),
+    radial-gradient(circle at 80% 20%, rgba(56, 189, 248, 0.12) 0%, transparent 42%),
+    linear-gradient(160deg, var(--bg-1), var(--bg-2));
+}
+
+html.theme-dark .sc-page::before {
+  opacity: 0.18;
+}
+
+html.theme-dark .sc-pill {
+  background: rgba(148, 163, 184, 0.16);
+}
+
+html.theme-dark .sc-button-muted {
+  background: rgba(148, 163, 184, 0.18);
+}
+
+html.theme-dark .sc-stat {
+  background: #0b0f17;
+  border-color: rgba(148, 163, 184, 0.18);
+}
+
+html.theme-dark .bg-white,
+html.theme-dark [class~="bg-white/70"],
+html.theme-dark [class~="bg-white/80"],
+html.theme-dark [class~="bg-white/85"] {
+  background-color: var(--surface) !important;
+  color: var(--ink) !important;
+}
+
+html.theme-dark .border-slate-200,
+html.theme-dark .border-slate-300 {
+  border-color: var(--border) !important;
+}
+
+html.theme-dark .text-slate-900 {
+  color: var(--ink-strong) !important;
+}
+
+html.theme-dark .text-slate-700 {
+  color: var(--ink-muted) !important;
+}
+
+html.theme-dark .text-slate-600,
+html.theme-dark .text-slate-500 {
+  color: var(--ink-soft) !important;
+}
+
+html.theme-dark .bg-slate-900 {
+  background-color: #0b0f17 !important;
+}
+
+html.theme-dark .bg-slate-200 {
+  background-color: rgba(148, 163, 184, 0.18) !important;
+}
+
+html.theme-dark .bg-slate-300 {
+  background-color: rgba(148, 163, 184, 0.28) !important;
+}

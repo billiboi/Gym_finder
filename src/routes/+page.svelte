@@ -6,7 +6,7 @@
   function applyTheme(next) {
     theme = next;
     if (typeof document !== 'undefined') {
-      document.documentElement.dataset.theme = theme;
+      document.documentElement.dataset.theme = theme;\n      document.documentElement.classList.toggle('theme-dark', theme === 'dark');\n      if (document.body) {\n        document.body.dataset.theme = theme;\n        document.body.classList.toggle('theme-dark', theme === 'dark');\n      }
       try {
         localStorage.setItem(THEME_KEY, theme);
       } catch {
@@ -657,6 +657,7 @@
     </div>
   </footer>
 </div>
+
 
 
 
