@@ -1,4 +1,4 @@
-﻿<script>
+<script>
   import { afterUpdate, onDestroy, onMount } from 'svelte';
   const THEME_KEY = 'gymfinder-theme';
   let theme = 'light';
@@ -81,11 +81,11 @@
     if (!text) return '';
 
     const replacements = [
-      ['Ãƒâ‚¬', 'Ã€'], ['ÃƒË†', 'Ãˆ'], ['Ãƒâ€°', 'Ã‰'], ['ÃƒÅ’', 'ÃŒ'], ['Ãƒâ€™', 'Ã’'], ['Ãƒâ„¢', 'Ã™'],
-      ['ÃƒÂ ', 'Ã '], ['ÃƒÂ¨', 'Ã¨'], ['ÃƒÂ©', 'Ã©'], ['ÃƒÂ¬', 'Ã¬'], ['ÃƒÂ²', 'Ã²'], ['ÃƒÂ¹', 'Ã¹'],
-      ['ÃƒÂ¶', 'Ã¶'], ['ÃƒÂ¤', 'Ã¤'], ['ÃƒÅ¸', 'ÃŸ'], ['Ãƒâ€“', 'Ã–'], ['ÃƒÂ¼', 'Ã¼'], ['ÃƒÅ“', 'Ãœ'],
-      ['Ã¢â‚¬â€œ', '-'], ['Ã¢â‚¬â€', '-'], ['Ã¢â‚¬Ëœ', "'"], ['Ã¢â‚¬â„¢', "'"], ['Ã¢â‚¬Å“', '"'], ['Ã¢â‚¬Â', '"'],
-      ['Ã‚', '']
+      ['Ã€', 'À'], ['Ãˆ', 'È'], ['Ã‰', 'É'], ['ÃŒ', 'Ì'], ['Ã’', 'Ò'], ['Ã™', 'Ù'],
+      ['Ã ', 'à'], ['Ã¨', 'è'], ['Ã©', 'é'], ['Ã¬', 'ì'], ['Ã²', 'ò'], ['Ã¹', 'ù'],
+      ['Ã¶', 'ö'], ['Ã¤', 'ä'], ['ÃŸ', 'ß'], ['Ã–', 'Ö'], ['Ã¼', 'ü'], ['Ãœ', 'Ü'],
+      ['â€“', '-'], ['â€”', '-'], ['â€˜', "'"], ['â€™', "'"], ['â€œ', '"'], ['â€', '"'],
+      ['Â', '']
     ];
 
     for (const [from, to] of replacements) {
@@ -502,21 +502,21 @@
   });
 </script>
 
-<div class="min-h-screen w-full">
+<div class="min-h-screen w-full sc-page relative">
   <header class="mx-auto w-full max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
-    <div class="flex flex-wrap items-center justify-between gap-3 rounded-3xl border border-white/70 bg-white/80 px-4 py-3 shadow-lg backdrop-blur-sm">
+    <div class="flex flex-wrap items-center justify-between gap-3 rounded-3xl border border-white/70 bg-white/80 px-4 py-3 shadow-lg backdrop-blur-sm sc-panel sc-header">
       <div>
         <p class="text-xs font-bold uppercase tracking-[0.24em] text-rose-700">Gym Finder</p>
         <p class="text-sm text-slate-600">Directory palestre e arti marziali in Ticino e dintorni.</p>
       </div>
-      <button type="button" class="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-bold text-slate-700 hover:bg-slate-100" on:click={toggleTheme}>
+      <button type="button" class="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-bold text-slate-700 hover:bg-slate-100 sc-button-ghost" on:click={toggleTheme}>
         {theme === 'dark' ? 'Light' : 'Dark'} theme
       </button>
     </div>
   </header>
 
   <main class="mx-auto w-full max-w-7xl px-4 pb-8 pt-4 sm:px-6 lg:px-8">
-  <section class="reveal rounded-3xl border border-white/80 bg-white/70 p-5 shadow-xl backdrop-blur-sm sm:p-7">
+  <section class="reveal rounded-3xl border border-white/80 bg-white/70 p-5 shadow-xl backdrop-blur-sm sm:p-7 sc-panel sc-hero">
 
 
     <div class="mt-2 flex flex-wrap items-end justify-between gap-5">
@@ -525,15 +525,15 @@
         <p class="mt-3 text-sm text-slate-600 sm:text-base">Pensata per utenti in viaggio o appena trasferiti: cerca per posizione, tipologia e distanza.</p>
       </div>
       <div class="grid min-w-[220px] grid-cols-3 gap-2 text-center text-xs sm:text-sm">
-        <div class="rounded-2xl bg-slate-900 px-3 py-2 text-white">
+        <div class="rounded-2xl sc-stat px-3 py-2 text-white">
           <p class="text-lg font-bold">{totalGyms}</p>
           <p class="opacity-75">Risultati</p>
         </div>
-        <div class="rounded-2xl bg-rose-600 px-3 py-2 text-white">
+        <div class="rounded-2xl sc-stat sc-stat--accent px-3 py-2 text-white">
           <p class="text-lg font-bold">{disciplineCount}</p>
           <p class="opacity-75">Discipline</p>
         </div>
-        <div class="rounded-2xl bg-emerald-600 px-3 py-2 text-white">
+        <div class="rounded-2xl sc-stat sc-stat--blue px-3 py-2 text-white">
           <p class="text-lg font-bold">{cityCount}</p>
           <p class="opacity-75">Citt&agrave;</p>
         </div>
@@ -541,17 +541,17 @@
     </div>
   </section>
 
-  <section class="reveal mt-5 rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sm:p-5">
+  <section class="reveal mt-5 rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sm:p-5 sc-panel">
     <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-6">
       <input
-        class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none ring-slate-900 transition focus:ring-2 lg:col-span-2"
+        class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none ring-slate-900 transition focus:ring-2 lg:col-span-2 sc-input"
         placeholder="Cerca per nome o zona"
         bind:value={filterText}
         on:input={loadGyms}
       />
 
       <select
-        class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none ring-slate-900 transition focus:ring-2"
+        class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input"
         bind:value={filterDiscipline}
         on:change={loadGyms}
       >
@@ -562,7 +562,7 @@
       </select>
 
       <select
-        class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none ring-slate-900 transition focus:ring-2"
+        class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input"
         bind:value={filterOpenState}
         on:change={loadGyms}
       >
@@ -571,12 +571,12 @@
         <option value="closed">Chiuse adesso</option>
       </select>
 
-      <label class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
+      <label class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 sc-pill">
         <input type="checkbox" bind:checked={nearbyOnly} on:change={loadGyms} />
         Nel raggio
       </label>
 
-      <select class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none ring-slate-900 transition focus:ring-2" bind:value={locationRadius} on:change={loadGyms}>
+      <select class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input" bind:value={locationRadius} on:change={loadGyms}>
         <option value={5}>5 km</option>
         <option value={10}>10 km</option>
         <option value={20}>20 km</option>
@@ -586,11 +586,11 @@
     </div>
 
     <div class="mt-3 flex flex-wrap items-center gap-2">
-      <button type="button" class="rounded-xl bg-slate-900 px-3 py-2 text-sm font-bold text-white hover:bg-slate-800" on:click={detectLocation} disabled={locating}>
+      <button type="button" class="rounded-xl bg-slate-900 px-3 py-2 text-sm font-bold text-white hover:bg-slate-800 sc-button" on:click={detectLocation} disabled={locating}>
         {locating ? 'Rilevamento posizione...' : 'Usa la mia posizione'}
       </button>
       {#if locationReady}
-        <button type="button" class="rounded-xl bg-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-300" on:click={clearLocation}>
+        <button type="button" class="rounded-xl bg-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-300 sc-button-muted" on:click={clearLocation}>
           Rimuovi posizione
         </button>
       {/if}
@@ -604,7 +604,7 @@
     {/if}
   </section>
 
-  <section class="mt-5 overflow-hidden rounded-3xl border border-white/70 bg-white/85 shadow-lg">
+  <section class="mt-5 overflow-hidden rounded-3xl border border-white/70 bg-white/85 shadow-lg sc-panel sc-map">
     <div class="border-b border-slate-200 px-4 py-3">
       <h2 class="text-lg font-bold text-slate-900">Mappa palestre</h2>
       <p class="text-sm text-slate-500">Marker ordinati in base ai filtri attivi e alla tua posizione.</p>
@@ -619,14 +619,14 @@
       </div>
     {:else}
       {#each filteredGyms as gym, i}
-        <article class="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl" style={`animation-delay:${i * 20}ms`}>
+        <article class="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl sc-card" style={`animation-delay:${i * 20}ms`}>
           <div class="relative h-44 overflow-hidden">
             <img src={imageForGym(gym)} alt={`Immagine ${gym.name}`} class="h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
-            <span class="absolute left-3 top-3 rounded-full bg-slate-900/85 px-2.5 py-1 text-xs font-bold text-white">{disciplineListForGym(gym).join(" | ") }</span>
+            <span class="absolute left-3 top-3 rounded-full bg-slate-900/85 px-2.5 py-1 text-xs font-bold text-white sc-badge sc-badge--accent">{disciplineListForGym(gym).join(" | ") }</span>
             {#if gym.distance_km !== null && gym.distance_km !== undefined}
-              <span class="absolute right-3 top-3 rounded-full bg-emerald-600 px-2.5 py-1 text-xs font-bold text-white">{gym.distance_km} km</span>
+              <span class="absolute right-3 top-3 rounded-full bg-emerald-600 px-2.5 py-1 text-xs font-bold text-white sc-badge">{gym.distance_km} km</span>
             {/if}
-            <span class="absolute bottom-3 right-3 rounded-full px-2.5 py-1 text-xs font-bold text-white {gym.is_open_now === true ? 'bg-emerald-600' : gym.is_open_now === false ? 'bg-rose-700' : 'bg-slate-500'}">
+            <span class="absolute bottom-3 right-3 rounded-full px-2.5 py-1 text-xs font-bold text-white sc-badge {gym.is_open_now === true ? 'sc-badge--open' : gym.is_open_now === false ? 'sc-badge--closed' : 'bg-slate-500'}">
               {gym.is_open_now === true ? 'Aperta ora' : gym.is_open_now === false ? 'Chiusa ora' : 'Stato orario n/d'}
             </span>
           </div>
@@ -652,11 +652,13 @@
   </main>
 
   <footer class="mx-auto w-full max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
-    <div class="rounded-3xl border border-white/70 bg-white/80 px-4 py-3 text-xs text-slate-500 shadow-lg backdrop-blur-sm">
-      Gym Finder · Ricerca palestre e arti marziali · © 2026
+    <div class="rounded-3xl border border-white/70 bg-white/80 px-4 py-3 text-xs text-slate-500 shadow-lg backdrop-blur-sm sc-panel">
+      Gym Finder � Ricerca palestre e arti marziali � � 2026
     </div>
   </footer>
 </div>
+
+
 
 
 
