@@ -1,5 +1,6 @@
 import { json } from '@sveltejs/kit';
 import { readGyms } from '$lib/server/gym-store';
+import { readDisciplines } from '$lib/server/discipline-store';
 
 function splitCsvLine(line, delimiter = ',') {
   const out = [];
@@ -87,18 +88,29 @@ function parseDisciplines(csvText) {
   return [...set].sort((a, b) => a.localeCompare(b, 'it'));
 }
 
+function mergeDisciplines(...lists) {
+  const set = new Set();
+  lists
+    .flat()
+    .map((d) => String(d || '').trim())
+    .filter(Boolean)
+    .forEach((d) => set.add(d));
+  return [...set].sort((a, b) => a.localeCompare(b, 'it'));
+}
+
 export async function GET({ fetch }) {
   try {
+    const stored = await readDisciplines();
     const gyms = await readGyms();
     if (Array.isArray(gyms) && gyms.length > 0) {
-      return json(disciplinesFromGyms(gyms));
+      return json(mergeDisciplines(stored, disciplinesFromGyms(gyms)));
     }
 
     const csvResponse = await fetch('/palestre.csv');
-    if (!csvResponse.ok) return json([]);
+    if (!csvResponse.ok) return json(stored);
 
     const csvText = await csvResponse.text();
-    return json(parseDisciplines(csvText));
+    return json(mergeDisciplines(stored, parseDisciplines(csvText)));
   } catch {
     return json([]);
   }
