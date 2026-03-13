@@ -1,4 +1,5 @@
 import { json } from '@sveltejs/kit';
+import { readGyms } from '$lib/server/gym-store';
 
 function splitCsvLine(line, delimiter = ',') {
   const out = [];
@@ -30,6 +31,28 @@ function splitCsvLine(line, delimiter = ',') {
 
   out.push(cur);
   return out;
+}
+
+function disciplinesFromField(value) {
+  return String(value || '')
+    .split('|')
+    .map((d) => d.trim())
+    .filter(Boolean);
+}
+
+function disciplinesFromGyms(gyms) {
+  const set = new Set();
+
+  gyms.forEach((gym) => {
+    if (Array.isArray(gym.disciplines) && gym.disciplines.length) {
+      gym.disciplines.map((d) => String(d).trim()).filter(Boolean).forEach((d) => set.add(d));
+      return;
+    }
+
+    disciplinesFromField(gym.discipline).forEach((d) => set.add(d));
+  });
+
+  return [...set].sort((a, b) => a.localeCompare(b, 'it'));
 }
 
 function parseDisciplines(csvText) {
@@ -66,6 +89,11 @@ function parseDisciplines(csvText) {
 
 export async function GET({ fetch }) {
   try {
+    const gyms = await readGyms();
+    if (Array.isArray(gyms) && gyms.length > 0) {
+      return json(disciplinesFromGyms(gyms));
+    }
+
     const csvResponse = await fetch('/palestre.csv');
     if (!csvResponse.ok) return json([]);
 
