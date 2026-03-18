@@ -261,6 +261,26 @@ html[data-theme='dark'] .sc-stat {
   color: var(--ink-muted);
 }
 
+.sc-filter-panel {
+  background:
+    linear-gradient(135deg, rgba(31, 92, 74, 0.08), rgba(214, 207, 176, 0.1)),
+    var(--surface-muted) !important;
+}
+
+.sc-filter-chip {
+  border: 1px solid rgba(31, 92, 74, 0.12);
+  background: rgba(255, 255, 255, 0.68);
+  color: var(--ink-muted);
+}
+
+.sc-filter-field {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+.sc-filter-toggle {
+  background: rgba(255, 255, 255, 0.72);
+}
+
 .sc-map-fade {
   mix-blend-mode: screen;
 }
@@ -324,6 +344,26 @@ html[data-theme='dark'] .sc-map-chip {
   border-color: rgba(111, 160, 141, 0.18);
   background: rgba(255, 255, 255, 0.04);
   color: var(--ink-muted);
+}
+
+html[data-theme='dark'] .sc-filter-panel {
+  background:
+    linear-gradient(135deg, rgba(63, 138, 114, 0.12), rgba(184, 197, 174, 0.04)),
+    var(--surface-muted) !important;
+}
+
+html[data-theme='dark'] .sc-filter-chip {
+  border-color: rgba(111, 160, 141, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--ink-muted);
+}
+
+html[data-theme='dark'] .sc-filter-field {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+html[data-theme='dark'] .sc-filter-toggle {
+  background: rgba(255, 255, 255, 0.04);
 }
 
 html[data-theme='dark'] .sc-map-fade {
@@ -468,6 +508,26 @@ html.theme-dark .sc-map-chip {
   border-color: rgba(111, 160, 141, 0.18);
   background: rgba(255, 255, 255, 0.04);
   color: var(--ink-muted);
+}
+
+html.theme-dark .sc-filter-panel {
+  background:
+    linear-gradient(135deg, rgba(63, 138, 114, 0.12), rgba(184, 197, 174, 0.04)),
+    var(--surface-muted) !important;
+}
+
+html.theme-dark .sc-filter-chip {
+  border-color: rgba(111, 160, 141, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--ink-muted);
+}
+
+html.theme-dark .sc-filter-field {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+html.theme-dark .sc-filter-toggle {
+  background: rgba(255, 255, 255, 0.04);
 }
 
 html.theme-dark .sc-map-fade {

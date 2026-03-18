@@ -544,17 +544,33 @@
     </div>
   </section>
 
-  <section class="reveal mt-5 rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sm:p-5 sc-panel">
+  <section class="reveal mt-5 rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sm:p-5 sc-panel sc-filter-panel">
+    <div class="mb-4 flex flex-wrap items-start justify-between gap-3">
+      <div>
+        <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Ricerca guidata</p>
+        <h2 class="mt-1 text-lg font-bold text-slate-900">Affina i risultati</h2>
+        <p class="text-sm text-slate-500">Cerca per zona, disciplina e distanza per trovare piu rapidamente la palestra giusta.</p>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">
+          {filterDiscipline || 'Tutte le discipline'}
+        </span>
+        <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">
+          {nearbyOnly ? `Nel raggio ${locationRadius} km` : 'Senza raggio'}
+        </span>
+      </div>
+    </div>
+
     <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-6">
       <input
-        class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none ring-slate-900 transition focus:ring-2 lg:col-span-2 sc-input"
+        class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none ring-slate-900 transition focus:ring-2 lg:col-span-2 sc-input sc-filter-field"
         placeholder="Cerca per nome o zona"
         bind:value={filterText}
         on:input={loadGyms}
       />
 
       <select
-        class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input"
+        class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
         bind:value={filterDiscipline}
         on:change={loadGyms}
       >
@@ -565,7 +581,7 @@
       </select>
 
       <select
-        class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input"
+        class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
         bind:value={filterOpenState}
         on:change={loadGyms}
       >
@@ -574,12 +590,12 @@
         <option value="closed">Chiuse adesso</option>
       </select>
 
-      <label class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 sc-pill">
+      <label class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 sc-pill sc-filter-toggle">
         <input type="checkbox" bind:checked={nearbyOnly} on:change={loadGyms} />
         Nel raggio
       </label>
 
-      <select class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input" bind:value={locationRadius} on:change={loadGyms}>
+      <select class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field" bind:value={locationRadius} on:change={loadGyms}>
         <option value={5}>5 km</option>
         <option value={10}>10 km</option>
         <option value={20}>20 km</option>
@@ -588,7 +604,7 @@
       </select>
     </div>
 
-    <div class="mt-3 flex flex-wrap items-center gap-2">
+    <div class="mt-4 flex flex-wrap items-center gap-2">
       <button type="button" class="rounded-xl bg-slate-900 px-3 py-2 text-sm font-bold text-white hover:bg-slate-800 sc-button" on:click={detectLocation} disabled={locating}>
         {locating ? 'Rilevamento posizione...' : 'Usa la mia posizione'}
       </button>
