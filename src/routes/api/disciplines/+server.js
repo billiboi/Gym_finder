@@ -1,114 +1,6 @@
 import { json } from '@sveltejs/kit';
+import { dedupeDisciplines, normalizeDisciplineLabel } from '$lib/disciplines';
 import { readGyms } from '$lib/server/gym-store';
-
-function normalizeDisciplineLabel(value) {
-  const raw = String(value || '').trim();
-  if (!raw) return '';
-
-  const lower = raw.toLowerCase();
-
-  if (/(^|\b)(bjj|jiu[\s-]*jitsu brasiliano|brazilian jiu[\s-]*jitsu)(\b|$)/i.test(lower)) {
-    return 'JiuJitsu Brasiliano';
-  }
-
-  if (/(^|\b)(jiu[\s-]*jitsu)(\b|$)/i.test(lower)) {
-    return 'JiuJitsu';
-  }
-
-  if (/(^|\b)(kick[\s-]*box(e|ing)?)(\b|$)/i.test(lower)) {
-    return 'Kickboxe';
-  }
-
-  if (/(^|\b)(muay[\s-]*thai)(\b|$)/i.test(lower)) {
-    return 'Muay Thai';
-  }
-
-  if (/(^|\b)(k1)(\b|$)/i.test(lower)) {
-    return 'K1';
-  }
-
-  if (/(^|\b)(mma|mixed martial arts)(\b|$)/i.test(lower)) {
-    return 'MMA';
-  }
-
-  if (/(^|\b)(boxe|boxing)(\b|$)/i.test(lower)) {
-    return 'Boxe';
-  }
-
-  if (/(^|\b)(judo)(\b|$)/i.test(lower)) {
-    return 'Judo';
-  }
-
-  if (/(^|\b)(karate|kyokushin|shito[\s-]*ryu|wa[\s-]*rei[\s-]*ryu)(\b|$)/i.test(lower)) {
-    return 'Karate';
-  }
-
-  if (/(^|\b)(taekwondo)(\b|$)/i.test(lower)) {
-    return 'Taekwondo';
-  }
-
-  if (/(^|\b)(aikido)(\b|$)/i.test(lower)) {
-    return 'Aikido';
-  }
-
-  if (/(^|\b)(wing[\s-]*chun|win[\s-]*chun|win[\s-]*chung)(\b|$)/i.test(lower)) {
-    return 'Wing Chun';
-  }
-
-  if (/(^|\b)(kung[\s-]*fu|choy)(\b|$)/i.test(lower)) {
-    return 'Kung Fu';
-  }
-
-  if (/(^|\b)(tai[\s-]*chi|taiji)(\b|$)/i.test(lower)) {
-    return 'Tai Chi';
-  }
-
-  if (/(^|\b)(difesa personale|autodifesa|self defense)(\b|$)/i.test(lower)) {
-    return 'Difesa Personale';
-  }
-
-  if (/(^|\b)(scherma|fencing)(\b|$)/i.test(lower)) {
-    return 'Scherma';
-  }
-
-  if (/(^|\b)(chanbara)(\b|$)/i.test(lower)) {
-    return 'Chanbara';
-  }
-
-  if (/(^|\b)(crossfit)(\b|$)/i.test(lower)) {
-    return 'CrossFit';
-  }
-
-  if (/(^|\b)(pilates)(\b|$)/i.test(lower)) {
-    return 'Pilates';
-  }
-
-  if (/(^|\b)(yoga)(\b|$)/i.test(lower)) {
-    return 'Yoga';
-  }
-
-  if (/(^|\b)(nuoto|swim)(\b|$)/i.test(lower)) {
-    return 'Nuoto';
-  }
-
-  if (/(^|\b)(calisthenics)(\b|$)/i.test(lower)) {
-    return 'Calisthenics';
-  }
-
-  if (/(^|\b)(functional)(\b|$)/i.test(lower)) {
-    return 'Functional';
-  }
-
-  if (/(^|\b)(bodybuilding)(\b|$)/i.test(lower)) {
-    return 'Bodybuilding';
-  }
-
-  if (/(^|\b)(fitness)(\b|$)/i.test(lower)) {
-    return 'Fitness';
-  }
-
-  return raw;
-}
 
 function splitCsvLine(line, delimiter = ',') {
   const out = [];
@@ -164,7 +56,7 @@ function disciplinesFromGyms(gyms) {
     disciplinesFromField(gym.discipline).forEach((d) => set.add(d));
   });
 
-  return [...set].sort((a, b) => a.localeCompare(b, 'it'));
+  return dedupeDisciplines(set);
 }
 
 function parseDisciplines(csvText) {
@@ -193,10 +85,10 @@ function parseDisciplines(csvText) {
       .split('|')
       .map((d) => d.trim())
       .filter(Boolean)
-      .forEach((d) => set.add(d));
+      .forEach((d) => set.add(normalizeDisciplineLabel(d)));
   }
 
-  return [...set].sort((a, b) => a.localeCompare(b, 'it'));
+  return dedupeDisciplines(set);
 }
 
 export async function GET({ fetch }) {

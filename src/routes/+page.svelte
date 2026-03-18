@@ -1,5 +1,6 @@
 <script>
   import { afterUpdate, onDestroy, onMount } from 'svelte';
+  import { dedupeDisciplines, normalizeDisciplineLabel } from '$lib/disciplines';
   const THEME_KEY = 'gymfinder-theme';
   let theme = 'light';
 
@@ -66,41 +67,6 @@
       return gym.image_url;
     }
     return disciplineImageDataUri(primaryDisciplineForGym(gym));
-  }
-  function normalizeDisciplineLabel(value) {
-    const raw = String(value || '').trim();
-    if (!raw) return '';
-
-    const fixed = fixMojibake(raw);
-    const lower = fixed.toLowerCase();
-
-    if (/(^|\b)(bjj|jiu[\s-]*jitsu brasiliano|brazilian jiu[\s-]*jitsu)(\b|$)/i.test(lower)) return 'JiuJitsu Brasiliano';
-    if (/(^|\b)(jiu[\s-]*jitsu)(\b|$)/i.test(lower)) return 'JiuJitsu';
-    if (/(^|\b)(kick[\s-]*box(e|ing)?)(\b|$)/i.test(lower)) return 'Kickboxe';
-    if (/(^|\b)(muay[\s-]*thai)(\b|$)/i.test(lower)) return 'Muay Thai';
-    if (/(^|\b)(k1)(\b|$)/i.test(lower)) return 'K1';
-    if (/(^|\b)(mma|mixed martial arts)(\b|$)/i.test(lower)) return 'MMA';
-    if (/(^|\b)(boxe|boxing)(\b|$)/i.test(lower)) return 'Boxe';
-    if (/(^|\b)(judo)(\b|$)/i.test(lower)) return 'Judo';
-    if (/(^|\b)(karate|kyokushin|shito[\s-]*ryu|wa[\s-]*rei[\s-]*ryu)(\b|$)/i.test(lower)) return 'Karate';
-    if (/(^|\b)(taekwondo)(\b|$)/i.test(lower)) return 'Taekwondo';
-    if (/(^|\b)(aikido)(\b|$)/i.test(lower)) return 'Aikido';
-    if (/(^|\b)(wing[\s-]*chun|win[\s-]*chun|win[\s-]*chung)(\b|$)/i.test(lower)) return 'Wing Chun';
-    if (/(^|\b)(kung[\s-]*fu|choy)(\b|$)/i.test(lower)) return 'Kung Fu';
-    if (/(^|\b)(tai[\s-]*chi|taiji)(\b|$)/i.test(lower)) return 'Tai Chi';
-    if (/(^|\b)(difesa personale|autodifesa|self defense)(\b|$)/i.test(lower)) return 'Difesa Personale';
-    if (/(^|\b)(scherma|fencing)(\b|$)/i.test(lower)) return 'Scherma';
-    if (/(^|\b)(chanbara)(\b|$)/i.test(lower)) return 'Chanbara';
-    if (/(^|\b)(crossfit)(\b|$)/i.test(lower)) return 'CrossFit';
-    if (/(^|\b)(pilates)(\b|$)/i.test(lower)) return 'Pilates';
-    if (/(^|\b)(yoga)(\b|$)/i.test(lower)) return 'Yoga';
-    if (/(^|\b)(nuoto|swim)(\b|$)/i.test(lower)) return 'Nuoto';
-    if (/(^|\b)(calisthenics)(\b|$)/i.test(lower)) return 'Calisthenics';
-    if (/(^|\b)(functional)(\b|$)/i.test(lower)) return 'Functional';
-    if (/(^|\b)(bodybuilding)(\b|$)/i.test(lower)) return 'Bodybuilding';
-    if (/(^|\b)(fitness)(\b|$)/i.test(lower)) return 'Fitness';
-
-    return fixed;
   }
   function disciplineListForGym(gym) {
     if (Array.isArray(gym.disciplines) && gym.disciplines.length) {
@@ -376,7 +342,7 @@
       if (res.ok) {
         const data = await res.json();
         if (Array.isArray(data)) {
-          disciplines = data;
+          disciplines = dedupeDisciplines(data);
           return;
         }
       }
@@ -385,9 +351,7 @@
     }
 
     const csvGyms = await getCsvGyms();
-    disciplines = [...new Set(csvGyms.flatMap((gym) => disciplineListForGym(gym)))].sort((a, b) =>
-      a.localeCompare(b, 'it')
-    );
+    disciplines = dedupeDisciplines(csvGyms.flatMap((gym) => disciplineListForGym(gym)));
   }
 
   async function detectLocation() {
