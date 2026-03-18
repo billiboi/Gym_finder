@@ -57,6 +57,24 @@ const EXACT_LABELS = new Map([
   ['iaido', 'Iaido']
 ]);
 
+const EXCLUDED_DISCIPLINES = new Set([
+  'hip hop',
+  'tango',
+  'balli caraibici',
+  'caraibico',
+  'caraibici',
+  'salsa',
+  'bachata',
+  'kizomba',
+  'zumba',
+  'danza',
+  'danza classica',
+  'danza moderna',
+  'danza contemporanea',
+  'danza sportiva',
+  'breakdance'
+]);
+
 function fixMojibake(value) {
   let text = String(value || '').trim();
   if (!text) return '';
@@ -101,6 +119,8 @@ export function normalizeDisciplineLabel(value) {
 
   const folded = foldDiscipline(fixed);
   if (!folded) return '';
+
+  if (EXCLUDED_DISCIPLINES.has(folded)) return '';
 
   const exact = EXACT_LABELS.get(folded);
   if (exact) return exact;
