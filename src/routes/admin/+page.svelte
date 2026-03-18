@@ -20,7 +20,10 @@
         <p class="text-xs font-bold uppercase tracking-[0.22em] text-slate-500">Area Admin</p>
         <h1 class="mt-1 text-3xl font-bold text-slate-900 sm:text-4xl">Gestione palestre</h1>
         <p class="mt-2 text-sm text-slate-600">Modifica i dati delle schede palestra una per una.</p>
-        <a href="/admin/schede" class="mt-3 inline-flex rounded-lg bg-blue-700 px-3 py-1.5 text-sm font-semibold text-white hover:bg-blue-800">Apri gestione schede (modifica + elimina)</a>\n        <a href="/admin/disciplines" class="mt-2 inline-flex rounded-lg bg-emerald-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-emerald-700">Gestisci discipline</a>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <a href="/admin/schede" class="inline-flex rounded-lg bg-blue-700 px-3 py-1.5 text-sm font-semibold text-white hover:bg-blue-800">Apri gestione schede</a>
+          <a href="/admin/riclassifica" class="inline-flex rounded-lg bg-emerald-700 px-3 py-1.5 text-sm font-semibold text-white hover:bg-emerald-800">Riclassifica discipline</a>
+        </div>
       </div>
       <a href="/" class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">Torna alla pagina utente</a>
     </div>
@@ -29,7 +32,7 @@
       <input
         class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none ring-slate-900 transition focus:ring-2"
         bind:value={q}
-        placeholder="Cerca palestra, disciplina, città"
+        placeholder="Cerca palestra, disciplina, citta"
       />
       <div class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700">
         Risultati: <strong>{filtered.length}</strong> su {data.gyms.length}
@@ -59,5 +62,3 @@
     {/if}
   </section>
 </main>
-
-
