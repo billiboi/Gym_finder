@@ -78,6 +78,12 @@
       </p>
     {/if}
 
+    {#if !data.persistentWrites}
+      <p class="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-3 py-3 text-sm font-semibold text-amber-800">
+        Nel deploy pubblico le modifiche admin non sono persistenti. Per creare, modificare o eliminare schede in modo stabile usa l'ambiente locale o configura Supabase.
+      </p>
+    {/if}
+
     <div class="mt-5 grid gap-3 sm:grid-cols-2">
       <input
         class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none ring-slate-900 transition focus:ring-2"

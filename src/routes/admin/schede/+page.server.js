@@ -3,7 +3,7 @@ import { randomUUID } from 'node:crypto';
 import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { gymHref } from '$lib/gym-detail';
-import { getUploadsDir, readGyms, writeGyms } from '$lib/server/gym-store';
+import { canPersistWrites, getUploadsDir, readGyms, writeGyms } from '$lib/server/gym-store';
 
 function clean(value) {
   return String(value ?? '').trim();
@@ -72,6 +72,7 @@ async function getGymsWithFallback(fetchFn) {
 
 export async function load({ url, fetch }) {
   const gyms = await getGymsWithFallback(fetch);
+  const persistentWrites = canPersistWrites();
 
   return {
     gyms: gyms
@@ -94,6 +95,7 @@ export async function load({ url, fetch }) {
         publicHref: gymHref(gym)
       }))
       .sort((a, b) => a.name.localeCompare(b.name, 'it')),
+    persistentWrites,
     deleted: url.searchParams.get('deleted') === '1',
     created: url.searchParams.get('created') === '1',
     updated: url.searchParams.get('updated') === '1'
@@ -102,6 +104,13 @@ export async function load({ url, fetch }) {
 
 export const actions = {
   create: async ({ request, fetch }) => {
+    if (!canPersistWrites()) {
+      return fail(503, {
+        createError:
+          'Nel deploy pubblico le modifiche non sono persistenti. Usa l\'ambiente locale oppure collega un database.'
+      });
+    }
+
     const form = await request.formData();
 
     const name = clean(form.get('name'));
@@ -152,6 +161,13 @@ export const actions = {
     throw redirect(303, '/admin/schede?created=1');
   },
   update: async ({ request, fetch }) => {
+    if (!canPersistWrites()) {
+      return fail(503, {
+        error:
+          'Nel deploy pubblico le modifiche non sono persistenti. Usa l\'ambiente locale oppure collega un database.'
+      });
+    }
+
     const form = await request.formData();
     const id = String(form.get('id') ?? '').trim();
     const name = clean(form.get('name'));
@@ -212,6 +228,13 @@ export const actions = {
     throw redirect(303, '/admin/schede?updated=1');
   },
   delete: async ({ request, fetch }) => {
+    if (!canPersistWrites()) {
+      return fail(503, {
+        error:
+          'L\'eliminazione dal deploy pubblico non e persistente. Usa l\'ambiente locale oppure collega un database.'
+      });
+    }
+
     const form = await request.formData();
     const id = String(form.get('id') ?? '').trim();
 

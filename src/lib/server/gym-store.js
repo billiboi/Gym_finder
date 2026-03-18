@@ -399,6 +399,10 @@ export async function writeGyms(gyms) {
   }
 }
 
+export function canPersistWrites() {
+  return hasSupabase || !isReadOnlyRuntime;
+}
+
 export function getUploadsDir() {
   return uploadsDir;
 }

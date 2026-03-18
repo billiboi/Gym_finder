@@ -378,6 +378,41 @@ html[data-theme='dark'] .sc-stat {
   color: #1f5c4a !important;
 }
 
+.sc-map-popup-shell .leaflet-popup-content-wrapper {
+  padding: 0;
+}
+
+.sc-marker-cluster {
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  background: radial-gradient(circle at 35% 30%, #58a086, #1f5c4a);
+  color: white;
+  font-weight: 800;
+  box-shadow: 0 12px 24px rgba(16, 32, 26, 0.28);
+}
+
+.sc-marker-cluster span {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.sc-marker-cluster--small {
+  width: 42px !important;
+  height: 42px !important;
+}
+
+.sc-marker-cluster--medium {
+  width: 50px !important;
+  height: 50px !important;
+}
+
+.sc-marker-cluster--large {
+  width: 58px !important;
+  height: 58px !important;
+}
+
 .sc-contact-card {
   display: block;
 }
@@ -515,6 +550,12 @@ html[data-theme='dark'] .sc-map-popup-shell .leaflet-popup-close-button {
 
 html[data-theme='dark'] .sc-map-popup-shell .leaflet-popup-close-button:hover {
   color: #8fd0ba !important;
+}
+
+html[data-theme='dark'] .sc-marker-cluster {
+  border-color: rgba(16, 23, 21, 0.8);
+  background: radial-gradient(circle at 35% 30%, #8fd0ba, #3f8a72);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.38);
 }
 
 html[data-theme='dark'] .sc-gym-card-head {
@@ -728,6 +769,12 @@ html.theme-dark .sc-map-popup-shell .leaflet-popup-close-button {
 
 html.theme-dark .sc-map-popup-shell .leaflet-popup-close-button:hover {
   color: #8fd0ba !important;
+}
+
+html.theme-dark .sc-marker-cluster {
+  border-color: rgba(16, 23, 21, 0.8);
+  background: radial-gradient(circle at 35% 30%, #8fd0ba, #3f8a72);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.38);
 }
 
 html.theme-dark .sc-gym-card-head {
