@@ -173,6 +173,26 @@ html[data-theme='dark'] .sc-stat {
   box-shadow: 0 16px 30px rgba(31, 54, 45, 0.1);
 }
 
+.sc-detail-meta {
+  background: rgba(255, 255, 255, 0.92) !important;
+}
+
+.sc-detail-label {
+  color: #61756d !important;
+}
+
+.sc-detail-value {
+  color: #13201b !important;
+}
+
+.sc-detail-copy {
+  color: var(--ink-muted) !important;
+}
+
+.sc-detail-link {
+  color: var(--accent-red) !important;
+}
+
 .sc-badge {
   border: 1px solid rgba(255, 255, 255, 0.2);
   background: rgba(27, 39, 35, 0.92);
@@ -213,7 +233,9 @@ html[data-theme='dark'] .sc-stat {
 html[data-theme='dark'] .bg-white,
 html[data-theme='dark'] [class~="bg-white/70"],
 html[data-theme='dark'] [class~="bg-white/80"],
-html[data-theme='dark'] [class~="bg-white/85"] {
+html[data-theme='dark'] [class~="bg-white/85"],
+html[data-theme='dark'] [class~="bg-white/90"],
+html[data-theme='dark'] [class~="bg-white/95"] {
   background-color: var(--surface) !important;
   color: var(--ink) !important;
 }
@@ -246,6 +268,27 @@ html[data-theme='dark'] .bg-slate-200 {
 
 html[data-theme='dark'] .bg-slate-300 {
   background-color: rgba(63, 138, 114, 0.22) !important;
+}
+
+html[data-theme='dark'] .sc-detail-meta {
+  background: rgba(243, 248, 245, 0.96) !important;
+  border-color: rgba(31, 92, 74, 0.18) !important;
+}
+
+html[data-theme='dark'] .sc-detail-label {
+  color: #5e756b !important;
+}
+
+html[data-theme='dark'] .sc-detail-value {
+  color: #12201b !important;
+}
+
+html[data-theme='dark'] .sc-detail-copy {
+  color: #d5e3dc !important;
+}
+
+html[data-theme='dark'] .sc-detail-link {
+  color: #0f6b54 !important;
 }
 
 html.theme-dark {
@@ -292,7 +335,9 @@ html.theme-dark .sc-stat {
 html.theme-dark .bg-white,
 html.theme-dark [class~="bg-white/70"],
 html.theme-dark [class~="bg-white/80"],
-html.theme-dark [class~="bg-white/85"] {
+html.theme-dark [class~="bg-white/85"],
+html.theme-dark [class~="bg-white/90"],
+html.theme-dark [class~="bg-white/95"] {
   background-color: var(--surface) !important;
   color: var(--ink) !important;
 }
@@ -325,6 +370,27 @@ html.theme-dark .bg-slate-200 {
 
 html.theme-dark .bg-slate-300 {
   background-color: rgba(63, 138, 114, 0.22) !important;
+}
+
+html.theme-dark .sc-detail-meta {
+  background: rgba(243, 248, 245, 0.96) !important;
+  border-color: rgba(31, 92, 74, 0.18) !important;
+}
+
+html.theme-dark .sc-detail-label {
+  color: #5e756b !important;
+}
+
+html.theme-dark .sc-detail-value {
+  color: #12201b !important;
+}
+
+html.theme-dark .sc-detail-copy {
+  color: #d5e3dc !important;
+}
+
+html.theme-dark .sc-detail-link {
+  color: #0f6b54 !important;
 }
 
 :root {

@@ -64,38 +64,38 @@
               </h1>
             </div>
 
-            <p class="text-sm leading-7 text-slate-600 sm:text-base">{presentation}</p>
+            <p class="text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">{presentation}</p>
           </div>
 
           <div class="grid gap-3 sm:grid-cols-2">
-            <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
-              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Indirizzo</p>
-              <p class="mt-2 text-sm font-semibold text-slate-900 sm:text-base">{address}</p>
+            <div class="rounded-2xl border border-slate-200 bg-white/90 p-4 sc-detail-meta">
+              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Indirizzo</p>
+              <p class="mt-2 text-sm font-semibold text-slate-900 sm:text-base sc-detail-value">{address}</p>
             </div>
 
-            <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
-              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Orari</p>
-              <p class="mt-2 text-sm font-semibold text-slate-900 sm:text-base">{hoursInfo}</p>
+            <div class="rounded-2xl border border-slate-200 bg-white/90 p-4 sc-detail-meta">
+              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Orari</p>
+              <p class="mt-2 text-sm font-semibold text-slate-900 sm:text-base sc-detail-value">{hoursInfo}</p>
             </div>
 
-            <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
-              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Telefono</p>
-              <p class="mt-2 text-sm font-semibold text-slate-900 sm:text-base">{phone}</p>
+            <div class="rounded-2xl border border-slate-200 bg-white/90 p-4 sc-detail-meta">
+              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Telefono</p>
+              <p class="mt-2 text-sm font-semibold text-slate-900 sm:text-base sc-detail-value">{phone}</p>
             </div>
 
-            <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
-              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Sito web</p>
+            <div class="rounded-2xl border border-slate-200 bg-white/90 p-4 sc-detail-meta">
+              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Sito web</p>
               {#if website}
                 <a
                   href={website}
                   target="_blank"
                   rel="noreferrer"
-                  class="mt-2 inline-flex text-sm font-semibold text-emerald-800 underline decoration-2 underline-offset-2"
+                  class="mt-2 inline-flex text-sm font-semibold text-emerald-800 underline decoration-2 underline-offset-2 sc-detail-link"
                 >
                   Visita il sito ufficiale
                 </a>
               {:else}
-                <p class="mt-2 text-sm font-semibold text-slate-900 sm:text-base">Non disponibile</p>
+                <p class="mt-2 text-sm font-semibold text-slate-900 sm:text-base sc-detail-value">Non disponibile</p>
               {/if}
             </div>
           </div>
@@ -107,10 +107,10 @@
       <div class="max-w-3xl">
         <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Presentazione</p>
         <h2 class="mt-2 text-2xl font-bold text-slate-900">Allenati anche quando sei fuori zona</h2>
-        <p class="mt-4 text-sm leading-7 text-slate-600 sm:text-base">
+        <p class="mt-4 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">
           {presentation}
         </p>
-        <p class="mt-4 text-sm leading-7 text-slate-600 sm:text-base">
+        <p class="mt-4 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">
           In questa scheda trovi i dettagli essenziali per capire rapidamente se la palestra e adatta
           alle tue esigenze: discipline praticate, indirizzo, orari e contatti diretti.
         </p>
