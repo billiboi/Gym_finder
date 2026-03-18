@@ -173,6 +173,30 @@ html[data-theme='dark'] .sc-stat {
   box-shadow: 0 16px 30px rgba(31, 54, 45, 0.1);
 }
 
+.sc-gym-card {
+  position: relative;
+}
+
+.sc-gym-card-head {
+  background:
+    linear-gradient(135deg, rgba(31, 92, 74, 0.08), rgba(214, 207, 176, 0.14)),
+    rgba(255, 255, 255, 0.52);
+  border: 1px solid rgba(31, 92, 74, 0.08);
+}
+
+.sc-gym-card-row {
+  background: rgba(255, 255, 255, 0.66);
+  border: 1px solid rgba(31, 92, 74, 0.08);
+}
+
+.sc-gym-card-kicker {
+  color: var(--accent-red) !important;
+}
+
+.sc-admin-modal {
+  background: var(--surface) !important;
+}
+
 .sc-detail-meta {
   background: rgba(255, 255, 255, 0.92) !important;
 }
@@ -286,6 +310,26 @@ html[data-theme='dark'] .bg-slate-300 {
   background-color: rgba(63, 138, 114, 0.22) !important;
 }
 
+html[data-theme='dark'] .sc-gym-card-head {
+  background:
+    linear-gradient(135deg, rgba(63, 138, 114, 0.14), rgba(184, 197, 174, 0.06)),
+    rgba(255, 255, 255, 0.03);
+  border-color: rgba(111, 160, 141, 0.16);
+}
+
+html[data-theme='dark'] .sc-gym-card-row {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(111, 160, 141, 0.16);
+}
+
+html[data-theme='dark'] .sc-gym-card-kicker {
+  color: #8fd0ba !important;
+}
+
+html[data-theme='dark'] .sc-admin-modal {
+  background: var(--surface) !important;
+}
+
 html[data-theme='dark'] .sc-detail-meta {
   background: rgba(243, 248, 245, 0.96) !important;
   border-color: rgba(31, 92, 74, 0.18) !important;
@@ -397,6 +441,26 @@ html.theme-dark .bg-slate-200 {
 
 html.theme-dark .bg-slate-300 {
   background-color: rgba(63, 138, 114, 0.22) !important;
+}
+
+html.theme-dark .sc-gym-card-head {
+  background:
+    linear-gradient(135deg, rgba(63, 138, 114, 0.14), rgba(184, 197, 174, 0.06)),
+    rgba(255, 255, 255, 0.03);
+  border-color: rgba(111, 160, 141, 0.16);
+}
+
+html.theme-dark .sc-gym-card-row {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(111, 160, 141, 0.16);
+}
+
+html.theme-dark .sc-gym-card-kicker {
+  color: #8fd0ba !important;
+}
+
+html.theme-dark .sc-admin-modal {
+  background: var(--surface) !important;
 }
 
 html.theme-dark .sc-detail-meta {

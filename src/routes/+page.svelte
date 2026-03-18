@@ -622,7 +622,7 @@
       </div>
     {:else}
       {#each filteredGyms as gym, i}
-        <article class="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl sc-card" style={`animation-delay:${i * 20}ms`}>
+        <article class="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl sc-card sc-gym-card" style={`animation-delay:${i * 20}ms`}>
           <div class="relative h-44 overflow-hidden">
             <img src={imageForGym(gym)} alt={`Immagine ${gym.name}`} class="h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
             <span class="absolute left-3 top-3 rounded-full bg-slate-900/85 px-2.5 py-1 text-xs font-bold text-white sc-badge sc-badge--accent">{disciplineListForGym(gym).join(" | ") }</span>
@@ -634,12 +634,19 @@
             </span>
           </div>
 
-          <div class="space-y-2 p-3">
-            <h3 class="text-lg font-bold text-slate-900">{displayName(gym.name)}</h3>
-            <p class="text-sm text-slate-700"><strong>Indirizzo:</strong> {formatAddressForDisplay(gym)}</p>
-            <p class="text-sm text-slate-700"><strong>Orari:</strong> {displayName(gym.hours_info)}</p>
-            <p class="text-sm text-slate-700"><strong>Telefono:</strong> {displayName(gym.phone) || '-'}</p>
-            <p class="text-sm text-slate-700">
+          <div class="space-y-3 p-3 sm:p-4">
+            <div class="space-y-1 rounded-2xl sc-gym-card-head p-3">
+              <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Scheda palestra</p>
+              <h3 class="text-lg font-bold leading-tight text-slate-900">{displayName(gym.name)}</h3>
+            </div>
+
+            <div class="grid gap-2">
+              <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Indirizzo:</strong> {formatAddressForDisplay(gym)}</p>
+              <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Orari:</strong> {displayName(gym.hours_info)}</p>
+              <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Telefono:</strong> {displayName(gym.phone) || '-'}</p>
+            </div>
+
+            <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700">
               <strong>Sito:</strong>
               {#if gym.website}
                 <a href={gym.website} target="_blank" rel="noreferrer" class="font-semibold text-blue-700 underline decoration-2 underline-offset-2">Apri sito</a>
@@ -647,7 +654,8 @@
                 -
               {/if}
             </p>
-            <div class="pt-2">
+            <div class="flex items-center justify-between gap-3 pt-1">
+              <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 sc-gym-card-kicker">Approfondimento</p>
               <a
                 href={gymHref(gym)}
                 class="inline-flex items-center rounded-xl bg-slate-900 px-3 py-2 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
