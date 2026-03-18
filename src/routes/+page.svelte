@@ -159,7 +159,6 @@
   filteredGyms = filterClientGyms(gyms);
 }
   $: totalGyms = filteredGyms.length;
-  $: cityCount = new Set(filteredGyms.map((gym) => gym.city).filter(Boolean)).size;
   $: disciplineCount = disciplines.length;
   $: locationReady = Boolean(userLocation);
 
@@ -531,7 +530,7 @@
         <h1 class="text-3xl font-bold leading-tight text-slate-900 sm:text-5xl">Trova la palestra pi&ugrave; vicina a te</h1>
         <p class="mt-3 text-sm text-slate-600 sm:text-base">Pensata per utenti in viaggio o appena trasferiti: cerca per posizione, tipologia e distanza.</p>
       </div>
-      <div class="grid min-w-[220px] grid-cols-3 gap-2 text-center text-xs sm:text-sm">
+      <div class="grid min-w-[220px] grid-cols-2 gap-2 text-center text-xs sm:text-sm">
         <div class="rounded-2xl sc-stat px-3 py-2 text-white">
           <p class="text-lg font-bold">{totalGyms}</p>
           <p class="opacity-75">Risultati</p>
@@ -539,10 +538,6 @@
         <div class="rounded-2xl sc-stat sc-stat--accent px-3 py-2 text-white">
           <p class="text-lg font-bold">{disciplineCount}</p>
           <p class="opacity-75">Discipline</p>
-        </div>
-        <div class="rounded-2xl sc-stat sc-stat--blue px-3 py-2 text-white">
-          <p class="text-lg font-bold">{cityCount}</p>
-          <p class="opacity-75">Citt&agrave;</p>
         </div>
       </div>
     </div>
