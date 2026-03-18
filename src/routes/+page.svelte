@@ -608,11 +608,22 @@
   </section>
 
   <section class="mt-5 overflow-hidden rounded-3xl border border-white/70 bg-white/85 shadow-lg sc-panel sc-map">
-    <div class="border-b border-slate-200 px-4 py-3">
-      <h2 class="text-lg font-bold text-slate-900">Mappa palestre</h2>
-      <p class="text-sm text-slate-500">Marker ordinati in base ai filtri attivi e alla tua posizione.</p>
+    <div class="border-b border-slate-200 px-4 py-4 sm:px-5">
+      <div class="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Esplora la zona</p>
+          <h2 class="mt-1 text-lg font-bold text-slate-900">Mappa palestre</h2>
+          <p class="text-sm text-slate-500">Marker ordinati in base ai filtri attivi e alla tua posizione.</p>
+        </div>
+        <div class="rounded-2xl sc-map-chip px-3 py-2 text-xs font-semibold">
+          {filteredGyms.length} risultati visibili
+        </div>
+      </div>
     </div>
-    <div bind:this={mapContainer} class="h-[420px] w-full"></div>
+    <div class="relative">
+      <div class="pointer-events-none absolute inset-x-0 top-0 z-[400] h-16 bg-gradient-to-b from-white/70 to-transparent sc-map-fade"></div>
+      <div bind:this={mapContainer} class="h-[420px] w-full sm:h-[460px]"></div>
+    </div>
   </section>
 
   <section class="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">

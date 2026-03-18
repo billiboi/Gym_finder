@@ -255,6 +255,16 @@ html[data-theme='dark'] .sc-stat {
   box-shadow: var(--glow);
 }
 
+.sc-map-chip {
+  border: 1px solid rgba(31, 92, 74, 0.12);
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--ink-muted);
+}
+
+.sc-map-fade {
+  mix-blend-mode: screen;
+}
+
 @keyframes fadeUp {
   from {
     opacity: 0;
@@ -308,6 +318,17 @@ html[data-theme='dark'] .bg-slate-200 {
 
 html[data-theme='dark'] .bg-slate-300 {
   background-color: rgba(63, 138, 114, 0.22) !important;
+}
+
+html[data-theme='dark'] .sc-map-chip {
+  border-color: rgba(111, 160, 141, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--ink-muted);
+}
+
+html[data-theme='dark'] .sc-map-fade {
+  background: linear-gradient(to bottom, rgba(24, 33, 30, 0.6), transparent) !important;
+  mix-blend-mode: normal;
 }
 
 html[data-theme='dark'] .sc-gym-card-head {
@@ -441,6 +462,17 @@ html.theme-dark .bg-slate-200 {
 
 html.theme-dark .bg-slate-300 {
   background-color: rgba(63, 138, 114, 0.22) !important;
+}
+
+html.theme-dark .sc-map-chip {
+  border-color: rgba(111, 160, 141, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--ink-muted);
+}
+
+html.theme-dark .sc-map-fade {
+  background: linear-gradient(to bottom, rgba(24, 33, 30, 0.6), transparent) !important;
+  mix-blend-mode: normal;
 }
 
 html.theme-dark .sc-gym-card-head {
