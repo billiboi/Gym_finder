@@ -47,7 +47,7 @@
           />
         </div>
 
-        <div class="flex flex-col justify-between gap-5 p-5 sm:p-7">
+        <div class="flex flex-col justify-between gap-5 p-4 sm:p-7">
           <div class="space-y-4">
             <div class="flex flex-wrap gap-2">
               {#each disciplines as discipline}
@@ -57,9 +57,9 @@
               {/each}
             </div>
 
-            <div>
-              <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Scheda palestra</p>
-              <h1 class="mt-2 text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">
+            <div class="rounded-3xl sc-detail-hero p-4 sm:p-5">
+              <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800 sc-detail-kicker">Scheda palestra</p>
+              <h1 class="mt-2 text-4xl font-bold leading-none text-slate-900 sm:text-5xl sc-detail-title">
                 {fixGymText(gym?.name)}
               </h1>
             </div>
@@ -67,23 +67,23 @@
             <p class="text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">{presentation}</p>
           </div>
 
-          <div class="grid gap-3 sm:grid-cols-2">
-            <div class="rounded-2xl border border-slate-200 bg-white/90 p-4 sc-detail-meta">
+          <div class="grid gap-2 sm:gap-3 sm:grid-cols-2">
+            <div class="rounded-2xl border border-slate-200 bg-white/90 p-3 sm:p-4 sc-detail-meta">
               <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Indirizzo</p>
               <p class="mt-2 text-sm font-semibold text-slate-900 sm:text-base sc-detail-value">{address}</p>
             </div>
 
-            <div class="rounded-2xl border border-slate-200 bg-white/90 p-4 sc-detail-meta">
+            <div class="rounded-2xl border border-slate-200 bg-white/90 p-3 sm:p-4 sc-detail-meta">
               <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Orari</p>
               <p class="mt-2 text-sm font-semibold text-slate-900 sm:text-base sc-detail-value">{hoursInfo}</p>
             </div>
 
-            <div class="rounded-2xl border border-slate-200 bg-white/90 p-4 sc-detail-meta">
+            <div class="rounded-2xl border border-slate-200 bg-white/90 p-3 sm:p-4 sc-detail-meta">
               <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Telefono</p>
               <p class="mt-2 text-sm font-semibold text-slate-900 sm:text-base sc-detail-value">{phone}</p>
             </div>
 
-            <div class="rounded-2xl border border-slate-200 bg-white/90 p-4 sc-detail-meta">
+            <div class="rounded-2xl border border-slate-200 bg-white/90 p-3 sm:p-4 sc-detail-meta">
               <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Sito web</p>
               {#if website}
                 <a
