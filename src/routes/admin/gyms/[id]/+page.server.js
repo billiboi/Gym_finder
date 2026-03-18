@@ -1,5 +1,7 @@
-﻿import { error, fail, redirect } from '@sveltejs/kit';
-import { readGyms, writeGyms } from '$lib/server/gym-store';
+import { error, fail, redirect } from '@sveltejs/kit';
+import { writeFile } from 'node:fs/promises';
+import path from 'node:path';
+import { getUploadsDir, readGyms, writeGyms } from '$lib/server/gym-store';
 
 function clean(value) {
   return String(value ?? '').trim();
@@ -18,6 +20,38 @@ function toDisciplines(value) {
     .map((item) => item.trim())
     .filter(Boolean);
   return list.length ? list : ['Fitness'];
+}
+
+function sanitizeFileName(value) {
+  return String(value || 'image')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 60) || 'image';
+}
+
+async function storeImage(file, gymName) {
+  if (!(file instanceof File) || file.size === 0) return '';
+
+  const allowed = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
+  if (!allowed.has(file.type)) {
+    throw new Error('Formato immagine non supportato. Usa JPG, PNG, WEBP o GIF.');
+  }
+
+  const extMap = {
+    'image/jpeg': '.jpg',
+    'image/png': '.png',
+    'image/webp': '.webp',
+    'image/gif': '.gif'
+  };
+
+  const fileName = `${sanitizeFileName(gymName)}-${Date.now()}${extMap[file.type] || '.jpg'}`;
+  const targetPath = path.join(getUploadsDir(), fileName);
+  const buffer = Buffer.from(await file.arrayBuffer());
+  await writeFile(targetPath, buffer);
+  return `/uploads/${fileName}`;
 }
 
 async function getGymsWithFallback(fetchFn) {
@@ -73,6 +107,19 @@ export const actions = {
     }
 
     const disciplines = toDisciplines(disciplineText);
+    let imageUrl = gyms[idx].image_url || '';
+
+    try {
+      const uploadedImage = form.get('image');
+      const replaceImage = clean(form.get('replace_image')) === '1';
+      if (replaceImage && uploadedImage instanceof File && uploadedImage.size > 0) {
+        imageUrl = await storeImage(uploadedImage, name);
+      }
+    } catch (err) {
+      return fail(400, {
+        error: err?.message || 'Errore durante il caricamento immagine.'
+      });
+    }
 
     gyms[idx] = {
       ...gyms[idx],
@@ -84,8 +131,10 @@ export const actions = {
       phone: clean(form.get('phone')),
       hours_info: clean(form.get('hours_info')) || 'Orari da verificare',
       website: clean(form.get('website')),
+      description: clean(form.get('description')),
       latitude: toNullableNumber(form.get('latitude')),
-      longitude: toNullableNumber(form.get('longitude'))
+      longitude: toNullableNumber(form.get('longitude')),
+      image_url: imageUrl
     };
 
     try {

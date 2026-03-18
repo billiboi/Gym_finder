@@ -1,4 +1,4 @@
-﻿import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const dataDir = path.join(process.cwd(), 'data');
@@ -40,6 +40,7 @@ const CSV_HEADERS = [
   'telefono',
   'orari di apertura',
   'pagina web',
+  'presentazione',
   'lat',
   'long'
 ];
@@ -142,6 +143,7 @@ function normalizeGymRecord(gym, fallbackId) {
     phone: String(gym?.phone || '').trim(),
     hours_info: String(gym?.hours_info || '').trim() || 'Orari da verificare',
     website: String(gym?.website || '').trim(),
+    description: String(gym?.description || gym?.presentazione || '').trim(),
     latitude: gym?.latitude === null || gym?.latitude === undefined ? null : toNumberOrNull(gym.latitude),
     longitude: gym?.longitude === null || gym?.longitude === undefined ? null : toNumberOrNull(gym.longitude),
     image_url: String(gym?.image_url || '').trim(),
@@ -175,6 +177,7 @@ function gymsFromCsv(csvText) {
     phone: ['telefono', 'phone'],
     hours: ['orari di apertura', 'open_hours', 'opening hours', 'orari'],
     website: ['pagina web', 'website', 'url', 'sito'],
+    description: ['presentazione', 'description', 'descrizione', 'breve presentazione'],
     lat: ['lat', 'latitude'],
     long: ['long', 'lng', 'longitude']
   };
@@ -193,6 +196,7 @@ function gymsFromCsv(csvText) {
     phone: getIndex(aliases.phone),
     hours: getIndex(aliases.hours),
     website: getIndex(aliases.website),
+    description: getIndex(aliases.description),
     lat: getIndex(aliases.lat),
     long: getIndex(aliases.long)
   };
@@ -223,6 +227,7 @@ function gymsFromCsv(csvText) {
           phone: String(read(idx.phone) || '').trim(),
           hours_info: String(read(idx.hours) || '').trim() || 'Orari da verificare',
           website: String(read(idx.website) || '').trim(),
+          description: String(read(idx.description) || '').trim(),
           latitude: toNumberOrNull(read(idx.lat)),
           longitude: toNumberOrNull(read(idx.long)),
           image_url: '',
@@ -252,6 +257,7 @@ function gymsToCsv(gyms) {
       norm.phone,
       norm.hours_info || 'Orari da verificare',
       norm.website,
+      norm.description,
       norm.latitude ?? '',
       norm.longitude ?? ''
     ];
@@ -396,6 +402,7 @@ export async function writeGyms(gyms) {
 export function getUploadsDir() {
   return uploadsDir;
 }
+
 
 
 

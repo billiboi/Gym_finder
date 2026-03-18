@@ -1,4 +1,4 @@
-﻿import { json } from '@sveltejs/kit';
+import { json } from '@sveltejs/kit';
 import { isGymOpenNow } from '$lib/hours';
 import { readGyms } from '$lib/server/gym-store';
 
@@ -88,6 +88,7 @@ function parseCsvToGyms(csvText) {
     phone: ['telefono', 'phone'],
     hours: ['orari di apertura', 'open_hours', 'opening hours', 'orari'],
     website: ['pagina web', 'website', 'url', 'sito'],
+    description: ['presentazione', 'description', 'descrizione', 'breve presentazione'],
     lat: ['lat', 'latitude'],
     long: ['long', 'lng', 'longitude']
   };
@@ -101,6 +102,7 @@ function parseCsvToGyms(csvText) {
     phone: getIndex(aliases.phone),
     hours: getIndex(aliases.hours),
     website: getIndex(aliases.website),
+    description: getIndex(aliases.description),
     lat: getIndex(aliases.lat),
     long: getIndex(aliases.long)
   };
@@ -129,6 +131,7 @@ function parseCsvToGyms(csvText) {
       phone: String(read(idx.phone) || '').trim(),
       hours_info: String(read(idx.hours) || '').trim() || 'Orari da verificare',
       website: String(read(idx.website) || '').trim(),
+      description: String(read(idx.description) || '').trim(),
       latitude: toNumberOrNull(read(idx.lat)),
       longitude: toNumberOrNull(read(idx.long)),
       image_url: '',
@@ -256,3 +259,4 @@ export async function GET({ url, fetch }) {
 export async function POST() {
   return json({ error: 'Modifica dati non disponibile in deploy pubblico.' }, { status: 501 });
 }
+

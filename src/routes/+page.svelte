@@ -1,6 +1,7 @@
 <script>
   import { afterUpdate, onDestroy, onMount } from 'svelte';
   import { dedupeDisciplines, normalizeDisciplineLabel } from '$lib/disciplines';
+  import { gymHref } from '$lib/gym-detail';
   const THEME_KEY = 'gymfinder-theme';
   let theme = 'light';
 
@@ -646,6 +647,14 @@
                 -
               {/if}
             </p>
+            <div class="pt-2">
+              <a
+                href={gymHref(gym)}
+                class="inline-flex items-center rounded-xl bg-slate-900 px-3 py-2 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
+              >
+                Scheda completa
+              </a>
+            </div>
           </div>
         </article>
       {/each}
@@ -659,5 +668,6 @@
     </div>
   </footer>
 </div>
+
 
 
