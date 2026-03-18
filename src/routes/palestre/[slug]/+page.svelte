@@ -17,6 +17,8 @@
   const address = formatAddressForDisplay(gym);
   const phone = fixGymText(gym?.phone) || 'Non disponibile';
   const website = fixGymText(gym?.website);
+  const hasPhone = phone && phone !== 'Non disponibile';
+  const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 </script>
 
 <svelte:head>
@@ -114,6 +116,53 @@
           In questa scheda trovi i dettagli essenziali per capire rapidamente se la palestra e adatta
           alle tue esigenze: discipline praticate, indirizzo, orari e contatti diretti.
         </p>
+      </div>
+    </section>
+
+    <section class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Contatti rapidi</p>
+          <h2 class="mt-2 text-2xl font-bold text-slate-900">Raggiungi la palestra in un attimo</h2>
+          <p class="mt-2 text-sm text-slate-600 sc-detail-copy">
+            Apri il percorso, chiama direttamente o visita il sito ufficiale.
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-5 grid gap-3 sm:grid-cols-3">
+        <a
+          href={mapsHref}
+          target="_blank"
+          rel="noreferrer"
+          class="rounded-2xl border border-slate-200 bg-white/90 p-4 transition hover:-translate-y-0.5 hover:shadow-md sc-detail-meta sc-contact-card"
+        >
+          <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Percorso</p>
+          <p class="mt-2 text-base font-bold text-slate-900 sc-detail-value">Apri in mappa</p>
+          <p class="mt-2 text-sm text-slate-600 sc-detail-copy">{address}</p>
+        </a>
+
+        <a
+          href={hasPhone ? `tel:${phone.replace(/\s+/g, '')}` : mapsHref}
+          class="rounded-2xl border border-slate-200 bg-white/90 p-4 transition hover:-translate-y-0.5 hover:shadow-md sc-detail-meta sc-contact-card"
+        >
+          <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Telefono</p>
+          <p class="mt-2 text-base font-bold text-slate-900 sc-detail-value">{hasPhone ? 'Chiama ora' : 'Contatto non disponibile'}</p>
+          <p class="mt-2 text-sm text-slate-600 sc-detail-copy">{phone}</p>
+        </a>
+
+        <a
+          href={website || mapsHref}
+          target={website ? '_blank' : undefined}
+          rel={website ? 'noreferrer' : undefined}
+          class="rounded-2xl border border-slate-200 bg-white/90 p-4 transition hover:-translate-y-0.5 hover:shadow-md sc-detail-meta sc-contact-card"
+        >
+          <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Online</p>
+          <p class="mt-2 text-base font-bold text-slate-900 sc-detail-value">{website ? 'Visita il sito' : 'Nessun sito indicato'}</p>
+          <p class="mt-2 text-sm text-slate-600 sc-detail-copy">
+            {website || 'Puoi comunque aprire la posizione sulla mappa.'}
+          </p>
+        </a>
       </div>
     </section>
   </main>

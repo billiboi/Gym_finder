@@ -430,9 +430,34 @@
       const escapedName = String(gym.name || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       const namePrefix = new RegExp(`^${escapedName}\\s*,\\s*`, 'i');
       const fullAddress = (rawAddress ? rawAddress.replace(namePrefix, '') : '') || 'Indirizzo non disponibile';
+      const popupPhone = displayName(gym.phone) || 'Non disponibile';
+      const popupWebsite = gym.website
+        ? `<a href="${gym.website}" target="_blank" rel="noreferrer" class="sc-map-popup-link">Apri sito</a>`
+        : '<span class="sc-map-popup-muted">Non disponibile</span>';
 
       window.L.marker([lat, lng])
-        .bindPopup(`<div style="min-width:220px;line-height:1.35"><div style="font-weight:800;font-size:14px;margin-bottom:6px">${gym.name}</div><div><span style="font-weight:700">Disciplina:</span> <span style="font-weight:600">${disciplineListForGym(gym).join(" | ") }</span></div><div><span style="font-weight:700">Indirizzo:</span> ${fullAddress}</div><div><span style="font-weight:700">Distanza:</span> <span style="font-weight:700">${distance}</span></div></div>`)
+        .bindPopup(
+          `<div class="sc-map-popup">
+            <div class="sc-map-popup-title">${gym.name}</div>
+            <div class="sc-map-popup-row">
+              <span class="sc-map-popup-label">Disciplina</span>
+              <span class="sc-map-popup-value">${disciplineListForGym(gym).join(' | ')}</span>
+            </div>
+            <div class="sc-map-popup-row">
+              <span class="sc-map-popup-label">Indirizzo</span>
+              <span class="sc-map-popup-value">${fullAddress}</span>
+            </div>
+            <div class="sc-map-popup-row">
+              <span class="sc-map-popup-label">Distanza</span>
+              <span class="sc-map-popup-value sc-map-popup-distance">${distance}</span>
+            </div>
+            <div class="sc-map-popup-footer">
+              <span class="sc-map-popup-contact">${popupPhone}</span>
+              ${popupWebsite}
+            </div>
+          </div>`,
+          { className: 'sc-map-popup-shell' }
+        )
         .addTo(markersLayer);
     }
 
