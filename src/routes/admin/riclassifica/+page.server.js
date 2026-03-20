@@ -5,13 +5,20 @@ function clean(value) {
   return String(value ?? '').trim();
 }
 
-function toDisciplines(value) {
+function toDisciplines(value, fallback = 'Fitness') {
   const list = clean(value)
     .split('|')
     .map((item) => item.trim())
     .filter(Boolean);
 
-  return list.length ? [...new Set(list)] : ['Fitness'];
+  if (list.length) return [...new Set(list)];
+
+  return clean(fallback)
+    .split('|')
+    .map((item) => item.trim())
+    .filter(Boolean).length
+    ? [...new Set(clean(fallback).split('|').map((item) => item.trim()).filter(Boolean))]
+    : ['Fitness'];
 }
 
 async function getGymsWithFallback(fetchFn) {
@@ -72,7 +79,8 @@ export async function load({ url, fetch }) {
   return {
     gyms: mapped,
     persistentWrites,
-    saved: url.searchParams.get('saved') === '1'
+    saved: url.searchParams.get('saved') === '1',
+    deleted: url.searchParams.get('deleted') === '1'
   };
 }
 
@@ -87,6 +95,7 @@ export const actions = {
     const form = await request.formData();
     const id = clean(form.get('id'));
     const disciplineText = clean(form.get('disciplines'));
+    const currentDisciplines = clean(form.get('current_disciplines'));
 
     if (!id) {
       return fail(400, { error: 'ID palestra mancante.' });
@@ -99,7 +108,7 @@ export const actions = {
       return fail(404, { error: 'Palestra non trovata.' });
     }
 
-    const disciplines = toDisciplines(disciplineText);
+    const disciplines = toDisciplines(disciplineText, currentDisciplines || disciplineTextForGym(gyms[index]));
     gyms[index] = {
       ...gyms[index],
       discipline: disciplines[0],
@@ -113,5 +122,34 @@ export const actions = {
     }
 
     throw redirect(303, '/admin/riclassifica?saved=1');
+  },
+  delete: async ({ request, fetch }) => {
+    if (!canPersistWrites()) {
+      return fail(503, {
+        error: 'Nel deploy pubblico le modifiche non sono persistenti. Usa l\'ambiente locale oppure collega un database.'
+      });
+    }
+
+    const form = await request.formData();
+    const id = clean(form.get('id'));
+
+    if (!id) {
+      return fail(400, { error: 'ID palestra mancante.' });
+    }
+
+    const gyms = await getGymsWithFallback(fetch);
+    const next = gyms.filter((gym) => gym.id !== id);
+
+    if (next.length === gyms.length) {
+      return fail(404, { error: 'Palestra non trovata.' });
+    }
+
+    try {
+      await writeGyms(next);
+    } catch (err) {
+      return fail(500, { error: err?.message || 'Errore durante eliminazione.' });
+    }
+
+    throw redirect(303, '/admin/riclassifica?deleted=1');
   }
 };

@@ -35,7 +35,13 @@
 
     {#if data.saved}
       <p class="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-700">
-        Discipline aggiornate con successo.
+        Disciplina confermata o aggiornata con successo.
+      </p>
+    {/if}
+
+    {#if data.deleted}
+      <p class="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-700">
+        Record eliminato con successo.
       </p>
     {/if}
 
@@ -93,40 +99,62 @@
               </p>
             </div>
 
-            <form method="POST" action="?/save" class="grid w-full gap-2 sm:w-auto sm:min-w-[380px]">
-              <input type="hidden" name="id" value={gym.id} />
-              <label class="grid gap-1">
-                <span class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">
-                  Nuova disciplina
-                </span>
-                <input
-                  name="disciplines"
-                  value={gym.disciplineText}
-                  class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm"
-                  placeholder="Es: Judo | JiuJitsu Brasiliano"
-                />
-              </label>
+            <div class="grid w-full gap-2 sm:w-auto sm:min-w-[420px]">
+              <form method="POST" action="?/save" class="grid gap-2">
+                <input type="hidden" name="id" value={gym.id} />
+                <input type="hidden" name="current_disciplines" value={gym.disciplineText} />
+                <label class="grid gap-1">
+                  <span class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">
+                    Nuova disciplina
+                  </span>
+                  <input
+                    name="disciplines"
+                    value={gym.disciplineText}
+                    class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm"
+                    placeholder="Es: Judo | JiuJitsu Brasiliano"
+                  />
+                </label>
 
-              <div class="flex flex-wrap gap-2">
+                <div class="flex flex-wrap gap-2">
+                  <button
+                    type="submit"
+                    class="rounded-xl bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800"
+                    disabled={!data.persistentWrites}
+                  >
+                    Salva / conferma
+                  </button>
+                  {#if gym.website}
+                    <a
+                      href={gym.website}
+                      target="_blank"
+                      rel="noreferrer"
+                      class="rounded-xl bg-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-300"
+                    >
+                      Apri sito
+                    </a>
+                  {/if}
+                </div>
+              </form>
+
+              <form
+                method="POST"
+                action="?/delete"
+                on:submit={(e) => {
+                  if (!confirm(`Eliminare definitivamente il record \"${gym.name}\"?`)) {
+                    e.preventDefault();
+                  }
+                }}
+              >
+                <input type="hidden" name="id" value={gym.id} />
                 <button
                   type="submit"
-                  class="rounded-xl bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800"
+                  class="rounded-xl bg-rose-700 px-4 py-2 text-sm font-semibold text-white hover:bg-rose-800"
                   disabled={!data.persistentWrites}
                 >
-                  Salva
+                  Elimina record
                 </button>
-                {#if gym.website}
-                  <a
-                    href={gym.website}
-                    target="_blank"
-                    rel="noreferrer"
-                    class="rounded-xl bg-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-300"
-                  >
-                    Apri sito
-                  </a>
-                {/if}
-              </div>
-            </form>
+              </form>
+            </div>
           </div>
         </article>
       {/each}
