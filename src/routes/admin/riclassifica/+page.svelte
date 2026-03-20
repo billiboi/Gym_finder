@@ -3,7 +3,7 @@
   export let form;
 
   let q = '';
-  let suspiciousOnly = true;
+  let suspiciousOnly = false;
   let selectedIds = [];
 
   function toggleSelection(id) {
