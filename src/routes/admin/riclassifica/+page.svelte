@@ -4,6 +4,33 @@
 
   let q = '';
   let suspiciousOnly = true;
+  let selectedIds = [];
+
+  function toggleSelection(id) {
+    selectedIds = selectedIds.includes(id)
+      ? selectedIds.filter((item) => item !== id)
+      : [...selectedIds, id];
+  }
+
+  function toggleSelectAllVisible() {
+    const visibleIds = filtered.map((gym) => gym.id);
+    const allVisibleSelected = visibleIds.length > 0 && visibleIds.every((id) => selectedIds.includes(id));
+
+    selectedIds = allVisibleSelected
+      ? selectedIds.filter((id) => !visibleIds.includes(id))
+      : [...new Set([...selectedIds, ...visibleIds])];
+  }
+
+  function submitBulkAction(event, message) {
+    if (!selectedIds.length) {
+      event.preventDefault();
+      return;
+    }
+
+    if (message && !confirm(message)) {
+      event.preventDefault();
+    }
+  }
 
   $: query = q.trim().toLowerCase();
   $: filtered = data.gyms.filter((gym) => {
@@ -15,6 +42,10 @@
       .toLowerCase()
       .includes(query);
   });
+  $: visibleIds = filtered.map((gym) => gym.id);
+  $: selectedIds = selectedIds.filter((id) => data.gyms.some((gym) => gym.id === id));
+  $: selectedVisibleCount = visibleIds.filter((id) => selectedIds.includes(id)).length;
+  $: allVisibleSelected = visibleIds.length > 0 && selectedVisibleCount === visibleIds.length;
 </script>
 
 <main class="mx-auto min-h-screen w-full max-w-7xl px-4 pb-10 pt-6 sm:px-6 lg:px-8">
@@ -73,6 +104,53 @@
         Risultati: <strong>{filtered.length}</strong>
       </div>
     </div>
+
+    <div class="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3">
+      <div class="flex flex-wrap items-center gap-2">
+        <button
+          type="button"
+          class="rounded-xl bg-slate-900 px-3 py-2 text-sm font-semibold text-white hover:bg-slate-800"
+          on:click={toggleSelectAllVisible}
+        >
+          {allVisibleSelected ? 'Deseleziona visibili' : 'Seleziona visibili'}
+        </button>
+        <span class="text-sm font-semibold text-slate-700">
+          Selezionati: {selectedIds.length}
+        </span>
+      </div>
+
+      <form method="POST" action="?/bulkUpdate" class="flex flex-wrap gap-2" on:submit={(event) => submitBulkAction(event)}>
+        <input type="hidden" name="ids" value={JSON.stringify(selectedIds)} />
+        <button
+          type="submit"
+          name="operation"
+          value="verify"
+          class="rounded-xl bg-sky-700 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-800"
+          disabled={!data.persistentWrites || selectedIds.length === 0}
+        >
+          Verifica selezionate
+        </button>
+        <button
+          type="submit"
+          name="operation"
+          value="unverify"
+          class="rounded-xl bg-amber-600 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-700"
+          disabled={!data.persistentWrites || selectedIds.length === 0}
+        >
+          Rimuovi verifica
+        </button>
+        <button
+          type="submit"
+          name="operation"
+          value="delete"
+          class="rounded-xl bg-rose-700 px-4 py-2 text-sm font-semibold text-white hover:bg-rose-800"
+          disabled={!data.persistentWrites || selectedIds.length === 0}
+          on:click={(event) => submitBulkAction(event, `Eliminare definitivamente ${selectedIds.length} record selezionati?`)}
+        >
+          Elimina selezionate
+        </button>
+      </form>
+    </div>
   </section>
 
   <section class="mt-5 grid gap-3">
@@ -86,6 +164,14 @@
           <div class="flex flex-wrap items-start justify-between gap-3">
             <div class="min-w-0 flex-1">
               <div class="flex flex-wrap items-center gap-2">
+                <label class="inline-flex items-center">
+                  <input
+                    type="checkbox"
+                    class="h-4 w-4 rounded border-slate-300"
+                    checked={selectedIds.includes(gym.id)}
+                    on:change={() => toggleSelection(gym.id)}
+                  />
+                </label>
                 <h2 class="text-base font-bold text-slate-900">{gym.name}</h2>
                 {#if gym.verified}
                   <span class="rounded-full bg-emerald-100 px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-emerald-800">

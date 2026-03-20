@@ -60,6 +60,18 @@ function suspiciousScore(gym) {
   return keywords.some((keyword) => name.includes(keyword)) ? 2 : 1;
 }
 
+function parseIds(form) {
+  const raw = clean(form.get('ids'));
+  if (!raw) return [];
+
+  try {
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed.map((id) => clean(id)).filter(Boolean) : [];
+  } catch {
+    return [];
+  }
+}
+
 export async function load({ url, fetch }) {
   const gyms = await getGymsWithFallback(fetch);
   const persistentWrites = canPersistWrites();
@@ -187,6 +199,67 @@ export const actions = {
       await writeGyms(gyms);
     } catch (err) {
       return fail(500, { error: err?.message || 'Errore durante il salvataggio.' });
+    }
+
+    throw redirect(303, '/admin/riclassifica?saved=1');
+  },
+  bulkUpdate: async ({ request, fetch }) => {
+    if (!canPersistWrites()) {
+      return fail(503, {
+        error: 'Nel deploy pubblico le modifiche non sono persistenti. Usa l\'ambiente locale oppure collega un database.'
+      });
+    }
+
+    const form = await request.formData();
+    const ids = parseIds(form);
+    const operation = clean(form.get('operation'));
+
+    if (ids.length === 0) {
+      return fail(400, { error: 'Seleziona almeno un record.' });
+    }
+
+    if (!['verify', 'unverify', 'delete'].includes(operation)) {
+      return fail(400, { error: 'Operazione bulk non valida.' });
+    }
+
+    const gyms = await getGymsWithFallback(fetch);
+    const selected = new Set(ids);
+
+    let next = gyms;
+    if (operation === 'delete') {
+      next = gyms.filter((gym) => !selected.has(clean(gym.id)));
+
+      if (next.length === gyms.length) {
+        return fail(404, { error: 'Nessun record selezionato trovato.' });
+      }
+    } else {
+      let touched = 0;
+      next = gyms.map((gym) => {
+        if (!selected.has(clean(gym.id))) return gym;
+        touched += 1;
+        return {
+          ...gym,
+          verified: operation === 'verify'
+        };
+      });
+
+      if (touched === 0) {
+        return fail(404, { error: 'Nessun record selezionato trovato.' });
+      }
+    }
+
+    try {
+      await writeGyms(next);
+    } catch (err) {
+      return fail(500, {
+        error:
+          err?.message ||
+          (operation === 'delete' ? 'Errore durante eliminazione bulk.' : 'Errore durante il salvataggio bulk.')
+      });
+    }
+
+    if (operation === 'delete') {
+      throw redirect(303, '/admin/riclassifica?deleted=1');
     }
 
     throw redirect(303, '/admin/riclassifica?saved=1');
