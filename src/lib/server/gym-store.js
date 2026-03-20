@@ -20,6 +20,23 @@ const SUPABASE_GYMS_TABLE = process.env.SUPABASE_GYMS_TABLE || 'gyms';
 
 const hasSupabase = Boolean(SUPABASE_URL && SUPABASE_KEY);
 const RUNTIME_CACHE_KEY = '__gymfinder_runtime_gyms__';
+const SUPABASE_SCHEMA_CACHE_KEY = '__gymfinder_supabase_schema_ok__';
+const SUPABASE_EXPECTED_COLUMNS = [
+  'id',
+  'name',
+  'discipline',
+  'disciplines',
+  'address',
+  'city',
+  'phone',
+  'hours_info',
+  'website',
+  'description',
+  'latitude',
+  'longitude',
+  'image_url',
+  'weekly_hours'
+];
 
 function getRuntimeGyms() {
   const cache = globalThis[RUNTIME_CACHE_KEY];
@@ -278,6 +295,53 @@ function supabaseBaseUrl() {
   return SUPABASE_URL.replace(/\/$/, '');
 }
 
+async function ensureSupabaseSchemaCompatible() {
+  if (!hasSupabase) return;
+  if (globalThis[SUPABASE_SCHEMA_CACHE_KEY] === true) return;
+
+  for (const column of SUPABASE_EXPECTED_COLUMNS) {
+    const url = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?select=${encodeURIComponent(column)}&limit=1`;
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: supabaseHeaders()
+    });
+
+    if (response.ok) {
+      continue;
+    }
+
+    let details = '';
+    try {
+      const payload = await response.json();
+      details = String(payload?.message || payload?.hint || '').trim();
+    } catch {
+      details = '';
+    }
+
+    if (response.status === 400) {
+      throw new Error(
+        `Supabase schema mismatch: manca la colonna "${column}" nella tabella "${SUPABASE_GYMS_TABLE}". ${details}`.trim()
+      );
+    }
+
+    if (response.status === 404) {
+      throw new Error(
+        `Supabase schema check failed (404). Verifica SUPABASE_URL e SUPABASE_GYMS_TABLE: il progetto si aspetta /rest/v1/${SUPABASE_GYMS_TABLE}.`
+      );
+    }
+
+    if (response.status === 401 || response.status === 403) {
+      throw new Error(
+        `Supabase schema check failed (${response.status}). Verifica SUPABASE_SERVICE_ROLE_KEY o i permessi della key configurata.`
+      );
+    }
+
+    throw new Error(`Supabase schema check failed (${response.status}). ${details}`.trim());
+  }
+
+  globalThis[SUPABASE_SCHEMA_CACHE_KEY] = true;
+}
+
 async function readGymsFromSupabase() {
   if (!hasSupabase) return null;
 
@@ -299,6 +363,7 @@ async function readGymsFromSupabase() {
 
 async function replaceGymsInSupabase(gyms) {
   if (!hasSupabase) return;
+  await ensureSupabaseSchemaCompatible();
 
   const base = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}`;
 
