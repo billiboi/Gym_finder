@@ -44,6 +44,8 @@ function disciplineTextForGym(gym) {
 }
 
 function suspiciousScore(gym) {
+  if (gym?.verified) return 0;
+
   const name = clean(gym?.name).toLowerCase();
   const disciplineText = disciplineTextForGym(gym);
   const onlyFitness = disciplineText === 'Fitness';
@@ -69,6 +71,7 @@ export async function load({ url, fetch }) {
       disciplineText: disciplineTextForGym(gym),
       address: [gym.address, gym.city].filter(Boolean).join(', '),
       website: gym.website || '',
+      verified: Boolean(gym.verified),
       suspiciousScore: suspiciousScore(gym)
     }))
     .sort((a, b) => {
@@ -109,10 +112,12 @@ export const actions = {
     }
 
     const disciplines = toDisciplines(disciplineText, currentDisciplines || disciplineTextForGym(gyms[index]));
+    const verified = clean(form.get('verified')) === '1';
     gyms[index] = {
       ...gyms[index],
       discipline: disciplines[0],
-      disciplines
+      disciplines,
+      verified
     };
 
     try {
@@ -151,5 +156,39 @@ export const actions = {
     }
 
     throw redirect(303, '/admin/riclassifica?deleted=1');
+  },
+  toggleVerified: async ({ request, fetch }) => {
+    if (!canPersistWrites()) {
+      return fail(503, {
+        error: 'Nel deploy pubblico le modifiche non sono persistenti. Usa l\'ambiente locale oppure collega un database.'
+      });
+    }
+
+    const form = await request.formData();
+    const id = clean(form.get('id'));
+
+    if (!id) {
+      return fail(400, { error: 'ID palestra mancante.' });
+    }
+
+    const gyms = await getGymsWithFallback(fetch);
+    const index = gyms.findIndex((gym) => gym.id === id);
+
+    if (index < 0) {
+      return fail(404, { error: 'Palestra non trovata.' });
+    }
+
+    gyms[index] = {
+      ...gyms[index],
+      verified: !Boolean(gyms[index]?.verified)
+    };
+
+    try {
+      await writeGyms(gyms);
+    } catch (err) {
+      return fail(500, { error: err?.message || 'Errore durante il salvataggio.' });
+    }
+
+    throw redirect(303, '/admin/riclassifica?saved=1');
   }
 };

@@ -65,6 +65,11 @@ function toNumberOrNull(value) {
   return Number.isFinite(n) ? n : null;
 }
 
+function toBoolean(value) {
+  const raw = String(value ?? '').trim().toLowerCase();
+  return ['1', 'true', 'si', 'sì', 'yes'].includes(raw);
+}
+
 function parseCsvToGyms(csvText) {
   const lines = String(csvText || '')
     .replace(/^\uFEFF/, '')
@@ -89,6 +94,7 @@ function parseCsvToGyms(csvText) {
     hours: ['orari di apertura', 'open_hours', 'opening hours', 'orari'],
     website: ['pagina web', 'website', 'url', 'sito'],
     description: ['presentazione', 'description', 'descrizione', 'breve presentazione'],
+    verified: ['verificata', 'verified'],
     lat: ['lat', 'latitude'],
     long: ['long', 'lng', 'longitude']
   };
@@ -103,6 +109,7 @@ function parseCsvToGyms(csvText) {
     hours: getIndex(aliases.hours),
     website: getIndex(aliases.website),
     description: getIndex(aliases.description),
+    verified: getIndex(aliases.verified),
     lat: getIndex(aliases.lat),
     long: getIndex(aliases.long)
   };
@@ -132,6 +139,7 @@ function parseCsvToGyms(csvText) {
       hours_info: String(read(idx.hours) || '').trim() || 'Orari da verificare',
       website: String(read(idx.website) || '').trim(),
       description: String(read(idx.description) || '').trim(),
+      verified: toBoolean(read(idx.verified)),
       latitude: toNumberOrNull(read(idx.lat)),
       longitude: toNumberOrNull(read(idx.long)),
       image_url: '',

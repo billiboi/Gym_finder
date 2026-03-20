@@ -87,6 +87,11 @@
             <div class="min-w-0 flex-1">
               <div class="flex flex-wrap items-center gap-2">
                 <h2 class="text-base font-bold text-slate-900">{gym.name}</h2>
+                {#if gym.verified}
+                  <span class="rounded-full bg-emerald-100 px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-emerald-800">
+                    Verificata
+                  </span>
+                {/if}
                 {#if gym.suspiciousScore > 0}
                   <span class="rounded-full bg-amber-100 px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-amber-800">
                     Da verificare
@@ -103,6 +108,7 @@
               <form method="POST" action="?/save" class="grid gap-2">
                 <input type="hidden" name="id" value={gym.id} />
                 <input type="hidden" name="current_disciplines" value={gym.disciplineText} />
+                <input type="hidden" name="verified" value={gym.verified ? '1' : '0'} />
                 <label class="grid gap-1">
                   <span class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">
                     Nuova disciplina
@@ -134,6 +140,17 @@
                     </a>
                   {/if}
                 </div>
+              </form>
+
+              <form method="POST" action="?/toggleVerified">
+                <input type="hidden" name="id" value={gym.id} />
+                <button
+                  type="submit"
+                  class={`rounded-xl px-4 py-2 text-sm font-semibold text-white ${gym.verified ? 'bg-amber-600 hover:bg-amber-700' : 'bg-sky-700 hover:bg-sky-800'}`}
+                  disabled={!data.persistentWrites}
+                >
+                  {gym.verified ? 'Rimuovi verifica' : 'Segna verificata'}
+                </button>
               </form>
 
               <form

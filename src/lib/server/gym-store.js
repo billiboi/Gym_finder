@@ -58,6 +58,7 @@ const CSV_HEADERS = [
   'orari di apertura',
   'pagina web',
   'presentazione',
+  'verificata',
   'lat',
   'long'
 ];
@@ -145,10 +146,21 @@ function toNumberOrNull(value) {
   return Number.isFinite(n) ? n : null;
 }
 
+function toBoolean(value) {
+  if (typeof value === 'boolean') return value;
+  const raw = String(value ?? '').trim().toLowerCase();
+  return ['1', 'true', 'si', 'sì', 'yes'].includes(raw);
+}
+
 function normalizeGymRecord(gym, fallbackId) {
   const disciplines = Array.isArray(gym?.disciplines)
     ? gym.disciplines.map((d) => String(d).trim()).filter(Boolean)
     : disciplinesFromField(gym?.discipline);
+  const weeklyHours =
+    gym?.weekly_hours && typeof gym.weekly_hours === 'object' && !Array.isArray(gym.weekly_hours)
+      ? gym.weekly_hours
+      : {};
+  const verified = typeof gym?.verified === 'boolean' ? gym.verified : toBoolean(weeklyHours._verified);
 
   return {
     id: String(gym?.id || fallbackId),
@@ -161,13 +173,14 @@ function normalizeGymRecord(gym, fallbackId) {
     hours_info: String(gym?.hours_info || '').trim() || 'Orari da verificare',
     website: String(gym?.website || '').trim(),
     description: String(gym?.description || gym?.presentazione || '').trim(),
+    verified,
     latitude: gym?.latitude === null || gym?.latitude === undefined ? null : toNumberOrNull(gym.latitude),
     longitude: gym?.longitude === null || gym?.longitude === undefined ? null : toNumberOrNull(gym.longitude),
     image_url: String(gym?.image_url || '').trim(),
-    weekly_hours:
-      gym?.weekly_hours && typeof gym.weekly_hours === 'object' && !Array.isArray(gym.weekly_hours)
-        ? gym.weekly_hours
-        : {}
+    weekly_hours: {
+      ...weeklyHours,
+      _verified: verified
+    }
   };
 }
 
@@ -195,6 +208,7 @@ function gymsFromCsv(csvText) {
     hours: ['orari di apertura', 'open_hours', 'opening hours', 'orari'],
     website: ['pagina web', 'website', 'url', 'sito'],
     description: ['presentazione', 'description', 'descrizione', 'breve presentazione'],
+    verified: ['verificata', 'verified'],
     lat: ['lat', 'latitude'],
     long: ['long', 'lng', 'longitude']
   };
@@ -214,6 +228,7 @@ function gymsFromCsv(csvText) {
     hours: getIndex(aliases.hours),
     website: getIndex(aliases.website),
     description: getIndex(aliases.description),
+    verified: getIndex(aliases.verified),
     lat: getIndex(aliases.lat),
     long: getIndex(aliases.long)
   };
@@ -245,6 +260,7 @@ function gymsFromCsv(csvText) {
           hours_info: String(read(idx.hours) || '').trim() || 'Orari da verificare',
           website: String(read(idx.website) || '').trim(),
           description: String(read(idx.description) || '').trim(),
+          verified: toBoolean(read(idx.verified)),
           latitude: toNumberOrNull(read(idx.lat)),
           longitude: toNumberOrNull(read(idx.long)),
           image_url: '',
@@ -275,6 +291,7 @@ function gymsToCsv(gyms) {
       norm.hours_info || 'Orari da verificare',
       norm.website,
       norm.description,
+      norm.verified ? 'si' : '',
       norm.latitude ?? '',
       norm.longitude ?? ''
     ];
@@ -376,7 +393,15 @@ async function replaceGymsInSupabase(gyms) {
     throw new Error(`Supabase delete failed (${delResponse.status})`);
   }
 
-  const records = gyms.map((gym) => normalizeGymRecord(gym, gym?.id || ''));
+  const records = gyms.map((gym) => {
+    const normalized = normalizeGymRecord(gym, gym?.id || '');
+    const { verified, ...record } = normalized;
+    record.weekly_hours = {
+      ...(record.weekly_hours && typeof record.weekly_hours === 'object' ? record.weekly_hours : {}),
+      _verified: verified
+    };
+    return record;
+  });
   if (!records.length) return;
 
   const chunkSize = 300;
