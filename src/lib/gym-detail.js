@@ -72,12 +72,53 @@ export function placeholderImageForDiscipline(discipline) {
   return map[normalized] || '/images/placeholders/fitness.svg';
 }
 
+export function stockImageForDiscipline(discipline) {
+  const normalized = normalizeDisciplineLabel(discipline) || 'Fitness';
+  const map = {
+    Boxe: '/images/stock/boxe.jpg',
+    Kickboxe: '/images/stock/kickboxe.jpg',
+    'Muay Thai': '/images/stock/muay-thai.jpg',
+    K1: '/images/stock/kickboxe.jpg',
+    MMA: '/images/stock/mma.jpg',
+    Judo: '/images/stock/judo.jpg',
+    JiuJitsu: '/images/stock/grappling.jpg',
+    'JiuJitsu Brasiliano': '/images/stock/grappling.jpg',
+    Karate: '/images/stock/karate.jpg',
+    Taekwondo: '/images/stock/karate.jpg',
+    Aikido: '/images/stock/karate.jpg',
+    'Kung Fu': '/images/stock/kung-fu.jpg',
+    'Wing Chun': '/images/stock/kung-fu.jpg',
+    'Tai Chi': '/images/stock/kung-fu.jpg',
+    Scherma: '/images/stock/karate.jpg',
+    Chanbara: '/images/stock/karate.jpg',
+    'Difesa Personale': '/images/stock/difesa-personale.jpg',
+    'Arti Marziali': '/images/stock/mma.jpg',
+    CrossFit: '/images/stock/functional.jpg',
+    Pilates: '/images/stock/wellness.jpg',
+    Yoga: '/images/stock/wellness.jpg',
+    Nuoto: '/images/stock/nuoto.jpg',
+    Calisthenics: '/images/stock/functional.jpg',
+    Functional: '/images/stock/functional.jpg',
+    Bodybuilding: '/images/stock/fitness.jpg',
+    Fitness: '/images/stock/fitness.jpg'
+  };
+
+  return map[normalized] || '/images/stock/fitness.jpg';
+}
+
 export function imageForGym(gym) {
   const imageUrl = String(gym?.image_url || '').trim();
   if (imageUrl) {
     return imageUrl;
   }
-  return placeholderImageForDiscipline(primaryDisciplineForGym(gym));
+
+  const discipline = primaryDisciplineForGym(gym);
+  const stockImage = stockImageForDiscipline(discipline);
+
+  return {
+    src: stockImage,
+    fallback: placeholderImageForDiscipline(discipline)
+  };
 }
 
 export function slugifyGym(gym) {

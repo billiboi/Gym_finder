@@ -141,10 +141,11 @@
         <input name="website" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" />
       </label>
 
-      <label class="grid gap-1">
-        <span class="text-sm font-semibold text-slate-700">Foto copertina</span>
-        <input name="image" type="file" accept="image/png,image/jpeg,image/webp,image/gif" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" />
-      </label>
+        <label class="grid gap-1">
+          <span class="text-sm font-semibold text-slate-700">Foto copertina</span>
+          <input name="image" type="file" accept="image/png,image/jpeg,image/webp,image/gif" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" />
+          <span class="text-xs text-slate-500">Se non carichi un'immagine, la scheda usera la foto stock della disciplina oppure la cover Pocket Gym.</span>
+        </label>
 
       <label class="grid gap-1">
         <span class="text-sm font-semibold text-slate-700">Breve presentazione</span>
@@ -303,10 +304,11 @@
           </div>
 
           <div class="grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
-            <label class="grid gap-1">
-              <span class="text-sm font-semibold text-slate-700">Foto copertina</span>
-              <input name="image" type="file" accept="image/png,image/jpeg,image/webp,image/gif" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" />
-            </label>
+              <label class="grid gap-1">
+                <span class="text-sm font-semibold text-slate-700">Foto copertina</span>
+                <input name="image" type="file" accept="image/png,image/jpeg,image/webp,image/gif" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" />
+                <span class="text-xs text-slate-500">Se vuoto, resta l'immagine attuale; in assenza di foto verra usata quella stock della disciplina.</span>
+              </label>
             <label class="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-700">
               <input type="checkbox" name="replace_image" value="1" />
               Sostituisci immagine attuale

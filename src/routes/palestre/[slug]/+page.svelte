@@ -12,13 +12,22 @@
   const { gym } = data;
   const disciplines = disciplineListForGym(gym);
   const presentation = buildGymPresentation(gym);
-  const imageSrc = imageForGym(gym);
+  const imageAsset = imageForGym(gym);
+  const imageSrc = typeof imageAsset === 'string' ? imageAsset : imageAsset.src;
+  const imageFallback = typeof imageAsset === 'string' ? imageAsset : imageAsset.fallback;
   const hoursInfo = fixGymText(gym?.hours_info) || 'Orari da verificare';
   const address = formatAddressForDisplay(gym);
   const phone = fixGymText(gym?.phone) || 'Non disponibile';
   const website = fixGymText(gym?.website);
   const hasPhone = phone && phone !== 'Non disponibile';
   const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+
+  function handleImageError(event) {
+    const img = event.currentTarget;
+    if (!img || !imageFallback || img.dataset.fallbackApplied === '1') return;
+    img.dataset.fallbackApplied = '1';
+    img.src = imageFallback;
+  }
 </script>
 
 <svelte:head>
@@ -35,6 +44,7 @@
             src={imageSrc}
             alt={`Foto di ${fixGymText(gym?.name)}`}
             class="h-full min-h-[280px] w-full object-cover"
+            on:error={handleImageError}
           />
         </div>
 

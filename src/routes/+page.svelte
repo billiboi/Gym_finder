@@ -20,6 +20,18 @@
     return disciplineListForGym(gym)[0] || 'Fitness';
   }
 
+  function resolveImageSource(gym) {
+    const image = imageForGym(gym);
+    return typeof image === 'string' ? { src: image, fallback: image } : image;
+  }
+
+  function handleImageError(event, fallback) {
+    const img = event.currentTarget;
+    if (!img || !fallback || img.dataset.fallbackApplied === '1') return;
+    img.dataset.fallbackApplied = '1';
+    img.src = fallback;
+  }
+
   function fixMojibake(value) {
     let text = String(value || '');
     if (!text) return '';
@@ -700,9 +712,16 @@
       </div>
     {:else}
       {#each filteredGyms as gym, i}
+        {@const image = resolveImageSource(gym)}
         <article class="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl sc-card sc-gym-card" style={`animation-delay:${i * 20}ms`}>
           <div class="relative h-44 overflow-hidden">
-            <img src={imageForGym(gym)} alt={`Immagine ${gym.name}`} class="h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
+            <img
+              src={image.src}
+              alt={`Immagine ${gym.name}`}
+              class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+              loading="lazy"
+              on:error={(event) => handleImageError(event, image.fallback)}
+            />
             <span class="absolute left-3 top-3 rounded-full bg-slate-900/85 px-2.5 py-1 text-xs font-bold text-white sc-badge sc-badge--accent">{disciplineListForGym(gym).join(" | ") }</span>
             {#if gym.distance_km !== null && gym.distance_km !== undefined}
               <span class="absolute right-3 top-3 rounded-full bg-emerald-600 px-2.5 py-1 text-xs font-bold text-white sc-badge">{gym.distance_km} km</span>
