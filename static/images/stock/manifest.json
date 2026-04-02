@@ -1,0 +1,33 @@
+{
+  "brand": "Pocket Gym",
+  "version": 1,
+  "notes": {
+    "purpose": "Discipline stock image manifest used by the public image fallback system.",
+    "supported_extensions": [".webp", ".jpg", ".jpeg", ".png"],
+    "selection_rule": "The app picks one available image per discipline using a stable random-like selection based on the gym id or name."
+  },
+  "disciplines": [
+    { "discipline": "Aikido", "baseName": "karate", "files": ["karate", "karate-2", "karate-3"] },
+    { "discipline": "Bodybuilding", "baseName": "fitness", "files": ["fitness", "fitness-2", "fitness-3"] },
+    { "discipline": "Boxe", "baseName": "boxe", "files": ["boxe", "boxe-2", "boxe-3"] },
+    { "discipline": "Calisthenics", "baseName": "functional", "files": ["functional", "functional-2", "functional-3"] },
+    { "discipline": "CrossFit", "baseName": "functional", "files": ["functional", "functional-2", "functional-3"] },
+    { "discipline": "Difesa Personale", "baseName": "difesa-personale", "files": ["difesa-personale", "difesa-personale-2", "difesa-personale-3"] },
+    { "discipline": "Fitness", "baseName": "fitness", "files": ["fitness", "fitness-2", "fitness-3"] },
+    { "discipline": "Functional", "baseName": "functional", "files": ["functional", "functional-2", "functional-3"] },
+    { "discipline": "JiuJitsu", "baseName": "grappling", "files": ["grappling", "grappling-2", "grappling-3"] },
+    { "discipline": "JiuJitsu Brasiliano", "baseName": "grappling", "files": ["grappling", "grappling-2", "grappling-3"] },
+    { "discipline": "Judo", "baseName": "judo", "files": ["judo", "judo-2", "judo-3"] },
+    { "discipline": "Karate", "baseName": "karate", "files": ["karate", "karate-2", "karate-3"] },
+    { "discipline": "Kickboxe", "baseName": "kickboxe", "files": ["kickboxe", "kickboxe-2", "kickboxe-3"] },
+    { "discipline": "Kung Fu", "baseName": "kung-fu", "files": ["kung-fu", "kung-fu-2", "kung-fu-3"] },
+    { "discipline": "MMA", "baseName": "mma", "files": ["mma", "mma-2", "mma-3"] },
+    { "discipline": "Nuoto", "baseName": "nuoto", "files": ["nuoto", "nuoto-2", "nuoto-3"] },
+    { "discipline": "Pilates", "baseName": "wellness", "files": ["wellness", "wellness-2", "wellness-3"] },
+    { "discipline": "Scherma", "baseName": "karate", "files": ["karate", "karate-2", "karate-3"] },
+    { "discipline": "Taekwondo", "baseName": "karate", "files": ["karate", "karate-2", "karate-3"] },
+    { "discipline": "Tai Chi", "baseName": "kung-fu", "files": ["kung-fu", "kung-fu-2", "kung-fu-3"] },
+    { "discipline": "Wing Chun", "baseName": "kung-fu", "files": ["kung-fu", "kung-fu-2", "kung-fu-3"] },
+    { "discipline": "Yoga", "baseName": "wellness", "files": ["wellness", "wellness-2", "wellness-3"] }
+  ]
+}

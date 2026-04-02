@@ -38,3 +38,4 @@ Note:
   - `fitness.jpg`
   - `mma.png`
 - usa solo immagini con licenza valida per riutilizzo commerciale/editoriale
+- vedi anche `manifest.json` per l'elenco completo delle discipline e dei basename previsti
