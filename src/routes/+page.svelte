@@ -110,6 +110,8 @@
   let gyms = [];
   let filteredGyms = [];
   let disciplines = [];
+  let loadingGyms = true;
+  let loadingDisciplines = true;
 
   let filterText = '';
   let filterDiscipline = '';
@@ -140,6 +142,7 @@
   $: totalGyms = filteredGyms.length;
   $: disciplineCount = disciplines.length;
   $: locationReady = Boolean(userLocation);
+  $: isBootstrapping = loadingGyms || loadingDisciplines;
 
   let csvGymsCache = null;
 
@@ -298,12 +301,14 @@
     return csvGymsCache;
   }
   async function loadGyms() {
+    loadingGyms = true;
     try {
       const res = await fetch('/api/gyms');
       if (res.ok) {
         const data = await res.json();
         if (Array.isArray(data)) {
           gyms = data;
+          loadingGyms = false;
           return;
         }
       }
@@ -313,14 +318,17 @@
 
     const csvGyms = await getCsvGyms();
     gyms = csvGyms;
+    loadingGyms = false;
   }
   async function loadDisciplines() {
+    loadingDisciplines = true;
     try {
       const res = await fetch('/api/disciplines');
       if (res.ok) {
         const data = await res.json();
         if (Array.isArray(data)) {
           disciplines = dedupeDisciplines(data);
+          loadingDisciplines = false;
           return;
         }
       }
@@ -330,6 +338,7 @@
 
     const csvGyms = await getCsvGyms();
     disciplines = dedupeDisciplines(csvGyms.flatMap((gym) => disciplineListForGym(gym)));
+    loadingDisciplines = false;
   }
 
   async function detectLocation() {
@@ -626,6 +635,7 @@
         class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
         bind:value={filterDiscipline}
         on:change={loadGyms}
+        disabled={loadingDisciplines}
       >
         <option value="">Tutte le discipline</option>
         {#each disciplines as discipline}
@@ -669,6 +679,9 @@
       {#if locationReady}
         <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">Ordinamento per vicinanza attivo</span>
       {/if}
+      {#if isBootstrapping}
+        <span class="rounded-full sc-loading-pill px-3 py-1 text-xs font-semibold">Aggiornamento risultati...</span>
+      {/if}
     </div>
 
     {#if locationError}
@@ -692,11 +705,39 @@
     <div class="relative">
       <div class="pointer-events-none absolute inset-x-0 top-0 z-[400] h-16 bg-gradient-to-b from-white/70 to-transparent sc-map-fade"></div>
       <div bind:this={mapContainer} class="h-[420px] w-full sm:h-[460px]"></div>
+      {#if isBootstrapping}
+        <div class="pointer-events-none absolute inset-0 z-[450] flex items-center justify-center bg-white/55 backdrop-blur-[2px]">
+          <div class="rounded-2xl border border-white/70 bg-white/85 px-4 py-3 text-sm font-semibold text-slate-700 shadow-lg sc-loading-card">
+            Caricamento mappa e palestre...
+          </div>
+        </div>
+      {/if}
     </div>
   </section>
 
   <section id="elenco-palestre" class="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-    {#if filteredGyms.length === 0}
+    {#if isBootstrapping && filteredGyms.length === 0}
+      {#each Array(6) as _, i}
+        <article class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm sc-card sc-skeleton-card" style={`animation-delay:${i * 40}ms`}>
+          <div class="h-44 w-full sc-skeleton-block"></div>
+          <div class="space-y-3 p-3 sm:p-4">
+            <div class="rounded-2xl p-3 sc-skeleton-panel">
+              <div class="h-3 w-24 rounded-full sc-skeleton-line"></div>
+              <div class="mt-3 h-6 w-2/3 rounded-full sc-skeleton-line"></div>
+              <div class="mt-2 h-4 w-full rounded-full sc-skeleton-line"></div>
+            </div>
+            <div class="grid gap-2">
+              <div class="h-10 rounded-xl sc-skeleton-line"></div>
+              <div class="h-10 rounded-xl sc-skeleton-line"></div>
+              <div class="h-10 rounded-xl sc-skeleton-line"></div>
+            </div>
+            <div class="rounded-2xl p-3 sc-skeleton-panel">
+              <div class="h-10 w-36 rounded-xl sc-skeleton-line"></div>
+            </div>
+          </div>
+        </article>
+      {/each}
+    {:else if filteredGyms.length === 0}
       <div class="col-span-full rounded-2xl border border-dashed border-slate-300 p-8 text-center">
         <p class="text-slate-500">Nessuna palestra trovata con i filtri selezionati.</p>
       </div>

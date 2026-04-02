@@ -274,8 +274,59 @@ body {
   background: rgba(255, 255, 255, 0.72);
 }
 
+.sc-loading-pill {
+  border: 1px solid rgba(31, 92, 74, 0.14);
+  background: rgba(31, 92, 74, 0.08);
+  color: var(--accent-red);
+}
+
+.sc-loading-card {
+  border: 1px solid rgba(31, 92, 74, 0.12);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(251, 250, 245, 0.88)),
+    rgba(255, 255, 255, 0.9);
+  color: var(--ink-muted);
+}
+
 .sc-map-fade {
   mix-blend-mode: screen;
+}
+
+.sc-skeleton-card {
+  overflow: hidden;
+}
+
+.sc-skeleton-block,
+.sc-skeleton-line,
+.sc-skeleton-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+.sc-skeleton-block::after,
+.sc-skeleton-line::after,
+.sc-skeleton-panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  animation: skeletonShimmer 1.4s ease-in-out infinite;
+}
+
+.sc-skeleton-block {
+  background: linear-gradient(135deg, rgba(31, 92, 74, 0.12), rgba(214, 207, 176, 0.18));
+}
+
+.sc-skeleton-panel {
+  background:
+    linear-gradient(135deg, rgba(31, 92, 74, 0.05), rgba(214, 207, 176, 0.11)),
+    rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(31, 92, 74, 0.08);
+}
+
+.sc-skeleton-line {
+  background: rgba(31, 92, 74, 0.1);
 }
 
 .sc-map-popup {
@@ -422,6 +473,12 @@ body {
   }
 }
 
+@keyframes skeletonShimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 .reveal {
   animation: fadeUp 380ms ease-out both;
 }
@@ -432,5 +489,56 @@ body {
     radial-gradient(circle at 12% 12%, rgba(31, 92, 74, 0.11) 0%, transparent 35%),
     radial-gradient(circle at 85% 18%, rgba(214, 207, 176, 0.22) 0%, transparent 40%),
     linear-gradient(155deg, var(--bg-1), var(--bg-2));
+}
+
+@media (max-width: 640px) {
+  .sc-hero {
+    padding: 1.15rem !important;
+  }
+
+  .sc-hero h1 {
+    max-width: 100%;
+    font-size: 2.15rem !important;
+    line-height: 1.02;
+  }
+
+  .sc-filter-panel,
+  .sc-map {
+    border-radius: 1.5rem !important;
+  }
+
+  .sc-gym-card-head,
+  .sc-gym-card-cta {
+    padding: 0.85rem !important;
+  }
+
+  .sc-gym-card-row {
+    padding: 0.7rem 0.85rem !important;
+    line-height: 1.45;
+  }
+
+  .sc-map-popup {
+    min-width: 220px;
+  }
+
+  .sc-map-popup-title {
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
+
+  .sc-map-popup-row {
+    padding: 9px 10px;
+    margin-bottom: 8px;
+  }
+
+  .sc-map-popup-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .sc-detail-meta,
+  .sc-detail-actions {
+    padding: 1rem !important;
+  }
 }
 
