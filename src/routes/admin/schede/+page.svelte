@@ -3,6 +3,7 @@
     imageForGym,
     placeholderImageForDiscipline,
     primaryDisciplineForGym,
+    resolveAvailableStockImage,
     stockImageForDiscipline
   } from '$lib/gym-detail';
 
@@ -39,6 +40,7 @@
     return {
       discipline,
       stockBase: stockImageForDiscipline(discipline),
+      stockResolved: resolveAvailableStockImage(discipline),
       src: imageMeta.src,
       candidates: imageMeta.candidates,
       fallback: imageMeta.fallback || placeholderImageForDiscipline(discipline)
@@ -204,7 +206,13 @@
         />
         <div class="grid gap-1 border-t border-slate-200 bg-white/80 px-3 py-3 text-sm text-slate-600">
           <p><strong class="text-slate-900">Anteprima fallback:</strong> {createPreview.discipline}</p>
-          <p>Proveremo in ordine `.webp`, `.jpg`, `.jpeg`, `.png` partendo da <code>{createPreview.stockBase}</code>, poi useremo la cover Pocket Gym.</p>
+          <p>
+            {#if createPreview.stockResolved}
+              Foto stock trovata: <code>{createPreview.stockResolved}</code>
+            {:else}
+              Nessuna foto stock disponibile per <code>{createPreview.stockBase}</code>: verra usata la cover Pocket Gym.
+            {/if}
+          </p>
         </div>
       </div>
 
@@ -390,7 +398,13 @@
               />
               <div class="grid gap-1 border-t border-slate-200 bg-white/80 px-3 py-3 text-sm text-slate-600">
                 <p><strong class="text-slate-900">Fallback attivo:</strong> {selectedPreview.discipline}</p>
-                <p>Questa scheda non ha una foto caricata. In pubblico proveremo i file da <code>{selectedPreview.stockBase}</code> e poi la cover Pocket Gym.</p>
+                <p>
+                  {#if selectedPreview.stockResolved}
+                    In pubblico verra usata la foto stock <code>{selectedPreview.stockResolved}</code>.
+                  {:else}
+                    Questa scheda non ha una foto caricata e non esiste ancora una foto stock per <code>{selectedPreview.stockBase}</code>: verra usata la cover Pocket Gym.
+                  {/if}
+                </p>
               </div>
             </div>
           {/if}

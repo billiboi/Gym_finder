@@ -1,5 +1,8 @@
 import { normalizeDisciplineLabel } from '$lib/disciplines';
 
+const AVAILABLE_STOCK_IMAGES = new Set([
+]);
+
 export function fixGymText(value) {
   let text = String(value || '');
   if (!text) return '';
@@ -111,6 +114,11 @@ export function stockImageCandidatesForDiscipline(discipline) {
   return [`${base}.webp`, `${base}.jpg`, `${base}.jpeg`, `${base}.png`];
 }
 
+export function resolveAvailableStockImage(discipline) {
+  const candidates = stockImageCandidatesForDiscipline(discipline);
+  return candidates.find((candidate) => AVAILABLE_STOCK_IMAGES.has(candidate)) || '';
+}
+
 export function imageForGym(gym) {
   const imageUrl = String(gym?.image_url || '').trim();
   if (imageUrl) {
@@ -122,12 +130,12 @@ export function imageForGym(gym) {
   }
 
   const discipline = primaryDisciplineForGym(gym);
-  const candidates = stockImageCandidatesForDiscipline(discipline);
+  const availableStock = resolveAvailableStockImage(discipline);
   const fallback = placeholderImageForDiscipline(discipline);
 
   return {
-    src: candidates[0],
-    candidates,
+    src: availableStock || fallback,
+    candidates: availableStock ? [availableStock] : [fallback],
     fallback
   };
 }

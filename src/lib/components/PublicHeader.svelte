@@ -9,8 +9,8 @@
   <div class="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-white/70 bg-white/85 px-4 py-4 shadow-lg backdrop-blur-sm sc-panel sc-header">
     <div class="min-w-0 flex-1">
       <a href="/" class="inline-flex items-center gap-3">
-        <span class="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-900 text-sm font-black tracking-[0.18em] text-white">
-          PG
+        <span class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl sc-brand-mark">
+          <img src="/logo-pocket-gym.svg" alt="Pocket Gym" class="h-full w-full object-cover" />
         </span>
         <span class="min-w-0">
           <span class="block text-xs font-bold uppercase tracking-[0.28em] text-amber-700">Pocket Gym</span>
