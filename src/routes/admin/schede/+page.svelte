@@ -1,9 +1,16 @@
 <script>
+  import {
+    placeholderImageForDiscipline,
+    primaryDisciplineForGym,
+    stockImageForDiscipline
+  } from '$lib/gym-detail';
+
   export let data;
   export let form;
 
   let q = '';
   let selectedGymId = '';
+  let createDisciplineInput = '';
 
   function disciplinesForGym(gym) {
     if (Array.isArray(gym.disciplines) && gym.disciplines.length) {
@@ -23,6 +30,22 @@
     selectedGymId = '';
   }
 
+  function previewAssetsForDiscipline(disciplineText) {
+    const discipline = primaryDisciplineForGym({ discipline: disciplineText });
+    return {
+      discipline,
+      stock: stockImageForDiscipline(discipline),
+      fallback: placeholderImageForDiscipline(discipline)
+    };
+  }
+
+  function handlePreviewError(event, fallback) {
+    const img = event.currentTarget;
+    if (!img || !fallback || img.dataset.fallbackApplied === '1') return;
+    img.dataset.fallbackApplied = '1';
+    img.src = fallback;
+  }
+
   $: query = q.trim().toLowerCase();
   $: filtered = data.gyms.filter((gym) => {
     if (!query) return true;
@@ -32,6 +55,10 @@
       .includes(query);
   });
   $: selectedGym = data.gyms.find((gym) => gym.id === selectedGymId) || null;
+  $: createPreview = previewAssetsForDiscipline(createDisciplineInput);
+  $: selectedPreview = selectedGym
+    ? previewAssetsForDiscipline(disciplinesForGym(selectedGym).join(' | '))
+    : null;
 </script>
 
 <main class="mx-auto min-h-screen w-full max-w-7xl px-4 pb-10 pt-6 sm:px-6 lg:px-8">
@@ -113,7 +140,12 @@
 
       <label class="grid gap-1">
         <span class="text-sm font-semibold text-slate-700">Discipline (separate da |)</span>
-        <input name="discipline" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" placeholder="Es: Boxe | Kickboxe" />
+        <input
+          name="discipline"
+          class="rounded-xl border border-slate-200 px-3 py-2 text-sm"
+          placeholder="Es: Boxe | Kickboxe"
+          bind:value={createDisciplineInput}
+        />
       </label>
 
       <label class="grid gap-1">
@@ -146,6 +178,19 @@
           <input name="image" type="file" accept="image/png,image/jpeg,image/webp,image/gif" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" />
           <span class="text-xs text-slate-500">Se non carichi un'immagine, la scheda usera la foto stock della disciplina oppure la cover Pocket Gym.</span>
         </label>
+
+      <div class="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
+        <img
+          src={createPreview.stock}
+          alt={`Anteprima fallback ${createPreview.discipline}`}
+          class="h-44 w-full object-cover"
+          on:error={(event) => handlePreviewError(event, createPreview.fallback)}
+        />
+        <div class="grid gap-1 border-t border-slate-200 bg-white/80 px-3 py-3 text-sm text-slate-600">
+          <p><strong class="text-slate-900">Anteprima fallback:</strong> {createPreview.discipline}</p>
+          <p>Se non carichi una foto, proveremo prima l'immagine stock della disciplina e poi la cover Pocket Gym.</p>
+        </div>
+      </div>
 
       <label class="grid gap-1">
         <span class="text-sm font-semibold text-slate-700">Breve presentazione</span>
@@ -318,6 +363,19 @@
           {#if selectedGym.image_url}
             <div class="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
               <img src={selectedGym.image_url} alt={`Anteprima ${selectedGym.name}`} class="h-48 w-full object-cover" />
+            </div>
+          {:else if selectedPreview}
+            <div class="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
+              <img
+                src={selectedPreview.stock}
+                alt={`Anteprima fallback ${selectedPreview.discipline}`}
+                class="h-48 w-full object-cover"
+                on:error={(event) => handlePreviewError(event, selectedPreview.fallback)}
+              />
+              <div class="grid gap-1 border-t border-slate-200 bg-white/80 px-3 py-3 text-sm text-slate-600">
+                <p><strong class="text-slate-900">Fallback attivo:</strong> {selectedPreview.discipline}</p>
+                <p>Questa scheda non ha una foto caricata. In pubblico verra mostrata la foto stock disciplina oppure la cover Pocket Gym.</p>
+              </div>
             </div>
           {/if}
 
