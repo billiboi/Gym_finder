@@ -1,0 +1,36 @@
+{
+  "brand": "Pocket Gym",
+  "goal": "First batch of high-impact discipline stock images to populate before covering the full catalog.",
+  "priorities": [
+    {
+      "discipline": "Boxe",
+      "baseName": "boxe",
+      "expectedFiles": ["boxe", "boxe-2", "boxe-3"],
+      "status": "pending"
+    },
+    {
+      "discipline": "Kickboxe",
+      "baseName": "kickboxe",
+      "expectedFiles": ["kickboxe", "kickboxe-2", "kickboxe-3"],
+      "status": "pending"
+    },
+    {
+      "discipline": "MMA",
+      "baseName": "mma",
+      "expectedFiles": ["mma", "mma-2", "mma-3"],
+      "status": "pending"
+    },
+    {
+      "discipline": "Judo",
+      "baseName": "judo",
+      "expectedFiles": ["judo", "judo-2", "judo-3"],
+      "status": "pending"
+    },
+    {
+      "discipline": "Fitness",
+      "baseName": "fitness",
+      "expectedFiles": ["fitness", "fitness-2", "fitness-3"],
+      "status": "pending"
+    }
+  ]
+}

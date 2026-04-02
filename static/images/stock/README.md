@@ -40,3 +40,4 @@ Note:
 - usa solo immagini con licenza valida per riutilizzo commerciale/editoriale
 - vedi anche `manifest.json` per l'elenco completo delle discipline e dei basename previsti
 - vedi `sources.json` per una lista pronta di sorgenti royalty-free da cui selezionare immagini rappresentative
+- per iniziare con le categorie piu visibili, usa `priority-five.json`
