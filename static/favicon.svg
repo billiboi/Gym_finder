@@ -1,12 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Gym Finder">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Pocket Gym">
   <defs>
-    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0%" stop-color="#1f5c4a" />
-      <stop offset="100%" stop-color="#58a086" />
+    <linearGradient id="pg-bg" x1="8" y1="6" x2="58" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2f6f5b" />
+      <stop offset="100%" stop-color="#1f5c4a" />
+    </linearGradient>
+    <linearGradient id="pg-pin" x1="16" y1="14" x2="48" y2="46" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f5efe1" />
+      <stop offset="100%" stop-color="#d6cfb0" />
     </linearGradient>
   </defs>
-  <rect width="64" height="64" rx="16" fill="#101715" />
-  <path d="M14 24h8l4 8 6-12 6 16 4-8h8" fill="none" stroke="url(#g)" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"/>
-  <circle cx="18" cy="24" r="4" fill="#d6cfb0" />
-  <circle cx="46" cy="28" r="4" fill="#d6cfb0" />
+  <rect width="64" height="64" rx="18" fill="url(#pg-bg)" />
+  <path d="M32 13c-8.84 0-16 7.16-16 16 0 12.58 13.52 22.91 15.06 24.05a1.54 1.54 0 0 0 1.88 0C34.48 51.91 48 41.58 48 29c0-8.84-7.16-16-16-16Z" fill="url(#pg-pin)" />
+  <circle cx="32" cy="29" r="10" fill="#21473c" />
+  <g fill="#f8f6ef">
+    <rect x="23" y="27.7" width="18" height="2.6" rx="1.3" />
+    <rect x="20.6" y="25.8" width="1.9" height="6.4" rx="0.8" />
+    <rect x="18.1" y="24.8" width="1.9" height="8.4" rx="0.8" />
+    <rect x="41.5" y="25.8" width="1.9" height="6.4" rx="0.8" />
+    <rect x="44" y="24.8" width="1.9" height="8.4" rx="0.8" />
+  </g>
 </svg>
