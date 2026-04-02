@@ -5,23 +5,30 @@ Priorita fallback immagini:
 2. foto stock locale in `static/images/stock`
 3. cover SVG brandizzata in `static/images/placeholders`
 
-Nomi file supportati:
-- `boxe.jpg`
-- `kickboxe.jpg`
-- `muay-thai.jpg`
-- `mma.jpg`
-- `grappling.jpg`
-- `judo.jpg`
-- `karate.jpg`
-- `kung-fu.jpg`
-- `fitness.jpg`
-- `wellness.jpg`
-- `nuoto.jpg`
-- `functional.jpg`
-- `difesa-personale.jpg`
+Basename supportati:
+- `boxe`
+- `kickboxe`
+- `muay-thai`
+- `mma`
+- `grappling`
+- `judo`
+- `karate`
+- `kung-fu`
+- `fitness`
+- `wellness`
+- `nuoto`
+- `functional`
+- `difesa-personale`
 
 Note:
 - usa immagini orizzontali, idealmente 1600x900 o simili
-- formato consigliato: `.jpg`
-- se preferisci `.webp`, aggiorniamo il mapping in `src/lib/gym-detail.js`
+- formati supportati in ordine di tentativo automatico:
+  - `.webp`
+  - `.jpg`
+  - `.jpeg`
+  - `.png`
+- esempi validi:
+  - `boxe.webp`
+  - `fitness.jpg`
+  - `mma.png`
 - usa solo immagini con licenza valida per riutilizzo commerciale/editoriale

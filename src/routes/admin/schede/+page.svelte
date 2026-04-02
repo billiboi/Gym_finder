@@ -1,5 +1,6 @@
 <script>
   import {
+    imageForGym,
     placeholderImageForDiscipline,
     primaryDisciplineForGym,
     stockImageForDiscipline
@@ -32,18 +33,33 @@
 
   function previewAssetsForDiscipline(disciplineText) {
     const discipline = primaryDisciplineForGym({ discipline: disciplineText });
+    const image = imageForGym({ discipline: disciplineText });
+    const imageMeta =
+      typeof image === 'string' ? { src: image, candidates: [image], fallback: image } : image;
     return {
       discipline,
-      stock: stockImageForDiscipline(discipline),
-      fallback: placeholderImageForDiscipline(discipline)
+      stockBase: stockImageForDiscipline(discipline),
+      src: imageMeta.src,
+      candidates: imageMeta.candidates,
+      fallback: imageMeta.fallback || placeholderImageForDiscipline(discipline)
     };
   }
 
-  function handlePreviewError(event, fallback) {
+  function handlePreviewError(event, preview) {
     const img = event.currentTarget;
-    if (!img || !fallback || img.dataset.fallbackApplied === '1') return;
-    img.dataset.fallbackApplied = '1';
-    img.src = fallback;
+    if (!img || !preview) return;
+
+    const nextIndex = Number(img.dataset.imageIndex || '0') + 1;
+    if (nextIndex < preview.candidates.length) {
+      img.dataset.imageIndex = String(nextIndex);
+      img.src = preview.candidates[nextIndex];
+      return;
+    }
+
+    if (preview.fallback && img.dataset.fallbackApplied !== '1') {
+      img.dataset.fallbackApplied = '1';
+      img.src = preview.fallback;
+    }
   }
 
   $: query = q.trim().toLowerCase();
@@ -181,14 +197,14 @@
 
       <div class="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
         <img
-          src={createPreview.stock}
+          src={createPreview.src}
           alt={`Anteprima fallback ${createPreview.discipline}`}
           class="h-44 w-full object-cover"
-          on:error={(event) => handlePreviewError(event, createPreview.fallback)}
+          on:error={(event) => handlePreviewError(event, createPreview)}
         />
         <div class="grid gap-1 border-t border-slate-200 bg-white/80 px-3 py-3 text-sm text-slate-600">
           <p><strong class="text-slate-900">Anteprima fallback:</strong> {createPreview.discipline}</p>
-          <p>Se non carichi una foto, proveremo prima l'immagine stock della disciplina e poi la cover Pocket Gym.</p>
+          <p>Proveremo in ordine `.webp`, `.jpg`, `.jpeg`, `.png` partendo da <code>{createPreview.stockBase}</code>, poi useremo la cover Pocket Gym.</p>
         </div>
       </div>
 
@@ -367,14 +383,14 @@
           {:else if selectedPreview}
             <div class="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
               <img
-                src={selectedPreview.stock}
+                src={selectedPreview.src}
                 alt={`Anteprima fallback ${selectedPreview.discipline}`}
                 class="h-48 w-full object-cover"
-                on:error={(event) => handlePreviewError(event, selectedPreview.fallback)}
+                on:error={(event) => handlePreviewError(event, selectedPreview)}
               />
               <div class="grid gap-1 border-t border-slate-200 bg-white/80 px-3 py-3 text-sm text-slate-600">
                 <p><strong class="text-slate-900">Fallback attivo:</strong> {selectedPreview.discipline}</p>
-                <p>Questa scheda non ha una foto caricata. In pubblico verra mostrata la foto stock disciplina oppure la cover Pocket Gym.</p>
+                <p>Questa scheda non ha una foto caricata. In pubblico proveremo i file da <code>{selectedPreview.stockBase}</code> e poi la cover Pocket Gym.</p>
               </div>
             </div>
           {/if}

@@ -13,8 +13,11 @@
   const disciplines = disciplineListForGym(gym);
   const presentation = buildGymPresentation(gym);
   const imageAsset = imageForGym(gym);
-  const imageSrc = typeof imageAsset === 'string' ? imageAsset : imageAsset.src;
-  const imageFallback = typeof imageAsset === 'string' ? imageAsset : imageAsset.fallback;
+  const imageMeta =
+    typeof imageAsset === 'string'
+      ? { src: imageAsset, candidates: [imageAsset], fallback: imageAsset }
+      : imageAsset;
+  const imageSrc = imageMeta.src;
   const hoursInfo = fixGymText(gym?.hours_info) || 'Orari da verificare';
   const address = formatAddressForDisplay(gym);
   const phone = fixGymText(gym?.phone) || 'Non disponibile';
@@ -24,9 +27,19 @@
 
   function handleImageError(event) {
     const img = event.currentTarget;
-    if (!img || !imageFallback || img.dataset.fallbackApplied === '1') return;
-    img.dataset.fallbackApplied = '1';
-    img.src = imageFallback;
+    if (!img) return;
+
+    const nextIndex = Number(img.dataset.imageIndex || '0') + 1;
+    if (nextIndex < imageMeta.candidates.length) {
+      img.dataset.imageIndex = String(nextIndex);
+      img.src = imageMeta.candidates[nextIndex];
+      return;
+    }
+
+    if (imageMeta.fallback && img.dataset.fallbackApplied !== '1') {
+      img.dataset.fallbackApplied = '1';
+      img.src = imageMeta.fallback;
+    }
   }
 </script>
 

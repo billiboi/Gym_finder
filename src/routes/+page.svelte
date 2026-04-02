@@ -22,14 +22,28 @@
 
   function resolveImageSource(gym) {
     const image = imageForGym(gym);
-    return typeof image === 'string' ? { src: image, fallback: image } : image;
+    return typeof image === 'string'
+      ? { src: image, candidates: [image], fallback: image }
+      : image;
   }
 
-  function handleImageError(event, fallback) {
+  function handleImageError(event, image) {
     const img = event.currentTarget;
-    if (!img || !fallback || img.dataset.fallbackApplied === '1') return;
-    img.dataset.fallbackApplied = '1';
-    img.src = fallback;
+    if (!img || !image) return;
+
+    const candidates = Array.isArray(image.candidates) ? image.candidates : [image.src];
+    const nextIndex = Number(img.dataset.imageIndex || '0') + 1;
+
+    if (nextIndex < candidates.length) {
+      img.dataset.imageIndex = String(nextIndex);
+      img.src = candidates[nextIndex];
+      return;
+    }
+
+    if (image.fallback && img.dataset.fallbackApplied !== '1') {
+      img.dataset.fallbackApplied = '1';
+      img.src = image.fallback;
+    }
   }
 
   function fixMojibake(value) {
@@ -720,7 +734,7 @@
               alt={`Immagine ${gym.name}`}
               class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
               loading="lazy"
-              on:error={(event) => handleImageError(event, image.fallback)}
+              on:error={(event) => handleImageError(event, image)}
             />
             <span class="absolute left-3 top-3 rounded-full bg-slate-900/85 px-2.5 py-1 text-xs font-bold text-white sc-badge sc-badge--accent">{disciplineListForGym(gym).join(" | ") }</span>
             {#if gym.distance_km !== null && gym.distance_km !== undefined}
