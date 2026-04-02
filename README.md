@@ -137,3 +137,11 @@ See `static/images/stock/README.md` for the expected base filenames.
 - Prefer small, explicit helpers over large implicit data transforms.
 - Add comments only where the code would otherwise be hard to decode quickly.
 - Do not commit temporary import files, local check artifacts, or backup CSVs.
+
+## Repository Docs
+
+- `CONTRIBUTING.md` for contribution guidelines
+- `data/README.md` for dataset scope
+- `scripts/README.md` for script purpose and reuse notes
+- `legacy/README.md` for archived backend context
+- `LICENSE` for repository licensing

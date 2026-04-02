@@ -63,6 +63,8 @@ const CSV_HEADERS = [
   'long'
 ];
 
+// Local mode reads from CSV/JSON files inside the repository.
+// Production mode can bypass those files entirely and persist through Supabase.
 async function ensureStorage() {
   await mkdir(dataDir, { recursive: true });
   await mkdir(staticDir, { recursive: true });
