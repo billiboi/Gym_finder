@@ -453,9 +453,7 @@
       const namePrefix = new RegExp(`^${escapedName}\\s*,\\s*`, 'i');
       const fullAddress = (rawAddress ? rawAddress.replace(namePrefix, '') : '') || 'Indirizzo non disponibile';
       const popupPhone = displayName(gym.phone) || 'Non disponibile';
-      const popupWebsite = gym.website
-        ? `<a href="${gym.website}" target="_blank" rel="noreferrer" class="sc-map-popup-link">Apri sito</a>`
-        : '<span class="sc-map-popup-muted">Non disponibile</span>';
+      const detailHref = gymHref(gym);
 
       window.L.marker([lat, lng])
         .bindPopup(
@@ -475,7 +473,7 @@
             </div>
             <div class="sc-map-popup-footer">
               <span class="sc-map-popup-contact">${popupPhone}</span>
-              ${popupWebsite}
+              <a href="${detailHref}" class="sc-map-popup-link">Apri scheda</a>
             </div>
           </div>`,
           { className: 'sc-map-popup-shell' }
@@ -571,6 +569,11 @@
         <p class="text-xs font-bold uppercase tracking-[0.24em] text-amber-700">Pocket Gym</p>
         <h1 class="text-3xl font-bold leading-tight text-slate-900 sm:text-5xl">Trova la palestra giusta, ovunque ti trovi</h1>
         <p class="mt-3 text-sm text-slate-600 sm:text-base">Una ricerca piu rapida, pulita e mobile-first per continuare ad allenarti anche quando sei in viaggio o ti sei appena trasferito.</p>
+        <div class="mt-4 flex flex-wrap gap-2">
+          <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">Ricerca per vicinanza</span>
+          <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">Schede complete dedicate</span>
+          <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">Esperienza mobile-first</span>
+        </div>
       </div>
       <div class="grid min-w-[220px] grid-cols-2 gap-2 text-center text-xs sm:text-sm">
         <div class="rounded-2xl sc-stat px-3 py-2 text-white">
@@ -706,6 +709,7 @@
             <div class="space-y-1 rounded-2xl sc-gym-card-head p-3">
               <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Scheda palestra</p>
               <h3 class="text-lg font-bold leading-tight text-slate-900">{displayName(gym.name)}</h3>
+              <p class="text-sm text-slate-600">Apri la scheda completa per vedere presentazione, contatti e dettagli della struttura.</p>
             </div>
 
             <div class="grid gap-2">
@@ -714,19 +718,12 @@
               <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Telefono:</strong> {displayName(gym.phone) || '-'}</p>
             </div>
 
-            <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700">
-              <strong>Sito:</strong>
-              {#if gym.website}
-                <a href={gym.website} target="_blank" rel="noreferrer" class="font-semibold text-blue-700 underline decoration-2 underline-offset-2">Apri sito</a>
-              {:else}
-                -
-              {/if}
-            </p>
-            <div class="flex items-center justify-between gap-3 pt-1">
+            <div class="rounded-2xl sc-gym-card-cta p-3">
               <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 sc-gym-card-kicker">Approfondimento</p>
+              <p class="mt-1 text-sm text-slate-600">Il sito ufficiale e gli approfondimenti sono disponibili solo nella scheda completa.</p>
               <a
                 href={gymHref(gym)}
-                class="inline-flex items-center rounded-xl bg-slate-900 px-3 py-2 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
+                class="mt-3 inline-flex items-center rounded-xl bg-slate-900 px-3 py-2 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
               >
                 Scheda completa
               </a>
