@@ -454,6 +454,7 @@
       const fullAddress = (rawAddress ? rawAddress.replace(namePrefix, '') : '') || 'Indirizzo non disponibile';
       const popupPhone = displayName(gym.phone) || 'Non disponibile';
       const detailHref = gymHref(gym);
+      const popupDiscipline = disciplineListForGym(gym).join(' | ');
 
       window.L.marker([lat, lng])
         .bindPopup(
@@ -461,7 +462,7 @@
             <div class="sc-map-popup-title">${gym.name}</div>
             <div class="sc-map-popup-row">
               <span class="sc-map-popup-label">Disciplina</span>
-              <span class="sc-map-popup-value">${disciplineListForGym(gym).join(' | ')}</span>
+              <span class="sc-map-popup-value">${popupDiscipline}</span>
             </div>
             <div class="sc-map-popup-row">
               <span class="sc-map-popup-label">Indirizzo</span>
@@ -473,7 +474,7 @@
             </div>
             <div class="sc-map-popup-footer">
               <span class="sc-map-popup-contact">${popupPhone}</span>
-              <a href="${detailHref}" class="sc-map-popup-link">Apri scheda</a>
+              <a href="${detailHref}" class="sc-map-popup-link">Scheda completa</a>
             </div>
           </div>`,
           { className: 'sc-map-popup-shell' }
@@ -573,6 +574,14 @@
           <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">Ricerca per vicinanza</span>
           <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">Schede complete dedicate</span>
           <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">Esperienza mobile-first</span>
+        </div>
+        <div class="mt-5 flex flex-wrap gap-3">
+          <a href="#elenco-palestre" class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
+            Esplora le palestre
+          </a>
+          <button type="button" class="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 sc-button-ghost" on:click={detectLocation} disabled={locating}>
+            {locating ? 'Rilevamento posizione...' : 'Trova quelle vicine'}
+          </button>
         </div>
       </div>
       <div class="grid min-w-[220px] grid-cols-2 gap-2 text-center text-xs sm:text-sm">
@@ -686,7 +695,7 @@
     </div>
   </section>
 
-  <section class="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+  <section id="elenco-palestre" class="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
     {#if filteredGyms.length === 0}
       <div class="col-span-full rounded-2xl border border-dashed border-slate-300 p-8 text-center">
         <p class="text-slate-500">Nessuna palestra trovata con i filtri selezionati.</p>
@@ -719,11 +728,9 @@
             </div>
 
             <div class="rounded-2xl sc-gym-card-cta p-3">
-              <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 sc-gym-card-kicker">Approfondimento</p>
-              <p class="mt-1 text-sm text-slate-600">Il sito ufficiale e gli approfondimenti sono disponibili solo nella scheda completa.</p>
               <a
                 href={gymHref(gym)}
-                class="mt-3 inline-flex items-center rounded-xl bg-slate-900 px-3 py-2 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
+                class="inline-flex items-center rounded-xl bg-slate-900 px-3 py-2 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
               >
                 Scheda completa
               </a>

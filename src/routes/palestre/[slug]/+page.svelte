@@ -53,6 +53,9 @@
               <h1 class="mt-2 text-4xl font-bold leading-none text-slate-900 sm:text-5xl sc-detail-title">
                 {fixGymText(gym?.name)}
               </h1>
+              <p class="mt-3 max-w-2xl text-sm leading-7 text-slate-600 sc-detail-copy">
+                Tutto quello che ti serve per valutare rapidamente la struttura: discipline, contatti, orari e accesso immediato ai riferimenti ufficiali.
+              </p>
             </div>
 
             <p class="text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">{presentation}</p>
@@ -108,7 +111,7 @@
       </div>
     </section>
 
-    <section class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+    <section class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sc-detail-actions sm:p-7">
       <div class="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Contatti rapidi</p>
