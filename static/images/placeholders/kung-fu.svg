@@ -1,0 +1,17 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#201712"/>
+      <stop offset="100%" stop-color="#7b5034"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#bg)"/>
+  <circle cx="1030" cy="118" r="214" fill="#ead4b5" fill-opacity="0.18"/>
+  <circle cx="158" cy="560" r="222" fill="#ffffff" fill-opacity="0.05"/>
+  <path d="M0 556c170-66 334-74 490-22 181 61 365 60 710-8v149H0z" fill="#08110e" fill-opacity="0.18"/>
+  <g transform="translate(445 100)"><path d="M236 404c35-128 111-212 229-251 42-14 86 18 86 63 0 55-16 103-49 144-58 74-141 114-249 122" fill="none" stroke="#fff8eb" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/><path d="M297 372l184-151" stroke="#fff8eb" stroke-width="12" opacity="0.9"/></g>
+  <rect x="84" y="90" width="156" height="36" rx="18" fill="#ffffff" fill-opacity="0.12"/>
+  <text x="106" y="114" fill="#ffffff" fill-opacity="0.92" font-size="18" font-family="Arial, sans-serif" font-weight="700" letter-spacing="3">POCKET GYM</text>
+  <text x="84" y="514" fill="#ffffff" font-size="72" font-family="Arial, sans-serif" font-weight="700">Kung Fu</text>
+  <text x="84" y="556" fill="#ffffff" fill-opacity="0.76" font-size="24" font-family="Arial, sans-serif" font-weight="500">Forme, fluidita e arti marziali cinesi</text>
+</svg>

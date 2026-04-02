@@ -1,0 +1,17 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#16231f"/>
+      <stop offset="100%" stop-color="#275448"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#bg)"/>
+  <circle cx="1030" cy="118" r="214" fill="#c7ddc8" fill-opacity="0.18"/>
+  <circle cx="158" cy="560" r="222" fill="#ffffff" fill-opacity="0.05"/>
+  <path d="M0 556c170-66 334-74 490-22 181 61 365 60 710-8v149H0z" fill="#08110e" fill-opacity="0.18"/>
+  <g transform="translate(445 100)"><polygon points="258,196 472,154 638,243 622,441 408,489 242,400" fill="none" stroke="#f2f6ea" stroke-width="16" stroke-linejoin="round"/><path d="M330 176l-16 282M406 161l-16 291M486 171l-16 292M568 210l-16 282" stroke="#f2f6ea" stroke-width="10" opacity="0.9"/></g>
+  <rect x="84" y="90" width="156" height="36" rx="18" fill="#ffffff" fill-opacity="0.12"/>
+  <text x="106" y="114" fill="#ffffff" fill-opacity="0.92" font-size="18" font-family="Arial, sans-serif" font-weight="700" letter-spacing="3">POCKET GYM</text>
+  <text x="84" y="514" fill="#ffffff" font-size="72" font-family="Arial, sans-serif" font-weight="700">MMA</text>
+  <text x="84" y="556" fill="#ffffff" fill-opacity="0.76" font-size="24" font-family="Arial, sans-serif" font-weight="500">Striking, grappling e preparazione completa</text>
+</svg>

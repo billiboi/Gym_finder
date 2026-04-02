@@ -1,51 +1,8 @@
 <script>
   import { afterUpdate, onDestroy, onMount } from 'svelte';
   import { dedupeDisciplines, normalizeDisciplineLabel } from '$lib/disciplines';
-  import { gymHref } from '$lib/gym-detail';
+  import { gymHref, imageForGym } from '$lib/gym-detail';
   import { isGymOpenNow } from '$lib/hours';
-
-  const disciplineStyle = {
-    Boxe: { bg: '#7f1d1d', fg: '#fee2e2', icon: 'BOX' },
-    Kickboxe: { bg: '#9a3412', fg: '#ffedd5', icon: 'KBX' },
-    'Muay Thai': { bg: '#7c2d12', fg: '#ffedd5', icon: 'MT' },
-    K1: { bg: '#991b1b', fg: '#fee2e2', icon: 'K1' },
-    MMA: { bg: '#1e293b', fg: '#e2e8f0', icon: 'MMA' },
-    Judo: { bg: '#0f172a', fg: '#e2e8f0', icon: 'JUD' },
-    JiuJitsu: { bg: '#0b3b2e', fg: '#dcfce7', icon: 'BJJ' },
-    'JiuJitsu Brasiliano': { bg: '#14532d', fg: '#dcfce7', icon: 'BJJ' },
-    Karate: { bg: '#374151', fg: '#f3f4f6', icon: 'KAR' },
-    Taekwondo: { bg: '#0f766e', fg: '#ccfbf1', icon: 'TKD' },
-    Aikido: { bg: '#1d4ed8', fg: '#dbeafe', icon: 'AIK' },
-    'Kung Fu': { bg: '#7c2d12', fg: '#ffedd5', icon: 'KF' },
-    'Wing Chun': { bg: '#4c1d95', fg: '#ede9fe', icon: 'WC' },
-    'Tai Chi': { bg: '#134e4a', fg: '#ccfbf1', icon: 'TC' },
-    Scherma: { bg: '#475569', fg: '#f1f5f9', icon: 'SCH' },
-    Chanbara: { bg: '#312e81', fg: '#e0e7ff', icon: 'CHN' },
-    'Difesa Personale': { bg: '#334155', fg: '#e2e8f0', icon: 'SELF' },
-    'Arti Marziali': { bg: '#1f2937', fg: '#f3f4f6', icon: 'AM' },
-    CrossFit: { bg: '#1e3a8a', fg: '#dbeafe', icon: 'CF' },
-    Pilates: { bg: '#6d28d9', fg: '#ede9fe', icon: 'PIL' },
-    Yoga: { bg: '#0f766e', fg: '#ccfbf1', icon: 'YOG' },
-    Nuoto: { bg: '#075985', fg: '#e0f2fe', icon: 'SWM' },
-    Calisthenics: { bg: '#4b5563', fg: '#f3f4f6', icon: 'CAL' },
-    Functional: { bg: '#334155', fg: '#e2e8f0', icon: 'FUN' },
-    Bodybuilding: { bg: '#111827', fg: '#f9fafb', icon: 'BB' },
-    Fitness: { bg: '#1f2937', fg: '#f3f4f6', icon: 'FIT' }
-  };
-
-  function disciplineImageDataUri(discipline) {
-    const style = disciplineStyle[discipline] || disciplineStyle.Fitness;
-    const title = (discipline || 'Fitness').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675"><rect width="1200" height="675" fill="${style.bg}"/><circle cx="1040" cy="120" r="220" fill="rgba(255,255,255,0.08)"/><circle cx="180" cy="560" r="240" fill="rgba(255,255,255,0.06)"/><text x="80" y="300" fill="${style.fg}" font-size="58" font-family="Arial, sans-serif" font-weight="700">${title}</text><text x="80" y="390" fill="${style.fg}" font-size="112">${style.icon}</text><text x="80" y="455" fill="${style.fg}" font-size="34" opacity="0.8">Pocket Gym</text></svg>`;
-    return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
-  }
-
-  function imageForGym(gym) {
-    if (gym.image_url && String(gym.image_url).startsWith('/uploads/')) {
-      return gym.image_url;
-    }
-    return disciplineImageDataUri(primaryDisciplineForGym(gym));
-  }
   function disciplineListForGym(gym) {
     if (Array.isArray(gym.disciplines) && gym.disciplines.length) {
       return gym.disciplines.map((d) => normalizeDisciplineLabel(d)).filter(Boolean);

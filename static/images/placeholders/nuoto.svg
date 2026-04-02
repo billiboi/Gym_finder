@@ -1,0 +1,17 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#13253a"/>
+      <stop offset="100%" stop-color="#2f6d90"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#bg)"/>
+  <circle cx="1030" cy="118" r="214" fill="#cfe7f3" fill-opacity="0.18"/>
+  <circle cx="158" cy="560" r="222" fill="#ffffff" fill-opacity="0.05"/>
+  <path d="M0 556c170-66 334-74 490-22 181 61 365 60 710-8v149H0z" fill="#08110e" fill-opacity="0.18"/>
+  <g transform="translate(445 100)"><path d="M214 372c39-31 76-47 112-47 56 0 74 43 122 43 29 0 61-16 98-47 39-31 76-47 112-47" fill="none" stroke="#f2fbff" stroke-width="18" stroke-linecap="round"/><path d="M242 432c39-31 76-47 112-47 56 0 74 43 122 43 29 0 61-16 98-47" fill="none" stroke="#f2fbff" stroke-width="18" stroke-linecap="round" opacity="0.88"/></g>
+  <rect x="84" y="90" width="156" height="36" rx="18" fill="#ffffff" fill-opacity="0.12"/>
+  <text x="106" y="114" fill="#ffffff" fill-opacity="0.92" font-size="18" font-family="Arial, sans-serif" font-weight="700" letter-spacing="3">POCKET GYM</text>
+  <text x="84" y="514" fill="#ffffff" font-size="72" font-family="Arial, sans-serif" font-weight="700">Nuoto</text>
+  <text x="84" y="556" fill="#ffffff" fill-opacity="0.76" font-size="24" font-family="Arial, sans-serif" font-weight="500">Piscina, corsie e allenamento in acqua</text>
+</svg>
