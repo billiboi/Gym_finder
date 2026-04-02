@@ -22,22 +22,11 @@
 </script>
 
 <svelte:head>
-  <title>{fixGymText(gym?.name)} | Gym Finder</title>
+  <title>{fixGymText(gym?.name)} | Pocket Gym</title>
   <meta name="description" content={presentation} />
 </svelte:head>
 
 <div class="min-h-screen w-full sc-page">
-  <header class="mx-auto w-full max-w-6xl px-4 pt-6 sm:px-6 lg:px-8">
-    <div class="rounded-3xl border border-white/70 bg-white/80 px-4 py-4 shadow-lg backdrop-blur-sm sc-panel">
-      <a
-        href="/"
-        class="inline-flex items-center rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
-      >
-        Torna all'elenco
-      </a>
-    </div>
-  </header>
-
   <main class="mx-auto flex w-full max-w-6xl flex-col gap-5 px-4 pb-10 pt-4 sm:px-6 lg:px-8">
     <section class="overflow-hidden rounded-3xl border border-white/70 bg-white/80 shadow-xl backdrop-blur-sm sc-panel">
       <div class="grid gap-0 lg:grid-cols-[1.15fr_0.85fr]">

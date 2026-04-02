@@ -2,29 +2,6 @@
   import { afterUpdate, onDestroy, onMount } from 'svelte';
   import { dedupeDisciplines, normalizeDisciplineLabel } from '$lib/disciplines';
   import { gymHref } from '$lib/gym-detail';
-  const THEME_KEY = 'gymfinder-theme';
-  let theme = 'light';
-
-  function applyTheme(next) {
-    theme = next;
-    if (typeof document !== 'undefined') {
-      document.documentElement.dataset.theme = theme;
-      document.documentElement.classList.toggle('theme-dark', theme === 'dark');
-      if (document.body) {
-        document.body.dataset.theme = theme;
-        document.body.classList.toggle('theme-dark', theme === 'dark');
-      }
-      try {
-        localStorage.setItem(THEME_KEY, theme);
-      } catch {
-        // ignore
-      }
-    }
-  }
-
-  function toggleTheme() {
-    applyTheme(theme === 'dark' ? 'light' : 'dark');
-  }
   import { isGymOpenNow } from '$lib/hours';
 
   const disciplineStyle = {
@@ -59,7 +36,7 @@
   function disciplineImageDataUri(discipline) {
     const style = disciplineStyle[discipline] || disciplineStyle.Fitness;
     const title = (discipline || 'Fitness').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675"><rect width="1200" height="675" fill="${style.bg}"/><circle cx="1040" cy="120" r="220" fill="rgba(255,255,255,0.08)"/><circle cx="180" cy="560" r="240" fill="rgba(255,255,255,0.06)"/><text x="80" y="300" fill="${style.fg}" font-size="58" font-family="Arial, sans-serif" font-weight="700">${title}</text><text x="80" y="390" fill="${style.fg}" font-size="112">${style.icon}</text><text x="80" y="455" fill="${style.fg}" font-size="34" opacity="0.8">Gym Finder</text></svg>`;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675"><rect width="1200" height="675" fill="${style.bg}"/><circle cx="1040" cy="120" r="220" fill="rgba(255,255,255,0.08)"/><circle cx="180" cy="560" r="240" fill="rgba(255,255,255,0.06)"/><text x="80" y="300" fill="${style.fg}" font-size="58" font-family="Arial, sans-serif" font-weight="700">${title}</text><text x="80" y="390" fill="${style.fg}" font-size="112">${style.icon}</text><text x="80" y="455" fill="${style.fg}" font-size="34" opacity="0.8">Pocket Gym</text></svg>`;
     return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
   }
 
@@ -566,12 +543,6 @@
   }
 
   onMount(async () => {
-    if (typeof window !== 'undefined') {
-      const stored = window.localStorage ? window.localStorage.getItem(THEME_KEY) : null;
-      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      applyTheme(stored || (prefersDark ? 'dark' : 'light'));
-    }
-
     await Promise.all([loadGyms(), loadDisciplines()]);
     await initMap();
   });
@@ -591,26 +562,15 @@
 </script>
 
 <div class="min-h-screen w-full sc-page relative">
-  <header class="mx-auto w-full max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
-    <div class="flex flex-wrap items-center justify-between gap-3 rounded-3xl border border-white/70 bg-white/80 px-4 py-3 shadow-lg backdrop-blur-sm sc-panel sc-header">
-      <div>
-        <p class="text-xs font-bold uppercase tracking-[0.24em] text-amber-700">Gym Finder</p>
-        <p class="text-sm text-slate-600">Directory palestre e arti marziali in Ticino e dintorni.</p>
-      </div>
-      <button type="button" class="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-bold text-slate-700 hover:bg-slate-100 sc-button-ghost" on:click={toggleTheme} data-testid="theme-toggle">
-        {theme === 'dark' ? 'Light' : 'Dark'} theme
-      </button>
-    </div>
-  </header>
-
   <main class="mx-auto w-full max-w-7xl px-4 pb-8 pt-4 sm:px-6 lg:px-8">
   <section class="reveal rounded-3xl border border-white/80 bg-white/70 p-5 shadow-xl backdrop-blur-sm sm:p-7 sc-panel sc-hero">
 
 
     <div class="mt-2 flex flex-wrap items-end justify-between gap-5">
       <div class="max-w-3xl">
-        <h1 class="text-3xl font-bold leading-tight text-slate-900 sm:text-5xl">Trova la palestra pi&ugrave; vicina a te</h1>
-        <p class="mt-3 text-sm text-slate-600 sm:text-base">Pensata per utenti in viaggio o appena trasferiti: cerca per posizione, tipologia e distanza.</p>
+        <p class="text-xs font-bold uppercase tracking-[0.24em] text-amber-700">Pocket Gym</p>
+        <h1 class="text-3xl font-bold leading-tight text-slate-900 sm:text-5xl">Trova la palestra giusta, ovunque ti trovi</h1>
+        <p class="mt-3 text-sm text-slate-600 sm:text-base">Una ricerca piu rapida, pulita e mobile-first per continuare ad allenarti anche quando sei in viaggio o ti sei appena trasferito.</p>
       </div>
       <div class="grid min-w-[220px] grid-cols-2 gap-2 text-center text-xs sm:text-sm">
         <div class="rounded-2xl sc-stat px-3 py-2 text-white">
@@ -780,7 +740,7 @@
 
   <footer class="mx-auto w-full max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
     <div class="rounded-3xl border border-white/70 bg-white/80 px-4 py-3 text-xs text-slate-500 shadow-lg backdrop-blur-sm sc-panel">
-      Gym Finder · Ricerca palestre e arti marziali · © 2026
+      Pocket Gym · Ricerca palestre e arti marziali · © 2026
     </div>
   </footer>
 </div>

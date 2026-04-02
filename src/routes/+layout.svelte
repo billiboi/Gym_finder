@@ -1,19 +1,25 @@
 <script>
   import '../app.css';
+  import { page } from '$app/stores';
+  import PublicHeader from '$lib/components/PublicHeader.svelte';
 </script>
 
 <svelte:head>
-  <title>Gym Finder</title>
+  <title>Pocket Gym</title>
   <meta
     name="description"
-    content="Trova palestre e sport da combattimento vicino a te con filtri per disciplina, posizione e distanza."
+    content="Pocket Gym ti aiuta a trovare palestre vicine con filtri per disciplina, posizione e distanza."
   />
   <meta name="theme-color" content="#1f5c4a" />
-  <meta property="og:title" content="Gym Finder" />
+  <meta property="og:title" content="Pocket Gym" />
   <meta
     property="og:description"
-    content="Directory per trovare palestre vicine, anche quando sei in viaggio o ti sei appena trasferito."
+    content="La directory per trovare palestre vicine, anche quando sei in viaggio o ti sei appena trasferito."
   />
 </svelte:head>
+
+{#if !$page.url.pathname.startsWith('/admin')}
+  <PublicHeader path={$page.url.pathname} />
+{/if}
 
 <slot />

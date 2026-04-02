@@ -72,7 +72,7 @@ export function disciplineImageDataUri(discipline) {
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675"><rect width="1200" height="675" fill="${style.bg}"/><circle cx="1040" cy="120" r="220" fill="rgba(255,255,255,0.08)"/><circle cx="180" cy="560" r="240" fill="rgba(255,255,255,0.06)"/><text x="80" y="300" fill="${style.fg}" font-size="58" font-family="Arial, sans-serif" font-weight="700">${title}</text><text x="80" y="390" fill="${style.fg}" font-size="112">${style.icon}</text><text x="80" y="455" fill="${style.fg}" font-size="34" opacity="0.8">Gym Finder</text></svg>`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675"><rect width="1200" height="675" fill="${style.bg}"/><circle cx="1040" cy="120" r="220" fill="rgba(255,255,255,0.08)"/><circle cx="180" cy="560" r="240" fill="rgba(255,255,255,0.06)"/><text x="80" y="300" fill="${style.fg}" font-size="58" font-family="Arial, sans-serif" font-weight="700">${title}</text><text x="80" y="390" fill="${style.fg}" font-size="112">${style.icon}</text><text x="80" y="455" fill="${style.fg}" font-size="34" opacity="0.8">Pocket Gym</text></svg>`;
   return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
 }
 
