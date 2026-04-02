@@ -22,6 +22,10 @@ Basename supportati:
 
 Note:
 - usa immagini orizzontali, idealmente 1600x900 o simili
+- puoi aggiungere fino a 3 varianti per disciplina:
+  - `boxe.webp`
+  - `boxe-2.webp`
+  - `boxe-3.webp`
 - formati supportati in ordine di tentativo automatico:
   - `.webp`
   - `.jpg`
@@ -29,6 +33,8 @@ Note:
   - `.png`
 - esempi validi:
   - `boxe.webp`
+  - `boxe-2.jpg`
+  - `boxe-3.png`
   - `fitness.jpg`
   - `mma.png`
 - usa solo immagini con licenza valida per riutilizzo commerciale/editoriale

@@ -4,6 +4,7 @@
     placeholderImageForDiscipline,
     primaryDisciplineForGym,
     resolveAvailableStockImage,
+    selectRandomStockImage,
     stockImageForDiscipline
   } from '$lib/gym-detail';
 
@@ -41,6 +42,7 @@
       discipline,
       stockBase: stockImageForDiscipline(discipline),
       stockResolved: resolveAvailableStockImage(discipline),
+      stockSelected: selectRandomStockImage(discipline, disciplineText || discipline),
       src: imageMeta.src,
       candidates: imageMeta.candidates,
       fallback: imageMeta.fallback || placeholderImageForDiscipline(discipline)
@@ -208,7 +210,7 @@
           <p><strong class="text-slate-900">Anteprima fallback:</strong> {createPreview.discipline}</p>
           <p>
             {#if createPreview.stockResolved}
-              Foto stock trovata: <code>{createPreview.stockResolved}</code>
+              {createPreview.stockResolved.length} foto stock trovate. Rotazione attiva, selezione corrente: <code>{createPreview.stockSelected}</code>
             {:else}
               Nessuna foto stock disponibile per <code>{createPreview.stockBase}</code>: verra usata la cover Pocket Gym.
             {/if}
@@ -400,7 +402,7 @@
                 <p><strong class="text-slate-900">Fallback attivo:</strong> {selectedPreview.discipline}</p>
                 <p>
                   {#if selectedPreview.stockResolved}
-                    In pubblico verra usata la foto stock <code>{selectedPreview.stockResolved}</code>.
+                    Rotazione attiva su {selectedPreview.stockResolved.length} immagini. Selezione corrente: <code>{selectedPreview.stockSelected}</code>.
                   {:else}
                     Questa scheda non ha una foto caricata e non esiste ancora una foto stock per <code>{selectedPreview.stockBase}</code>: verra usata la cover Pocket Gym.
                   {/if}

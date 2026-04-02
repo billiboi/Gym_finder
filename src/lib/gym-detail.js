@@ -112,12 +112,35 @@ export function stockImageForDiscipline(discipline) {
 
 export function stockImageCandidatesForDiscipline(discipline) {
   const base = stockImageForDiscipline(discipline);
-  return [`${base}.webp`, `${base}.jpg`, `${base}.jpeg`, `${base}.png`];
+  const variants = ['', '-2', '-3'];
+  const extensions = ['.webp', '.jpg', '.jpeg', '.png'];
+  const out = [];
+
+  for (const variant of variants) {
+    for (const ext of extensions) {
+      out.push(`${base}${variant}${ext}`);
+    }
+  }
+
+  return out;
 }
 
 export function resolveAvailableStockImage(discipline) {
   const candidates = stockImageCandidatesForDiscipline(discipline);
-  return candidates.find((candidate) => AVAILABLE_STOCK_IMAGES.has(candidate)) || '';
+  return candidates.filter((candidate) => AVAILABLE_STOCK_IMAGES.has(candidate));
+}
+
+export function selectRandomStockImage(discipline, seed = '') {
+  const available = resolveAvailableStockImage(discipline);
+  if (!available.length) return '';
+
+  const key = String(seed || discipline || '');
+  let hash = 0;
+  for (let i = 0; i < key.length; i += 1) {
+    hash = (hash * 31 + key.charCodeAt(i)) >>> 0;
+  }
+
+  return available[hash % available.length] || available[0];
 }
 
 export function imageForGym(gym) {
@@ -131,7 +154,7 @@ export function imageForGym(gym) {
   }
 
   const discipline = primaryDisciplineForGym(gym);
-  const availableStock = resolveAvailableStockImage(discipline);
+  const availableStock = selectRandomStockImage(discipline, gym?.id || gym?.name || discipline);
   const fallback = placeholderImageForDiscipline(discipline);
 
   // Public pages receive a deterministic source here:
