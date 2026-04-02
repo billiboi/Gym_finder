@@ -1,7 +1,8 @@
 {
-  "name": "gym-directory-sveltekit",
+  "name": "pocket-gym",
   "version": "1.0.0",
   "private": true,
+  "description": "Pocket Gym is a SvelteKit web app for discovering nearby gyms and martial arts clubs.",
   "type": "module",
   "scripts": {
     "dev": "vite dev",

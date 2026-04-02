@@ -749,7 +749,6 @@
             <div class="space-y-1 rounded-2xl sc-gym-card-head p-3">
               <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Scheda palestra</p>
               <h3 class="text-lg font-bold leading-tight text-slate-900">{displayName(gym.name)}</h3>
-              <p class="text-sm text-slate-600">Apri la scheda completa per vedere presentazione, contatti e dettagli della struttura.</p>
             </div>
 
             <div class="grid gap-2">

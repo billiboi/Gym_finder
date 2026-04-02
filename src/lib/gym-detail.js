@@ -1,7 +1,8 @@
 import { normalizeDisciplineLabel } from '$lib/disciplines';
 
-const AVAILABLE_STOCK_IMAGES = new Set([
-]);
+// Keep this list in sync with the actual files committed under `static/images/stock`.
+// If a discipline has no stock photo yet, the UI falls back directly to the branded SVG cover.
+const AVAILABLE_STOCK_IMAGES = new Set([]);
 
 export function fixGymText(value) {
   let text = String(value || '');
@@ -133,6 +134,8 @@ export function imageForGym(gym) {
   const availableStock = resolveAvailableStockImage(discipline);
   const fallback = placeholderImageForDiscipline(discipline);
 
+  // Public pages receive a deterministic source here:
+  // uploaded image -> committed stock photo -> branded SVG placeholder.
   return {
     src: availableStock || fallback,
     candidates: availableStock ? [availableStock] : [fallback],
