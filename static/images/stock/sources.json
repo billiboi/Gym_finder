@@ -1,0 +1,132 @@
+{
+  "provider": "Pexels",
+  "license": {
+    "page": "https://www.pexels.com/license/",
+    "help": "https://help.pexels.com/hc/en-us/articles/360042295174-What-is-the-license-of-the-photos-and-videos-on-Pexels",
+    "notes": [
+      "Pexels states that photos and videos can be used for free, including commercial use.",
+      "Attribution is not required, but it is appreciated.",
+      "Do not use people or brands in a misleading or offensive way.",
+      "Do not redistribute the images as stock assets."
+    ]
+  },
+  "sources": [
+    {
+      "baseName": "boxe",
+      "discipline": "Boxe",
+      "queries": [
+        "https://www.pexels.com/search/boxing%20gym/",
+        "https://www.pexels.com/search/boxing/",
+        "https://www.pexels.com/search/gym%20boxing/"
+      ]
+    },
+    {
+      "baseName": "kickboxe",
+      "discipline": "Kickboxe",
+      "queries": [
+        "https://www.pexels.com/search/kickboxing%20gym/",
+        "https://www.pexels.com/search/kickboxing/",
+        "https://www.pexels.com/search/kick%20boxing/"
+      ]
+    },
+    {
+      "baseName": "muay-thai",
+      "discipline": "Muay Thai",
+      "queries": [
+        "https://www.pexels.com/search/muay%20thai%20gym/",
+        "https://www.pexels.com/search/muay%20thai/",
+        "https://www.pexels.com/search/muaythai/"
+      ]
+    },
+    {
+      "baseName": "mma",
+      "discipline": "MMA",
+      "queries": [
+        "https://www.pexels.com/search/mma/",
+        "https://www.pexels.com/search/mixed%20martial%20arts/",
+        "https://www.pexels.com/search/mma%20gym/"
+      ]
+    },
+    {
+      "baseName": "grappling",
+      "discipline": "JiuJitsu / Brazilian JiuJitsu",
+      "queries": [
+        "https://www.pexels.com/search/brazilian%20jiu%20jitsu/",
+        "https://www.pexels.com/search/brazilian%20jiu-jitsu/",
+        "https://www.pexels.com/search/jiu%20jitsu%20training/"
+      ]
+    },
+    {
+      "baseName": "judo",
+      "discipline": "Judo",
+      "queries": [
+        "https://www.pexels.com/search/judo%20training/",
+        "https://www.pexels.com/search/judo/",
+        "https://www.pexels.com/search/judoka%20training/"
+      ]
+    },
+    {
+      "baseName": "karate",
+      "discipline": "Karate / Taekwondo / Aikido / Scherma fallback",
+      "queries": [
+        "https://www.pexels.com/search/karate%20training/",
+        "https://www.pexels.com/search/karate/",
+        "https://www.pexels.com/search/Karate-Dojo-Training/"
+      ]
+    },
+    {
+      "baseName": "kung-fu",
+      "discipline": "Kung Fu / Wing Chun / Tai Chi",
+      "queries": [
+        "https://www.pexels.com/search/kung%20fu%20training/",
+        "https://www.pexels.com/search/wing%20chun/",
+        "https://www.pexels.com/search/tai%20chi/"
+      ]
+    },
+    {
+      "baseName": "fitness",
+      "discipline": "Fitness / Bodybuilding",
+      "queries": [
+        "https://www.pexels.com/search/gym/",
+        "https://www.pexels.com/search/fitness%20gym/",
+        "https://www.pexels.com/search/bodybuilding/"
+      ]
+    },
+    {
+      "baseName": "functional",
+      "discipline": "Functional / CrossFit / Calisthenics",
+      "queries": [
+        "https://www.pexels.com/search/crossfit%20gym/",
+        "https://www.pexels.com/search/crossfit/",
+        "https://www.pexels.com/search/calisthenics/"
+      ]
+    },
+    {
+      "baseName": "wellness",
+      "discipline": "Yoga / Pilates",
+      "queries": [
+        "https://www.pexels.com/search/yoga%20studio/",
+        "https://www.pexels.com/search/yoga/",
+        "https://www.pexels.com/search/pilates/"
+      ]
+    },
+    {
+      "baseName": "nuoto",
+      "discipline": "Nuoto",
+      "queries": [
+        "https://www.pexels.com/search/swim%20training/",
+        "https://www.pexels.com/search/swimmingpool/",
+        "https://www.pexels.com/search/swimming%20pool/"
+      ]
+    },
+    {
+      "baseName": "difesa-personale",
+      "discipline": "Difesa Personale",
+      "queries": [
+        "https://www.pexels.com/search/self%20defense/",
+        "https://www.pexels.com/search/martial%20arts%20training/",
+        "https://www.pexels.com/search/fighting%20stance/"
+      ]
+    }
+  ]
+}
