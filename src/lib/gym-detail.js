@@ -2,7 +2,20 @@ import { normalizeDisciplineLabel } from '$lib/disciplines';
 
 // Keep this list in sync with the actual files committed under `static/images/stock`.
 // If a discipline has no stock photo yet, the UI falls back directly to the branded SVG cover.
-const AVAILABLE_STOCK_IMAGES = new Set([]);
+const AVAILABLE_STOCK_IMAGES = new Set([
+  '/images/stock/boxe.webp',
+  '/images/stock/boxe-2.webp',
+  '/images/stock/boxe-3.webp',
+  '/images/stock/judo.webp',
+  '/images/stock/judo-2.webp',
+  '/images/stock/judo-3.webp',
+  '/images/stock/kickboxe.webp',
+  '/images/stock/kickboxe-2.webp',
+  '/images/stock/kickboxe-3.webp',
+  '/images/stock/mma.webp',
+  '/images/stock/mma-2.webp',
+  '/images/stock/mma-3.webp'
+]);
 
 export function fixGymText(value) {
   let text = String(value || '');
