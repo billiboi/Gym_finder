@@ -196,7 +196,7 @@
         <label class="grid gap-1">
           <span class="text-sm font-semibold text-slate-700">Foto copertina</span>
           <input name="image" type="file" accept="image/png,image/jpeg,image/webp,image/gif" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" />
-          <span class="text-xs text-slate-500">Se non carichi un'immagine, la scheda usera la foto stock della disciplina oppure la cover Pocket Gym.</span>
+          <span class="text-xs text-slate-500">Se non carichi un'immagine, la scheda usera la foto stock della disciplina oppure la cover del brand.</span>
         </label>
 
       <div class="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
@@ -212,7 +212,7 @@
             {#if createPreview.stockResolved}
               {createPreview.stockResolved.length} foto stock trovate. Rotazione attiva, selezione corrente: <code>{createPreview.stockSelected}</code>
             {:else}
-              Nessuna foto stock disponibile per <code>{createPreview.stockBase}</code>: verra usata la cover Pocket Gym.
+              Nessuna foto stock disponibile per <code>{createPreview.stockBase}</code>: verra usata la cover del brand.
             {/if}
           </p>
         </div>
@@ -404,7 +404,7 @@
                   {#if selectedPreview.stockResolved}
                     Rotazione attiva su {selectedPreview.stockResolved.length} immagini. Selezione corrente: <code>{selectedPreview.stockSelected}</code>.
                   {:else}
-                    Questa scheda non ha una foto caricata e non esiste ancora una foto stock per <code>{selectedPreview.stockBase}</code>: verra usata la cover Pocket Gym.
+                    Questa scheda non ha una foto caricata e non esiste ancora una foto stock per <code>{selectedPreview.stockBase}</code>: verra usata la cover del brand.
                   {/if}
                 </p>
               </div>

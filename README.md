@@ -1,10 +1,10 @@
-# Pocket Gym
+# Palestre in Zona
 
 [![SvelteKit](https://img.shields.io/badge/SvelteKit-FF3E00?style=for-the-badge&logo=svelte&logoColor=white)](https://kit.svelte.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-38B2AC?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Vercel](https://img.shields.io/badge/Deploy-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
 
-Pocket Gym is a mobile-first directory for gyms and martial arts clubs. It helps users discover nearby training facilities, browse discipline-specific listings, and open a full detail page for each gym.
+Palestre in Zona is a mobile-first directory for gyms and martial arts clubs. It helps users discover nearby training facilities, browse discipline-specific listings, and open a full detail page for each gym.
 
 The project is built with SvelteKit and Tailwind CSS, uses Leaflet for maps, and supports two persistence modes:
 - local CSV files for development or lightweight editing

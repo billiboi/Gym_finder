@@ -1,8 +1,8 @@
 <svelte:head>
-  <title>Brand | Pocket Gym</title>
+  <title>Identita | Palestre in Zona</title>
   <meta
     name="description"
-    content="Logo, palette e linee guida visive di Pocket Gym per mantenere il prodotto coerente e riconoscibile."
+    content="Palette, tono e linee guida visive di Palestre in Zona per mantenere il prodotto coerente e riconoscibile."
   />
 </svelte:head>
 
@@ -18,7 +18,7 @@
   const principles = [
     {
       title: 'Vicino e utile',
-      body: 'Pocket Gym deve sembrare uno strumento pratico per chi cerca una palestra rapidamente, non una vetrina fredda.'
+      body: 'Palestre in Zona deve sembrare uno strumento pratico per chi cerca una palestra rapidamente, non una vetrina fredda.'
     },
     {
       title: 'Sportivo ma pulito',
@@ -42,9 +42,8 @@
     <div class="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
       <div class="rounded-[2rem] border border-white/70 bg-white/85 p-6 shadow-lg">
         <div class="flex items-center gap-4">
-          <img src="/logo-pocket-gym.svg" alt="Pocket Gym logo" class="h-20 w-20 rounded-[1.6rem]" />
           <div>
-            <p class="text-xs font-bold uppercase tracking-[0.24em] text-amber-700">Pocket Gym</p>
+            <p class="text-xs font-bold uppercase tracking-[0.24em] text-amber-700">Palestre in Zona</p>
             <h1 class="mt-2 text-3xl font-bold tracking-[-0.04em] text-slate-900 sm:text-4xl">Sistema visivo del prodotto</h1>
           </div>
         </div>
@@ -63,13 +62,15 @@
   <section class="mt-5 grid gap-4 lg:grid-cols-[1.15fr_0.85fr]">
     <div class="rounded-3xl border border-white/80 bg-white/80 p-6 shadow-xl backdrop-blur-sm sc-panel">
       <p class="text-xs font-bold uppercase tracking-[0.24em] text-slate-500">Logo</p>
-      <h2 class="mt-2 text-2xl font-bold text-slate-900">Marchio principale</h2>
+      <h2 class="mt-2 text-2xl font-bold text-slate-900">Marchio testuale principale</h2>
       <div class="mt-5 grid gap-4 sm:grid-cols-2">
-        <div class="rounded-[2rem] bg-[#1f5c4a] p-8">
-          <img src="/logo-pocket-gym.svg" alt="Logo Pocket Gym su fondo verde" class="mx-auto h-28 w-28" />
+        <div class="rounded-[2rem] bg-[#1f5c4a] p-8 text-white">
+          <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/70">Wordmark</p>
+          <p class="mt-4 text-3xl font-bold tracking-[-0.04em]">Palestre in Zona</p>
         </div>
-        <div class="rounded-[2rem] border border-slate-200 bg-[#fbfaf5] p-8">
-          <img src="/logo-pocket-gym.svg" alt="Logo Pocket Gym su fondo chiaro" class="mx-auto h-28 w-28" />
+        <div class="rounded-[2rem] border border-slate-200 bg-[#fbfaf5] p-8 text-slate-900">
+          <p class="text-xs font-bold uppercase tracking-[0.24em] text-slate-500">Wordmark</p>
+          <p class="mt-4 text-3xl font-bold tracking-[-0.04em]">Palestre in Zona</p>
         </div>
       </div>
       <ul class="mt-5 grid gap-2 text-sm leading-7 text-slate-600">

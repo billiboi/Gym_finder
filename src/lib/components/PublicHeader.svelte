@@ -9,11 +9,8 @@
   <div class="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-white/70 bg-white/85 px-4 py-4 shadow-lg backdrop-blur-sm sc-panel sc-header">
     <div class="min-w-0 flex-1">
       <a href="/" class="inline-flex items-center gap-3">
-        <span class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl sc-brand-mark">
-          <img src="/logo-pocket-gym.svg" alt="Pocket Gym" class="h-full w-full object-cover" />
-        </span>
         <span class="min-w-0">
-          <span class="block text-xs font-bold uppercase tracking-[0.28em] text-amber-700">Pocket Gym</span>
+          <span class="block text-xs font-bold uppercase tracking-[0.28em] text-amber-700">Palestre in Zona</span>
           <span class="block truncate text-sm text-slate-600">Allenati ovunque, trova la palestra giusta vicino a te.</span>
         </span>
       </a>
@@ -45,7 +42,7 @@
         Home
       </a>
       <a href="/brand" class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
-        Brand
+        Identita
       </a>
       {#if !isHome}
         <a href="/" class="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800 sc-button">

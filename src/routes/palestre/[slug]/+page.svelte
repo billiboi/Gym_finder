@@ -44,7 +44,7 @@
 </script>
 
 <svelte:head>
-  <title>{fixGymText(gym?.name)} | Pocket Gym</title>
+  <title>{fixGymText(gym?.name)} | Palestre in Zona</title>
   <meta name="description" content={presentation} />
 </svelte:head>
 

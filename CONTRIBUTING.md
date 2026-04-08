@@ -1,4 +1,4 @@
-# Contributing to Pocket Gym
+# Contributing to Palestre in Zona
 
 Thanks for contributing.
 

@@ -559,7 +559,7 @@
 
     <div class="mt-2 flex flex-wrap items-end justify-between gap-5">
       <div class="max-w-3xl">
-        <p class="text-xs font-bold uppercase tracking-[0.24em] text-amber-700">Pocket Gym</p>
+        <p class="text-xs font-bold uppercase tracking-[0.24em] text-amber-700">Palestre in Zona</p>
         <h1 class="text-3xl font-bold leading-tight text-slate-900 sm:text-5xl">Trova la palestra giusta, ovunque ti trovi</h1>
         <p class="mt-3 text-sm text-slate-600 sm:text-base">Una ricerca piu rapida, pulita e mobile-first per continuare ad allenarti anche quando sei in viaggio o ti sei appena trasferito.</p>
         <div class="mt-4 flex flex-wrap gap-2">
@@ -774,7 +774,7 @@
 
   <footer class="mx-auto w-full max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
     <div class="rounded-3xl border border-white/70 bg-white/80 px-4 py-3 text-xs text-slate-500 shadow-lg backdrop-blur-sm sc-panel">
-      Pocket Gym · Ricerca palestre e arti marziali · © 2026
+      Palestre in Zona · Ricerca palestre e arti marziali · © 2026
     </div>
   </footer>
 </div>
