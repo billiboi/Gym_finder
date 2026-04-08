@@ -1,22 +1,5 @@
 import { normalizeDisciplineLabel } from '$lib/disciplines';
 
-// Keep this list in sync with the actual files committed under `static/images/stock`.
-// If a discipline has no stock photo yet, the UI falls back directly to the branded SVG cover.
-const AVAILABLE_STOCK_IMAGES = new Set([
-  '/images/stock/boxe.webp',
-  '/images/stock/boxe-2.webp',
-  '/images/stock/boxe-3.webp',
-  '/images/stock/judo.webp',
-  '/images/stock/judo-2.webp',
-  '/images/stock/judo-3.webp',
-  '/images/stock/kickboxe.webp',
-  '/images/stock/kickboxe-2.webp',
-  '/images/stock/kickboxe-3.webp',
-  '/images/stock/mma.webp',
-  '/images/stock/mma-2.webp',
-  '/images/stock/mma-3.webp'
-]);
-
 export function fixGymText(value) {
   let text = String(value || '');
   if (!text) return '';
@@ -138,22 +121,22 @@ export function stockImageCandidatesForDiscipline(discipline) {
   return out;
 }
 
-export function resolveAvailableStockImage(discipline) {
-  const candidates = stockImageCandidatesForDiscipline(discipline);
-  return candidates.filter((candidate) => AVAILABLE_STOCK_IMAGES.has(candidate));
-}
-
-export function selectRandomStockImage(discipline, seed = '') {
-  const available = resolveAvailableStockImage(discipline);
-  if (!available.length) return '';
-
-  const key = String(seed || discipline || '');
+function hashSeed(seed = '') {
+  const key = String(seed || '');
   let hash = 0;
   for (let i = 0; i < key.length; i += 1) {
     hash = (hash * 31 + key.charCodeAt(i)) >>> 0;
   }
 
-  return available[hash % available.length] || available[0];
+  return hash;
+}
+
+export function orderedStockImageCandidates(discipline, seed = '') {
+  const candidates = stockImageCandidatesForDiscipline(discipline);
+  if (!candidates.length) return [];
+
+  const offset = hashSeed(seed || discipline) % candidates.length;
+  return [...candidates.slice(offset), ...candidates.slice(0, offset)];
 }
 
 export function imageForGym(gym) {
@@ -167,14 +150,19 @@ export function imageForGym(gym) {
   }
 
   const discipline = primaryDisciplineForGym(gym);
-  const availableStock = selectRandomStockImage(discipline, gym?.id || gym?.name || discipline);
+  const stockCandidates = orderedStockImageCandidates(
+    discipline,
+    gym?.id || gym?.name || discipline
+  );
   const fallback = placeholderImageForDiscipline(discipline);
 
   // Public pages receive a deterministic source here:
-  // uploaded image -> committed stock photo -> branded SVG placeholder.
+  // uploaded image -> stock photo candidates -> branded SVG placeholder.
+  // Missing stock files are skipped client-side via `onerror`, so this stays in sync
+  // with whatever is actually present under `static/images/stock`.
   return {
-    src: availableStock || fallback,
-    candidates: availableStock ? [availableStock] : [fallback],
+    src: stockCandidates[0] || fallback,
+    candidates: [...stockCandidates, fallback],
     fallback
   };
 }
