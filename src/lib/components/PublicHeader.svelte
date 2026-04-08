@@ -41,9 +41,6 @@
       <a href="/" class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
         Home
       </a>
-      <a href="/brand" class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
-        Identita
-      </a>
       {#if !isHome}
         <a href="/" class="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800 sc-button">
           Torna all'elenco
