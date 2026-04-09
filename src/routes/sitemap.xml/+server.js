@@ -1,6 +1,7 @@
 import { slugifyGym } from '$lib/gym-detail';
 import { readGyms } from '$lib/server/gym-store';
 import { SITE_URL } from '$lib/site';
+import { SEO_LOCATIONS } from '$lib/seo-locations';
 
 function escapeXml(value) {
   return String(value || '')
@@ -15,6 +16,7 @@ export async function GET() {
   const gyms = await readGyms();
   const urls = [
     `${SITE_URL}/`,
+    ...SEO_LOCATIONS.map((location) => `${SITE_URL}/zone/${location.slug}`),
     ...gyms.map((gym) => `${SITE_URL}/palestre/${slugifyGym(gym)}`)
   ];
 
@@ -30,4 +32,3 @@ ${urls.map((url) => `  <url><loc>${escapeXml(url)}</loc></url>`).join('\n')}
     }
   });
 }
-

@@ -3,6 +3,7 @@
 
   const isHome = path === '/';
   const isDetail = path.startsWith('/palestre/');
+  const isZone = path.startsWith('/zone/');
 </script>
 
 <header class="mx-auto w-full max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
@@ -22,6 +23,8 @@
           Ricerca geografica
         {:else if isDetail}
           Scheda completa
+        {:else if isZone}
+          Focus locale
         {:else}
           Esplora le palestre
         {/if}
@@ -31,6 +34,8 @@
           Filtra per disciplina, posizione e distanza in pochi tocchi.
         {:else if isDetail}
           Approfondisci contatti, orari e informazioni della palestra.
+        {:else if isZone}
+          Una selezione locale per scoprire più rapidamente le palestre della zona.
         {:else}
           Navigazione coerente su tutte le pagine pubbliche.
         {/if}
@@ -40,6 +45,9 @@
     <nav class="flex flex-wrap items-center gap-2">
       <a href="/" class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
         Home
+      </a>
+      <a href="/zone/varese" class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
+        Zone
       </a>
       {#if !isHome}
         <a href="/" class="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800 sc-button">
