@@ -26,6 +26,7 @@ const EXACT_LABELS = new Map([
   ['bodybuilding', 'Bodybuilding'],
   ['self defense', 'Difesa Personale'],
   ['difesa personale', 'Difesa Personale'],
+  ['difesa personae', 'Difesa Personale'],
   ['arti marziali', 'Arti Marziali'],
   ['functional', 'Functional'],
   ['calisthenics', 'Calisthenics'],

@@ -42,8 +42,8 @@ export function disciplinePreviewForGym(gym, max = 3) {
   const list = disciplineListForGym(gym);
   return {
     primary: list[0] || 'Fitness',
-    secondary: list.slice(1, Math.max(1, max)),
-    remaining: Math.max(0, list.length - Math.max(1, max))
+    secondary: list.slice(1),
+    remaining: 0
   };
 }
 
