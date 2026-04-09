@@ -3,6 +3,7 @@
   import { dedupeDisciplines, normalizeDisciplineLabel } from '$lib/disciplines';
   import { gymHref, imageForGym } from '$lib/gym-detail';
   import { isGymOpenNow } from '$lib/hours';
+  import { SEO_DISCIPLINES } from '$lib/seo-disciplines';
   import { SITE_DESCRIPTION, SITE_NAME, absoluteUrl } from '$lib/site';
   import { SEO_LOCATIONS } from '$lib/seo-locations';
   export let data;
@@ -769,6 +770,26 @@
           <h3 class="mt-2 text-lg font-bold text-slate-900">{location.title}</h3>
           <p class="mt-2 text-sm leading-6 text-slate-600">{location.description}</p>
           <span class="mt-4 inline-flex rounded-full bg-slate-900 px-3 py-1 text-xs font-bold text-white">Apri pagina locale</span>
+        </a>
+      {/each}
+    </div>
+  </section>
+
+  <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-5">
+    <div class="flex flex-wrap items-end justify-between gap-3">
+      <div>
+        <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Ricerche per disciplina</p>
+        <h2 class="mt-1 text-lg font-bold text-slate-900">Esplora per tipologia</h2>
+        <p class="text-sm text-slate-500">Landing dedicate alle discipline più cercate per intercettare ricerche più precise.</p>
+      </div>
+    </div>
+    <div class="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+      {#each SEO_DISCIPLINES as discipline}
+        <a href={`/discipline/${discipline.slug}`} class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+          <p class="text-xs font-bold uppercase tracking-[0.18em] text-amber-700">{discipline.name}</p>
+          <h3 class="mt-2 text-lg font-bold text-slate-900">{discipline.title}</h3>
+          <p class="mt-2 text-sm leading-6 text-slate-600">{discipline.description}</p>
+          <span class="mt-4 inline-flex rounded-full bg-slate-900 px-3 py-1 text-xs font-bold text-white">Apri pagina disciplina</span>
         </a>
       {/each}
     </div>
