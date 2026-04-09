@@ -99,8 +99,13 @@ body {
   }
 
   .sc-header nav a {
+    display: inline-flex;
+    width: 100%;
     min-height: 2.75rem;
+    align-items: center;
+    justify-content: center;
     padding-inline: 0.95rem;
+    text-align: center;
   }
 }
 

@@ -5,6 +5,26 @@
   const isDetail = path.startsWith('/palestre/');
   const isZone = path.startsWith('/zone/');
   const isDiscipline = path.startsWith('/discipline/');
+
+  const sectionLabel = isHome
+    ? 'Ricerca geografica'
+    : isDetail
+      ? 'Scheda completa'
+      : isZone
+        ? 'Focus locale'
+        : isDiscipline
+          ? 'Focus disciplina'
+          : 'Esplora le palestre';
+
+  const sectionCopy = isHome
+    ? 'Filtra per disciplina, posizione e distanza in pochi tocchi.'
+    : isDetail
+      ? 'Approfondisci contatti, orari e informazioni della palestra.'
+      : isZone
+        ? 'Una selezione locale per scoprire piu rapidamente le palestre della zona.'
+        : isDiscipline
+          ? 'Una raccolta dedicata a una singola disciplina, utile anche per ricerche piu mirate.'
+          : 'Navigazione coerente su tutte le pagine pubbliche.';
 </script>
 
 <header class="mx-auto w-full max-w-7xl px-4 pt-4 sm:px-6 sm:pt-6 lg:px-8">
@@ -15,42 +35,23 @@
           <a href="/" class="inline-flex max-w-full items-start">
             <span class="min-w-0">
               <span class="block text-[11px] font-bold uppercase tracking-[0.28em] text-amber-700 sm:text-xs">Palestre in Zona</span>
-              <span class="mt-1 block text-sm leading-5 text-slate-600 sm:text-[15px]">Allenati ovunque, trova la palestra giusta vicino a te.</span>
+              <span class="mt-1 block text-base font-semibold leading-6 text-slate-900 sm:text-[1.05rem]">Trova la palestra giusta vicino a te.</span>
+              <span class="mt-1 block text-sm leading-5 text-slate-600">Allenati ovunque, con una ricerca rapida e ordinata.</span>
             </span>
           </a>
         </div>
 
         <div class="min-w-0 md:max-w-xs md:text-right">
-          <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-slate-500 sm:text-xs">
-            {#if isHome}
-              Ricerca geografica
-            {:else if isDetail}
-              Scheda completa
-            {:else if isZone}
-              Focus locale
-            {:else if isDiscipline}
-              Focus disciplina
-            {:else}
-              Esplora le palestre
-            {/if}
-          </p>
-          <p class="mt-1 text-sm leading-5 text-slate-600">
-            {#if isHome}
-              Filtra per disciplina, posizione e distanza in pochi tocchi.
-            {:else if isDetail}
-              Approfondisci contatti, orari e informazioni della palestra.
-            {:else if isZone}
-              Una selezione locale per scoprire piu rapidamente le palestre della zona.
-            {:else if isDiscipline}
-              Una raccolta dedicata a una singola disciplina, utile anche per ricerche piu mirate.
-            {:else}
-              Navigazione coerente su tutte le pagine pubbliche.
-            {/if}
+          <div class="inline-flex rounded-full border border-emerald-200/80 bg-emerald-50/90 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.24em] text-emerald-800 md:ml-auto sm:text-xs">
+            {sectionLabel}
+          </div>
+          <p class="mt-2 hidden text-sm leading-5 text-slate-600 md:block">
+            {sectionCopy}
           </p>
         </div>
       </div>
 
-      <nav class="flex flex-wrap items-center gap-2 pt-1">
+      <nav class="grid grid-cols-2 gap-2 pt-1 sm:flex sm:flex-wrap sm:items-center">
         <a href="/" class="rounded-full border border-slate-200 bg-white px-3.5 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
           Home
         </a>
