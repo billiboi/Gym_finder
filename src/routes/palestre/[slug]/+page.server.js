@@ -10,5 +10,5 @@ export async function load({ params }) {
     throw error(404, 'Palestra non trovata');
   }
 
-  return { gym };
+  return { gym, gymSlug: params.slug };
 }

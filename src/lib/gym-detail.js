@@ -139,6 +139,15 @@ export function orderedStockImageCandidates(discipline, seed = '') {
   return [...candidates.slice(offset), ...candidates.slice(0, offset)];
 }
 
+export function resolveAvailableStockImage(discipline, seed = '') {
+  return orderedStockImageCandidates(discipline, seed);
+}
+
+export function selectRandomStockImage(discipline, seed = '') {
+  const ordered = orderedStockImageCandidates(discipline, seed);
+  return ordered[0] || '';
+}
+
 export function imageForGym(gym) {
   const imageUrl = String(gym?.image_url || '').trim();
   if (imageUrl) {

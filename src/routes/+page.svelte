@@ -3,6 +3,8 @@
   import { dedupeDisciplines, normalizeDisciplineLabel } from '$lib/disciplines';
   import { gymHref, imageForGym } from '$lib/gym-detail';
   import { isGymOpenNow } from '$lib/hours';
+  import { SITE_DESCRIPTION, SITE_NAME, absoluteUrl } from '$lib/site';
+  export let data;
   function disciplineListForGym(gym) {
     if (Array.isArray(gym.disciplines) && gym.disciplines.length) {
       return gym.disciplines.map((d) => normalizeDisciplineLabel(d)).filter(Boolean);
@@ -93,8 +95,8 @@
   let gyms = [];
   let filteredGyms = [];
   let disciplines = [];
-  let loadingGyms = true;
-  let loadingDisciplines = true;
+  let loadingGyms = !Array.isArray(data?.initialGyms);
+  let loadingDisciplines = !Array.isArray(data?.initialDisciplines);
 
   let filterText = '';
   let filterDiscipline = '';
@@ -128,6 +130,48 @@
   $: isBootstrapping = loadingGyms || loadingDisciplines;
 
   let csvGymsCache = null;
+
+  if (Array.isArray(data?.initialGyms)) {
+    gyms = data.initialGyms;
+  }
+
+  if (Array.isArray(data?.initialDisciplines)) {
+    disciplines = data.initialDisciplines;
+  }
+
+  $: homepageTitle = `${SITE_NAME} | Trova palestre vicine e arti marziali`;
+  $: homepageDescription =
+    'Trova palestre, boxe, kickboxe, MMA, judo e altre discipline vicino a te con filtri per distanza, posizione e tipologia.';
+  $: featuredGyms = filteredGyms.slice(0, 12);
+  $: homeStructuredData = JSON.stringify(
+    [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        name: SITE_NAME,
+        url: absoluteUrl('/'),
+        description: SITE_DESCRIPTION,
+        potentialAction: {
+          '@type': 'SearchAction',
+          target: `${absoluteUrl('/')}?q={search_term_string}`,
+          'query-input': 'required name=search_term_string'
+        }
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        name: 'Palestre in evidenza',
+        itemListElement: featuredGyms.map((gym, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          url: absoluteUrl(gymHref(gym)),
+          name: displayName(gym.name)
+        }))
+      }
+    ],
+    null,
+    0
+  );
 
   function splitCsvLine(line, delimiter = ',') {
     const out = [];
@@ -551,6 +595,17 @@
     }
   });
 </script>
+
+<svelte:head>
+  <title>{homepageTitle}</title>
+  <meta name="description" content={homepageDescription} />
+  <meta property="og:title" content={homepageTitle} />
+  <meta property="og:description" content={homepageDescription} />
+  <meta property="og:url" content={absoluteUrl('/')} />
+  <meta name="twitter:title" content={homepageTitle} />
+  <meta name="twitter:description" content={homepageDescription} />
+  <script type="application/ld+json">{homeStructuredData}</script>
+</svelte:head>
 
 <div class="min-h-screen w-full sc-page relative">
   <main class="mx-auto w-full max-w-7xl px-4 pb-8 pt-4 sm:px-6 lg:px-8">

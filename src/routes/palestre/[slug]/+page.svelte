@@ -6,6 +6,7 @@
     formatAddressForDisplay,
     imageForGym
   } from '$lib/gym-detail';
+  import { SITE_NAME, absoluteUrl } from '$lib/site';
 
   export let data;
 
@@ -24,6 +25,57 @@
   const website = fixGymText(gym?.website);
   const hasPhone = phone && phone !== 'Non disponibile';
   const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+  const pageUrl = absoluteUrl(`/palestre/${data.gymSlug}`);
+
+  const detailStructuredData = JSON.stringify(
+    [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: SITE_NAME,
+            item: absoluteUrl('/')
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: fixGymText(gym?.name),
+            item: pageUrl
+          }
+        ]
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'SportsActivityLocation',
+        name: fixGymText(gym?.name),
+        description: presentation,
+        url: pageUrl,
+        image: imageSrc.startsWith('http') ? imageSrc : absoluteUrl(imageSrc),
+        telephone: hasPhone ? phone : undefined,
+        sport: disciplines,
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: fixGymText(gym?.address || ''),
+          addressLocality: fixGymText(gym?.city || ''),
+          addressCountry: 'IT'
+        },
+        geo:
+          gym?.latitude !== null && gym?.latitude !== undefined && gym?.longitude !== null && gym?.longitude !== undefined
+            ? {
+                '@type': 'GeoCoordinates',
+                latitude: gym.latitude,
+                longitude: gym.longitude
+              }
+            : undefined,
+        openingHours: hoursInfo !== 'Orari da verificare' ? [hoursInfo] : undefined
+      }
+    ],
+    null,
+    0
+  );
 
   function handleImageError(event) {
     const img = event.currentTarget;
@@ -44,8 +96,18 @@
 </script>
 
 <svelte:head>
-  <title>{fixGymText(gym?.name)} | Palestre in Zona</title>
+  <title>{fixGymText(gym?.name)} | {SITE_NAME}</title>
   <meta name="description" content={presentation} />
+  <link rel="canonical" href={pageUrl} />
+  <meta property="og:title" content={`${fixGymText(gym?.name)} | ${SITE_NAME}`} />
+  <meta property="og:description" content={presentation} />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content={pageUrl} />
+  <meta property="og:image" content={imageSrc.startsWith('http') ? imageSrc : absoluteUrl(imageSrc)} />
+  <meta name="twitter:title" content={`${fixGymText(gym?.name)} | ${SITE_NAME}`} />
+  <meta name="twitter:description" content={presentation} />
+  <meta name="twitter:image" content={imageSrc.startsWith('http') ? imageSrc : absoluteUrl(imageSrc)} />
+  <script type="application/ld+json">{detailStructuredData}</script>
 </svelte:head>
 
 <div class="min-h-screen w-full sc-page">
