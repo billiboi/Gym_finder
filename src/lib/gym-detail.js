@@ -38,6 +38,15 @@ export function primaryDisciplineForGym(gym) {
   return disciplineListForGym(gym)[0] || 'Fitness';
 }
 
+export function disciplinePreviewForGym(gym, max = 3) {
+  const list = disciplineListForGym(gym);
+  return {
+    primary: list[0] || 'Fitness',
+    secondary: list.slice(1, Math.max(1, max)),
+    remaining: Math.max(0, list.length - Math.max(1, max))
+  };
+}
+
 export function placeholderImageForDiscipline(discipline) {
   const normalized = normalizeDisciplineLabel(discipline) || 'Fitness';
   const map = {

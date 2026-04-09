@@ -1,5 +1,5 @@
 <script>
-  import { gymHref, imageForGym } from '$lib/gym-detail';
+  import { disciplinePreviewForGym, gymHref, imageForGym } from '$lib/gym-detail';
   import { absoluteUrl, SITE_NAME } from '$lib/site';
 
   export let data;
@@ -103,6 +103,7 @@
       {:else}
         {#each gyms as gym, i}
           {@const image = imageMetaForGym(gym)}
+          {@const disciplinePreview = disciplinePreviewForGym(gym, 4)}
           <article class="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl sc-card sc-gym-card" style={`animation-delay:${i * 20}ms`}>
             <div class="relative h-44 overflow-hidden">
               <img
@@ -113,13 +114,23 @@
                 on:error={(event) => handleImageError(event, image)}
               />
               <span class="absolute left-3 top-3 rounded-full bg-slate-900/85 px-2.5 py-1 text-xs font-bold text-white sc-badge sc-badge--accent">
-                {Array.isArray(gym.disciplines) && gym.disciplines.length ? gym.disciplines.join(' | ') : gym.discipline}
+                {disciplinePreview.primary}
               </span>
             </div>
             <div class="space-y-3 p-3 sm:p-4">
               <div class="space-y-1 rounded-2xl sc-gym-card-head p-3">
                 <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">{discipline.name}</p>
                 <h2 class="text-lg font-bold leading-tight text-slate-900">{gym.name}</h2>
+                {#if disciplinePreview.secondary.length || disciplinePreview.remaining}
+                  <div class="mt-3 flex flex-wrap gap-2">
+                    {#each disciplinePreview.secondary as label}
+                      <span class="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-semibold text-slate-600">{label}</span>
+                    {/each}
+                    {#if disciplinePreview.remaining}
+                      <span class="rounded-full border border-slate-200 bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-600">+{disciplinePreview.remaining}</span>
+                    {/if}
+                  </div>
+                {/if}
               </div>
               <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Indirizzo:</strong> {[gym.address, gym.city].filter(Boolean).join(', ') || 'Indirizzo non disponibile'}</p>
               <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Orari:</strong> {gym.hours_info || 'Orari da verificare'}</p>

@@ -1,7 +1,7 @@
 <script>
   import { afterUpdate, onDestroy, onMount } from 'svelte';
   import { dedupeDisciplines, normalizeDisciplineLabel } from '$lib/disciplines';
-  import { gymHref, imageForGym } from '$lib/gym-detail';
+  import { disciplinePreviewForGym, gymHref, imageForGym } from '$lib/gym-detail';
   import { isGymOpenNow } from '$lib/hours';
   import { SEO_DISCIPLINES } from '$lib/seo-disciplines';
   import { SITE_DESCRIPTION, SITE_NAME, absoluteUrl } from '$lib/site';
@@ -842,6 +842,7 @@
     {:else}
       {#each filteredGyms as gym, i}
         {@const image = resolveImageSource(gym)}
+        {@const disciplinePreview = disciplinePreviewForGym(gym, 4)}
         <article class="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl sc-card sc-gym-card" style={`animation-delay:${i * 20}ms`}>
           <div class="relative h-44 overflow-hidden">
             <img
@@ -851,7 +852,7 @@
               loading="lazy"
               on:error={(event) => handleImageError(event, image)}
             />
-            <span class="absolute left-3 top-3 rounded-full bg-slate-900/85 px-2.5 py-1 text-xs font-bold text-white sc-badge sc-badge--accent">{disciplineListForGym(gym).join(" | ") }</span>
+            <span class="absolute left-3 top-3 rounded-full bg-slate-900/85 px-2.5 py-1 text-xs font-bold text-white sc-badge sc-badge--accent">{disciplinePreview.primary}</span>
             {#if gym.distance_km !== null && gym.distance_km !== undefined}
               <span class="absolute right-3 top-3 rounded-full bg-emerald-600 px-2.5 py-1 text-xs font-bold text-white sc-badge">{gym.distance_km} km</span>
             {/if}
@@ -864,6 +865,16 @@
             <div class="space-y-1 rounded-2xl sc-gym-card-head p-3">
               <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Scheda palestra</p>
               <h3 class="text-lg font-bold leading-tight text-slate-900">{displayName(gym.name)}</h3>
+              {#if disciplinePreview.secondary.length || disciplinePreview.remaining}
+                <div class="mt-3 flex flex-wrap gap-2">
+                  {#each disciplinePreview.secondary as label}
+                    <span class="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-semibold text-slate-600">{label}</span>
+                  {/each}
+                  {#if disciplinePreview.remaining}
+                    <span class="rounded-full border border-slate-200 bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-600">+{disciplinePreview.remaining}</span>
+                  {/if}
+                </div>
+              {/if}
             </div>
 
             <div class="grid gap-2">
