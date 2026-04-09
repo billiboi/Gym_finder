@@ -89,6 +89,21 @@ body {
     rgba(255, 255, 255, 0.82) !important;
 }
 
+@media (max-width: 640px) {
+  .sc-header {
+    border-radius: 1.5rem;
+  }
+
+  .sc-header nav {
+    gap: 0.5rem;
+  }
+
+  .sc-header nav a {
+    min-height: 2.75rem;
+    padding-inline: 0.95rem;
+  }
+}
+
 .sc-hero h1 {
   letter-spacing: -0.03em;
   max-width: 11ch;
