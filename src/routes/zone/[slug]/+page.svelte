@@ -123,16 +123,19 @@
               <div class="space-y-1 rounded-2xl sc-gym-card-head p-3">
                 <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">{location.name}</p>
                 <h2 class="text-lg font-bold leading-tight text-slate-900">{gym.name}</h2>
-                {#if disciplinePreview.secondary.length || disciplinePreview.remaining}
-                  <div class="mt-3 flex flex-wrap gap-2">
+                <div class="mt-3 flex flex-wrap gap-2 sc-discipline-list">
+                  <span class="rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.14em] sc-discipline-chip sc-discipline-chip--primary">
+                    {disciplinePreview.primary}
+                  </span>
+                  {#if disciplinePreview.secondary.length || disciplinePreview.remaining}
                     {#each disciplinePreview.secondary as label}
-                      <span class="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-semibold text-slate-600">{label}</span>
+                      <span class="rounded-full px-2.5 py-1 text-[11px] font-semibold sc-discipline-chip">{label}</span>
                     {/each}
                     {#if disciplinePreview.remaining}
-                      <span class="rounded-full border border-slate-200 bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-600">+{disciplinePreview.remaining}</span>
+                      <span class="rounded-full px-2.5 py-1 text-[11px] font-semibold sc-discipline-chip sc-discipline-chip--muted">+{disciplinePreview.remaining}</span>
                     {/if}
-                  </div>
-                {/if}
+                  {/if}
+                </div>
               </div>
               <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Indirizzo:</strong> {[gym.address, gym.city].filter(Boolean).join(', ') || 'Indirizzo non disponibile'}</p>
               <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Orari:</strong> {gym.hours_info || 'Orari da verificare'}</p>

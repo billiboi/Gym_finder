@@ -182,6 +182,28 @@ body {
   border: 1px solid rgba(31, 92, 74, 0.08);
 }
 
+.sc-discipline-list {
+  align-items: center;
+}
+
+.sc-discipline-chip {
+  border: 1px solid rgba(31, 92, 74, 0.12);
+  background: rgba(255, 255, 255, 0.72);
+  color: #5b6a63;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+.sc-discipline-chip--primary {
+  border-color: rgba(31, 92, 74, 0.18);
+  background: linear-gradient(135deg, rgba(31, 92, 74, 0.12), rgba(214, 207, 176, 0.18));
+  color: var(--accent-red);
+}
+
+.sc-discipline-chip--muted {
+  background: rgba(27, 39, 35, 0.06);
+  color: #6b746f;
+}
+
 .sc-gym-card-kicker {
   color: var(--accent-red) !important;
 }

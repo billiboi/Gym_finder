@@ -865,16 +865,19 @@
             <div class="space-y-1 rounded-2xl sc-gym-card-head p-3">
               <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Scheda palestra</p>
               <h3 class="text-lg font-bold leading-tight text-slate-900">{displayName(gym.name)}</h3>
-              {#if disciplinePreview.secondary.length || disciplinePreview.remaining}
-                <div class="mt-3 flex flex-wrap gap-2">
+              <div class="mt-3 flex flex-wrap gap-2 sc-discipline-list">
+                <span class="rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.14em] sc-discipline-chip sc-discipline-chip--primary">
+                  {disciplinePreview.primary}
+                </span>
+                {#if disciplinePreview.secondary.length || disciplinePreview.remaining}
                   {#each disciplinePreview.secondary as label}
-                    <span class="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-semibold text-slate-600">{label}</span>
+                    <span class="rounded-full px-2.5 py-1 text-[11px] font-semibold sc-discipline-chip">{label}</span>
                   {/each}
                   {#if disciplinePreview.remaining}
-                    <span class="rounded-full border border-slate-200 bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-600">+{disciplinePreview.remaining}</span>
+                    <span class="rounded-full px-2.5 py-1 text-[11px] font-semibold sc-discipline-chip sc-discipline-chip--muted">+{disciplinePreview.remaining}</span>
                   {/if}
-                </div>
-              {/if}
+                {/if}
+              </div>
             </div>
 
             <div class="grid gap-2">
