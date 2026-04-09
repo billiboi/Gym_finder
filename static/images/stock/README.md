@@ -13,6 +13,9 @@ Basename supportati:
 - `grappling`
 - `judo`
 - `karate`
+- `taekwondo`
+- `aikido`
+- `scherma`
 - `kung-fu`
 - `fitness`
 - `wellness`
@@ -23,20 +26,19 @@ Basename supportati:
 Note:
 - usa immagini orizzontali, idealmente 1600x900 o simili
 - puoi aggiungere fino a 3 varianti per disciplina:
+- `boxe.webp`
+- `boxe-2.webp`
+- `boxe-3.webp`
+- `taekwondo.webp`
+- `aikido.webp`
+- `scherma.webp`
+- il progetto ora usa solo `.webp` per gli stock disciplinari
+- esempi validi:
   - `boxe.webp`
   - `boxe-2.webp`
   - `boxe-3.webp`
-- formati supportati in ordine di tentativo automatico:
-  - `.webp`
-  - `.jpg`
-  - `.jpeg`
-  - `.png`
-- esempi validi:
-  - `boxe.webp`
-  - `boxe-2.jpg`
-  - `boxe-3.png`
-  - `fitness.jpg`
-  - `mma.png`
+  - `fitness.webp`
+  - `mma.webp`
 - usa solo immagini con licenza valida per riutilizzo commerciale/editoriale
 - vedi anche `manifest.json` per l'elenco completo delle discipline e dei basename previsti
 - vedi `sources.json` per una lista pronta di sorgenti royalty-free da cui selezionare immagini rappresentative
