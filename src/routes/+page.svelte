@@ -145,6 +145,7 @@
   $: homepageDescription =
     'Trova palestre, boxe, kickboxe, MMA, judo e altre discipline vicino a te con filtri per distanza, posizione e tipologia.';
   $: featuredGyms = filteredGyms.slice(0, 12);
+  $: seoIntroDisciplines = SEO_DISCIPLINES.map((discipline) => discipline.name).join(', ');
   $: homeStructuredData = JSON.stringify(
     [
       {
@@ -792,6 +793,23 @@
           <span class="mt-4 inline-flex rounded-full bg-slate-900 px-3 py-1 text-xs font-bold text-white">Apri pagina disciplina</span>
         </a>
       {/each}
+    </div>
+  </section>
+
+  <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+    <div class="max-w-4xl">
+      <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Guida rapida</p>
+      <h2 class="mt-1 text-2xl font-bold text-slate-900">Come trovare una palestra davvero adatta a te</h2>
+      <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
+        Palestre in Zona nasce per aiutarti a trovare una palestra vicina quando ti sposti, cambi casa oppure vuoi semplicemente
+        confrontare più strutture senza perdere tempo. Invece di affidarti a ricerche generiche, qui puoi partire da una mappa,
+        filtrare per distanza e poi aprire schede dedicate con contatti, indirizzo, orari e disciplina principale.
+      </p>
+      <p class="mt-4 text-sm leading-7 text-slate-600 sm:text-base">
+        Le ricerche più utili di solito partono da due domande: <strong>dove vuoi allenarti</strong> e <strong>che disciplina cerchi</strong>.
+        Per questo stiamo organizzando il catalogo sia per zona sia per tipologia, con pagine dedicate a {seoIntroDisciplines} e ad aree
+        locali come Varese, Lugano e Bellinzona.
+      </p>
     </div>
   </section>
 

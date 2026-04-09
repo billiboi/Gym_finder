@@ -8,6 +8,7 @@
   const pageUrl = absoluteUrl(`/discipline/${discipline.slug}`);
   const title = `${discipline.title} | ${SITE_NAME}`;
   const description = `${discipline.description} In questa pagina trovi ${gyms.length} schede pubbliche dedicate.`;
+  const exampleAreas = [...new Set(gyms.map((gym) => String(gym.city || '').trim()).filter(Boolean))].slice(0, 6).join(', ');
   const structuredData = JSON.stringify(
     {
       '@context': 'https://schema.org',
@@ -78,6 +79,22 @@
       </div>
     </section>
 
+    <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+      <div class="max-w-4xl">
+        <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Panoramica della disciplina</p>
+        <h2 class="mt-1 text-2xl font-bold text-slate-900">Come usare questa pagina per trovare una palestra di {discipline.name}</h2>
+        <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
+          Questa sezione è pensata per chi cerca una disciplina specifica e vuole arrivare rapidamente a una short-list utile. Invece di
+          filtrare da zero tutto il catalogo, qui trovi solo le schede che nel nostro database risultano legate a {discipline.name}.
+        </p>
+        <p class="mt-4 text-sm leading-7 text-slate-600 sm:text-base">
+          Le strutture pubblicate in questa pagina coprono soprattutto queste aree: <strong>{exampleAreas || 'zone già presenti nel catalogo'}</strong>.
+          Aprendo una scheda completa puoi verificare se la palestra è coerente con ciò che cerchi davvero: impostazione tecnica, contatti, orari
+          e praticità rispetto alla tua posizione.
+        </p>
+      </div>
+    </section>
+
     <section class="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
       {#if gyms.length === 0}
         <div class="col-span-full rounded-2xl border border-dashed border-slate-300 bg-white/80 p-8 text-center shadow-sm">
@@ -118,4 +135,3 @@
     </section>
   </main>
 </div>
-
