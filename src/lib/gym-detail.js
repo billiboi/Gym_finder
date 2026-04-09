@@ -109,7 +109,7 @@ export function stockImageForDiscipline(discipline) {
 export function stockImageCandidatesForDiscipline(discipline) {
   const base = stockImageForDiscipline(discipline);
   const variants = ['', '-2', '-3'];
-  const extensions = ['.webp', '.jpg', '.jpeg', '.png'];
+  const extensions = ['.webp'];
   const out = [];
 
   for (const variant of variants) {
