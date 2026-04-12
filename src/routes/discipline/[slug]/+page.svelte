@@ -1,6 +1,6 @@
 <script>
   import { disciplinePreviewForGym, gymHref, imageForGym } from '$lib/gym-detail';
-  import { absoluteUrl, SITE_NAME } from '$lib/site';
+  import { absoluteUrl, SITE_NAME, jsonLdScript } from '$lib/site';
 
   export let data;
 
@@ -30,6 +30,7 @@
     null,
     0
   );
+  const structuredDataScript = jsonLdScript(structuredData);
 
   function imageMetaForGym(gym) {
     const image = imageForGym(gym);
@@ -64,7 +65,7 @@
   <meta property="og:type" content="website" />
   <meta name="twitter:title" content={title} />
   <meta name="twitter:description" content={description} />
-  <script type="application/ld+json">{@html structuredData}</script>
+  {@html structuredDataScript}
 </svelte:head>
 
 <div class="min-h-screen w-full sc-page">

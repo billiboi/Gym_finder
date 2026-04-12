@@ -6,7 +6,7 @@
     formatAddressForDisplay,
     imageForGym
   } from '$lib/gym-detail';
-  import { SITE_NAME, absoluteUrl } from '$lib/site';
+  import { SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
 
   export let data;
 
@@ -76,6 +76,7 @@
     null,
     0
   );
+  const detailStructuredDataScript = jsonLdScript(detailStructuredData);
 
   function handleImageError(event) {
     const img = event.currentTarget;
@@ -107,7 +108,7 @@
   <meta name="twitter:title" content={`${fixGymText(gym?.name)} | ${SITE_NAME}`} />
   <meta name="twitter:description" content={presentation} />
   <meta name="twitter:image" content={imageSrc.startsWith('http') ? imageSrc : absoluteUrl(imageSrc)} />
-  <script type="application/ld+json">{@html detailStructuredData}</script>
+  {@html detailStructuredDataScript}
 </svelte:head>
 
 <div class="min-h-screen w-full sc-page">

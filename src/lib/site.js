@@ -8,3 +8,10 @@ export function absoluteUrl(path = '/') {
   return new URL(normalized, SITE_URL).toString();
 }
 
+export function jsonLdScript(json) {
+  const safeJson = String(json || '')
+    .replace(/</g, '\\u003c')
+    .replace(/<\/script/gi, '<\\/script');
+
+  return `<script type="application/ld+json">${safeJson}</script>`;
+}

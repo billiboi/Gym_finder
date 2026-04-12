@@ -4,7 +4,7 @@
   import { disciplinePreviewForGym, gymHref, imageForGym } from '$lib/gym-detail';
   import { isGymOpenNow } from '$lib/hours';
   import { SEO_DISCIPLINES } from '$lib/seo-disciplines';
-  import { SITE_DESCRIPTION, SITE_NAME, absoluteUrl } from '$lib/site';
+  import { SITE_DESCRIPTION, SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
   import { SEO_LOCATIONS } from '$lib/seo-locations';
   export let data;
   function disciplineListForGym(gym) {
@@ -175,6 +175,7 @@
     null,
     0
   );
+  $: homeStructuredDataScript = jsonLdScript(homeStructuredData);
 
   function splitCsvLine(line, delimiter = ',') {
     const out = [];
@@ -607,7 +608,7 @@
   <meta property="og:url" content={absoluteUrl('/')} />
   <meta name="twitter:title" content={homepageTitle} />
   <meta name="twitter:description" content={homepageDescription} />
-  <script type="application/ld+json">{@html homeStructuredData}</script>
+  {@html homeStructuredDataScript}
 </svelte:head>
 
 <div class="min-h-screen w-full sc-page relative">
