@@ -54,3 +54,20 @@ export function gymsForSeoDiscipline(gyms, discipline) {
   });
 }
 
+export function seoDisciplineForGym(gym) {
+  if (!gym) return null;
+
+  const values = Array.isArray(gym?.disciplines) && gym.disciplines.length
+    ? gym.disciplines
+    : String(gym?.discipline || '')
+        .split('|')
+        .map((value) => value.trim())
+        .filter(Boolean);
+
+  const normalized = values.map((value) => String(value).toLowerCase());
+  return (
+    SEO_DISCIPLINES.find((discipline) =>
+      discipline.keywords.some((keyword) => normalized.includes(keyword.toLowerCase()))
+    ) || null
+  );
+}

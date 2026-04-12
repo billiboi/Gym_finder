@@ -1,6 +1,8 @@
 import { error } from '@sveltejs/kit';
 import { readGyms } from '$lib/server/gym-store';
-import { slugifyGym } from '$lib/gym-detail';
+import { isIndexableGym, primaryDisciplineForGym, slugifyGym } from '$lib/gym-detail';
+import { seoLocationForGym } from '$lib/seo-locations';
+import { seoDisciplineForGym } from '$lib/seo-disciplines';
 
 export async function load({ params }) {
   const gyms = await readGyms();
@@ -10,5 +12,23 @@ export async function load({ params }) {
     throw error(404, 'Palestra non trovata');
   }
 
-  return { gym, gymSlug: params.slug };
+  const primaryDiscipline = primaryDisciplineForGym(gym);
+  const relatedGyms = gyms
+    .filter((item) => item.id !== gym.id)
+    .filter((item) => isIndexableGym(item))
+    .filter((item) => {
+      const sameDiscipline = primaryDisciplineForGym(item) === primaryDiscipline;
+      const sameCity =
+        String(item.city || '').trim().toLowerCase() === String(gym.city || '').trim().toLowerCase();
+      return sameDiscipline || sameCity;
+    })
+    .slice(0, 3);
+
+  return {
+    gym,
+    gymSlug: params.slug,
+    relatedGyms,
+    relatedLocation: seoLocationForGym(gym),
+    relatedDiscipline: seoDisciplineForGym(gym)
+  };
 }

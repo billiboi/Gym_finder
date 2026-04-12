@@ -8,6 +8,7 @@
   const pageUrl = absoluteUrl(`/zone/${location.slug}`);
   const title = `${location.title} | ${SITE_NAME}`;
   const description = `${location.description} Consulta una selezione di ${gyms.length} schede pubbliche con link ai dettagli completi.`;
+  const isIndexableLanding = gyms.length >= 3;
   const disciplineSummary = topDisciplines.join(', ');
   const structuredData = {
       '@context': 'https://schema.org',
@@ -54,6 +55,7 @@
 <svelte:head>
   <title>{title}</title>
   <meta name="description" content={description} />
+  <meta name="robots" content={isIndexableLanding ? 'index,follow' : 'noindex,follow'} />
   <link rel="canonical" href={pageUrl} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />

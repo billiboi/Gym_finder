@@ -4,16 +4,19 @@
     disciplineListForGym,
     fixGymText,
     formatAddressForDisplay,
+    gymHref,
     imageForGym,
     isIndexableGym,
+    primaryDisciplineForGym,
     structuredAddressForGym
   } from '$lib/gym-detail';
   import { SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
 
   export let data;
 
-  const { gym } = data;
+  const { gym, relatedGyms = [], relatedLocation, relatedDiscipline } = data;
   const disciplines = disciplineListForGym(gym);
+  const primaryDiscipline = primaryDisciplineForGym(gym);
   const presentation = buildGymPresentation(gym);
   const imageAsset = imageForGym(gym);
   const imageMeta =
@@ -30,6 +33,7 @@
   const hasPhone = phone && phone !== 'Non disponibile';
   const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
   const pageUrl = absoluteUrl(`/palestre/${data.gymSlug}`);
+  const seoDescription = `${fixGymText(gym?.name)}: ${primaryDiscipline} a ${address}. ${presentation}`;
 
   const detailStructuredData = [
       {
@@ -93,22 +97,32 @@
 
 <svelte:head>
   <title>{fixGymText(gym?.name)} | {SITE_NAME}</title>
-  <meta name="description" content={presentation} />
+  <meta name="description" content={seoDescription} />
   <meta name="robots" content={isIndexable ? 'index,follow' : 'noindex,follow'} />
   <link rel="canonical" href={pageUrl} />
   <meta property="og:title" content={`${fixGymText(gym?.name)} | ${SITE_NAME}`} />
-  <meta property="og:description" content={presentation} />
+  <meta property="og:description" content={seoDescription} />
   <meta property="og:type" content="article" />
   <meta property="og:url" content={pageUrl} />
   <meta property="og:image" content={imageSrc.startsWith('http') ? imageSrc : absoluteUrl(imageSrc)} />
   <meta name="twitter:title" content={`${fixGymText(gym?.name)} | ${SITE_NAME}`} />
-  <meta name="twitter:description" content={presentation} />
+  <meta name="twitter:description" content={seoDescription} />
   <meta name="twitter:image" content={imageSrc.startsWith('http') ? imageSrc : absoluteUrl(imageSrc)} />
   {@html detailStructuredDataScript}
 </svelte:head>
 
 <div class="min-h-screen w-full sc-page">
   <main class="mx-auto flex w-full max-w-6xl flex-col gap-5 px-4 pb-10 pt-4 sm:px-6 lg:px-8">
+    <nav aria-label="Breadcrumb" class="flex flex-wrap items-center gap-2 text-sm text-slate-600">
+      <a href="/" class="transition hover:text-slate-900">Home</a>
+      <span>/</span>
+      {#if relatedDiscipline}
+        <a href={`/discipline/${relatedDiscipline.slug}`} class="transition hover:text-slate-900">{relatedDiscipline.name}</a>
+        <span>/</span>
+      {/if}
+      <span class="font-semibold text-slate-900">{fixGymText(gym?.name)}</span>
+    </nav>
+
     <section class="overflow-hidden rounded-3xl border border-white/70 bg-white/80 shadow-xl backdrop-blur-sm sc-panel">
       <div class="grid gap-0 lg:grid-cols-[1.15fr_0.85fr]">
         <div class="relative min-h-[280px] bg-slate-100">
@@ -239,6 +253,52 @@
         </a>
       </div>
     </section>
+
+    <section class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+      <div class="flex flex-wrap items-start justify-between gap-4">
+        <div class="max-w-3xl">
+          <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Percorsi utili</p>
+          <h2 class="mt-2 text-2xl font-bold text-slate-900">Continua la ricerca senza ripartire da zero</h2>
+          <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">
+            Se questa scheda ti interessa, puoi continuare a esplorare la stessa disciplina o la stessa zona per confrontare strutture simili in modo piu rapido.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          {#if relatedDiscipline}
+            <a href={`/discipline/${relatedDiscipline.slug}`} class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:border-slate-300 hover:bg-slate-50">
+              Altre palestre di {relatedDiscipline.name}
+            </a>
+          {/if}
+          {#if relatedLocation}
+            <a href={`/zone/${relatedLocation.slug}`} class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:border-slate-300 hover:bg-slate-50">
+              Esplora {relatedLocation.name}
+            </a>
+          {/if}
+        </div>
+      </div>
+    </section>
+
+    {#if relatedGyms.length}
+      <section class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+        <div class="max-w-3xl">
+          <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Schede correlate</p>
+          <h2 class="mt-2 text-2xl font-bold text-slate-900">Altre strutture da confrontare</h2>
+          <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">
+            Qui trovi alcune schede vicine per disciplina o per area geografica, utili se vuoi confrontare rapidamente piu opzioni.
+          </p>
+        </div>
+
+        <div class="mt-5 grid gap-3 md:grid-cols-3">
+          {#each relatedGyms as relatedGym}
+            <a href={gymHref(relatedGym)} class="rounded-2xl border border-slate-200 bg-white/90 p-4 transition hover:-translate-y-0.5 hover:shadow-md">
+              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">{primaryDisciplineForGym(relatedGym)}</p>
+              <h3 class="mt-2 text-lg font-bold text-slate-900">{fixGymText(relatedGym.name)}</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-600">{formatAddressForDisplay(relatedGym)}</p>
+            </a>
+          {/each}
+        </div>
+      </section>
+    {/if}
   </main>
 </div>
 

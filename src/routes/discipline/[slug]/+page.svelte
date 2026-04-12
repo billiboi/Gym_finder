@@ -8,6 +8,7 @@
   const pageUrl = absoluteUrl(`/discipline/${discipline.slug}`);
   const title = `${discipline.title} | ${SITE_NAME}`;
   const description = `${discipline.description} In questa pagina trovi ${gyms.length} schede pubbliche dedicate.`;
+  const isIndexableLanding = gyms.length >= 3;
   const exampleAreas = [...new Set(gyms.map((gym) => String(gym.city || '').trim()).filter(Boolean))].slice(0, 6).join(', ');
   const structuredData = {
       '@context': 'https://schema.org',
@@ -54,6 +55,7 @@
 <svelte:head>
   <title>{title}</title>
   <meta name="description" content={description} />
+  <meta name="robots" content={isIndexableLanding ? 'index,follow' : 'noindex,follow'} />
   <link rel="canonical" href={pageUrl} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />

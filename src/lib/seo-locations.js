@@ -40,6 +40,17 @@ export function gymsForSeoLocation(gyms, location) {
   });
 }
 
+export function seoLocationForGym(gym) {
+  if (!gym) return null;
+
+  const haystack = [gym.name, gym.address, gym.city].join(' | ').toLowerCase();
+  return (
+    SEO_LOCATIONS.find((location) =>
+      location.keywords.some((keyword) => haystack.includes(keyword.toLowerCase()))
+    ) || null
+  );
+}
+
 export function topDisciplinesForGyms(gyms, limit = 6) {
   const deduped = dedupeDisciplines(
     gyms.flatMap((gym) =>
@@ -54,4 +65,3 @@ export function topDisciplinesForGyms(gyms, limit = 6) {
 
   return deduped.slice(0, limit);
 }
-
