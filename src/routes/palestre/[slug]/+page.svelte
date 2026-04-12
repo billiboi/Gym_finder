@@ -4,7 +4,8 @@
     disciplineListForGym,
     fixGymText,
     formatAddressForDisplay,
-    imageForGym
+    imageForGym,
+    structuredAddressForGym
   } from '$lib/gym-detail';
   import { SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
 
@@ -21,6 +22,7 @@
   const imageSrc = imageMeta.src;
   const hoursInfo = fixGymText(gym?.hours_info) || 'Orari da verificare';
   const address = formatAddressForDisplay(gym);
+  const structuredAddress = structuredAddressForGym(gym);
   const phone = fixGymText(gym?.phone) || 'Non disponibile';
   const website = fixGymText(gym?.website);
   const hasPhone = phone && phone !== 'Non disponibile';
@@ -54,13 +56,9 @@
         url: pageUrl,
         image: imageSrc.startsWith('http') ? imageSrc : absoluteUrl(imageSrc),
         telephone: hasPhone ? phone : undefined,
+        sameAs: website || undefined,
         sport: disciplines,
-        address: {
-          '@type': 'PostalAddress',
-          streetAddress: fixGymText(gym?.address || ''),
-          addressLocality: fixGymText(gym?.city || ''),
-          addressCountry: 'IT'
-        },
+        address: structuredAddress,
         geo:
           gym?.latitude !== null && gym?.latitude !== undefined && gym?.longitude !== null && gym?.longitude !== undefined
             ? {
@@ -68,8 +66,7 @@
                 latitude: gym.latitude,
                 longitude: gym.longitude
               }
-            : undefined,
-        openingHours: hoursInfo !== 'Orari da verificare' ? [hoursInfo] : undefined
+            : undefined
       }
     ];
   const detailStructuredDataScript = jsonLdScript(detailStructuredData);

@@ -225,6 +225,54 @@ export function formatAddressForDisplay(gym) {
   return cityProv || 'Indirizzo non disponibile';
 }
 
+export function structuredAddressForGym(gym) {
+  const rawAddress = fixGymText(gym?.address || '');
+  const rawCity = fixGymText(gym?.city || '');
+  const countryAliases = {
+    italia: 'IT',
+    italy: 'IT',
+    svizzera: 'CH',
+    switzerland: 'CH',
+    suisse: 'CH',
+    schweiz: 'CH',
+    svizra: 'CH'
+  };
+
+  let parts = [rawAddress, rawCity].filter(Boolean).join(', ').split(',').map((part) => part.trim()).filter(Boolean);
+  let countryCode = 'IT';
+
+  const trailingCountry = parts.at(-1)?.toLowerCase();
+  if (trailingCountry && countryAliases[trailingCountry]) {
+    countryCode = countryAliases[trailingCountry];
+    parts = parts.slice(0, -1);
+  } else if (rawCity && countryAliases[rawCity.toLowerCase()]) {
+    countryCode = countryAliases[rawCity.toLowerCase()];
+  }
+
+  const streetAddress = parts[0] || rawAddress;
+  const localityChunk = parts.length > 1 ? parts.at(-1) : '';
+  const postalCode = localityChunk.match(/\b\d{4,5}\b/)?.[0];
+  let locality = localityChunk.replace(/\b\d{4,5}\b/g, '').replace(/\s+/g, ' ').trim();
+  let addressRegion = '';
+
+  if (countryCode === 'IT') {
+    const regionMatch = locality.match(/^(.*?)(?:\s+([A-Z]{2}))$/);
+    if (regionMatch) {
+      locality = regionMatch[1].trim();
+      addressRegion = regionMatch[2];
+    }
+  }
+
+  return {
+    '@type': 'PostalAddress',
+    streetAddress,
+    postalCode,
+    addressLocality: locality || undefined,
+    addressRegion: addressRegion || undefined,
+    addressCountry: countryCode
+  };
+}
+
 export function buildGymPresentation(gym) {
   const customDescription = fixGymText(gym?.description || gym?.presentazione || '');
   if (customDescription) {
