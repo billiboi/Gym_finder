@@ -612,7 +612,7 @@
   <section class="reveal rounded-3xl border border-white/80 bg-white/70 p-5 shadow-xl backdrop-blur-sm sm:p-7 sc-panel sc-hero">
 
 
-    <div class="mt-2 flex flex-wrap items-end justify-between gap-5">
+    <div class="mt-2 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
       <div class="max-w-3xl">
         <p class="text-xs font-bold uppercase tracking-[0.24em] text-amber-700">Palestre in Zona</p>
         <h1 class="text-3xl font-bold leading-tight text-slate-900 sm:text-5xl">Trova la palestra giusta, ovunque ti trovi</h1>
@@ -622,16 +622,16 @@
           <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">Schede complete dedicate</span>
           <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">Esperienza mobile-first</span>
         </div>
-        <div class="mt-5 flex flex-wrap gap-3">
-          <a href="#elenco-palestre" class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
+        <div class="mt-5 grid gap-2 sm:flex sm:flex-wrap">
+          <a href="#elenco-palestre" class="rounded-xl bg-slate-900 px-4 py-2.5 text-center text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
             Esplora le palestre
           </a>
-          <button type="button" class="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 sc-button-ghost" on:click={detectLocation} disabled={locating}>
+          <button type="button" class="rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 sc-button-ghost" on:click={detectLocation} disabled={locating}>
             {locating ? 'Rilevamento posizione...' : 'Trova quelle vicine'}
           </button>
         </div>
       </div>
-      <div class="grid min-w-[220px] grid-cols-2 gap-2 text-center text-xs sm:text-sm">
+      <div class="grid grid-cols-2 gap-2 text-center text-xs sm:min-w-[220px] sm:text-sm">
         <div class="rounded-2xl sc-stat px-3 py-2 text-white">
           <p class="text-lg font-bold">{totalGyms}</p>
           <p class="opacity-75">Risultati</p>
@@ -645,7 +645,7 @@
   </section>
 
   <section class="reveal mt-5 rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sm:p-5 sc-panel sc-filter-panel">
-    <div class="mb-4 flex flex-wrap items-start justify-between gap-3">
+    <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between">
       <div>
         <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Ricerca guidata</p>
         <h2 class="mt-1 text-lg font-bold text-slate-900">Affina i risultati</h2>
@@ -705,12 +705,12 @@
       </select>
     </div>
 
-    <div class="mt-4 flex flex-wrap items-center gap-2">
-      <button type="button" class="rounded-xl bg-slate-900 px-3 py-2 text-sm font-bold text-white hover:bg-slate-800 sc-button" on:click={detectLocation} disabled={locating}>
+    <div class="mt-4 flex flex-col items-stretch gap-2 sm:flex-row sm:flex-wrap sm:items-center">
+      <button type="button" class="rounded-xl bg-slate-900 px-3 py-2.5 text-sm font-bold text-white hover:bg-slate-800 sc-button" on:click={detectLocation} disabled={locating}>
         {locating ? 'Rilevamento posizione...' : 'Usa la mia posizione'}
       </button>
       {#if locationReady}
-        <button type="button" class="rounded-xl bg-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-300 sc-button-muted" on:click={clearLocation}>
+        <button type="button" class="rounded-xl bg-slate-200 px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-300 sc-button-muted" on:click={clearLocation}>
           Rimuovi posizione
         </button>
       {/if}

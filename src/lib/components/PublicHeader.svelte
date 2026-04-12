@@ -34,15 +34,19 @@
         <div class="min-w-0 flex-1">
           <a href="/" class="inline-flex max-w-full items-start">
             <span class="min-w-0">
-              <span class="block text-[11px] font-bold uppercase tracking-[0.28em] text-amber-700 sm:text-xs">Palestre in Zona</span>
-              <span class="mt-1 block text-base font-semibold leading-6 text-slate-900 sm:text-[1.05rem]">Trova la palestra giusta vicino a te.</span>
-              <span class="mt-1 block text-sm leading-5 text-slate-600">Allenati ovunque, con una ricerca rapida e ordinata.</span>
+              <span class="block text-[10px] font-bold uppercase tracking-[0.28em] text-amber-700 sm:text-xs">Palestre in Zona</span>
+              <span class="mt-1 block text-[1.05rem] font-semibold leading-6 text-slate-900 sm:text-[1.1rem]">
+                Trova la palestra giusta vicino a te.
+              </span>
+              <span class="mt-1 block text-[13px] leading-5 text-slate-600 sm:text-sm">
+                Allenati ovunque, con una ricerca rapida e ordinata.
+              </span>
             </span>
           </a>
         </div>
 
         <div class="min-w-0 md:max-w-xs md:text-right">
-          <div class="inline-flex rounded-full border border-emerald-200/80 bg-emerald-50/90 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.24em] text-emerald-800 md:ml-auto sm:text-xs">
+          <div class="inline-flex rounded-full border border-emerald-200/80 bg-emerald-50/90 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.24em] text-emerald-800 md:ml-auto sm:text-xs">
             {sectionLabel}
           </div>
           <p class="mt-2 hidden text-sm leading-5 text-slate-600 md:block">
@@ -51,18 +55,18 @@
         </div>
       </div>
 
-      <nav class="grid grid-cols-2 gap-2 pt-1 sm:flex sm:flex-wrap sm:items-center">
-        <a href="/" class="rounded-full border border-slate-200 bg-white px-3.5 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
+      <nav class="sc-header-nav flex gap-2 overflow-x-auto pt-1 sm:flex-wrap sm:overflow-visible" aria-label="Navigazione pubblica">
+        <a href="/" class="sc-header-link rounded-full border border-slate-200 bg-white px-3.5 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
           Home
         </a>
-        <a href="/zone/varese" class="rounded-full border border-slate-200 bg-white px-3.5 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
+        <a href="/zone/varese" class="sc-header-link rounded-full border border-slate-200 bg-white px-3.5 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
           Zone
         </a>
-        <a href="/discipline/boxe" class="rounded-full border border-slate-200 bg-white px-3.5 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
+        <a href="/discipline/boxe" class="sc-header-link rounded-full border border-slate-200 bg-white px-3.5 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
           Discipline
         </a>
         {#if !isHome}
-          <a href="/" class="rounded-full bg-slate-900 px-3.5 py-2 text-sm font-semibold text-white transition hover:bg-slate-800 sc-button">
+          <a href="/" class="sc-header-link rounded-full bg-slate-900 px-3.5 py-2 text-sm font-semibold text-white transition hover:bg-slate-800 sc-button">
             Torna all'elenco
           </a>
         {/if}
