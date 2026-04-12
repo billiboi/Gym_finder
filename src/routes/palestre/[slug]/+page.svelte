@@ -1,6 +1,9 @@
 <script>
   import {
+    buildGymFaqItems,
+    buildGymSeoHighlights,
     buildGymPresentation,
+    cityLabelForGym,
     disciplineListForGym,
     fixGymText,
     formatAddressForDisplay,
@@ -18,6 +21,9 @@
   const disciplines = disciplineListForGym(gym);
   const primaryDiscipline = primaryDisciplineForGym(gym);
   const presentation = buildGymPresentation(gym);
+  const seoHighlights = buildGymSeoHighlights(gym);
+  const faqItems = buildGymFaqItems(gym);
+  const cityLabel = cityLabelForGym(gym);
   const imageAsset = imageForGym(gym);
   const imageMeta =
     typeof imageAsset === 'string'
@@ -73,6 +79,18 @@
                 longitude: gym.longitude
               }
             : undefined
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer
+          }
+        }))
       }
     ];
   const detailStructuredDataScript = jsonLdScript(detailStructuredData);
@@ -150,7 +168,7 @@
                 {fixGymText(gym?.name)}
               </h1>
               <p class="mt-3 max-w-2xl text-sm leading-7 text-slate-600 sc-detail-copy">
-                Tutto quello che ti serve per valutare rapidamente la struttura: discipline, contatti, orari e accesso immediato ai riferimenti ufficiali.
+                Tutto quello che ti serve per valutare rapidamente una palestra di {primaryDiscipline}{cityLabel ? ` a ${cityLabel}` : ''}: discipline, contatti, orari e accesso immediato ai riferimenti ufficiali.
               </p>
             </div>
 
@@ -204,6 +222,20 @@
           In questa scheda trovi i dettagli essenziali per capire rapidamente se la palestra e adatta
           alle tue esigenze: discipline praticate, indirizzo, orari e contatti diretti.
         </p>
+      </div>
+    </section>
+
+    <section class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+      <div class="max-w-4xl">
+        <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Perche questa pagina e utile</p>
+        <h2 class="mt-2 text-2xl font-bold text-slate-900">Cosa puoi capire prima di contattare la struttura</h2>
+        <div class="mt-4 grid gap-3">
+          {#each seoHighlights as highlight}
+            <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
+              <p class="text-sm leading-7 text-slate-700 sm:text-base">{highlight}</p>
+            </div>
+          {/each}
+        </div>
       </div>
     </section>
 
@@ -299,6 +331,22 @@
         </div>
       </section>
     {/if}
+
+    <section class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+      <div class="max-w-4xl">
+        <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Domande frequenti</p>
+        <h2 class="mt-2 text-2xl font-bold text-slate-900">Informazioni rapide sulla scheda</h2>
+      </div>
+
+      <div class="mt-5 grid gap-3">
+        {#each faqItems as item}
+          <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
+            <h3 class="text-base font-bold text-slate-900">{item.question}</h3>
+            <p class="mt-2 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">{item.answer}</p>
+          </div>
+        {/each}
+      </div>
+    </section>
   </main>
 </div>
 

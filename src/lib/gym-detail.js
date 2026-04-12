@@ -291,6 +291,63 @@ export function buildGymPresentation(gym) {
   return `${name} e una palestra specializzata in ${first}. La struttura si trova in ${address} ed e un punto utile per chi vuole allenarsi con regolarita trovando rapidamente informazioni essenziali su contatti e orari.`;
 }
 
+export function cityLabelForGym(gym) {
+  const address = structuredAddressForGym(gym);
+  return fixGymText(address.addressLocality || gym?.city || '');
+}
+
+export function buildGymSeoHighlights(gym) {
+  const disciplines = disciplineListForGym(gym);
+  const primary = disciplines[0] || 'Fitness';
+  const city = cityLabelForGym(gym);
+  const address = formatAddressForDisplay(gym);
+  const hoursInfo = fixGymText(gym?.hours_info || '');
+  const points = [
+    `${fixGymText(gym?.name || 'La struttura')} propone ${disciplines.join(', ')} con una scheda pensata per chi vuole confrontare rapidamente opzioni reali nella zona di ${city || 'riferimento'}.`,
+    `L'indirizzo pubblicato e ${address}, quindi puoi capire subito se la palestra e comoda rispetto alla tua posizione o a un periodo di viaggio.`,
+    hoursInfo && hoursInfo !== 'Orari da verificare'
+      ? `Gli orari disponibili sono gia visibili nella scheda, utile per una prima selezione senza dover aprire altre pagine o chiamare subito la struttura.`
+      : `Se gli orari non sono ancora completi, hai comunque contatti e riferimenti per verificare rapidamente la disponibilita della struttura.`,
+    `Se stai cercando ${primary}${city ? ` a ${city}` : ''}, questa pagina ti aiuta a valutare in pochi secondi se vale la pena approfondire.`
+  ];
+
+  return points.filter(Boolean);
+}
+
+export function buildGymFaqItems(gym) {
+  const name = fixGymText(gym?.name || 'questa palestra');
+  const disciplines = disciplineListForGym(gym);
+  const address = formatAddressForDisplay(gym);
+  const phone = fixGymText(gym?.phone || '');
+  const website = fixGymText(gym?.website || '');
+  const hoursInfo = fixGymText(gym?.hours_info || '');
+
+  return [
+    {
+      question: `Quali discipline si praticano da ${name}?`,
+      answer: `${name} risulta collegata a ${disciplines.join(', ')}. La scheda pubblica serve a capire rapidamente se l'offerta e coerente con quello che stai cercando.`
+    },
+    {
+      question: `Dove si trova ${name}?`,
+      answer: `${name} si trova in ${address}. In questa pagina trovi anche il collegamento rapido per aprire la posizione in mappa.`
+    },
+    {
+      question: `Come posso contattare ${name}?`,
+      answer: phone
+        ? `Puoi contattare ${name} telefonicamente al ${phone}${website ? ` oppure visitare il sito ufficiale: ${website}.` : '.'}`
+        : website
+          ? `Puoi visitare il sito ufficiale di ${name}: ${website}.`
+          : `La scheda non riporta ancora un contatto diretto completo, ma mostra i dati principali utili per identificare la struttura.`
+    },
+    {
+      question: `Gli orari di ${name} sono disponibili?`,
+      answer: hoursInfo && hoursInfo !== 'Orari da verificare'
+        ? `Si, gli orari pubblicati per ${name} sono: ${hoursInfo}.`
+        : `Gli orari di ${name} non sono ancora completi nella scheda pubblica e conviene verificarli direttamente con la struttura.`
+    }
+  ];
+}
+
 export function isIndexableGym(gym) {
   const name = fixGymText(gym?.name || '');
   const address = fixGymText(gym?.address || '');
