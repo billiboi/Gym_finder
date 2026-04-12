@@ -204,6 +204,10 @@ body {
   position: relative;
 }
 
+.sc-gym-card img {
+  display: block;
+}
+
 .sc-gym-card-head {
   background:
     linear-gradient(135deg, rgba(31, 92, 74, 0.08), rgba(214, 207, 176, 0.14)),
@@ -279,6 +283,10 @@ body {
   background:
     linear-gradient(135deg, rgba(31, 92, 74, 0.08), rgba(214, 207, 176, 0.12)),
     rgba(255, 255, 255, 0.82) !important;
+}
+
+.sc-detail-section-title {
+  letter-spacing: -0.02em;
 }
 
 .sc-detail-label {
@@ -600,6 +608,14 @@ body {
     padding: 0.85rem !important;
   }
 
+  .sc-gym-card {
+    border-radius: 1.35rem !important;
+  }
+
+  .sc-gym-card .sc-button {
+    width: 100%;
+  }
+
   .sc-gym-card-row {
     padding: 0.7rem 0.85rem !important;
     line-height: 1.45;
@@ -627,6 +643,24 @@ body {
   .sc-detail-meta,
   .sc-detail-actions {
     padding: 1rem !important;
+  }
+
+  .sc-detail-title {
+    font-size: 2.2rem !important;
+    line-height: 0.98;
+  }
+
+  .sc-detail-hero {
+    padding: 1rem !important;
+    border-radius: 1.4rem !important;
+  }
+
+  .sc-contact-card {
+    min-height: 100%;
+  }
+
+  .sc-contact-card .sc-detail-value {
+    line-height: 1.15;
   }
 }
 
