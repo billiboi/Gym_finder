@@ -950,13 +950,5 @@
     {/if}
   </section>
   </main>
-
-  <footer class="mx-auto w-full max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
-    <div class="rounded-3xl border border-white/70 bg-white/80 px-4 py-3 text-xs text-slate-500 shadow-lg backdrop-blur-sm sc-panel">
-      Palestre in Zona · Ricerca palestre e arti marziali · © 2026
-    </div>
-  </footer>
 </div>
-
-
 

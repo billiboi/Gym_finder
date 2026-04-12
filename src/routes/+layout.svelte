@@ -2,11 +2,25 @@
   import '../app.css';
   import { page } from '$app/stores';
   import PublicHeader from '$lib/components/PublicHeader.svelte';
-  import { SITE_DESCRIPTION, SITE_NAME, absoluteUrl } from '$lib/site';
+  import PublicFooter from '$lib/components/PublicFooter.svelte';
+  import { SITE_CONTACT_EMAIL, SITE_DESCRIPTION, SITE_NAME, SITE_URL, absoluteUrl, jsonLdScript } from '$lib/site';
 
   $: pathname = $page.url.pathname;
   $: canonical = absoluteUrl(pathname);
   $: isAdminRoute = pathname.startsWith('/admin');
+  $: organizationStructuredDataScript = jsonLdScript({
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: SITE_NAME,
+    url: SITE_URL,
+    email: SITE_CONTACT_EMAIL,
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'customer support',
+      email: SITE_CONTACT_EMAIL,
+      availableLanguage: ['it', 'en']
+    }
+  });
 </script>
 
 <svelte:head>
@@ -23,6 +37,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={SITE_NAME} />
   <meta name="twitter:description" content={SITE_DESCRIPTION} />
+  {@html organizationStructuredDataScript}
 </svelte:head>
 
 {#if !isAdminRoute}
@@ -30,3 +45,7 @@
 {/if}
 
 <slot />
+
+{#if !isAdminRoute}
+  <PublicFooter />
+{/if}
