@@ -64,7 +64,7 @@
   <meta property="og:type" content="website" />
   <meta name="twitter:title" content={title} />
   <meta name="twitter:description" content={description} />
-  <script type="application/ld+json">{structuredData}</script>
+  <script type="application/ld+json">{@html structuredData}</script>
 </svelte:head>
 
 <div class="min-h-screen w-full sc-page">

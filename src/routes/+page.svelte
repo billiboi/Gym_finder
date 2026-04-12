@@ -607,7 +607,7 @@
   <meta property="og:url" content={absoluteUrl('/')} />
   <meta name="twitter:title" content={homepageTitle} />
   <meta name="twitter:description" content={homepageDescription} />
-  <script type="application/ld+json">{homeStructuredData}</script>
+  <script type="application/ld+json">{@html homeStructuredData}</script>
 </svelte:head>
 
 <div class="min-h-screen w-full sc-page relative">

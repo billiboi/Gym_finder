@@ -107,7 +107,7 @@
   <meta name="twitter:title" content={`${fixGymText(gym?.name)} | ${SITE_NAME}`} />
   <meta name="twitter:description" content={presentation} />
   <meta name="twitter:image" content={imageSrc.startsWith('http') ? imageSrc : absoluteUrl(imageSrc)} />
-  <script type="application/ld+json">{detailStructuredData}</script>
+  <script type="application/ld+json">{@html detailStructuredData}</script>
 </svelte:head>
 
 <div class="min-h-screen w-full sc-page">
