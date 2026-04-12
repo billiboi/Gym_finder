@@ -896,7 +896,11 @@
           <div class="space-y-3 p-3 sm:p-4">
             <div class="space-y-1 rounded-2xl sc-gym-card-head p-3">
               <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Scheda palestra</p>
-              <h3 class="text-lg font-bold leading-tight text-slate-900">{displayName(gym.name)}</h3>
+              <h3 class="text-lg font-bold leading-tight text-slate-900">
+                <a href={gymHref(gym)} class="transition hover:text-emerald-800">
+                  {displayName(gym.name)}
+                </a>
+              </h3>
               <div class="mt-2 flex flex-wrap gap-2 text-xs font-semibold text-slate-500">
                 {#if gym.distance_km !== null && gym.distance_km !== undefined}
                   <span class="rounded-full bg-slate-100 px-2.5 py-1">{gym.distance_km} km</span>
@@ -927,12 +931,18 @@
             </div>
 
             <div class="rounded-2xl sc-gym-card-cta p-3">
-              <a
-                href={gymHref(gym)}
-                class="inline-flex items-center rounded-xl bg-slate-900 px-3 py-2 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
-              >
-                Scheda completa
-              </a>
+              <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Prossimo passo</p>
+                  <p class="mt-1 text-sm text-slate-600">Apri la scheda per vedere contatti, mappa e dettagli utili.</p>
+                </div>
+                <a
+                  href={gymHref(gym)}
+                  class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-3 py-2 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
+                >
+                  Scheda completa
+                </a>
+              </div>
             </div>
           </div>
         </article>

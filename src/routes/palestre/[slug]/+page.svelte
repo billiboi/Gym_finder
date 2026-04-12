@@ -287,6 +287,45 @@
     </section>
 
     <section class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div class="max-w-3xl">
+          <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Decisione rapida</p>
+          <h2 class="mt-2 text-2xl font-bold text-slate-900">Se la struttura ti sembra adatta, fai il passo successivo</h2>
+          <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">
+            Qui sotto trovi i tre passaggi piu utili: aprire il percorso, chiamare la palestra oppure visitare il sito ufficiale per approfondire.
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-5 flex flex-wrap gap-3">
+        <a
+          href={mapsHref}
+          target="_blank"
+          rel="noreferrer"
+          class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
+        >
+          Apri in mappa
+        </a>
+        <a
+          href={hasPhone ? `tel:${phone.replace(/\s+/g, '')}` : mapsHref}
+          class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50"
+        >
+          {hasPhone ? 'Chiama la palestra' : 'Contatto non disponibile'}
+        </a>
+        {#if website}
+          <a
+            href={website}
+            target="_blank"
+            rel="noreferrer"
+            class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50"
+          >
+            Visita il sito
+          </a>
+        {/if}
+      </div>
+    </section>
+
+    <section class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
       <div class="flex flex-wrap items-start justify-between gap-4">
         <div class="max-w-3xl">
           <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Percorsi utili</p>
@@ -348,5 +387,32 @@
       </div>
     </section>
   </main>
+
+  <div class="sc-mobile-actionbar md:hidden">
+    <div class="grid grid-cols-3 gap-2 rounded-[1.35rem] border border-white/70 bg-white/92 p-3 shadow-2xl backdrop-blur-sm">
+      <a
+        href={mapsHref}
+        target="_blank"
+        rel="noreferrer"
+        class="inline-flex min-h-[44px] items-center justify-center rounded-xl bg-slate-900 px-3 py-2 text-sm font-bold text-white sc-button"
+      >
+        Mappa
+      </a>
+      <a
+        href={hasPhone ? `tel:${phone.replace(/\s+/g, '')}` : mapsHref}
+        class="inline-flex min-h-[44px] items-center justify-center rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-slate-900"
+      >
+        {hasPhone ? 'Chiama' : 'Contatto'}
+      </a>
+      <a
+        href={website || mapsHref}
+        target={website ? '_blank' : undefined}
+        rel={website ? 'noreferrer' : undefined}
+        class="inline-flex min-h-[44px] items-center justify-center rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-slate-900"
+      >
+        {website ? 'Sito' : 'Dettagli'}
+      </a>
+    </div>
+  </div>
 </div>
 
