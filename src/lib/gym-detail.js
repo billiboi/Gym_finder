@@ -290,3 +290,25 @@ export function buildGymPresentation(gym) {
 
   return `${name} e una palestra specializzata in ${first}. La struttura si trova in ${address} ed e un punto utile per chi vuole allenarsi con regolarita trovando rapidamente informazioni essenziali su contatti e orari.`;
 }
+
+export function isIndexableGym(gym) {
+  const name = fixGymText(gym?.name || '');
+  const address = fixGymText(gym?.address || '');
+  const phone = fixGymText(gym?.phone || '');
+  const website = fixGymText(gym?.website || '');
+  const hoursInfo = fixGymText(gym?.hours_info || '');
+  const disciplines = disciplineListForGym(gym);
+  const hasCoordinates =
+    Number.isFinite(Number(gym?.latitude)) && Number.isFinite(Number(gym?.longitude));
+  const hasContactSignal = Boolean(phone || website);
+  const hasUsableHours = Boolean(hoursInfo && hoursInfo !== 'Orari da verificare');
+
+  return Boolean(
+    name &&
+    address &&
+    disciplines.length > 0 &&
+    hasCoordinates &&
+    hasContactSignal &&
+    hasUsableHours
+  );
+}

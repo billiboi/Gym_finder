@@ -1,4 +1,5 @@
 import { error } from '@sveltejs/kit';
+import { isIndexableGym } from '$lib/gym-detail';
 import { readGyms } from '$lib/server/gym-store';
 import { getSeoLocation, gymsForSeoLocation, topDisciplinesForGyms } from '$lib/seo-locations';
 
@@ -10,7 +11,7 @@ export async function load({ params }) {
   }
 
   const gyms = await readGyms();
-  const matchedGyms = gymsForSeoLocation(gyms, location);
+  const matchedGyms = gymsForSeoLocation(gyms, location).filter((gym) => isIndexableGym(gym));
 
   return {
     location,
@@ -18,4 +19,3 @@ export async function load({ params }) {
     topDisciplines: topDisciplinesForGyms(matchedGyms)
   };
 }
-

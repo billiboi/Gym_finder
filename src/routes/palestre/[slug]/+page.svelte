@@ -5,6 +5,7 @@
     fixGymText,
     formatAddressForDisplay,
     imageForGym,
+    isIndexableGym,
     structuredAddressForGym
   } from '$lib/gym-detail';
   import { SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
@@ -23,6 +24,7 @@
   const hoursInfo = fixGymText(gym?.hours_info) || 'Orari da verificare';
   const address = formatAddressForDisplay(gym);
   const structuredAddress = structuredAddressForGym(gym);
+  const isIndexable = isIndexableGym(gym);
   const phone = fixGymText(gym?.phone) || 'Non disponibile';
   const website = fixGymText(gym?.website);
   const hasPhone = phone && phone !== 'Non disponibile';
@@ -92,6 +94,7 @@
 <svelte:head>
   <title>{fixGymText(gym?.name)} | {SITE_NAME}</title>
   <meta name="description" content={presentation} />
+  <meta name="robots" content={isIndexable ? 'index,follow' : 'noindex,follow'} />
   <link rel="canonical" href={pageUrl} />
   <meta property="og:title" content={`${fixGymText(gym?.name)} | ${SITE_NAME}`} />
   <meta property="og:description" content={presentation} />

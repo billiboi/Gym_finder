@@ -1,4 +1,4 @@
-import { slugifyGym } from '$lib/gym-detail';
+import { isIndexableGym, slugifyGym } from '$lib/gym-detail';
 import { readGyms } from '$lib/server/gym-store';
 import { SITE_URL } from '$lib/site';
 import { SEO_DISCIPLINES } from '$lib/seo-disciplines';
@@ -15,11 +15,12 @@ function escapeXml(value) {
 
 export async function GET() {
   const gyms = await readGyms();
+  const indexableGyms = gyms.filter((gym) => isIndexableGym(gym));
   const urls = [
     `${SITE_URL}/`,
     ...SEO_LOCATIONS.map((location) => `${SITE_URL}/zone/${location.slug}`),
     ...SEO_DISCIPLINES.map((discipline) => `${SITE_URL}/discipline/${discipline.slug}`),
-    ...gyms.map((gym) => `${SITE_URL}/palestre/${slugifyGym(gym)}`)
+    ...indexableGyms.map((gym) => `${SITE_URL}/palestre/${slugifyGym(gym)}`)
   ];
 
   const body = `<?xml version="1.0" encoding="UTF-8"?>
