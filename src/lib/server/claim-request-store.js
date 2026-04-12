@@ -105,6 +105,58 @@ export function canPersistClaimRequests() {
   return hasSupabase || !isReadOnlyRuntime;
 }
 
+async function readClaimRequestsFromSupabase() {
+  const response = await fetch(
+    `${supabaseBaseUrl()}/rest/v1/${SUPABASE_CLAIMS_TABLE}?select=*&order=created_at.desc`,
+    {
+      method: 'GET',
+      headers: supabaseHeaders()
+    }
+  );
+
+  if (!response.ok) {
+    let details = '';
+    try {
+      const payload = await response.json();
+      details = String(payload?.message || payload?.hint || '').trim();
+    } catch {
+      details = '';
+    }
+
+    throw new Error(`Lettura richieste fallita (${response.status}). ${details}`.trim());
+  }
+
+  const rows = await response.json();
+  return Array.isArray(rows) ? rows.map((row) => normalizeClaimRequest(row)) : [];
+}
+
+async function readClaimRequestsFromFile() {
+  await ensureStorage();
+  try {
+    const raw = await readFile(claimRequestsFilePath, 'utf-8');
+    const current = JSON.parse(raw);
+    return Array.isArray(current)
+      ? current
+          .map((item) => normalizeClaimRequest(item))
+          .sort((a, b) => String(b.created_at).localeCompare(String(a.created_at)))
+      : [];
+  } catch {
+    return [];
+  }
+}
+
+export async function readClaimRequests() {
+  if (hasSupabase) {
+    return readClaimRequestsFromSupabase();
+  }
+
+  if (isReadOnlyRuntime) {
+    return [];
+  }
+
+  return readClaimRequestsFromFile();
+}
+
 export async function createClaimRequest(input) {
   const request = normalizeClaimRequest(input);
 
