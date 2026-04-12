@@ -10,22 +10,53 @@
   const description = `${location.description} Consulta una selezione di ${gyms.length} schede pubbliche con link ai dettagli completi.`;
   const isIndexableLanding = gyms.length >= 3;
   const disciplineSummary = topDisciplines.join(', ');
+  const faqItems = [
+    {
+      question: `Che cosa trovo nella pagina ${location.title}?`,
+      answer: `Questa pagina raccoglie una selezione di ${gyms.length} schede pubbliche legate a ${location.name}. Serve per confrontare rapidamente strutture gia presenti nel catalogo senza ripartire da una ricerca generica.`
+    },
+    {
+      question: `Quali discipline sono piu presenti a ${location.name}?`,
+      answer: disciplineSummary
+        ? `In questo momento le discipline che emergono di piu in questa zona sono ${disciplineSummary}.`
+        : `In questa zona il catalogo e ancora in crescita e la panoramica delle discipline si sta consolidando.`
+    },
+    {
+      question: `Le schede di ${location.name} mostrano contatti e orari?`,
+      answer: `Si, le schede pubbliche selezionate per questa pagina puntano a mostrare informazioni utili come indirizzo, orari e riferimenti per contattare la struttura o approfondire.`
+    }
+  ];
   const structuredData = {
       '@context': 'https://schema.org',
-      '@type': 'CollectionPage',
-      name: title,
-      description,
-      url: pageUrl,
-      about: topDisciplines,
-      mainEntity: {
-        '@type': 'ItemList',
-        itemListElement: gyms.slice(0, 12).map((gym, index) => ({
-          '@type': 'ListItem',
-          position: index + 1,
-          url: absoluteUrl(gymHref(gym)),
-          name: gym.name
-        }))
-      }
+      '@graph': [
+        {
+          '@type': 'CollectionPage',
+          name: title,
+          description,
+          url: pageUrl,
+          about: topDisciplines,
+          mainEntity: {
+            '@type': 'ItemList',
+            itemListElement: gyms.slice(0, 12).map((gym, index) => ({
+              '@type': 'ListItem',
+              position: index + 1,
+              url: absoluteUrl(gymHref(gym)),
+              name: gym.name
+            }))
+          }
+        },
+        {
+          '@type': 'FAQPage',
+          mainEntity: faqItems.map((item) => ({
+            '@type': 'Question',
+            name: item.question,
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: item.answer
+            }
+          }))
+        }
+      ]
     };
   const structuredDataScript = jsonLdScript(structuredData);
 
@@ -96,6 +127,28 @@
       </div>
     </section>
 
+    <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+      <div class="max-w-4xl">
+        <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Perche questa pagina e utile</p>
+        <h2 class="mt-1 text-2xl font-bold text-slate-900">Come usarla per scegliere meglio</h2>
+      </div>
+
+      <div class="mt-5 grid gap-3 md:grid-cols-3">
+        <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
+          <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Selezione</p>
+          <p class="mt-2 text-sm leading-7 text-slate-700">La pagina mette insieme solo schede gia abbastanza curate, cosi non perdi tempo tra risultati troppo deboli o poco informativi.</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
+          <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Confronto rapido</p>
+          <p class="mt-2 text-sm leading-7 text-slate-700">Puoi confrontare piu strutture della stessa area guardando subito indirizzo, discipline e orari prima di aprire il dettaglio completo.</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
+          <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Ricerca locale</p>
+          <p class="mt-2 text-sm leading-7 text-slate-700">Se stai viaggiando o ti sei appena trasferito, questa pagina e il modo piu veloce per orientarti nelle opzioni gia presenti in zona.</p>
+        </div>
+      </div>
+    </section>
+
     <section class="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
       {#if gyms.length === 0}
         <div class="col-span-full rounded-2xl border border-dashed border-slate-300 bg-white/80 p-8 text-center shadow-sm">
@@ -147,6 +200,22 @@
           </article>
         {/each}
       {/if}
+    </section>
+
+    <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+      <div class="max-w-4xl">
+        <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Domande frequenti</p>
+        <h2 class="mt-2 text-2xl font-bold text-slate-900">FAQ sulla zona {location.name}</h2>
+      </div>
+
+      <div class="mt-5 grid gap-3">
+        {#each faqItems as item}
+          <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
+            <h3 class="text-base font-bold text-slate-900">{item.question}</h3>
+            <p class="mt-2 text-sm leading-7 text-slate-600 sm:text-base">{item.answer}</p>
+          </div>
+        {/each}
+      </div>
     </section>
   </main>
 </div>
