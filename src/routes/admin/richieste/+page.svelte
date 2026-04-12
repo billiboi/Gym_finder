@@ -1,5 +1,6 @@
 <script>
   export let data;
+  export let form;
 
   let q = '';
 
@@ -61,6 +62,12 @@
         Richieste: <strong>{filtered.length}</strong> su {data.requests.length}
       </div>
     </div>
+
+    {#if form?.success}
+      <p class="mt-4 text-sm font-semibold text-emerald-700">Stato richiesta aggiornato correttamente.</p>
+    {:else if form?.error}
+      <p class="mt-4 text-sm font-semibold text-red-700">{form.error}</p>
+    {/if}
   </section>
 
   <section class="mt-5 grid gap-3">
@@ -76,9 +83,20 @@
               <h2 class="text-lg font-bold text-slate-900">{request.gym_name || 'Richiesta senza palestra'}</h2>
               <p class="mt-1 text-sm text-slate-600">{request.reason}</p>
             </div>
-            <span class={`inline-flex rounded-full px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] ${badgeClass(request.status)}`}>
-              {request.status || 'new'}
-            </span>
+            <form method="POST" action="?/updateStatus" class="flex flex-wrap items-center gap-2">
+              <input type="hidden" name="id" value={request.id} />
+              <select name="status" class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2">
+                <option value="new" selected={request.status === 'new'}>new</option>
+                <option value="reviewed" selected={request.status === 'reviewed'}>reviewed</option>
+                <option value="resolved" selected={request.status === 'resolved'}>resolved</option>
+              </select>
+              <button type="submit" class="rounded-xl bg-slate-900 px-3 py-2 text-sm font-semibold text-white hover:bg-slate-800">
+                Salva stato
+              </button>
+              <span class={`inline-flex rounded-full px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] ${badgeClass(request.status)}`}>
+                {request.status || 'new'}
+              </span>
+            </form>
           </div>
 
           <div class="mt-4 grid gap-3 md:grid-cols-2">
