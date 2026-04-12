@@ -146,8 +146,7 @@
     'Trova palestre, boxe, kickboxe, MMA, judo e altre discipline vicino a te con filtri per distanza, posizione e tipologia.';
   $: featuredGyms = filteredGyms.slice(0, 12);
   $: seoIntroDisciplines = SEO_DISCIPLINES.map((discipline) => discipline.name).join(', ');
-  $: homeStructuredData = JSON.stringify(
-    [
+  $: homeStructuredData = [
       {
         '@context': 'https://schema.org',
         '@type': 'WebSite',
@@ -171,10 +170,7 @@
           name: displayName(gym.name)
         }))
       }
-    ],
-    null,
-    0
-  );
+    ];
   $: homeStructuredDataScript = jsonLdScript(homeStructuredData);
 
   function splitCsvLine(line, delimiter = ',') {

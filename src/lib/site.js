@@ -8,8 +8,33 @@ export function absoluteUrl(path = '/') {
   return new URL(normalized, SITE_URL).toString();
 }
 
-export function jsonLdScript(json) {
-  const safeJson = String(json || '')
+function cleanJsonLdValue(value) {
+  if (Array.isArray(value)) {
+    return value
+      .map(cleanJsonLdValue)
+      .filter((item) => item !== undefined);
+  }
+
+  if (value && typeof value === 'object') {
+    const entries = Object.entries(value)
+      .map(([key, item]) => [key, cleanJsonLdValue(item)])
+      .filter(([, item]) => item !== undefined);
+
+    return entries.length ? Object.fromEntries(entries) : undefined;
+  }
+
+  if (value === undefined || value === null) return undefined;
+  if (typeof value === 'string' && value.trim() === '') return undefined;
+
+  return value;
+}
+
+export function serializeJsonLd(data) {
+  return JSON.stringify(cleanJsonLdValue(data), null, 0);
+}
+
+export function jsonLdScript(data) {
+  const safeJson = serializeJsonLd(data)
     .replace(/</g, '\\u003c')
     .replace(/<\/script/gi, '<\\/script');
 

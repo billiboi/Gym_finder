@@ -9,8 +9,7 @@
   const title = `${location.title} | ${SITE_NAME}`;
   const description = `${location.description} Consulta una selezione di ${gyms.length} schede pubbliche con link ai dettagli completi.`;
   const disciplineSummary = topDisciplines.join(', ');
-  const structuredData = JSON.stringify(
-    {
+  const structuredData = {
       '@context': 'https://schema.org',
       '@type': 'CollectionPage',
       name: title,
@@ -26,10 +25,7 @@
           name: gym.name
         }))
       }
-    },
-    null,
-    0
-  );
+    };
   const structuredDataScript = jsonLdScript(structuredData);
 
   function imageMetaForGym(gym) {

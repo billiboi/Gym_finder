@@ -27,8 +27,7 @@
   const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
   const pageUrl = absoluteUrl(`/palestre/${data.gymSlug}`);
 
-  const detailStructuredData = JSON.stringify(
-    [
+  const detailStructuredData = [
       {
         '@context': 'https://schema.org',
         '@type': 'BreadcrumbList',
@@ -72,10 +71,7 @@
             : undefined,
         openingHours: hoursInfo !== 'Orari da verificare' ? [hoursInfo] : undefined
       }
-    ],
-    null,
-    0
-  );
+    ];
   const detailStructuredDataScript = jsonLdScript(detailStructuredData);
 
   function handleImageError(event) {

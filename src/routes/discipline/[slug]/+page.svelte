@@ -9,8 +9,7 @@
   const title = `${discipline.title} | ${SITE_NAME}`;
   const description = `${discipline.description} In questa pagina trovi ${gyms.length} schede pubbliche dedicate.`;
   const exampleAreas = [...new Set(gyms.map((gym) => String(gym.city || '').trim()).filter(Boolean))].slice(0, 6).join(', ');
-  const structuredData = JSON.stringify(
-    {
+  const structuredData = {
       '@context': 'https://schema.org',
       '@type': 'CollectionPage',
       name: title,
@@ -26,10 +25,7 @@
           name: gym.name
         }))
       }
-    },
-    null,
-    0
-  );
+    };
   const structuredDataScript = jsonLdScript(structuredData);
 
   function imageMetaForGym(gym) {
