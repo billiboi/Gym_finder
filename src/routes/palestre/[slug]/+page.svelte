@@ -40,6 +40,7 @@
   const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
   const pageUrl = absoluteUrl(`/palestre/${data.gymSlug}`);
   const seoDescription = `${fixGymText(gym?.name)}: ${primaryDiscipline} a ${address}. ${presentation}`;
+  const claimHref = `/rivendica-scheda?gym=${encodeURIComponent(fixGymText(gym?.name))}&url=${encodeURIComponent(pageUrl)}&reason=${encodeURIComponent('Aggiornamento o rivendicazione scheda')}`;
 
   const detailStructuredData = [
       {
@@ -345,6 +346,27 @@
               Esplora {relatedLocation.name}
             </a>
           {/if}
+        </div>
+      </div>
+    </section>
+
+    <section class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+      <div class="flex flex-wrap items-start justify-between gap-4">
+        <div class="max-w-3xl">
+          <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Gestisci questa scheda</p>
+          <h2 class="mt-2 text-2xl font-bold text-slate-900">Se rappresenti la palestra, puoi chiedere un aggiornamento</h2>
+          <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">
+            Se sei il gestore o fai parte dello staff, puoi usare un percorso guidato per richiedere correzioni, integrazioni o la rivendicazione della scheda pubblica.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap gap-3">
+          <a href={claimHref} class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
+            Rivendica o aggiorna
+          </a>
+          <a href="/per-le-palestre" class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50">
+            Info per le palestre
+          </a>
         </div>
       </div>
     </section>

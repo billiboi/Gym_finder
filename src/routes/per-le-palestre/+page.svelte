@@ -35,7 +35,7 @@
         </div>
         <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
           <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">3. Invia tutto via email</p>
-          <p class="mt-3 text-sm leading-7 text-slate-600">Per richieste manuali o collaborazioni puoi scrivere direttamente all'indirizzo del progetto.</p>
+          <p class="mt-3 text-sm leading-7 text-slate-600">Per richieste manuali o collaborazioni puoi usare il percorso guidato oppure scrivere direttamente all'indirizzo del progetto.</p>
         </div>
       </div>
     </section>
@@ -47,9 +47,14 @@
         <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
           Scrivi a <strong>{SITE_CONTACT_EMAIL}</strong> includendo nome palestra, link scheda e aggiornamenti richiesti.
         </p>
-        <a href={SITE_CONTACT_MAILTO} class="mt-4 inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
-          Scrivi via email
-        </a>
+        <div class="mt-4 flex flex-wrap gap-3">
+          <a href="/rivendica-scheda?reason=Rivendicazione%20scheda" class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
+            Avvia richiesta guidata
+          </a>
+          <a href={SITE_CONTACT_MAILTO} class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50">
+            Scrivi via email
+          </a>
+        </div>
       </div>
     </section>
   </main>
