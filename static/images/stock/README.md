@@ -27,6 +27,8 @@ Eccezioni temporanee:
 - `Yoga` usa solo `wellness.webp` e `wellness-3.webp`
 - `Pilates` usa solo `wellness-2.webp`
 - questo evita di mischiare immagini yoga/pilates nella stessa scheda finché non esistono set dedicati `yoga` e `pilates`
+- `Difesa Personale` usa temporaneamente `difesapersonale.webp`, `difesapersonale-2.webp`, `difesapersonale-3.webp`
+- questo mantiene compatibilità con i file già inseriti localmente, anche se il basename ideale resta `difesa-personale`
 
 Note:
 - usa immagini orizzontali, idealmente 1600x900 o simili

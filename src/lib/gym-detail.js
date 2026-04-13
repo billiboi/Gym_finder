@@ -121,7 +121,13 @@ export function stockImageCandidatesForDiscipline(discipline) {
     // Until we have dedicated stock sets, keep yoga and pilates visually separated
     // instead of mixing the whole shared "wellness" pool.
     Yoga: ['/images/stock/wellness.webp', '/images/stock/wellness-3.webp'],
-    Pilates: ['/images/stock/wellness-2.webp']
+    Pilates: ['/images/stock/wellness-2.webp'],
+    // Support the current local naming while we standardize the asset set.
+    'Difesa Personale': [
+      '/images/stock/difesapersonale.webp',
+      '/images/stock/difesapersonale-2.webp',
+      '/images/stock/difesapersonale-3.webp'
+    ]
   };
 
   if (overrides[normalized]) {
