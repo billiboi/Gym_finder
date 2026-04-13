@@ -1,16 +1,16 @@
 const EXACT_LABELS = new Map([
   ['mma', 'MMA'],
   ['k1', 'K1'],
-  ['bjj', 'Jujistu Brasiliano'],
-  ['jiujitsu', 'Jujistu'],
-  ['jujitsu', 'Jujistu'],
-  ['jiu jitsu', 'Jujistu'],
-  ['ju jitsu', 'Jujistu'],
-  ['jiu-jitsu', 'Jujistu'],
-  ['ju-jitsu', 'Jujistu'],
-  ['jiujitsu brasiliano', 'Jujistu Brasiliano'],
-  ['jujitsu brasiliano', 'Jujistu Brasiliano'],
-  ['brazilian jiu jitsu', 'Jujistu Brasiliano'],
+  ['bjj', 'Jujitsu Brasiliano'],
+  ['jiujitsu', 'Jujitsu'],
+  ['jujitsu', 'Jujitsu'],
+  ['jiu jitsu', 'Jujitsu'],
+  ['ju jitsu', 'Jujitsu'],
+  ['jiu-jitsu', 'Jujitsu'],
+  ['ju-jitsu', 'Jujitsu'],
+  ['jiujitsu brasiliano', 'Jujitsu Brasiliano'],
+  ['jujitsu brasiliano', 'Jujitsu Brasiliano'],
+  ['brazilian jiu jitsu', 'Jujitsu Brasiliano'],
   ['kick boxing', 'Kickboxe'],
   ['kickboxing', 'Kickboxe'],
   ['kickboxe', 'Kickboxe'],
@@ -34,6 +34,13 @@ const EXACT_LABELS = new Map([
   ['fitness', 'Fitness'],
   ['yoga', 'Yoga'],
   ['nuoto', 'Nuoto'],
+  ['basket', 'Basket'],
+  ['basketball', 'Basket'],
+  ['calcio', 'Calcio'],
+  ['football', 'Calcio'],
+  ['soccer', 'Calcio'],
+  ['pattinaggio', 'Pattinaggio'],
+  ['skating', 'Pattinaggio'],
   ['scherma', 'Scherma'],
   ['fencing', 'Scherma'],
   ['chanbara', 'Chanbara'],
@@ -127,10 +134,10 @@ export function normalizeDisciplineLabel(value) {
   if (exact) return exact;
 
   if (/(^|\s)jiu ?jitsu brasiliano($|\s)/i.test(folded) || /(^|\s)bjj($|\s)/i.test(folded)) {
-    return 'Jujistu Brasiliano';
+    return 'Jujitsu Brasiliano';
   }
   if (/(^|\s)jiu ?jitsu($|\s)|(^|\s)ju ?jitsu($|\s)/i.test(folded)) {
-    return 'Jujistu';
+    return 'Jujitsu';
   }
   if (/(^|\s)kick ?boxing?($|\s)|(^|\s)kickboxe($|\s)/i.test(folded)) {
     return 'Kickboxe';

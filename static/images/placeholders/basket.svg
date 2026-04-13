@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" fill="none">
+  <rect width="1600" height="900" fill="#F3F1E7"/>
+  <rect x="48" y="48" width="1504" height="804" rx="40" fill="#FBFAF5" stroke="#D8D3C5"/>
+  <circle cx="1180" cy="230" r="180" fill="#E7E0CD"/>
+  <circle cx="260" cy="720" r="190" fill="#E1D9C4"/>
+  <circle cx="800" cy="450" r="180" fill="#C97A3D"/>
+  <path d="M620 450H980" stroke="#5D3318" stroke-width="14" stroke-linecap="round"/>
+  <path d="M800 270C900 330 980 440 980 450C980 460 900 570 800 630" stroke="#5D3318" stroke-width="14" stroke-linecap="round"/>
+  <path d="M800 270C700 330 620 440 620 450C620 460 700 570 800 630" stroke="#5D3318" stroke-width="14" stroke-linecap="round"/>
+  <path d="M690 305C760 390 760 510 690 595" stroke="#5D3318" stroke-width="14" stroke-linecap="round"/>
+  <path d="M910 305C840 390 840 510 910 595" stroke="#5D3318" stroke-width="14" stroke-linecap="round"/>
+  <text x="120" y="150" fill="#1F5C4A" font-family="Georgia, serif" font-size="34" font-weight="700" letter-spacing="8">PALESTRE IN ZONA</text>
+  <text x="120" y="690" fill="#162228" font-family="Arial, sans-serif" font-size="88" font-weight="700">Basket</text>
+  <text x="120" y="744" fill="#4B5563" font-family="Arial, sans-serif" font-size="28">Campi, allenamento e pallacanestro</text>
+</svg>

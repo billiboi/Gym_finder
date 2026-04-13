@@ -203,7 +203,7 @@
                     name="disciplines"
                     value={gym.disciplineText}
                     class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm"
-                    placeholder="Es: Judo | Jujistu Brasiliano"
+                    placeholder="Es: Judo | Jujitsu Brasiliano"
                   />
                 </label>
 

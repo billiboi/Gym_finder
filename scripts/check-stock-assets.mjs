@@ -22,6 +22,9 @@ const allowedPrefixes = [
   'nuoto',
   'functional',
   'difesa-personale',
+  'basket',
+  'calcio',
+  'pattinaggio',
   // Temporary compatibility alias already supported in the app.
   'difesapersonale'
 ];
