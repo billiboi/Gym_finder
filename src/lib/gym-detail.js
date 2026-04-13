@@ -103,8 +103,8 @@ export function stockImageForDiscipline(discipline) {
     'Difesa Personale': '/images/stock/difesa-personale',
     'Arti Marziali': '/images/stock/mma',
     CrossFit: '/images/stock/functional',
-    Pilates: '/images/stock/wellness',
-    Yoga: '/images/stock/wellness',
+    Pilates: '/images/stock/pilates',
+    Yoga: '/images/stock/yoga',
     Nuoto: '/images/stock/nuoto',
     Calisthenics: '/images/stock/functional',
     Functional: '/images/stock/functional',
@@ -116,6 +116,18 @@ export function stockImageForDiscipline(discipline) {
 }
 
 export function stockImageCandidatesForDiscipline(discipline) {
+  const normalized = normalizeDisciplineLabel(discipline) || 'Fitness';
+  const overrides = {
+    // Until we have dedicated stock sets, keep yoga and pilates visually separated
+    // instead of mixing the whole shared "wellness" pool.
+    Yoga: ['/images/stock/wellness.webp', '/images/stock/wellness-3.webp'],
+    Pilates: ['/images/stock/wellness-2.webp']
+  };
+
+  if (overrides[normalized]) {
+    return overrides[normalized];
+  }
+
   const base = stockImageForDiscipline(discipline);
   const variants = ['', '-2', '-3'];
   const extensions = ['.webp'];

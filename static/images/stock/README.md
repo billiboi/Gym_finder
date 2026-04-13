@@ -23,6 +23,11 @@ Basename supportati:
 - `functional`
 - `difesa-personale`
 
+Eccezioni temporanee:
+- `Yoga` usa solo `wellness.webp` e `wellness-3.webp`
+- `Pilates` usa solo `wellness-2.webp`
+- questo evita di mischiare immagini yoga/pilates nella stessa scheda finché non esistono set dedicati `yoga` e `pilates`
+
 Note:
 - usa immagini orizzontali, idealmente 1600x900 o simili
 - puoi aggiungere fino a 3 varianti per disciplina:
