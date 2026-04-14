@@ -34,6 +34,9 @@ const EXACT_LABELS = new Map([
   ['fitness', 'Fitness'],
   ['yoga', 'Yoga'],
   ['nuoto', 'Nuoto'],
+  ['wrestling', 'Grappling'],
+  ['lotta', 'Grappling'],
+  ['grappling', 'Grappling'],
   ['basket', 'Basket'],
   ['basketball', 'Basket'],
   ['calcio', 'Calcio'],
@@ -138,6 +141,9 @@ export function normalizeDisciplineLabel(value) {
   }
   if (/(^|\s)jiu ?jitsu($|\s)|(^|\s)ju ?jitsu($|\s)/i.test(folded)) {
     return 'Jujitsu';
+  }
+  if (/(^|\s)wrestling($|\s)|(^|\s)lotta($|\s)|(^|\s)grappling($|\s)/i.test(folded)) {
+    return 'Grappling';
   }
   if (/(^|\s)kick ?boxing?($|\s)|(^|\s)kickboxe($|\s)/i.test(folded)) {
     return 'Kickboxe';
