@@ -31,7 +31,9 @@ const EXACT_LABELS = new Map([
   ['functional', 'Functional'],
   ['calisthenics', 'Calisthenics'],
   ['pilates', 'Pilates'],
+  ['fitnes', 'Fitness'],
   ['fitness', 'Fitness'],
+  ['fitness ! bodybuilding', 'Fitness'],
   ['yoga', 'Yoga'],
   ['nuoto', 'Nuoto'],
   ['wrestling', 'Grappling'],
@@ -64,6 +66,7 @@ const EXACT_LABELS = new Map([
   ['goshindo', 'Goshindo'],
   ['golf', 'Golf'],
   ['hockey', 'Hockey'],
+  ['iado', 'Iaido'],
   ['laido', 'Iaido'],
   ['iaido', 'Iaido']
 ]);
@@ -185,3 +188,5 @@ export function dedupeDisciplines(values) {
 
   return [...map.values()].sort((a, b) => a.localeCompare(b, 'it'));
 }
+
+
