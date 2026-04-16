@@ -8,7 +8,7 @@
   const pageUrl = absoluteUrl(`/discipline/${discipline.slug}`);
   const title = `${discipline.title} | ${SITE_NAME}`;
   const description = `${discipline.description} In questa pagina trovi ${gyms.length} schede pubbliche dedicate.`;
-  const isIndexableLanding = gyms.length >= 3;
+  const isIndexableLanding = gyms.length >= 2;
   const exampleAreas = [...new Set(gyms.map((gym) => String(gym.city || '').trim()).filter(Boolean))].slice(0, 6).join(', ');
   const faqItems = [
     {
@@ -217,3 +217,4 @@
     </section>
   </main>
 </div>
+

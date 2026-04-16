@@ -8,7 +8,7 @@
   const pageUrl = absoluteUrl(`/zone/${location.slug}`);
   const title = `${location.title} | ${SITE_NAME}`;
   const description = `${location.description} Consulta una selezione di ${gyms.length} schede pubbliche con link ai dettagli completi.`;
-  const isIndexableLanding = gyms.length >= 3;
+  const isIndexableLanding = gyms.length >= 2;
   const disciplineSummary = topDisciplines.join(', ');
   const faqItems = [
     {
@@ -219,3 +219,4 @@
     </section>
   </main>
 </div>
+

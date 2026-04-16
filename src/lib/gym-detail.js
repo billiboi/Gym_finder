@@ -385,13 +385,8 @@ export function isIndexableGym(gym) {
     Number.isFinite(Number(gym?.latitude)) && Number.isFinite(Number(gym?.longitude));
   const hasContactSignal = Boolean(phone || website);
   const hasUsableHours = Boolean(hoursInfo && hoursInfo !== 'Orari da verificare');
+  const hasIndexingSignal = hasCoordinates || hasContactSignal || hasUsableHours;
 
-  return Boolean(
-    name &&
-    address &&
-    disciplines.length > 0 &&
-    hasCoordinates &&
-    hasContactSignal &&
-    hasUsableHours
-  );
+  return Boolean(name && address && disciplines.length > 0 && hasIndexingSignal);
 }
+
