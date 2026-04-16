@@ -19,19 +19,65 @@ export function fixGymText(value) {
   return text.replace(/\s+/g, ' ').trim();
 }
 
-export function disciplineListForGym(gym) {
-  if (Array.isArray(gym?.disciplines) && gym.disciplines.length) {
-    return gym.disciplines.map((d) => normalizeDisciplineLabel(d)).filter(Boolean);
-  }
+function inferredDisciplinesFromName(name) {
+  const text = fixGymText(name).toLowerCase();
+  if (!text) return [];
 
-  if (typeof gym?.discipline === 'string' && gym.discipline.trim()) {
-    return gym.discipline
+  const patterns = [
+    ['Iaido', /(^|\s)(iaido|iado|laido)(\s|$)/i],
+    ['Wing Chun', /(^|\s)(wing chun|win chun|win chung)(\s|$)/i],
+    ['Kung Fu', /(^|\s)kung fu(\s|$)|(^|\s)kungfu(\s|$)|(^|\s)choy(\s|$)/i],
+    ['Tai Chi', /(^|\s)tai chi(\s|$)|(^|\s)taiji(\s|$)/i],
+    ['Taekwondo', /(^|\s)taekwondo(\s|$)/i],
+    ['Aikido', /(^|\s)aikido(\s|$)/i],
+    ['Scherma', /(^|\s)scherma(\s|$)|(^|\s)fencing(\s|$)/i],
+    ['Jujitsu Brasiliano', /(^|\s)bjj(\s|$)|brazilian jiu jitsu|jiu ?jitsu brasiliano|ju ?jitsu brasiliano/i],
+    ['Jujitsu', /(^|\s)jiu ?jitsu(\s|$)|(^|\s)ju ?jitsu(\s|$)/i],
+    ['Grappling', /(^|\s)grappling(\s|$)|(^|\s)wrestling(\s|$)|(^|\s)lotta(\s|$)/i],
+    ['Kickboxe', /(^|\s)kick ?boxing?(\s|$)|(^|\s)kickboxe(\s|$)/i],
+    ['Muay Thai', /(^|\s)muay ?thai(\s|$)/i],
+    ['K1', /(^|\s)k1(\s|$)/i],
+    ['MMA', /(^|\s)mma(\s|$)|mixed martial arts/i],
+    ['Boxe', /(^|\s)boxe(\s|$)|(^|\s)boxing(\s|$)/i],
+    ['Judo', /(^|\s)judo(\s|$)/i],
+    ['Karate', /(^|\s)karate(\s|$)|kyokushin|shito ryu|wa rei ryu/i],
+    ['Difesa Personale', /self defense|difesa personale/i],
+    ['CrossFit', /(^|\s)crossfit(\s|$)/i],
+    ['Calisthenics', /(^|\s)calisthenics(\s|$)/i],
+    ['Functional', /(^|\s)functional(\s|$)/i],
+    ['Nuoto', /(^|\s)nuoto(\s|$)|(^|\s)swim(ming)?(\s|$)/i],
+    ['Yoga', /(^|\s)yoga(\s|$)/i],
+    ['Pilates', /(^|\s)pilates(\s|$)/i],
+    ['Basket', /(^|\s)basket(ball)?(\s|$)/i],
+    ['Calcio', /(^|\s)calcio(\s|$)|(^|\s)soccer(\s|$)|(^|\s)football(\s|$)/i],
+    ['Pattinaggio', /(^|\s)pattinaggio(\s|$)|(^|\s)skating(\s|$)|roller/i]
+  ];
+
+  return patterns.filter(([, pattern]) => pattern.test(text)).map(([label]) => label);
+}
+
+export function disciplineListForGym(gym) {
+  let normalized = [];
+
+  if (Array.isArray(gym?.disciplines) && gym.disciplines.length) {
+    normalized = gym.disciplines.map((d) => normalizeDisciplineLabel(d)).filter(Boolean);
+  } else if (typeof gym?.discipline === 'string' && gym.discipline.trim()) {
+    normalized = gym.discipline
       .split('|')
       .map((d) => normalizeDisciplineLabel(d))
       .filter(Boolean);
   }
 
-  return ['Fitness'];
+  if (!normalized.length) {
+    normalized = ['Fitness'];
+  }
+
+  const inferred = inferredDisciplinesFromName(gym?.name);
+  if (inferred.length && normalized.length === 1 && normalized[0] === 'Fitness') {
+    return [...new Set([...inferred, ...normalized])];
+  }
+
+  return normalized;
 }
 
 export function primaryDisciplineForGym(gym) {
@@ -60,12 +106,12 @@ export function placeholderImageForDiscipline(discipline) {
     'Jujitsu Brasiliano': '/images/placeholders/grappling.svg',
     Grappling: '/images/placeholders/grappling.svg',
     Karate: '/images/placeholders/karate.svg',
-    Taekwondo: '/images/placeholders/kickboxe.svg',
-    Aikido: '/images/placeholders/judo.svg',
+    Taekwondo: '/images/placeholders/taekwondo.svg',
+    Aikido: '/images/placeholders/aikido.svg',
     'Kung Fu': '/images/placeholders/kung-fu.svg',
     'Wing Chun': '/images/placeholders/kung-fu.svg',
     'Tai Chi': '/images/placeholders/kung-fu.svg',
-    Scherma: '/images/placeholders/fitness.svg',
+    Scherma: '/images/placeholders/scherma.svg',
     Chanbara: '/images/placeholders/karate.svg',
     'Difesa Personale': '/images/placeholders/difesa-personale.svg',
     'Arti Marziali': '/images/placeholders/mma.svg',
@@ -126,10 +172,9 @@ export function stockImageForDiscipline(discipline) {
 export function stockImageCandidatesForDiscipline(discipline) {
   const normalized = normalizeDisciplineLabel(discipline) || 'Fitness';
   const overrides = {
-    // Until we have dedicated stock sets, keep yoga and pilates visually separated
-    // instead of mixing the whole shared "wellness" pool.
-    Yoga: ['/images/stock/wellness.webp', '/images/stock/wellness-3.webp'],
-    Pilates: ['/images/stock/wellness-2.webp'],
+    // Keep dedicated yoga/pilates sets isolated from the legacy shared wellness pool.
+    Yoga: ['/images/stock/yoga.webp', '/images/stock/yoga-2.webp', '/images/stock/yoga-3.webp'],
+    Pilates: ['/images/stock/pilates.webp', '/images/stock/pilates-2.webp', '/images/stock/pilates-3.webp'],
     // Support the current local naming while we standardize the asset set.
     'Difesa Personale': [
       '/images/stock/difesapersonale.webp',

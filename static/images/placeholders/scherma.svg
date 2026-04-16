@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1f1f1f"/>
+      <stop offset="100%" stop-color="#6a6e79"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#bg)"/>
+  <circle cx="1030" cy="118" r="214" fill="#eff2f6" fill-opacity="0.18"/>
+  <circle cx="158" cy="560" r="222" fill="#ffffff" fill-opacity="0.05"/>
+  <path d="M0 556c170-66 334-74 490-22 181 61 365 60 710-8v149H0z" fill="#08110e" fill-opacity="0.18"/>
+  <g transform="translate(428 92)">
+    <circle cx="286" cy="164" r="28" stroke="#f9fbff" stroke-width="18"/>
+    <circle cx="434" cy="196" r="28" stroke="#f9fbff" stroke-width="18"/>
+    <path d="M286 192l-38 124" stroke="#f9fbff" stroke-width="18" stroke-linecap="round"/>
+    <path d="M434 224l42 118" stroke="#f9fbff" stroke-width="18" stroke-linecap="round"/>
+    <path d="M326 244l162-38" stroke="#f9fbff" stroke-width="18" stroke-linecap="round"/>
+    <path d="M214 326h338" stroke="#f9fbff" stroke-width="10" stroke-linecap="round"/>
+  </g>
+  <rect x="84" y="90" width="156" height="36" rx="18" fill="#ffffff" fill-opacity="0.12"/>
+  <text x="106" y="114" fill="#ffffff" fill-opacity="0.92" font-size="18" font-family="Arial, sans-serif" font-weight="700" letter-spacing="3">POCKET GYM</text>
+  <text x="84" y="514" fill="#ffffff" font-size="72" font-family="Arial, sans-serif" font-weight="700">Scherma</text>
+  <text x="84" y="556" fill="#ffffff" fill-opacity="0.76" font-size="24" font-family="Arial, sans-serif" font-weight="500">Pedana, tecnica e assalti in sala scherma</text>
+</svg>
