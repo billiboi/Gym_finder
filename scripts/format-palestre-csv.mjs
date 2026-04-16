@@ -17,8 +17,8 @@ const HEADERS = [
 
 const DISCIPLINE_MAP = {
   box: 'Boxe', boxing: 'Boxe', boxe: 'Boxe', judo: 'Judo', karate: 'Karate',
-  jiujitsu: 'JiuJitsu', 'jiu jitsu': 'JiuJitsu', bjj: 'JiuJitsu Brasiliano',
-  'jiujitsu brasiliano': 'JiuJitsu Brasiliano', kickboxe: 'Kickboxe', kickboxing: 'Kickboxe',
+  jiujitsu: 'Jujitsu', 'jiu jitsu': 'Jujitsu', bjj: 'Jujitsu Brasiliano',
+  'jiujitsu brasiliano': 'Jujitsu Brasiliano', kickboxe: 'Kickboxe', kickboxing: 'Kickboxe',
   'muay thai': 'Muay Thai', k1: 'K1', mma: 'MMA', nuoto: 'Nuoto', yoga: 'Yoga',
   pilates: 'Pilates', crossfit: 'CrossFit', functional: 'Functional', bodybuilding: 'Bodybuilding',
   fitness: 'Fitness', calisthenics: 'Calisthenics'
@@ -41,7 +41,7 @@ function csvEscape(value) {
   return s;
 }
 
-function clean(value) { return String(value ?? '').replace(/É/g,'�').replace(/è/g,'�').replace(/é/g,'�').replace(/�/g,'').trim(); }
+function clean(value) { return String(value ?? '').replace(/Ã‰/g,'É').replace(/Ã¨/g,'è').replace(/Ã©/g,'é').replace(/Â/g,'').trim(); }
 function titleWords(value) {
   return clean(value).split(' ').filter(Boolean).map((w) => {
     if (w.length <= 3 && w === w.toUpperCase()) return w;

@@ -1,4 +1,4 @@
-﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" fill="none">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#13201f"/>
@@ -12,6 +12,6 @@
   <g transform="translate(445 100)"><circle cx="304" cy="236" r="34" fill="none" stroke="#f4fbf7" stroke-width="18"/><circle cx="446" cy="252" r="34" fill="none" stroke="#f4fbf7" stroke-width="18"/><path d="M281 331c44-27 99-30 148-6 25 12 45 32 59 57" fill="none" stroke="#f4fbf7" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/><path d="M395 313c-2 50-29 94-78 132" fill="none" stroke="#f4fbf7" stroke-width="18" stroke-linecap="round"/></g>
   <rect x="84" y="90" width="156" height="36" rx="18" fill="#ffffff" fill-opacity="0.12"/>
   <text x="106" y="114" fill="#ffffff" fill-opacity="0.92" font-size="18" font-family="Arial, sans-serif" font-weight="700" letter-spacing="3">POCKET GYM</text>
-  <text x="84" y="514" fill="#ffffff" font-size="72" font-family="Arial, sans-serif" font-weight="700">JiuJitsu</text>
+  <text x="84" y="514" fill="#ffffff" font-size="72" font-family="Arial, sans-serif" font-weight="700">Jujitsu</text>
   <text x="84" y="556" fill="#ffffff" fill-opacity="0.76" font-size="24" font-family="Arial, sans-serif" font-weight="500">Lotta a terra, leve e controllo tecnico</text>
 </svg>

@@ -29,8 +29,8 @@ function classifyDiscipline(record) {
   ].join(' '));
 
   const rules = [
-    { label: 'JiuJitsu Brasiliano', patterns: ['jiu jitsu brasiliano', 'brazilian jiu jitsu', 'brazilian jiu-jitsu', 'bjj'] },
-    { label: 'JiuJitsu', patterns: ['jiu jitsu', 'jiu-jitsu', 'jiujitsu'] },
+    { label: 'Jujitsu Brasiliano', patterns: ['jiu jitsu brasiliano', 'brazilian jiu jitsu', 'brazilian jiu-jitsu', 'bjj'] },
+    { label: 'Jujitsu', patterns: ['jiu jitsu', 'jiu-jitsu', 'jiujitsu'] },
     { label: 'Muay Thai', patterns: ['muay thai'] },
     { label: 'K1', patterns: [' k1 ', ' k 1 ', 'k-1', 'k1 rules'] },
     { label: 'Kickboxe', patterns: ['kickboxe', 'kick boxing', 'kickboxing'] },

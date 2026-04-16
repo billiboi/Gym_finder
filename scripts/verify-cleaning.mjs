@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 const data = JSON.parse(readFileSync('data/gyms.json','utf8'));
 const genericCity = data.filter(g => !g.city || g.city.toLowerCase()==='provincia di varese');
 const genericAddress = data.filter(g => !g.address || g.address.toLowerCase()==='indirizzo non disponibile');
-const combat = data.filter(g => ['Boxe','Judo','JiuJitsu','JiuJitsu Brasiliano','Karate','Kickboxe','Muay Thai','K1','MMA'].includes(g.discipline));
+const combat = data.filter(g => ['Boxe','Judo','Jujitsu','Jujitsu Brasiliano','Karate','Kickboxe','Muay Thai','K1','MMA'].includes(g.discipline));
 console.log('Totale', data.length);
 console.log('City generiche', genericCity.length);
 console.log('Address generici', genericAddress.length);

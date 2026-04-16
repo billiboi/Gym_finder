@@ -51,8 +51,8 @@ function toDiscipline(tags) {
   const name = normalizeText(tags.name);
   const blob = `${sport} ${name}`;
 
-  if (blob.includes('brazilian jiu jitsu') || blob.includes('jiu jitsu brasiliano') || blob.includes('bjj')) return 'JiuJitsu Brasiliano';
-  if (blob.includes('jiu jitsu') || blob.includes('jiujitsu')) return 'JiuJitsu';
+  if (blob.includes('brazilian jiu jitsu') || blob.includes('jiu jitsu brasiliano') || blob.includes('bjj')) return 'Jujitsu Brasiliano';
+  if (blob.includes('jiu jitsu') || blob.includes('jiujitsu')) return 'Jujitsu';
   if (blob.includes('muay thai')) return 'Muay Thai';
   if (blob.includes('k1') || blob.includes('k 1') || blob.includes('k-1')) return 'K1';
   if (blob.includes('kickboxing') || blob.includes('kick box') || blob.includes('kickboxe')) return 'Kickboxe';

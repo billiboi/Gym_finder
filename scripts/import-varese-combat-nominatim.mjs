@@ -8,8 +8,8 @@ const SEARCH_URL = 'https://nominatim.openstreetmap.org/search';
 const DISCIPLINE_QUERIES = [
   { q: 'palestra boxe Varese', discipline: 'Boxe' },
   { q: 'judo Varese', discipline: 'Judo' },
-  { q: 'jiu jitsu Varese', discipline: 'JiuJitsu' },
-  { q: 'brazilian jiu jitsu Varese', discipline: 'JiuJitsu Brasiliano' },
+  { q: 'jiu jitsu Varese', discipline: 'Jujitsu' },
+  { q: 'brazilian jiu jitsu Varese', discipline: 'Jujitsu Brasiliano' },
   { q: 'karate Varese', discipline: 'Karate' },
   { q: 'kickboxing Varese', discipline: 'Kickboxe' },
   { q: 'muay thai Varese', discipline: 'Muay Thai' },

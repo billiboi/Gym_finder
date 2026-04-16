@@ -39,8 +39,8 @@ function toDiscipline(tags) {
   const name = clean(tags.name).toLowerCase();
   const blob = `${sport} ${name}`;
 
-  if (blob.includes('jiu jitsu brasiliano') || blob.includes('brazilian jiu jitsu') || blob.includes('bjj')) return 'JiuJitsu Brasiliano';
-  if (blob.includes('jiu jitsu') || blob.includes('jiujitsu') || blob.includes('jiu-jitsu')) return 'JiuJitsu';
+  if (blob.includes('jiu jitsu brasiliano') || blob.includes('brazilian jiu jitsu') || blob.includes('bjj')) return 'Jujitsu Brasiliano';
+  if (blob.includes('jiu jitsu') || blob.includes('jiujitsu') || blob.includes('jiu-jitsu')) return 'Jujitsu';
   if (blob.includes('muay thai')) return 'Muay Thai';
   if (blob.includes('k1') || blob.includes('k-1')) return 'K1';
   if (blob.includes('kickboxe') || blob.includes('kick boxing') || blob.includes('kickboxing')) return 'Kickboxe';

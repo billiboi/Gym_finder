@@ -167,8 +167,8 @@ function inferDisciplines(record) {
   if (has('k1', 'k-1')) out.push('K1');
   if (has('kickbox', 'kick box')) out.push('Kickboxe');
   if (has('boxing', 'boxe', 'pugil', ' box ')) out.push('Boxe');
-  if (has('brazilian jiu', 'bjj')) out.push('JiuJitsu Brasiliano');
-  if (has('ju-jitsu', 'jujitsu', 'jiu jitsu', 'jiujitsu')) out.push('JiuJitsu');
+  if (has('brazilian jiu', 'bjj')) out.push('Jujitsu Brasiliano');
+  if (has('ju-jitsu', 'jujitsu', 'jiu jitsu', 'jiujitsu')) out.push('Jujitsu');
   if (has('judo')) out.push('Judo');
   if (has('karate', 'kyokushin', 'shotokan', 'shito ryu', 'goju ryu', 'wado ryu')) out.push('Karate');
   if (has('aikido')) out.push('Aikido');

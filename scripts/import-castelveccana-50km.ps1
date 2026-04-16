@@ -1,4 +1,4 @@
-﻿param(
+param(
   [string]$CsvPath = "C:\Users\Vincenzo\Documents\Playground\data\palestre.csv",
   [double]$CenterLat = 45.9508626,
   [double]$CenterLon = 8.6692725,
@@ -35,7 +35,7 @@ function DisciplineFromText([string]$blob) {
   if ($all -match 'mma|mixed martial') { [void]$set.Add('MMA') }
   if ($all -match 'box|pugil') { [void]$set.Add('Boxe') }
   if ($all -match 'judo') { [void]$set.Add('Judo') }
-  if ($all -match 'brazilian jiu|bjj|jiu') { [void]$set.Add('JiuJitsu Brasiliano') }
+  if ($all -match 'brazilian jiu|bjj|jiu') { [void]$set.Add('Jujitsu Brasiliano') }
   if ($all -match 'karate|kyokushin|shito|wa rei ryu') { [void]$set.Add('Karate') }
   if ($all -match 'taekwondo') { [void]$set.Add('Taekwondo') }
   if ($all -match 'aikido') { [void]$set.Add('Aikido') }
@@ -46,7 +46,7 @@ function DisciplineFromText([string]$blob) {
   if ($all -match 'chanbara') { [void]$set.Add('Chanbara') }
   if ($all -match 'difesa personale|self defense|self-defence|krav maga') { [void]$set.Add('Difesa Personale') }
   if ($set.Count -eq 0) { [void]$set.Add('MMA') }
-  $order = @('Boxe','Kickboxe','Muay Thai','K1','MMA','Judo','JiuJitsu Brasiliano','Karate','Taekwondo','Aikido','Kung Fu','Wing Chun','Tai Chi','Scherma','Chanbara','Difesa Personale')
+  $order = @('Boxe','Kickboxe','Muay Thai','K1','MMA','Judo','Jujitsu Brasiliano','Karate','Taekwondo','Aikido','Kung Fu','Wing Chun','Tai Chi','Scherma','Chanbara','Difesa Personale')
   $out = New-Object System.Collections.Generic.List[string]
   foreach ($d in $order) { if ($set.Contains($d)) { [void]$out.Add($d) } }
   return ($out -join ' | ')

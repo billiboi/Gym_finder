@@ -1,4 +1,4 @@
-﻿param(
+param(
   [string]$InputXlsx = "C:\Users\Vincenzo\Downloads\Arti Marziali Lugano Ale.xlsx",
   [string]$OutputCsv = "C:\Users\Vincenzo\Documents\Playground\data\palestre.csv"
 )
@@ -120,7 +120,7 @@ function Normalize-Disciplines([string]$rawDisc, [string]$name, [string]$website
   if ($source -match 'mma' -or $source -match 'fighting') { Add-Disc $set 'MMA' }
   if ($source -match 'box') { Add-Disc $set 'Boxe' }
   if ($source -match 'judo') { Add-Disc $set 'Judo' }
-  if ($source -match 'jiu' -or $source -match 'bjj' -or $source -match 'kimura' -or $source -match 'mangrove') { Add-Disc $set 'JiuJitsu Brasiliano' }
+  if ($source -match 'jiu' -or $source -match 'bjj' -or $source -match 'kimura' -or $source -match 'mangrove') { Add-Disc $set 'Jujitsu Brasiliano' }
   if ($source -match 'karate' -or $source -match 'wa rei ryu' -or $source -match 'shito-ryu' -or $source -match 'kyokushin') { Add-Disc $set 'Karate' }
   if ($source -match 'taekwondo') { Add-Disc $set 'Taekwondo' }
   if ($source -match 'aikido') { Add-Disc $set 'Aikido' }
@@ -141,7 +141,7 @@ function Normalize-Disciplines([string]$rawDisc, [string]$name, [string]$website
     else { Add-Disc $set 'MMA' }
   }
 
-  $order = @('Boxe','Kickboxe','Muay Thai','K1','MMA','Judo','JiuJitsu Brasiliano','Karate','Taekwondo','Aikido','Kung Fu','Wing Chun','Tai Chi','Scherma','Chanbara','Difesa Personale')
+  $order = @('Boxe','Kickboxe','Muay Thai','K1','MMA','Judo','Jujitsu Brasiliano','Karate','Taekwondo','Aikido','Kung Fu','Wing Chun','Tai Chi','Scherma','Chanbara','Difesa Personale')
   $out = New-Object System.Collections.Generic.List[string]
   foreach ($d in $order) { if ($set.Contains($d)) { $out.Add($d) } }
   return ($out -join ' | ')

@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 const data = JSON.parse(readFileSync('data/gyms.json','utf8'));
-const wanted = ['Boxe','Judo','JiuJitsu','JiuJitsu Brasiliano','Karate','Kickboxe','Muay Thai','K1','MMA'];
+const wanted = ['Boxe','Judo','Jujitsu','Jujitsu Brasiliano','Karate','Kickboxe','Muay Thai','K1','MMA'];
 const combat = data.filter(g => wanted.includes(g.discipline));
 console.log('Totale dataset:', data.length);
 console.log('Totale combat:', combat.length);
