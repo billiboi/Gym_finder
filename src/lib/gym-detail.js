@@ -135,7 +135,10 @@ export function stockImageCandidatesForDiscipline(discipline) {
       '/images/stock/difesapersonale.webp',
       '/images/stock/difesapersonale-2.webp',
       '/images/stock/difesapersonale-3.webp'
-    ]
+    ],
+    'Kung Fu': ['/images/stock/kungfu.webp', '/images/stock/kungfu-2.webp', '/images/stock/kungfu-3.webp'],
+    'Wing Chun': ['/images/stock/kungfu.webp', '/images/stock/kungfu-2.webp', '/images/stock/kungfu-3.webp'],
+    'Tai Chi': ['/images/stock/kungfu.webp', '/images/stock/kungfu-2.webp', '/images/stock/kungfu-3.webp']
   };
 
   if (overrides[normalized]) {
@@ -389,4 +392,5 @@ export function isIndexableGym(gym) {
 
   return Boolean(name && address && disciplines.length > 0 && hasIndexingSignal);
 }
+
 

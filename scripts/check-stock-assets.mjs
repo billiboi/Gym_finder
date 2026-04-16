@@ -17,6 +17,7 @@ const allowedPrefixes = [
   'aikido',
   'scherma',
   'kung-fu',
+  'kungfu',
   'fitness',
   'wellness',
   'nuoto',
@@ -66,3 +67,4 @@ if (invalid.length) {
 }
 
 console.log('[stock-check] OK');
+
