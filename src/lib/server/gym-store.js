@@ -10,15 +10,17 @@ const staticCsvFilePath = path.join(staticDir, 'palestre.csv');
 const isReadOnlyRuntime = process.env.VERCEL === '1' || process.env.NODE_ENV === 'production';
 
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL || '';
-const SUPABASE_KEY =
-  process.env.SUPABASE_SERVICE_ROLE_KEY ||
-  process.env.SUPABASE_KEY ||
+const SUPABASE_READ_KEY =
   process.env.SUPABASE_ANON_KEY ||
   process.env.PUBLIC_SUPABASE_ANON_KEY ||
+  process.env.SUPABASE_SERVICE_ROLE_KEY ||
+  process.env.SUPABASE_KEY ||
   '';
+const SUPABASE_WRITE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY || '';
 const SUPABASE_GYMS_TABLE = process.env.SUPABASE_GYMS_TABLE || 'gyms';
 
-const hasSupabase = Boolean(SUPABASE_URL && SUPABASE_KEY);
+const hasSupabaseRead = Boolean(SUPABASE_URL && SUPABASE_READ_KEY);
+const hasSupabaseWrite = Boolean(SUPABASE_URL && SUPABASE_WRITE_KEY);
 const RUNTIME_CACHE_KEY = '__gymfinder_runtime_gyms__';
 const SUPABASE_SCHEMA_CACHE_KEY = '__gymfinder_supabase_schema_ok__';
 const SUPABASE_EXPECTED_COLUMNS = [
@@ -302,10 +304,10 @@ function gymsToCsv(gyms) {
   return [CSV_HEADERS, ...rows].map((row) => row.map(csvEscape).join(',')).join('\n');
 }
 
-function supabaseHeaders(extra = {}) {
+function supabaseHeaders(key, extra = {}) {
   return {
-    apikey: SUPABASE_KEY,
-    Authorization: `Bearer ${SUPABASE_KEY}`,
+    apikey: key,
+    Authorization: `Bearer ${key}`,
     ...extra
   };
 }
@@ -315,14 +317,14 @@ function supabaseBaseUrl() {
 }
 
 async function ensureSupabaseSchemaCompatible() {
-  if (!hasSupabase) return;
+  if (!hasSupabaseWrite) return;
   if (globalThis[SUPABASE_SCHEMA_CACHE_KEY] === true) return;
 
   for (const column of SUPABASE_EXPECTED_COLUMNS) {
     const url = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?select=${encodeURIComponent(column)}&limit=1`;
     const response = await fetch(url, {
       method: 'GET',
-      headers: supabaseHeaders()
+      headers: supabaseHeaders(SUPABASE_WRITE_KEY)
     });
 
     if (response.ok) {
@@ -362,12 +364,12 @@ async function ensureSupabaseSchemaCompatible() {
 }
 
 async function readGymsFromSupabase() {
-  if (!hasSupabase) return null;
+  if (!hasSupabaseRead) return null;
 
   const url = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?select=*`;
   const response = await fetch(url, {
     method: 'GET',
-    headers: supabaseHeaders()
+    headers: supabaseHeaders(SUPABASE_READ_KEY)
   });
 
   if (!response.ok) {
@@ -381,14 +383,14 @@ async function readGymsFromSupabase() {
 }
 
 async function replaceGymsInSupabase(gyms) {
-  if (!hasSupabase) return;
+  if (!hasSupabaseWrite) return;
   await ensureSupabaseSchemaCompatible();
 
   const base = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}`;
 
   const delResponse = await fetch(`${base}?id=not.is.null`, {
     method: 'DELETE',
-    headers: supabaseHeaders({ Prefer: 'return=minimal' })
+    headers: supabaseHeaders(SUPABASE_WRITE_KEY, { Prefer: 'return=minimal' })
   });
 
   if (!delResponse.ok) {
@@ -411,7 +413,7 @@ async function replaceGymsInSupabase(gyms) {
     const chunk = records.slice(i, i + chunkSize);
     const insResponse = await fetch(base, {
       method: 'POST',
-      headers: supabaseHeaders({
+      headers: supabaseHeaders(SUPABASE_WRITE_KEY, {
         'Content-Type': 'application/json',
         Prefer: 'return=minimal'
       }),
@@ -430,7 +432,7 @@ export async function readGyms() {
     return runtimeGyms;
   }
 
-  if (hasSupabase) {
+  if (hasSupabaseRead) {
     try {
       const dbGyms = await readGymsFromSupabase();
       if (Array.isArray(dbGyms) && dbGyms.length > 0) {
@@ -473,11 +475,11 @@ export async function writeGyms(gyms) {
     normalizeGymRecord(gym, `gym-${index + 1}`)
   );
 
-  if (hasSupabase) {
+  if (hasSupabaseWrite) {
     await replaceGymsInSupabase(normalized);
   }
 
-  if (isReadOnlyRuntime && !hasSupabase) {
+  if (isReadOnlyRuntime && !hasSupabaseWrite) {
     setRuntimeGyms(normalized);
     return;
   }
@@ -492,7 +494,7 @@ export async function writeGyms(gyms) {
 }
 
 export function canPersistWrites() {
-  return hasSupabase || !isReadOnlyRuntime;
+  return hasSupabaseWrite || !isReadOnlyRuntime;
 }
 
 export function getUploadsDir() {
