@@ -205,13 +205,13 @@
       </div>
 
       <div class="border-t border-slate-200/70 p-3.5 sm:p-4.5">
-        <div class="grid gap-2 sm:gap-3 md:grid-cols-2 xl:grid-cols-4">
-          <div class="rounded-2xl border border-slate-200 bg-white/90 p-3 sm:p-4 sc-detail-meta">
+        <div class="grid gap-2 sm:gap-3 xl:grid-cols-12">
+          <div class="rounded-2xl border border-slate-200 bg-white/90 p-3 sm:p-4 sc-detail-meta xl:col-span-3 xl:self-start">
             <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Indirizzo</p>
             <p class="mt-2 text-sm font-semibold text-slate-900 sm:text-base sc-detail-value">{address}</p>
           </div>
 
-          <div class="rounded-2xl border border-slate-200 bg-white/90 p-3 sm:p-4 sc-detail-meta xl:col-span-2">
+          <div class="rounded-2xl border border-slate-200 bg-white/90 p-3 sm:p-4 sc-detail-meta xl:col-span-6 xl:self-start">
             <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Orari</p>
             {#if hoursRows.length}
               <div class="mt-2 space-y-2">
@@ -234,25 +234,27 @@
             {/if}
           </div>
 
-          <div class="rounded-2xl border border-slate-200 bg-white/90 p-3 sm:p-4 sc-detail-meta">
-            <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Telefono</p>
-            <p class="mt-2 text-sm font-semibold text-slate-900 sm:text-base sc-detail-value">{phone}</p>
-          </div>
+          <div class="grid gap-2 sm:gap-3 xl:col-span-3 xl:self-start">
+            <div class="rounded-2xl border border-slate-200 bg-white/90 p-3 sm:p-4 sc-detail-meta">
+              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Telefono</p>
+              <p class="mt-2 text-sm font-semibold text-slate-900 sm:text-base sc-detail-value">{phone}</p>
+            </div>
 
-          <div class="rounded-2xl border border-slate-200 bg-white/90 p-3 sm:p-4 sc-detail-meta">
-            <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Sito web</p>
-            {#if website}
-              <a
-                href={website}
-                target="_blank"
-                rel="noreferrer"
-                class="mt-2 inline-flex text-sm font-semibold text-emerald-800 underline decoration-2 underline-offset-2 sc-detail-link"
-              >
-                Visita il sito ufficiale
-              </a>
-            {:else}
-              <p class="mt-2 text-sm font-semibold text-slate-900 sm:text-base sc-detail-value">Non disponibile</p>
-            {/if}
+            <div class="rounded-2xl border border-slate-200 bg-white/90 p-3 sm:p-4 sc-detail-meta">
+              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Sito web</p>
+              {#if website}
+                <a
+                  href={website}
+                  target="_blank"
+                  rel="noreferrer"
+                  class="mt-2 inline-flex text-sm font-semibold text-emerald-800 underline decoration-2 underline-offset-2 sc-detail-link"
+                >
+                  Visita il sito ufficiale
+                </a>
+              {:else}
+                <p class="mt-2 text-sm font-semibold text-slate-900 sm:text-base sc-detail-value">Non disponibile</p>
+              {/if}
+            </div>
           </div>
         </div>
       </div>
