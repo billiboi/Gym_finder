@@ -158,7 +158,7 @@
 </svelte:head>
 
 <div class="min-h-screen w-full sc-page">
-  <main class="mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 pb-8 pt-3 sm:px-6 lg:px-8">
+  <main class="mx-auto flex w-full max-w-6xl flex-col gap-3 px-4 pb-8 pt-3 sm:px-6 lg:px-8">
     <nav aria-label="Breadcrumb" class="flex flex-wrap items-center gap-2 text-sm text-slate-600">
       <a href="/" class="transition hover:text-slate-900">Home</a>
       <span>/</span>
@@ -170,8 +170,8 @@
     </nav>
 
     <section class="overflow-hidden rounded-3xl border border-white/70 bg-white/80 shadow-xl backdrop-blur-sm sc-panel">
-      <div class="grid gap-0 lg:grid-cols-[0.95fr_1.05fr]">
-        <div class="relative min-h-[280px] bg-slate-100 lg:min-h-[560px]">
+      <div class="grid gap-0 lg:grid-cols-[1fr_1fr]">
+        <div class="relative min-h-[280px] bg-slate-100 lg:min-h-[500px]">
           <img
             src={imageSrc}
             alt={`Foto di ${fixGymText(gym?.name)}`}
@@ -180,8 +180,8 @@
           />
         </div>
 
-        <div class="flex flex-col gap-4 p-4 sm:p-5">
-          <div class="space-y-3">
+        <div class="flex flex-col gap-3 p-4 sm:p-4.5">
+          <div class="space-y-2.5">
             <div class="flex flex-wrap gap-2">
               {#each disciplines as discipline}
                 <span class="rounded-full bg-slate-900 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-white sc-badge sc-badge--accent">
@@ -190,22 +190,21 @@
               {/each}
             </div>
 
-            <div class="rounded-3xl sc-detail-hero p-4">
-              <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800 sc-detail-kicker">Dettagli palestra</p>
-              <h1 class="mt-2 text-4xl font-bold leading-none text-slate-900 sm:text-5xl sc-detail-title">
+            <div class="rounded-3xl sc-detail-hero p-3.5 sm:p-4">
+              <h1 class="text-4xl font-bold leading-none text-slate-900 sm:text-[3.4rem] sc-detail-title">
                 {fixGymText(gym?.name)}
               </h1>
-              <p class="mt-3 max-w-2xl text-sm leading-7 text-slate-600 sc-detail-copy">
+              <p class="mt-2.5 max-w-2xl text-sm leading-7 text-slate-600 sc-detail-copy">
                 Dati essenziali per capire se {fixGymText(gym?.name)} è una scelta sensata per allenarti{cityLabel ? ` a ${cityLabel}` : ''}: disciplina principale, contatti, orari e riferimenti ufficiali.
               </p>
             </div>
 
-            <p class="text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">{presentation}</p>
+            <p class="text-sm leading-7 text-slate-600 sm:text-[0.98rem] sc-detail-copy">{presentation}</p>
           </div>
         </div>
       </div>
 
-      <div class="border-t border-slate-200/70 p-4 sm:p-5">
+      <div class="border-t border-slate-200/70 p-3.5 sm:p-4.5">
         <div class="grid gap-2 sm:gap-3 md:grid-cols-2 xl:grid-cols-4">
           <div class="rounded-2xl border border-slate-200 bg-white/90 p-3 sm:p-4 sc-detail-meta">
             <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Indirizzo</p>
