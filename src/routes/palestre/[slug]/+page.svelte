@@ -241,26 +241,13 @@
       </div>
     </section>
 
-    <section class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
-      <div class="max-w-3xl">
-        <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Presentazione</p>
-        <h2 class="mt-2 text-2xl font-bold text-slate-900">Cosa sapere prima di contattarla</h2>
-        <p class="mt-4 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">
-          {presentation}
-        </p>
-        <p class="mt-4 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">
-          Qui sotto trovi i dati che contano davvero quando stai confrontando più opzioni: dove si trova, quando è aperta, come contattarla e quali discipline dichiara.
-        </p>
-      </div>
-    </section>
-
     {#if officialOverride}
       <section class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
         <div class="max-w-4xl">
           <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Dati ufficiali del club</p>
-          <h2 class="mt-2 text-2xl font-bold text-slate-900">Informazioni utili per chi sta valutando {fixGymText(gym?.name)}</h2>
+          <h2 class="mt-2 text-2xl font-bold text-slate-900">Le informazioni più importanti da vedere subito</h2>
           <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">
-            Abbiamo raccolto i dettagli più utili pubblicati dai canali ufficiali per aiutarti a confrontare la struttura con alternative simili senza dover uscire subito dalla scheda.
+            Abbiamo portato qui in alto i dettagli più utili pubblicati dai canali ufficiali, così puoi capire in pochi secondi se {fixGymText(gym?.name)} merita davvero un approfondimento.
           </p>
         </div>
 
@@ -320,6 +307,19 @@
         </div>
       </section>
     {/if}
+
+    <section class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+      <div class="max-w-3xl">
+        <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Presentazione</p>
+        <h2 class="mt-2 text-2xl font-bold text-slate-900">Cosa sapere prima di contattarla</h2>
+        <p class="mt-4 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">
+          {presentation}
+        </p>
+        <p class="mt-4 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">
+          Qui sotto trovi i dati che contano davvero quando stai confrontando più opzioni: dove si trova, quando è aperta, come contattarla e quali discipline dichiara.
+        </p>
+      </div>
+    </section>
 
     <section class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
       <div class="max-w-4xl">
