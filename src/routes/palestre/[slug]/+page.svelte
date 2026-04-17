@@ -154,8 +154,8 @@
     </nav>
 
     <section class="overflow-hidden rounded-3xl border border-white/70 bg-white/80 shadow-xl backdrop-blur-sm sc-panel">
-      <div class="grid gap-0 lg:grid-cols-[1.15fr_0.85fr]">
-        <div class="relative min-h-[280px] bg-slate-100">
+      <div class="grid gap-0 lg:grid-cols-[0.95fr_1.05fr]">
+        <div class="relative min-h-[280px] bg-slate-100 lg:min-h-[560px]">
           <img
             src={imageSrc}
             alt={`Foto di ${fixGymText(gym?.name)}`}
@@ -164,7 +164,7 @@
           />
         </div>
 
-        <div class="flex flex-col justify-between gap-5 p-4 sm:p-7">
+        <div class="flex flex-col gap-5 p-4 sm:p-7">
           <div class="space-y-4">
             <div class="flex flex-wrap gap-2">
               {#each disciplines as discipline}
@@ -186,56 +186,58 @@
 
             <p class="text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">{presentation}</p>
           </div>
+        </div>
+      </div>
 
-          <div class="grid gap-2 sm:gap-3 sm:grid-cols-2">
-            <div class="rounded-2xl border border-slate-200 bg-white/90 p-3 sm:p-4 sc-detail-meta">
-              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Indirizzo</p>
-              <p class="mt-2 text-sm font-semibold text-slate-900 sm:text-base sc-detail-value">{address}</p>
-            </div>
+      <div class="border-t border-slate-200/70 p-4 sm:p-7">
+        <div class="grid gap-2 sm:gap-3 md:grid-cols-2 xl:grid-cols-4">
+          <div class="rounded-2xl border border-slate-200 bg-white/90 p-3 sm:p-4 sc-detail-meta">
+            <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Indirizzo</p>
+            <p class="mt-2 text-sm font-semibold text-slate-900 sm:text-base sc-detail-value">{address}</p>
+          </div>
 
-            <div class="rounded-2xl border border-slate-200 bg-white/90 p-3 sm:p-4 sc-detail-meta">
-              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Orari</p>
-              {#if hoursRows.length}
-                <div class="mt-2 space-y-2">
-                  {#if alwaysOpen}
-                    <div class="inline-flex rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-emerald-800">
-                      Aperta 24/7
-                    </div>
-                  {/if}
-                  <div class="space-y-1.5 text-sm text-slate-900 sm:text-base">
-                    {#each hoursRows as row}
-                      <div class="flex items-center justify-between gap-3 rounded-xl bg-slate-50 px-3 py-2">
-                        <span class="font-bold text-slate-700">{row.dayLabel}</span>
-                        <span class={`text-right font-semibold ${row.isClosed ? 'text-slate-400' : 'text-slate-900'}`}>{row.label}</span>
-                      </div>
-                    {/each}
+          <div class="rounded-2xl border border-slate-200 bg-white/90 p-3 sm:p-4 sc-detail-meta xl:col-span-2">
+            <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Orari</p>
+            {#if hoursRows.length}
+              <div class="mt-2 space-y-2">
+                {#if alwaysOpen}
+                  <div class="inline-flex rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-emerald-800">
+                    Aperta 24/7
                   </div>
+                {/if}
+                <div class="grid gap-1.5 text-sm text-slate-900 sm:text-base md:grid-cols-2 xl:grid-cols-3">
+                  {#each hoursRows as row}
+                    <div class="flex items-center justify-between gap-3 rounded-xl bg-slate-50 px-3 py-2">
+                      <span class="font-bold text-slate-700">{row.dayLabel}</span>
+                      <span class={`text-right font-semibold ${row.isClosed ? 'text-slate-400' : 'text-slate-900'}`}>{row.label}</span>
+                    </div>
+                  {/each}
                 </div>
-              {:else}
-                <p class="mt-2 text-sm font-semibold text-slate-900 sm:text-base sc-detail-value">{hoursInfo}</p>
-              {/if}
-            </div>
+              </div>
+            {:else}
+              <p class="mt-2 text-sm font-semibold text-slate-900 sm:text-base sc-detail-value">{hoursInfo}</p>
+            {/if}
+          </div>
 
-            <div class="rounded-2xl border border-slate-200 bg-white/90 p-3 sm:p-4 sc-detail-meta">
-              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Telefono</p>
-              <p class="mt-2 text-sm font-semibold text-slate-900 sm:text-base sc-detail-value">{phone}</p>
-            </div>
+          <div class="rounded-2xl border border-slate-200 bg-white/90 p-3 sm:p-4 sc-detail-meta">
+            <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Telefono</p>
+            <p class="mt-2 text-sm font-semibold text-slate-900 sm:text-base sc-detail-value">{phone}</p>
+          </div>
 
-            <div class="rounded-2xl border border-slate-200 bg-white/90 p-3 sm:p-4 sc-detail-meta">
-              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Sito web</p>
-              {#if website}
-                <a
-                  href={website}
-                  target="_blank"
-                  rel="noreferrer"
-                  class="mt-2 inline-flex text-sm font-semibold text-emerald-800 underline decoration-2 underline-offset-2 sc-detail-link"
-                >
-                  Visita il sito ufficiale
-                </a>
-              {:else}
-                <p class="mt-2 text-sm font-semibold text-slate-900 sm:text-base sc-detail-value">Non disponibile</p>
-              {/if}
-            </div>
+          <div class="rounded-2xl border border-slate-200 bg-white/90 p-3 sm:p-4 sc-detail-meta">
+            <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Sito web</p>
+            {#if website}
+              <a
+                href={website}
+                target="_blank"
+                rel="noreferrer"
+                class="mt-2 inline-flex text-sm font-semibold text-emerald-800 underline decoration-2 underline-offset-2 sc-detail-link"
+              >
+                Visita il sito ufficiale
+              </a>
+            {:else}
+              <p class="mt-2 text-sm font-semibold text-slate-900 sm:text-base sc-detail-value">Non disponibile</p>
+            {/if}
           </div>
         </div>
       </div>
