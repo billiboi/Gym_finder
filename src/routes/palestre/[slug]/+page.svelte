@@ -44,6 +44,7 @@
   const officialPreSaleHours = officialOverride?.preSaleHours || '';
   const officialMonthlyPrice = officialOverride?.monthlyPrice || '';
   const officialSocialLinks = officialOverride?.socialLinks || [];
+  const officialInfoCards = officialOverride?.infoCards || [];
   const phone = fixGymText(gym?.phone) || 'Non disponibile';
   const website = fixGymText(gym?.website) || officialOverride?.website || officialSourceUrl;
   const hasPhone = phone && phone !== 'Non disponibile';
@@ -257,32 +258,46 @@
       <section class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
         <div class="max-w-4xl">
           <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Dati ufficiali del club</p>
-          <h2 class="mt-2 text-2xl font-bold text-slate-900">Informazioni utili per chi sta valutando FitActive Mendrisio</h2>
+          <h2 class="mt-2 text-2xl font-bold text-slate-900">Informazioni utili per chi sta valutando {fixGymText(gym?.name)}</h2>
           <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">
-            Abbiamo raccolto i dettagli più utili pubblicati dal club per aiutarti a confrontare la struttura con alternative simili senza dover uscire subito dalla scheda.
+            Abbiamo raccolto i dettagli più utili pubblicati dai canali ufficiali per aiutarti a confrontare la struttura con alternative simili senza dover uscire subito dalla scheda.
           </p>
         </div>
 
         <div class="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-          {#if officialMonthlyPrice}
+          {#if officialInfoCards.length}
+            {#each officialInfoCards as card}
+              <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
+                <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">{card.label}</p>
+                {#if card.value}
+                  <p class="mt-2 text-lg font-bold text-slate-900">{card.value}</p>
+                {/if}
+                {#if card.body}
+                  <p class={`text-sm leading-7 text-slate-700 ${card.value ? 'mt-2' : 'mt-2'}`}>{card.body}</p>
+                {/if}
+              </div>
+            {/each}
+          {:else}
+            {#if officialMonthlyPrice}
+              <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
+                <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Formula</p>
+                <p class="mt-2 text-lg font-bold text-slate-900">{officialMonthlyPrice}</p>
+              </div>
+            {/if}
             <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
-              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Formula</p>
-              <p class="mt-2 text-lg font-bold text-slate-900">{officialMonthlyPrice}</p>
+              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Attrezzature</p>
+              <p class="mt-2 text-sm leading-7 text-slate-700">Cardio e isotoniche per un allenamento fitness completo.</p>
             </div>
-          {/if}
-          <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
-            <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Attrezzature</p>
-            <p class="mt-2 text-sm leading-7 text-slate-700">Cardio e isotoniche per un allenamento fitness completo.</p>
-          </div>
-          <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
-            <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Servizi extra</p>
-            <p class="mt-2 text-sm leading-7 text-slate-700">Corsi di gruppo, lampade abbronzanti, bevande energetiche, pedane vibranti e poltrone relax.</p>
-          </div>
-          {#if officialPreSaleHours}
             <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
-              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Prevendita</p>
-              <p class="mt-2 text-sm font-semibold leading-7 text-slate-900">{officialPreSaleHours}</p>
+              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Servizi extra</p>
+              <p class="mt-2 text-sm leading-7 text-slate-700">Corsi di gruppo, lampade abbronzanti, bevande energetiche, pedane vibranti e poltrone relax.</p>
             </div>
+            {#if officialPreSaleHours}
+              <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
+                <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Prevendita</p>
+                <p class="mt-2 text-sm font-semibold leading-7 text-slate-900">{officialPreSaleHours}</p>
+              </div>
+            {/if}
           {/if}
         </div>
 

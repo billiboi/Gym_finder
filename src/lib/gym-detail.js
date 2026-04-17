@@ -438,6 +438,26 @@ const OFFICIAL_GYM_OVERRIDES = {
         href: 'https://www.instagram.com/fitactivemendrisio/'
       }
     ],
+    infoCards: [
+      {
+        label: 'Formula',
+        value: 'Da 49,90 CHF al mese'
+      },
+      {
+        label: 'Attrezzature',
+        value: 'Cardio e isotoniche',
+        body: 'Impostazione orientata a un allenamento fitness completo.'
+      },
+      {
+        label: 'Servizi extra',
+        value: 'Corsi, relax e servizi accessori',
+        body: 'Corsi di gruppo, lampade abbronzanti, bevande energetiche, pedane vibranti e poltrone relax.'
+      },
+      {
+        label: 'Prevendita',
+        value: 'Lun-Ven 10:00-20:00 · Sab 10:00-18:00'
+      }
+    ],
     presentation:
       'FitActive Mendrisio è una palestra fitness a Mendrisio che, secondo la pagina ufficiale del club, punta su allenamento illimitato, attrezzature cardio e isotoniche di qualità e una proposta orientata a un uso frequente e senza complicazioni.',
     highlights: [
@@ -473,6 +493,29 @@ const OFFICIAL_GYM_OVERRIDES = {
     sourceUrl: 'https://pilactive.com/',
     website: 'https://pilactive.com/',
     email: 'info@pilactive.it',
+    monthlyPrice: 'Open 12 mesi 324€ · Reformer 30 lezioni 399€',
+    infoCards: [
+      {
+        label: 'Tariffe',
+        value: 'Open 12 mesi 324€',
+        body: 'Pacchetto 30 lezioni Reformer a 399€ nella convenzione CRA FNM 2026.'
+      },
+      {
+        label: 'Classi',
+        value: 'Reformer, Matwork, Yoga',
+        body: 'Sono citati anche percorsi Personal Pilates/Posturale.'
+      },
+      {
+        label: 'Metodo',
+        value: 'Benessere psico-fisico',
+        body: 'Il sito ufficiale presenta PilActive come centro orientato a controllo del movimento, postura e lavoro consapevole.'
+      },
+      {
+        label: 'Lezioni',
+        value: 'Mini classi max 12 persone',
+        body: 'La convenzione CRA FNM 2026 parla di disponibilità 7 giorni su 7 per il Reformer.'
+      }
+    ],
     presentation:
       'PilActive Saronno è uno studio Pilates a Saronno che il sito ufficiale presenta come centro dedicato al benessere psico-fisico, con un’offerta focalizzata su movimento consapevole, controllo del corpo e lavoro tecnico su più format.',
     highlights: [
