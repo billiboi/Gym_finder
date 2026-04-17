@@ -661,7 +661,7 @@
       <div>
         <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Ricerca guidata</p>
         <h2 class="mt-1 text-lg font-bold text-slate-900">Affina i risultati</h2>
-        <p class="text-sm text-slate-500">Cerca per zona, disciplina e distanza per trovare piu rapidamente la palestra giusta.</p>
+        <p class="text-sm text-slate-500">Filtra per zona, disciplina e distanza per restringere il catalogo in modo sensato.</p>
       </div>
       <div class="flex flex-wrap gap-2">
         <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">

@@ -39,7 +39,7 @@ export async function load({ params }) {
       slug: params.slug,
       name: matchedName,
       title: `Palestre di ${matchedName}`,
-      description: `Esplora le schede pubbliche collegate a ${matchedName} e confronta rapidamente le strutture gia presenti nel catalogo.`,
+      description: `Esplora le schede pubbliche collegate a ${matchedName} e vedi quali strutture del catalogo rientrano davvero in questa disciplina.`,
       keywords: [matchedName]
     };
   }

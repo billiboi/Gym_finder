@@ -6,7 +6,7 @@
   const { featuredDisciplines = [], extraDisciplines = [], totalDisciplines = 0 } = data;
   const pageUrl = absoluteUrl('/discipline');
   const title = `Discipline | ${SITE_NAME}`;
-  const description = `Esplora le discipline presenti nel catalogo pubblico e apri rapidamente le pagine dedicate o le raccolte disponibili.`;
+  const description = `Esplora le discipline presenti nel catalogo pubblico e apri le pagine dedicate o le raccolte disponibili.`;
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
@@ -47,7 +47,7 @@
       <h1 class="mt-2 text-3xl font-bold text-slate-900 sm:text-5xl">Sfoglia tutte le discipline</h1>
       <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-600 sm:text-base">
         Qui trovi l'accesso a tutte le discipline presenti nel catalogo pubblico, cosi non vieni
-        reindirizzato su una pagina arbitraria e puoi scegliere subito il percorso piu coerente con quello che stai cercando.
+        reindirizzato su una pagina arbitraria e puoi scegliere direttamente l'area che ti interessa.
       </p>
       <div class="mt-5 flex flex-wrap gap-2">
         <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">{totalDisciplines} discipline disponibili</span>

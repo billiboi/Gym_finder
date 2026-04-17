@@ -7,13 +7,13 @@
   const { discipline, gyms } = data;
   const pageUrl = absoluteUrl(`/discipline/${discipline.slug}`);
   const title = `${discipline.title} | ${SITE_NAME}`;
-  const description = `${discipline.description} In questa pagina trovi ${gyms.length} schede pubbliche dedicate.`;
+  const description = `${discipline.description} ${gyms.length} schede pubbliche in catalogo.`;
   const isIndexableLanding = gyms.length >= 2;
   const exampleAreas = [...new Set(gyms.map((gym) => String(gym.city || '').trim()).filter(Boolean))].slice(0, 6).join(', ');
   const faqItems = [
     {
       question: `Che cosa trovo nella pagina ${discipline.title}?`,
-      answer: `Qui trovi ${gyms.length} schede pubbliche collegate a ${discipline.name}, utili per confrontare strutture pertinenti senza rifare ogni volta tutto il filtro sul catalogo.`
+      answer: `La pagina raccoglie ${gyms.length} schede pubbliche legate a ${discipline.name}. Serve a vedere subito quali strutture del catalogo ricadono davvero in questa disciplina.`
     },
     {
       question: `In quali zone sono presenti piu schede di ${discipline.name}?`,
@@ -23,7 +23,7 @@
     },
     {
       question: `Perche aprire la scheda completa di una palestra di ${discipline.name}?`,
-      answer: `La scheda completa ti aiuta a verificare in pochi secondi se la struttura e coerente con cio che cerchi davvero, grazie a indirizzo, orari, contatti e discipline associate.`
+      answer: `Aprendo la scheda completa puoi controllare indirizzo, orari, contatti e discipline associate prima di decidere se approfondire.`
     }
   ];
   const structuredData = {
@@ -112,15 +112,13 @@
     <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
       <div class="max-w-4xl">
         <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Panoramica della disciplina</p>
-        <h2 class="mt-1 text-2xl font-bold text-slate-900">Come usare questa pagina per trovare una palestra di {discipline.name}</h2>
+        <h2 class="mt-1 text-2xl font-bold text-slate-900">Come leggere il catalogo di {discipline.name}</h2>
         <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
-          Questa sezione e pensata per chi cerca una disciplina specifica e vuole arrivare rapidamente a una short-list utile. Invece di
-          filtrare da zero tutto il catalogo, qui trovi solo le schede che nel nostro database risultano legate a {discipline.name}.
+          Qui compaiono solo le schede che nel database risultano legate a {discipline.name}. Il vantaggio e semplice: non stai guardando una raccolta generica, ma un sottoinsieme gia filtrato.
         </p>
         <p class="mt-4 text-sm leading-7 text-slate-600 sm:text-base">
           Le strutture pubblicate in questa pagina coprono soprattutto queste aree: <strong>{exampleAreas || 'zone gia presenti nel catalogo'}</strong>.
-          Aprendo una scheda completa puoi verificare se la palestra e coerente con cio che cerchi davvero: impostazione tecnica, contatti, orari
-          e praticita rispetto alla tua posizione.
+          Aprendo una scheda completa puoi controllare impostazione tecnica, contatti, orari e praticita rispetto alla tua posizione.
         </p>
       </div>
     </section>
@@ -134,15 +132,15 @@
       <div class="mt-5 grid gap-3 md:grid-cols-3">
         <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
           <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Focus</p>
-          <p class="mt-2 text-sm leading-7 text-slate-700">Qui trovi solo schede che nel catalogo risultano collegate a {discipline.name}, senza dover ripetere ogni volta la stessa ricerca.</p>
+          <p class="mt-2 text-sm leading-7 text-slate-700">Qui trovi solo schede che nel catalogo risultano collegate a {discipline.name}, senza dover rifare ogni volta il filtro da capo.</p>
         </div>
         <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
           <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Confronto</p>
-          <p class="mt-2 text-sm leading-7 text-slate-700">Puoi confrontare piu strutture guardando rapidamente indirizzo, orari e discipline associate prima di aprire la scheda completa.</p>
+          <p class="mt-2 text-sm leading-7 text-slate-700">Puoi confrontare piu strutture guardando indirizzo, orari e discipline associate prima di aprire il dettaglio completo.</p>
         </div>
         <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
           <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Contesto locale</p>
-          <p class="mt-2 text-sm leading-7 text-slate-700">La raccolta ti aiuta anche a capire dove questa disciplina e piu presente nel catalogo, utile se stai valutando alternative in zona.</p>
+          <p class="mt-2 text-sm leading-7 text-slate-700">La distribuzione delle schede ti fa capire anche in quali zone questa disciplina e oggi piu rappresentata nel catalogo.</p>
         </div>
       </div>
     </section>

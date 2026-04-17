@@ -359,10 +359,10 @@ export function buildGymPresentation(gym) {
   const address = formatAddressForDisplay(gym);
 
   if (disciplines.length > 1) {
-    return `${name} propone un'offerta dedicata a ${disciplines.join(', ')}. La sede si trova in ${address} ed e pensata per chi cerca un luogo dove allenarsi con continuita, anche quando si trova fuori zona.`;
+    return `${name} e presente a ${address} e nel catalogo risulta collegata a ${disciplines.join(', ')}. In questa scheda trovi i dati principali per capire se puo avere senso approfondire.`;
   }
 
-  return `${name} e una palestra specializzata in ${first}. La struttura si trova in ${address} ed e un punto utile per chi vuole allenarsi con regolarita trovando rapidamente informazioni essenziali su contatti e orari.`;
+  return `${name} e una palestra di ${first} in ${address}. Qui abbiamo raccolto indirizzo, orari e riferimenti utili per una prima verifica.`;
 }
 
 export function cityLabelForGym(gym) {
@@ -377,12 +377,12 @@ export function buildGymSeoHighlights(gym) {
   const address = formatAddressForDisplay(gym);
   const hoursInfo = fixGymText(gym?.hours_info || '');
   const points = [
-    `${fixGymText(gym?.name || 'La struttura')} propone ${disciplines.join(', ')} con una scheda pensata per chi vuole confrontare rapidamente opzioni reali nella zona di ${city || 'riferimento'}.`,
-    `L'indirizzo pubblicato e ${address}, quindi puoi capire subito se la palestra e comoda rispetto alla tua posizione o a un periodo di viaggio.`,
+    `${fixGymText(gym?.name || 'La struttura')} nel catalogo compare con queste discipline: ${disciplines.join(', ')}${city ? `, nella zona di ${city}` : ''}.`,
+    `L'indirizzo pubblicato e ${address}, quindi puoi capire subito se la struttura e compatibile con i tuoi spostamenti.`,
     hoursInfo && hoursInfo !== 'Orari da verificare'
-      ? `Gli orari disponibili sono gia visibili nella scheda, utile per una prima selezione senza dover aprire altre pagine o chiamare subito la struttura.`
-      : `Se gli orari non sono ancora completi, hai comunque contatti e riferimenti per verificare rapidamente la disponibilita della struttura.`,
-    `Se stai cercando ${primary}${city ? ` a ${city}` : ''}, questa pagina ti aiuta a valutare in pochi secondi se vale la pena approfondire.`
+      ? `Gli orari sono gia visibili nella scheda, quindi puoi controllare disponibilita e fascia oraria senza passare da altri canali.`
+      : `Gli orari non sono completi, ma restano disponibili i riferimenti principali per contattare la struttura.`,
+    `${primary}${city ? ` a ${city}` : ''} e il taglio con cui questa pagina viene presentata, cosi capisci subito se stai guardando il tipo di struttura che ti interessa.`
   ];
 
   return points.filter(Boolean);
@@ -399,11 +399,11 @@ export function buildGymFaqItems(gym) {
   return [
     {
       question: `Quali discipline si praticano da ${name}?`,
-      answer: `${name} risulta collegata a ${disciplines.join(', ')}. La scheda pubblica serve a capire rapidamente se l'offerta e coerente con quello che stai cercando.`
+      answer: `${name} nel catalogo risulta collegata a ${disciplines.join(', ')}. Se stai confrontando piu strutture, questo e il primo dato da verificare.`
     },
     {
       question: `Dove si trova ${name}?`,
-      answer: `${name} si trova in ${address}. In questa pagina trovi anche il collegamento rapido per aprire la posizione in mappa.`
+      answer: `${name} si trova in ${address}. Nella scheda trovi anche il collegamento rapido per aprire la posizione in mappa.`
     },
     {
       question: `Come posso contattare ${name}?`,
@@ -439,7 +439,7 @@ const OFFICIAL_GYM_OVERRIDES = {
       }
     ],
     presentation:
-      'FitActive Mendrisio e una palestra fitness a Mendrisio che, secondo la pagina ufficiale del club, punta su allenamento illimitato, attrezzature cardio e isotoniche di qualita e una proposta pensata per chi vuole una struttura moderna e semplice da usare ogni giorno.',
+      'FitActive Mendrisio e una palestra fitness a Mendrisio che, secondo la pagina ufficiale del club, punta su allenamento illimitato, attrezzature cardio e isotoniche di qualita e una proposta orientata a un uso frequente e senza complicazioni.',
     highlights: [
       'La pagina ufficiale del club presenta FitActive Mendrisio come una palestra fitness a Mendrisio con accesso illimitato e formula da 49,90 CHF al mese, un messaggio forte per chi sta confrontando prezzo e posizionamento nella zona.',
       'Tra i punti messi in evidenza dal club ci sono attrezzature cardio e isotoniche, utili per chi cerca una sala fitness orientata all allenamento completo piu che a una sola attivita specifica.',

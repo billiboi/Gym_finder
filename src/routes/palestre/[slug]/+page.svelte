@@ -352,7 +352,7 @@
           <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Passo successivo</p>
           <h2 class="mt-2 text-2xl font-bold text-slate-900">Se la struttura ti convince, qui chiudi il cerchio</h2>
           <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">
-            Apri il percorso, chiama la struttura oppure controlla il sito ufficiale: sono le tre azioni che di solito sbloccano una decisione vera.
+            Apri il percorso, chiama la struttura oppure controlla il sito ufficiale: sono le tre azioni che contano davvero quando stai decidendo.
           </p>
         </div>
       </div>
@@ -391,7 +391,7 @@
           <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Percorsi utili</p>
           <h2 class="mt-2 text-2xl font-bold text-slate-900">Altre opzioni vicine da confrontare</h2>
           <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">
-            Se vuoi tenere aperte piu alternative, qui trovi il modo piu rapido per restare sulla stessa disciplina o sulla stessa area senza rifare la ricerca.
+            Se vuoi tenere aperte piu alternative, qui puoi restare sulla stessa disciplina o sulla stessa area senza rifare la ricerca.
           </p>
         </div>
         <div class="flex flex-wrap gap-2">
@@ -436,7 +436,7 @@
           <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Schede correlate</p>
           <h2 class="mt-2 text-2xl font-bold text-slate-900">Altre strutture da confrontare</h2>
           <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">
-            Qui trovi alcune schede vicine per disciplina o per area geografica, utili se vuoi confrontare rapidamente piu opzioni.
+            Qui sotto compaiono alcune schede vicine per disciplina o per area geografica, pensate per un confronto diretto.
           </p>
         </div>
 
