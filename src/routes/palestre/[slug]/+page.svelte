@@ -10,6 +10,7 @@
     gymHref,
     imageForGym,
     isIndexableGym,
+    officialGymOverride,
     primaryDisciplineForGym,
     structuredAddressForGym
   } from '$lib/gym-detail';
@@ -18,11 +19,12 @@
   export let data;
 
   const { gym, relatedGyms = [], relatedLocation, relatedDiscipline } = data;
+  const officialOverride = officialGymOverride(gym);
   const disciplines = disciplineListForGym(gym);
   const primaryDiscipline = primaryDisciplineForGym(gym);
-  const presentation = buildGymPresentation(gym);
-  const seoHighlights = buildGymSeoHighlights(gym);
-  const faqItems = buildGymFaqItems(gym);
+  const presentation = officialOverride?.presentation || buildGymPresentation(gym);
+  const seoHighlights = officialOverride?.highlights || buildGymSeoHighlights(gym);
+  const faqItems = officialOverride?.faqItems || buildGymFaqItems(gym);
   const cityLabel = cityLabelForGym(gym);
   const imageAsset = imageForGym(gym);
   const imageMeta =
@@ -41,6 +43,11 @@
   const pageUrl = absoluteUrl(`/palestre/${data.gymSlug}`);
   const seoDescription = `${fixGymText(gym?.name)}: ${primaryDiscipline} a ${address}. ${presentation}`;
   const claimHref = `/rivendica-scheda?gym=${encodeURIComponent(fixGymText(gym?.name))}&url=${encodeURIComponent(pageUrl)}&reason=${encodeURIComponent('Aggiornamento o rivendicazione scheda')}`;
+  const officialSourceUrl = officialOverride?.sourceUrl || '';
+  const officialEmail = officialOverride?.email || '';
+  const officialPreSaleHours = officialOverride?.preSaleHours || '';
+  const officialMonthlyPrice = officialOverride?.monthlyPrice || '';
+  const officialSocialLinks = officialOverride?.socialLinks || [];
 
   const detailStructuredData = [
       {
@@ -225,6 +232,59 @@
         </p>
       </div>
     </section>
+
+    {#if officialOverride}
+      <section class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+        <div class="max-w-4xl">
+          <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Dati ufficiali del club</p>
+          <h2 class="mt-2 text-2xl font-bold text-slate-900">Informazioni utili per chi sta valutando FitActive Mendrisio</h2>
+          <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">
+            Questa sezione raccoglie i dettagli piu rilevanti pubblicati nella pagina ufficiale del club, utili per trasformare una semplice impression in una decisione piu informata.
+          </p>
+        </div>
+
+        <div class="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+          {#if officialMonthlyPrice}
+            <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
+              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Formula</p>
+              <p class="mt-2 text-lg font-bold text-slate-900">{officialMonthlyPrice}</p>
+            </div>
+          {/if}
+          <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
+            <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Attrezzature</p>
+            <p class="mt-2 text-sm leading-7 text-slate-700">Cardio e isotoniche per un allenamento fitness completo.</p>
+          </div>
+          <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
+            <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Servizi extra</p>
+            <p class="mt-2 text-sm leading-7 text-slate-700">Corsi di gruppo, lampade abbronzanti, bevande energetiche, pedane vibranti e poltrone relax.</p>
+          </div>
+          {#if officialPreSaleHours}
+            <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
+              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Prevendita</p>
+              <p class="mt-2 text-sm font-semibold leading-7 text-slate-900">{officialPreSaleHours}</p>
+            </div>
+          {/if}
+        </div>
+
+        <div class="mt-5 flex flex-wrap gap-3">
+          {#if officialEmail}
+            <a href={`mailto:${officialEmail}`} class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50">
+              Scrivi a {officialEmail}
+            </a>
+          {/if}
+          {#each officialSocialLinks as social}
+            <a href={social.href} target="_blank" rel="noreferrer" class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50">
+              {social.label}
+            </a>
+          {/each}
+          {#if officialSourceUrl}
+            <a href={officialSourceUrl} target="_blank" rel="noreferrer" class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
+              Fonte ufficiale club
+            </a>
+          {/if}
+        </div>
+      </section>
+    {/if}
 
     <section class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
       <div class="max-w-4xl">

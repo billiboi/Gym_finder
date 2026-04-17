@@ -422,6 +422,60 @@ export function buildGymFaqItems(gym) {
   ];
 }
 
+const OFFICIAL_GYM_OVERRIDES = {
+  'FitActive Mendrisio': {
+    sourceUrl: 'https://www.fitactive.it/i-club/Mendrisio.php',
+    monthlyPrice: 'Da 49,90 CHF al mese',
+    preSaleHours: 'Lun-Ven 10:00-20:00 · Sab 10:00-18:00',
+    email: 'mendrisio@fitactive.ch',
+    socialLinks: [
+      {
+        label: 'Facebook ufficiale',
+        href: 'https://www.facebook.com/profile.php?id=61577775070875'
+      },
+      {
+        label: 'Instagram ufficiale',
+        href: 'https://www.instagram.com/fitactivemendrisio/'
+      }
+    ],
+    presentation:
+      'FitActive Mendrisio e una palestra fitness a Mendrisio che, secondo la pagina ufficiale del club, punta su allenamento illimitato, attrezzature cardio e isotoniche di qualita e una proposta pensata per chi vuole una struttura moderna e semplice da usare ogni giorno.',
+    highlights: [
+      'La pagina ufficiale del club presenta FitActive Mendrisio come una palestra fitness a Mendrisio con accesso illimitato e formula da 49,90 CHF al mese, un messaggio forte per chi sta confrontando prezzo e posizionamento nella zona.',
+      'Tra i punti messi in evidenza dal club ci sono attrezzature cardio e isotoniche, utili per chi cerca una sala fitness orientata all allenamento completo piu che a una sola attivita specifica.',
+      'Nel materiale ufficiale compaiono anche corsi di gruppo, lampade abbronzanti, bevande energetiche, pedane vibranti e poltrone relax: dettagli che aiutano a capire subito il taglio commerciale e i servizi accessori della struttura.',
+      'Per questa sede sono pubblicati anche contatti diretti, email ufficiale e orari di prevendita, quindi la scheda puo rispondere bene sia a chi vuole allenarsi sia a chi vuole chiedere informazioni prima di iscriversi.'
+    ],
+    faqItems: [
+      {
+        question: 'Quanto costa FitActive Mendrisio secondo il club?',
+        answer:
+          'La pagina ufficiale del club FitActive Mendrisio indica una formula a partire da 49,90 CHF al mese.'
+      },
+      {
+        question: 'Quali servizi mette in evidenza FitActive Mendrisio?',
+        answer:
+          'Nel materiale ufficiale del club vengono citati corsi di gruppo, lampade abbronzanti, bevande energetiche, pedane vibranti e poltrone relax, oltre alle attrezzature cardio e isotoniche.'
+      },
+      {
+        question: 'Ci sono contatti diretti per FitActive Mendrisio?',
+        answer:
+          'Si. La pagina ufficiale del club riporta il numero +41 76 424 68 50, l email mendrisio@fitactive.ch e i profili Facebook e Instagram della sede.'
+      },
+      {
+        question: 'Quali orari sono indicati per la prevendita di FitActive Mendrisio?',
+        answer:
+          'Secondo la pagina ufficiale del club, gli orari di prevendita sono Lun-Ven 10:00-20:00 e Sab 10:00-18:00.'
+      }
+    ]
+  }
+};
+
+export function officialGymOverride(gym) {
+  const name = fixGymText(gym?.name || '');
+  return OFFICIAL_GYM_OVERRIDES[name] || null;
+}
+
 export function isIndexableGym(gym) {
   const name = fixGymText(gym?.name || '');
   const address = fixGymText(gym?.address || '');
