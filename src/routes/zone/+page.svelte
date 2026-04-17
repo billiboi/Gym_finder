@@ -80,9 +80,6 @@
         <div class="max-w-4xl">
           <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Catalogo completo</p>
           <h2 class="mt-1 text-2xl font-bold text-slate-900">Altre zone presenti nel catalogo</h2>
-          <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
-            Queste localit&agrave; compaiono gi&agrave; nelle schede pubbliche. L'hub ti permette di raggiungerle senza passare da scorciatoie arbitrarie nell'header.
-          </p>
         </div>
 
         <div class="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
