@@ -14,6 +14,7 @@
     primaryDisciplineForGym,
     structuredAddressForGym
   } from '$lib/gym-detail';
+  import { isAlwaysOpen, weeklyHoursRows } from '$lib/hours';
   import { SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
 
   export let data;
@@ -33,6 +34,8 @@
       : imageAsset;
   const imageSrc = imageMeta.src;
   const hoursInfo = fixGymText(gym?.hours_info) || 'Orari da verificare';
+  const hoursRows = weeklyHoursRows(hoursInfo);
+  const alwaysOpen = isAlwaysOpen(hoursInfo);
   const address = formatAddressForDisplay(gym);
   const structuredAddress = structuredAddressForGym(gym);
   const isIndexable = isIndexableGym(gym);
@@ -191,7 +194,25 @@
 
             <div class="rounded-2xl border border-slate-200 bg-white/90 p-3 sm:p-4 sc-detail-meta">
               <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Orari</p>
-              <p class="mt-2 text-sm font-semibold text-slate-900 sm:text-base sc-detail-value">{hoursInfo}</p>
+              {#if hoursRows.length}
+                <div class="mt-2 space-y-2">
+                  {#if alwaysOpen}
+                    <div class="inline-flex rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-emerald-800">
+                      Aperta 24/7
+                    </div>
+                  {/if}
+                  <div class="space-y-1.5 text-sm text-slate-900 sm:text-base">
+                    {#each hoursRows as row}
+                      <div class="flex items-center justify-between gap-3 rounded-xl bg-slate-50 px-3 py-2">
+                        <span class="font-bold text-slate-700">{row.dayLabel}</span>
+                        <span class={`text-right font-semibold ${row.isClosed ? 'text-slate-400' : 'text-slate-900'}`}>{row.label}</span>
+                      </div>
+                    {/each}
+                  </div>
+                </div>
+              {:else}
+                <p class="mt-2 text-sm font-semibold text-slate-900 sm:text-base sc-detail-value">{hoursInfo}</p>
+              {/if}
             </div>
 
             <div class="rounded-2xl border border-slate-200 bg-white/90 p-3 sm:p-4 sc-detail-meta">

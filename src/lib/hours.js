@@ -8,6 +8,7 @@ const WEEKDAY_MAP = {
   fri: 5,
   sat: 6
 };
+const DAY_LABELS = ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'];
 
 function normalizeText(value) {
   return String(value || '').trim().toLowerCase();
@@ -60,6 +61,47 @@ function parseLocalWeekdayAndMinute(now, timeZone) {
   return { dayIndex, minuteOfDay: hour * 60 + minute };
 }
 
+function parseIntervals(expression) {
+  if (normalizeText(expression).includes('chiuso')) {
+    return [];
+  }
+
+  const ranges = [];
+  const pattern = /(\d{1,2})(?::(\d{2}))?\s*-\s*(\d{1,2})(?::(\d{2}))?/g;
+  let timeMatch = pattern.exec(expression);
+
+  while (timeMatch) {
+    const startHour = Number(timeMatch[1]);
+    const startMinute = Number(timeMatch[2] || '0');
+    const endHour = Number(timeMatch[3]);
+    const endMinute = Number(timeMatch[4] || '0');
+
+    const start = startHour * 60 + startMinute;
+    const end = endHour * 60 + endMinute;
+
+    if (Number.isFinite(start) && Number.isFinite(end) && end > start) {
+      ranges.push({ start, end });
+    }
+
+    timeMatch = pattern.exec(expression);
+  }
+
+  return ranges;
+}
+
+function formatMinuteOfDay(value) {
+  const hour = Math.floor(value / 60);
+  const minute = value % 60;
+  return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+}
+
+function formatIntervals(intervals) {
+  if (!intervals.length) return 'Chiuso';
+  return intervals
+    .map(({ start, end }) => `${formatMinuteOfDay(start)}-${formatMinuteOfDay(end)}`)
+    .join(' · ');
+}
+
 function extractIntervalsForDay(hoursInfo, targetDayIndex) {
   if (containsUnknownPattern(hoursInfo)) {
     return null;
@@ -86,30 +128,53 @@ function extractIntervalsForDay(hoursInfo, targetDayIndex) {
       return [];
     }
 
-    const ranges = [];
-    const pattern = /(\d{1,2})(?::(\d{2}))?\s*-\s*(\d{1,2})(?::(\d{2}))?/g;
-    let timeMatch = pattern.exec(expression);
-
-    while (timeMatch) {
-      const startHour = Number(timeMatch[1]);
-      const startMinute = Number(timeMatch[2] || '0');
-      const endHour = Number(timeMatch[3]);
-      const endMinute = Number(timeMatch[4] || '0');
-
-      const start = startHour * 60 + startMinute;
-      const end = endHour * 60 + endMinute;
-
-      if (Number.isFinite(start) && Number.isFinite(end) && end > start) {
-        ranges.push({ start, end });
-      }
-
-      timeMatch = pattern.exec(expression);
-    }
-
-    return ranges;
+    return parseIntervals(expression);
   }
 
   return null;
+}
+
+export function weeklyHoursRows(hoursInfo) {
+  if (containsUnknownPattern(hoursInfo)) {
+    return [];
+  }
+
+  const chunks = String(hoursInfo || '')
+    .split('|')
+    .map((chunk) => chunk.trim())
+    .filter(Boolean);
+
+  if (!chunks.length) {
+    return [];
+  }
+
+  const rows = new Array(7).fill(null);
+
+  for (const chunk of chunks) {
+    const match = chunk.match(/^([A-Za-z.]+)\s+(.+)$/);
+    if (!match) continue;
+
+    const dayIndex = dayIndexFromLabel(match[1]);
+    if (dayIndex < 0) continue;
+
+    const intervals = parseIntervals(match[2].trim());
+    rows[dayIndex] = {
+      dayIndex,
+      dayLabel: DAY_LABELS[dayIndex],
+      intervals,
+      label: formatIntervals(intervals),
+      isClosed: intervals.length === 0,
+      isTwentyFourHours:
+        intervals.length === 1 && intervals[0].start === 0 && intervals[0].end === 24 * 60
+    };
+  }
+
+  return rows.filter(Boolean);
+}
+
+export function isAlwaysOpen(hoursInfo) {
+  const rows = weeklyHoursRows(hoursInfo);
+  return rows.length === 7 && rows.every((row) => row.isTwentyFourHours);
 }
 
 export function isGymOpenNow(hoursInfo, options = {}) {
