@@ -45,6 +45,22 @@
   const officialMonthlyPrice = officialOverride?.monthlyPrice || '';
   const officialSocialLinks = officialOverride?.socialLinks || [];
   const officialInfoCards = officialOverride?.infoCards || [];
+  const officialCards = (() => {
+    const cards = officialInfoCards.map((card) => ({ ...card }));
+    const hasFormulaCard = cards.some((card) => String(card.label || '').trim().toLowerCase() === 'formula');
+
+    if (officialMonthlyPrice && !hasFormulaCard) {
+      cards.unshift({
+        label: 'Formula',
+        value: officialMonthlyPrice
+      });
+    }
+
+    return cards.map((card, index) => ({
+      ...card,
+      featured: index === 0 && String(card.label || '').trim().toLowerCase() === 'formula'
+    }));
+  })();
   const phone = fixGymText(gym?.phone) || 'Non disponibile';
   const website = fixGymText(gym?.website) || officialOverride?.website || officialSourceUrl;
   const hasPhone = phone && phone !== 'Non disponibile';
@@ -142,7 +158,7 @@
 </svelte:head>
 
 <div class="min-h-screen w-full sc-page">
-  <main class="mx-auto flex w-full max-w-6xl flex-col gap-5 px-4 pb-10 pt-4 sm:px-6 lg:px-8">
+  <main class="mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 pb-8 pt-3 sm:px-6 lg:px-8">
     <nav aria-label="Breadcrumb" class="flex flex-wrap items-center gap-2 text-sm text-slate-600">
       <a href="/" class="transition hover:text-slate-900">Home</a>
       <span>/</span>
@@ -164,8 +180,8 @@
           />
         </div>
 
-        <div class="flex flex-col gap-5 p-4 sm:p-7">
-          <div class="space-y-4">
+        <div class="flex flex-col gap-4 p-4 sm:p-5">
+          <div class="space-y-3">
             <div class="flex flex-wrap gap-2">
               {#each disciplines as discipline}
                 <span class="rounded-full bg-slate-900 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-white sc-badge sc-badge--accent">
@@ -174,7 +190,7 @@
               {/each}
             </div>
 
-            <div class="rounded-3xl sc-detail-hero p-4 sm:p-5">
+            <div class="rounded-3xl sc-detail-hero p-4">
               <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800 sc-detail-kicker">Dettagli palestra</p>
               <h1 class="mt-2 text-4xl font-bold leading-none text-slate-900 sm:text-5xl sc-detail-title">
                 {fixGymText(gym?.name)}
@@ -189,7 +205,7 @@
         </div>
       </div>
 
-      <div class="border-t border-slate-200/70 p-4 sm:p-7">
+      <div class="border-t border-slate-200/70 p-4 sm:p-5">
         <div class="grid gap-2 sm:gap-3 md:grid-cols-2 xl:grid-cols-4">
           <div class="rounded-2xl border border-slate-200 bg-white/90 p-3 sm:p-4 sc-detail-meta">
             <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Indirizzo</p>
@@ -244,7 +260,7 @@
     </section>
 
     {#if officialOverride}
-      <section class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+      <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-5">
         <div class="max-w-4xl">
           <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Dati ufficiali del club</p>
           <h2 class="mt-2 text-2xl font-bold text-slate-900">Le informazioni più importanti da vedere subito</h2>
@@ -253,13 +269,13 @@
           </p>
         </div>
 
-        <div class="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-          {#if officialInfoCards.length}
-            {#each officialInfoCards as card}
-              <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
+        <div class="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+          {#if officialCards.length}
+            {#each officialCards as card}
+              <div class={`rounded-2xl border p-4 ${card.featured ? 'border-emerald-300 bg-emerald-50/80 md:col-span-2 xl:col-span-2' : 'border-slate-200 bg-white/90'}`}>
                 <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">{card.label}</p>
                 {#if card.value}
-                  <p class="mt-2 text-lg font-bold text-slate-900">{card.value}</p>
+                  <p class={`mt-2 font-bold text-slate-900 ${card.featured ? 'text-2xl leading-tight sm:text-[1.9rem]' : 'text-lg'}`}>{card.value}</p>
                 {/if}
                 {#if card.body}
                   <p class={`text-sm leading-7 text-slate-700 ${card.value ? 'mt-2' : 'mt-2'}`}>{card.body}</p>
@@ -290,7 +306,7 @@
           {/if}
         </div>
 
-        <div class="mt-5 flex flex-wrap gap-3">
+        <div class="mt-4 flex flex-wrap gap-3">
           {#if officialEmail}
             <a href={`mailto:${officialEmail}`} class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50">
               Scrivi a {officialEmail}
@@ -310,7 +326,7 @@
       </section>
     {/if}
 
-    <section class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+    <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-5">
       <div class="max-w-3xl">
         <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Presentazione</p>
         <h2 class="mt-2 text-2xl font-bold text-slate-900">Cosa sapere prima di contattarla</h2>
@@ -323,7 +339,7 @@
       </div>
     </section>
 
-    <section class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+    <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-5">
       <div class="max-w-4xl">
         <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Verifiche rapide</p>
         <h2 class="mt-2 text-2xl font-bold text-slate-900">Cosa puoi capire prima di contattare la struttura</h2>
@@ -337,7 +353,7 @@
       </div>
     </section>
 
-    <section class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sc-detail-actions sm:p-7">
+    <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sc-detail-actions sm:p-5">
       <div class="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Contatti rapidi</p>

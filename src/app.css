@@ -58,13 +58,13 @@ body {
 .sc-header::after {
   content: '';
   position: absolute;
-  right: -40px;
-  top: -60px;
-  width: 220px;
-  height: 220px;
+  right: -70px;
+  top: -90px;
+  width: 180px;
+  height: 180px;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(31, 92, 74, 0.24), rgba(184, 197, 174, 0.18), transparent 72%);
-  opacity: 0.6;
+  opacity: 0.35;
   pointer-events: none;
 }
 
@@ -105,29 +105,29 @@ body {
 
 @media (max-width: 640px) {
   .sc-header {
-    border-radius: 1.5rem;
-    padding: 1rem !important;
+    border-radius: 1.25rem;
+    padding: 0.85rem !important;
   }
 
   .sc-header::after {
-    right: -90px;
-    top: -80px;
-    width: 180px;
-    height: 180px;
+    right: -110px;
+    top: -95px;
+    width: 150px;
+    height: 150px;
   }
 
   .sc-header nav {
-    gap: 0.65rem;
-    padding-bottom: 0.15rem;
+    gap: 0.5rem;
+    padding-bottom: 0.1rem;
   }
 
   .sc-header nav a {
     display: inline-flex;
     min-width: max-content;
-    min-height: 2.75rem;
+    min-height: 2.45rem;
     align-items: center;
     justify-content: center;
-    padding-inline: 0.95rem;
+    padding-inline: 0.9rem;
     text-align: center;
   }
 }
@@ -261,6 +261,7 @@ body {
 
 .sc-detail-meta {
   background: rgba(255, 255, 255, 0.92) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28);
 }
 
 .sc-detail-hero {
@@ -268,6 +269,11 @@ body {
     linear-gradient(135deg, rgba(31, 92, 74, 0.1), rgba(214, 207, 176, 0.18)),
     rgba(255, 255, 255, 0.42);
   border: 1px solid rgba(31, 92, 74, 0.12);
+}
+
+.sc-panel .rounded-2xl,
+.sc-panel .rounded-3xl {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24);
 }
 
 .sc-detail-kicker {
