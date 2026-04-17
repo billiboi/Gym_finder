@@ -603,6 +603,62 @@ const OFFICIAL_GYM_OVERRIDES = {
           'La Boost Zone è l’area dedicata ai piccoli gruppi e agli allenamenti guidati nel club di Lugano. Il sito ufficiale indica un supplemento di 20 CHF al mese per accedere a questa formula.'
       }
     ]
+  },
+  'Activ Fitness Giubiasco': {
+    sourceUrl: 'https://www.activfitness.ch/it/studios/activ-fitness-giubiasco/',
+    website: 'https://www.activfitness.ch/it/studios/activ-fitness-giubiasco/',
+    infoCards: [
+      {
+        label: 'Dimensione',
+        value: '800 m²',
+        body: 'La pagina ufficiale descrive uno studio con circa 800 metri quadrati di spazio dedicato all’allenamento.'
+      },
+      {
+        label: 'Postazioni',
+        value: '50+',
+        body: 'Il sito ufficiale parla di oltre 50 postazioni di allenamento tra forza e resistenza.'
+      },
+      {
+        label: 'Corsi',
+        value: '25+ a settimana',
+        body: 'La sede mette in evidenza una sala corsi dedicata e un programma ricco per chi cerca anche classi collettive.'
+      },
+      {
+        label: 'Wellness',
+        value: 'Sauna e biosauna',
+        body: 'Nella presentazione ufficiale compaiono sauna finlandese e biosauna per il recupero post allenamento.'
+      }
+    ],
+    presentation:
+      'Activ Fitness Giubiasco è una palestra fitness a Giubiasco che il sito ufficiale presenta come studio completo e ben collegato, con ampia superficie, molte postazioni di allenamento, corsi di gruppo e un’area wellness pensata per il recupero.',
+    highlights: [
+      'La pagina ufficiale di Activ Fitness Giubiasco descrive una sede di circa 800 m² con oltre 50 postazioni di allenamento. Questo rende la scheda utile per chi vuole capire subito se si tratta di una palestra compatta o di una struttura più completa.',
+      'Tra i punti messi in evidenza dal club ci sono pesi liberi, macchine per forza e resistenza, una Functional Zone con Functional Tower e una sala corsi dedicata. In pratica, il posizionamento è quello di una palestra fitness generalista ben attrezzata.',
+      'La sede segnala anche più di 25 corsi a settimana e 5 aree di allenamento. Per chi sta confrontando diverse opzioni nella zona di Giubiasco, è un’informazione concreta sul livello di varietà disponibile.',
+      'Un elemento distintivo rispetto a molte palestre standard è la presenza di sauna finlandese e biosauna, oltre ai parcheggi gratuiti per i soci nelle immediate vicinanze. Questo aiuta a capire meglio l’esperienza complessiva, non solo il lato allenamento.'
+    ],
+    faqItems: [
+      {
+        question: 'Quanto è grande Activ Fitness Giubiasco secondo il sito ufficiale?',
+        answer:
+          'La pagina ufficiale parla di una superficie di circa 800 m², con oltre 50 postazioni di allenamento e 5 aree dedicate.'
+      },
+      {
+        question: 'Che tipo di allenamento offre Activ Fitness Giubiasco?',
+        answer:
+          'Il sito ufficiale cita macchine per forza e resistenza, pesi liberi, una Functional Zone con Functional Tower e una sala dedicata ai corsi di gruppo.'
+      },
+      {
+        question: 'Ci sono corsi e area wellness ad Activ Fitness Giubiasco?',
+        answer:
+          'Sì. La sede indica più di 25 corsi a settimana e mette in evidenza anche una sauna finlandese e una biosauna per il recupero.'
+      },
+      {
+        question: 'Activ Fitness Giubiasco è comoda da raggiungere in auto?',
+        answer:
+          'Secondo la pagina ufficiale, lo studio si trova a poche centinaia di metri dall’uscita autostradale Bellinzona Sud e dispone di parcheggi gratuiti per i soci nelle vicinanze.'
+      }
+    ]
   }
 };
 
