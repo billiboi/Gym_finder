@@ -546,6 +546,63 @@ const OFFICIAL_GYM_OVERRIDES = {
           'Il sito ufficiale PilActive invita a consultare il palinsesto corsi e a contattare direttamente il centro. In questa scheda trovi i dati base per una prima verifica, ma per disponibilità e organizzazione conviene usare i canali ufficiali.'
       }
     ]
+  },
+  'NonStop Gym Lugano (The CLUB GetFIT)': {
+    sourceUrl: 'https://www.nonstopgym.com/nostri-club/lugano/',
+    website: 'https://www.nonstopgym.com/nostri-club/lugano/',
+    monthlyPrice: 'Annuale 49 CHF/mese · Mensile 69 CHF/mese',
+    infoCards: [
+      {
+        label: 'Abbonamenti',
+        value: '49 CHF/mese o 69 CHF/mese',
+        body: 'Il sito ufficiale presenta un annuale multisede da 49 CHF/mese e un mensile da 69 CHF/mese.'
+      },
+      {
+        label: 'Accesso',
+        value: 'Aperta 24/7',
+        body: 'La formula NonStop Gym punta su accesso libero in ogni momento della giornata.'
+      },
+      {
+        label: 'Dotazioni',
+        value: 'Cardio, pesi liberi, funzionale',
+        body: 'Il brand mette in evidenza attrezzature di qualità, spogliatoi con docce e armadietti, oltre a uno spazio riservato alle donne.'
+      },
+      {
+        label: 'Boost Zone',
+        value: 'Supplemento 20 CHF/mese',
+        body: 'Lugano è uno dei club con area Boost per piccoli gruppi e allenamento guidato.'
+      }
+    ],
+    presentation:
+      'NonStop Gym Lugano è una palestra fitness a Lugano che il sito ufficiale presenta come club aperto 24/7, orientato a rendere il fitness di qualità accessibile con una formula semplice, multisede e sempre disponibile.',
+    highlights: [
+      'Il sito ufficiale NonStop Gym insiste su una promessa molto chiara: fitness di qualità a prezzo accessibile, con il club di Lugano aperto 24 ore su 24, 7 giorni su 7. Per chi cerca una palestra a Lugano con accesso continuativo, questo è il primo elemento distintivo.',
+      'Gli abbonamenti ufficiali comunicati dal brand sono un annuale da 49 CHF al mese e un mensile da 69 CHF al mese, entrambi validi in tutti i club NonStop Gym standard. Questo rende la scheda utile per chi sta confrontando prezzo, flessibilità e copertura multisede.',
+      'Nella presentazione ufficiale compaiono attrezzature guidate, pesi liberi, cardio, area funzionale, spogliatoi con docce e armadietti, oltre a uno spazio riservato alle donne. Sono dettagli concreti per capire il taglio del club prima ancora di una visita.',
+      'Lugano viene citata anche come sede con Boost Zone, cioè uno spazio dedicato a piccoli gruppi e allenamenti guidati, disponibile con supplemento. Questo aggiunge una differenziazione utile rispetto a una palestra 24/7 puramente autonoma.'
+    ],
+    faqItems: [
+      {
+        question: 'Quanto costa NonStop Gym Lugano secondo il sito ufficiale?',
+        answer:
+          'Il sito ufficiale NonStop Gym indica un abbonamento annuale da 49 CHF al mese e un abbonamento mensile da 69 CHF al mese, con accesso ai club standard del network.'
+      },
+      {
+        question: 'NonStop Gym Lugano è davvero aperta 24 ore su 24?',
+        answer:
+          'Sì. La comunicazione ufficiale del brand presenta il club di Lugano come struttura aperta 24/7, quindi adatta anche a chi cerca massima flessibilità di accesso.'
+      },
+      {
+        question: 'Che tipo di attrezzature e servizi mette in evidenza NonStop Gym?',
+        answer:
+          'La presentazione ufficiale parla di attrezzature guidate, pesi liberi, cardio, area funzionale, spogliatoi con docce e armadietti e uno spazio riservato alle donne.'
+      },
+      {
+        question: 'Cos’è la Boost Zone di Lugano?',
+        answer:
+          'La Boost Zone è l’area dedicata ai piccoli gruppi e agli allenamenti guidati nel club di Lugano. Il sito ufficiale indica un supplemento di 20 CHF al mese per accedere a questa formula.'
+      }
+    ]
   }
 };
 
