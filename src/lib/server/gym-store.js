@@ -145,6 +145,8 @@ const COUNTRY_LABELS = new Set([
   'osterreich'
 ]);
 
+const EXCLUDED_LOCATION_TOKENS = new Set(['rostock']);
+
 function isCountryLabel(value) {
   const raw = String(value || '').trim();
   if (!raw) return false;
@@ -167,6 +169,19 @@ function cleanCityLabel(value) {
   if (isCountryLabel(city)) return '';
 
   return city;
+}
+
+function isExcludedGymRecord(gym) {
+  const haystack = [gym?.name, gym?.address, gym?.city]
+    .map((value) => normalizeToken(value))
+    .filter(Boolean)
+    .join(' | ');
+
+  for (const token of EXCLUDED_LOCATION_TOKENS) {
+    if (haystack.includes(token)) return true;
+  }
+
+  return false;
 }
 
 function parseAddress(fullAddress) {
@@ -509,7 +524,7 @@ export async function readGyms() {
     try {
       const dbGyms = await readGymsFromSupabase();
       if (Array.isArray(dbGyms) && dbGyms.length > 0) {
-        return dbGyms;
+        return dbGyms.filter((gym) => !isExcludedGymRecord(gym));
       }
     } catch {
       // fallback below
@@ -525,7 +540,7 @@ export async function readGyms() {
       const csvRaw = await readFile(candidatePath, 'utf-8');
       const csvGyms = gymsFromCsv(csvRaw);
       if (csvGyms.length > 0) {
-        return csvGyms;
+        return csvGyms.filter((gym) => !isExcludedGymRecord(gym));
       }
     } catch {
       // try next source
@@ -536,7 +551,9 @@ export async function readGyms() {
     const raw = await readFile(dataFilePath, 'utf-8');
     const gyms = JSON.parse(raw);
     return Array.isArray(gyms)
-      ? gyms.map((gym, index) => normalizeGymRecord(gym, `json-${index + 1}`))
+      ? gyms
+          .map((gym, index) => normalizeGymRecord(gym, `json-${index + 1}`))
+          .filter((gym) => !isExcludedGymRecord(gym))
       : [];
   } catch {
     return [];
