@@ -7,7 +7,7 @@
   const pageUrl = absoluteUrl('/rivendica-scheda');
   const title = `Rivendica una scheda | ${SITE_NAME}`;
   const description =
-    'Richiedi l aggiornamento o la rivendicazione di una scheda palestra in modo guidato e con un form interno pensato per il progetto.';
+    'Richiedi l aggiornamento o la rivendicazione di una pagina palestra in modo guidato e con un form interno pensato per il progetto.';
 
   $: currentValues = {
     gym_name: form?.values?.gym_name ?? data.prefill.gym ?? '',

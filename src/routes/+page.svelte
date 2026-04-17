@@ -895,7 +895,7 @@
 
           <div class="space-y-3 p-3 sm:p-4">
             <div class="space-y-1 rounded-2xl sc-gym-card-head p-3">
-              <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Scheda palestra</p>
+              <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Dettagli palestra</p>
               <h3 class="text-lg font-bold leading-tight text-slate-900">
                 <a href={gymHref(gym)} class="transition hover:text-emerald-800">
                   {displayName(gym.name)}

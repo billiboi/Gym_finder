@@ -46,8 +46,8 @@
       <p class="text-xs font-bold uppercase tracking-[0.24em] text-amber-700">Hub discipline</p>
       <h1 class="mt-2 text-3xl font-bold text-slate-900 sm:text-5xl">Sfoglia tutte le discipline</h1>
       <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-600 sm:text-base">
-        Questa pagina raccoglie i punti di accesso alle discipline presenti nel catalogo pubblico, così non vieni
-        reindirizzato a una disciplina arbitraria e puoi scegliere subito il percorso più coerente con ciò che cerchi.
+        Qui trovi l'accesso a tutte le discipline presenti nel catalogo pubblico, cosi non vieni
+        reindirizzato su una pagina arbitraria e puoi scegliere subito il percorso piu coerente con quello che stai cercando.
       </p>
       <div class="mt-5 flex flex-wrap gap-2">
         <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">{totalDisciplines} discipline disponibili</span>
@@ -58,7 +58,7 @@
     <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
       <div class="max-w-4xl">
         <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Pagine prioritarie</p>
-        <h2 class="mt-1 text-2xl font-bold text-slate-900">Landing disciplina già curate</h2>
+        <h2 class="mt-1 text-2xl font-bold text-slate-900">Landing disciplina gia curate</h2>
         <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
           Qui trovi le discipline che hanno già una landing dedicata e più strutturata. Sono i punti migliori da cui
           partire se vuoi esplorare palestre con una selezione più ordinata e una pagina più forte anche lato SEO.
@@ -101,3 +101,4 @@
     {/if}
   </main>
 </div>
+

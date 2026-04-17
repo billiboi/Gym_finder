@@ -13,7 +13,7 @@
   const faqItems = [
     {
       question: `Che cosa trovo nella pagina ${discipline.title}?`,
-      answer: `Questa pagina raccoglie ${gyms.length} schede pubbliche collegate a ${discipline.name}. Serve per confrontare strutture rilevanti per questa disciplina senza filtrare ogni volta tutto il catalogo.`
+      answer: `Qui trovi ${gyms.length} schede pubbliche collegate a ${discipline.name}, utili per confrontare strutture pertinenti senza rifare ogni volta tutto il filtro sul catalogo.`
     },
     {
       question: `In quali zone sono presenti piu schede di ${discipline.name}?`,
@@ -114,20 +114,20 @@
         <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Panoramica della disciplina</p>
         <h2 class="mt-1 text-2xl font-bold text-slate-900">Come usare questa pagina per trovare una palestra di {discipline.name}</h2>
         <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
-          Questa sezione è pensata per chi cerca una disciplina specifica e vuole arrivare rapidamente a una short-list utile. Invece di
+          Questa sezione e pensata per chi cerca una disciplina specifica e vuole arrivare rapidamente a una short-list utile. Invece di
           filtrare da zero tutto il catalogo, qui trovi solo le schede che nel nostro database risultano legate a {discipline.name}.
         </p>
         <p class="mt-4 text-sm leading-7 text-slate-600 sm:text-base">
-          Le strutture pubblicate in questa pagina coprono soprattutto queste aree: <strong>{exampleAreas || 'zone già presenti nel catalogo'}</strong>.
-          Aprendo una scheda completa puoi verificare se la palestra è coerente con ciò che cerchi davvero: impostazione tecnica, contatti, orari
-          e praticità rispetto alla tua posizione.
+          Le strutture pubblicate in questa pagina coprono soprattutto queste aree: <strong>{exampleAreas || 'zone gia presenti nel catalogo'}</strong>.
+          Aprendo una scheda completa puoi verificare se la palestra e coerente con cio che cerchi davvero: impostazione tecnica, contatti, orari
+          e praticita rispetto alla tua posizione.
         </p>
       </div>
     </section>
 
     <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
       <div class="max-w-4xl">
-        <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Perche questa pagina e utile</p>
+        <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Come usarla</p>
         <h2 class="mt-1 text-2xl font-bold text-slate-900">Come usarla per trovare una struttura adatta</h2>
       </div>
 
@@ -217,4 +217,5 @@
     </section>
   </main>
 </div>
+
 

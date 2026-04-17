@@ -8,8 +8,9 @@
     "dev": "vite dev",
     "build": "vite build",
     "preview": "vite preview",
-    "check": "node scripts/check-stock-assets.mjs && svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
-    "check:stock": "node scripts/check-stock-assets.mjs"
+    "check": "bun run scripts/check-stock-assets.mjs && bun run scripts/check-copy-slop.mjs && svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
+    "check:stock": "bun run scripts/check-stock-assets.mjs",
+    "check:copy": "bun run scripts/check-copy-slop.mjs"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^7.0.1",
@@ -22,3 +23,4 @@
     "vite": "^7.3.1"
   }
 }
+

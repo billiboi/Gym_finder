@@ -13,7 +13,7 @@
   const faqItems = [
     {
       question: `Che cosa trovo nella pagina ${location.title}?`,
-      answer: `Questa pagina raccoglie una selezione di ${gyms.length} schede pubbliche legate a ${location.name}. Serve per confrontare rapidamente strutture gia presenti nel catalogo senza ripartire da una ricerca generica.`
+      answer: `Qui trovi ${gyms.length} schede pubbliche collegate a ${location.name}, selezionate per aiutarti a confrontare strutture gia presenti nel catalogo senza ripartire ogni volta da zero.`
     },
     {
       question: `Quali discipline sono piu presenti a ${location.name}?`,
@@ -116,12 +116,11 @@
         <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Panoramica della zona</p>
         <h2 class="mt-1 text-2xl font-bold text-slate-900">Allenarsi a {location.name}: cosa trovi in questa pagina</h2>
         <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
-          Questa landing raccoglie schede pubbliche legate a {location.name} e alle località vicine incluse nel nostro catalogo. L’obiettivo
-          è aiutarti a confrontare rapidamente più strutture senza partire ogni volta da una ricerca generica su Google.
+          Questa landing raccoglie schede pubbliche legate a {location.name} e alle localita vicine gia presenti nel catalogo. Serve a mettere in fila strutture confrontabili senza costringerti a ripartire da una ricerca generica su Google.
         </p>
         <p class="mt-4 text-sm leading-7 text-slate-600 sm:text-base">
-          In questo momento le discipline che emergono di più in zona sono <strong>{disciplineSummary || 'fitness e arti marziali'}</strong>.
-          Se stai cercando una palestra per continuità, per un periodo di viaggio o per un nuovo trasferimento, questa pagina è un buon punto
+          In questo momento le discipline che emergono di piu in zona sono <strong>{disciplineSummary || 'fitness e arti marziali'}</strong>.
+          Se stai cercando una palestra per continuita, per un periodo di viaggio o per un nuovo trasferimento, questa pagina e un buon punto
           di partenza per aprire le schede complete e verificare contatti, orari e posizione.
         </p>
       </div>
@@ -129,7 +128,7 @@
 
     <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
       <div class="max-w-4xl">
-        <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Perche questa pagina e utile</p>
+        <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Come leggerla</p>
         <h2 class="mt-1 text-2xl font-bold text-slate-900">Come usarla per scegliere meglio</h2>
       </div>
 
@@ -219,4 +218,5 @@
     </section>
   </main>
 </div>
+
 

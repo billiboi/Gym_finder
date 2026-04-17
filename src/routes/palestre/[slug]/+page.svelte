@@ -171,12 +171,12 @@
             </div>
 
             <div class="rounded-3xl sc-detail-hero p-4 sm:p-5">
-              <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800 sc-detail-kicker">Scheda palestra</p>
+              <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800 sc-detail-kicker">Dettagli palestra</p>
               <h1 class="mt-2 text-4xl font-bold leading-none text-slate-900 sm:text-5xl sc-detail-title">
                 {fixGymText(gym?.name)}
               </h1>
               <p class="mt-3 max-w-2xl text-sm leading-7 text-slate-600 sc-detail-copy">
-                Tutto quello che ti serve per valutare rapidamente una palestra di {primaryDiscipline}{cityLabel ? ` a ${cityLabel}` : ''}: discipline, contatti, orari e accesso immediato ai riferimenti ufficiali.
+                Dati essenziali per capire se {fixGymText(gym?.name)} e una scelta sensata per allenarti{cityLabel ? ` a ${cityLabel}` : ''}: disciplina principale, contatti, orari e riferimenti ufficiali.
               </p>
             </div>
 
@@ -222,13 +222,12 @@
     <section class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
       <div class="max-w-3xl">
         <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Presentazione</p>
-        <h2 class="mt-2 text-2xl font-bold text-slate-900">Allenati anche quando sei fuori zona</h2>
+        <h2 class="mt-2 text-2xl font-bold text-slate-900">Cosa sapere prima di contattarla</h2>
         <p class="mt-4 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">
           {presentation}
         </p>
         <p class="mt-4 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">
-          In questa scheda trovi i dettagli essenziali per capire rapidamente se la palestra e adatta
-          alle tue esigenze: discipline praticate, indirizzo, orari e contatti diretti.
+          Qui sotto trovi i dati che contano davvero quando stai confrontando piu opzioni: dove si trova, quando e aperta, come contattarla e quali discipline dichiara.
         </p>
       </div>
     </section>
@@ -239,7 +238,7 @@
           <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Dati ufficiali del club</p>
           <h2 class="mt-2 text-2xl font-bold text-slate-900">Informazioni utili per chi sta valutando FitActive Mendrisio</h2>
           <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">
-            Questa sezione raccoglie i dettagli piu rilevanti pubblicati nella pagina ufficiale del club, utili per trasformare una semplice impression in una decisione piu informata.
+            Abbiamo raccolto i dettagli piu utili pubblicati dal club per aiutarti a confrontare la struttura con alternative simili senza dover uscire subito dalla scheda.
           </p>
         </div>
 
@@ -288,7 +287,7 @@
 
     <section class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
       <div class="max-w-4xl">
-        <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Perche questa pagina e utile</p>
+        <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Verifiche rapide</p>
         <h2 class="mt-2 text-2xl font-bold text-slate-900">Cosa puoi capire prima di contattare la struttura</h2>
         <div class="mt-4 grid gap-3">
           {#each seoHighlights as highlight}
@@ -350,10 +349,10 @@
     <section class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
       <div class="flex flex-wrap items-end justify-between gap-4">
         <div class="max-w-3xl">
-          <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Decisione rapida</p>
-          <h2 class="mt-2 text-2xl font-bold text-slate-900">Se la struttura ti sembra adatta, fai il passo successivo</h2>
+          <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Passo successivo</p>
+          <h2 class="mt-2 text-2xl font-bold text-slate-900">Se la struttura ti convince, qui chiudi il cerchio</h2>
           <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">
-            Qui sotto trovi i tre passaggi piu utili: aprire il percorso, chiamare la palestra oppure visitare il sito ufficiale per approfondire.
+            Apri il percorso, chiama la struttura oppure controlla il sito ufficiale: sono le tre azioni che di solito sbloccano una decisione vera.
           </p>
         </div>
       </div>
@@ -390,9 +389,9 @@
       <div class="flex flex-wrap items-start justify-between gap-4">
         <div class="max-w-3xl">
           <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Percorsi utili</p>
-          <h2 class="mt-2 text-2xl font-bold text-slate-900">Continua la ricerca senza ripartire da zero</h2>
+          <h2 class="mt-2 text-2xl font-bold text-slate-900">Altre opzioni vicine da confrontare</h2>
           <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">
-            Se questa scheda ti interessa, puoi continuare a esplorare la stessa disciplina o la stessa zona per confrontare strutture simili in modo piu rapido.
+            Se vuoi tenere aperte piu alternative, qui trovi il modo piu rapido per restare sulla stessa disciplina o sulla stessa area senza rifare la ricerca.
           </p>
         </div>
         <div class="flex flex-wrap gap-2">
