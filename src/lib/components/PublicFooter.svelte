@@ -4,7 +4,7 @@
       <div class="max-w-2xl">
         <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-amber-700">Palestre in Zona</p>
         <p class="mt-2 text-sm leading-6 text-slate-600">
-          Directory pubblica per trovare palestre e discipline vicine, con schede curate e percorsi rapidi verso contatti, mappa e dettagli utili.
+          Catalogo pubblico per trovare palestre e discipline vicine, con schede curate e percorsi rapidi verso contatti, mappa e dettagli utili.
         </p>
       </div>
 

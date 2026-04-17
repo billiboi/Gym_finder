@@ -11,6 +11,15 @@ function slugifyLocationName(name) {
     .replace(/^-+|-+$/g, '');
 }
 
+function isBrowsableLocationName(name) {
+  const value = String(name || '').trim();
+  if (!value) return false;
+  if (/^\d/.test(value)) return false;
+  if (/[\\/|]/.test(value)) return false;
+  if (value.length > 40) return false;
+  return true;
+}
+
 export async function load() {
   const gyms = (await readGyms()).filter((gym) => isIndexableGym(gym));
   const counts = new Map();
@@ -36,7 +45,7 @@ export async function load() {
     .sort((left, right) => right.count - left.count || left.name.localeCompare(right.name, 'it'));
 
   const extraLocations = [...counts.entries()]
-    .filter(([name]) => !seoLocationMap.has(name))
+    .filter(([name]) => !seoLocationMap.has(name) && isBrowsableLocationName(name))
     .map(([name, count]) => ({
       name,
       slug: slugifyLocationName(name),

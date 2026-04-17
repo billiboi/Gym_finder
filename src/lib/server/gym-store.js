@@ -119,19 +119,91 @@ function csvEscape(value) {
   return s;
 }
 
+function normalizeToken(value) {
+  return String(value || '')
+    .trim()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+}
+
+const COUNTRY_LABELS = new Set([
+  'italia',
+  'italy',
+  'svizzera',
+  'svizra',
+  'schweiz',
+  'suisse',
+  'switzerland',
+  'germania',
+  'germany',
+  'deutschland',
+  'francia',
+  'france',
+  'frankreich',
+  'austria',
+  'osterreich'
+]);
+
+function isCountryLabel(value) {
+  const raw = String(value || '').trim();
+  if (!raw) return false;
+
+  const chunks = raw
+    .split(/[\\/|]/)
+    .map((part) => normalizeToken(part))
+    .filter(Boolean);
+
+  return chunks.length > 0 && chunks.every((chunk) => COUNTRY_LABELS.has(chunk));
+}
+
+function cleanCityLabel(value) {
+  let city = String(value || '').trim().replace(/\s+/g, ' ');
+  if (!city) return '';
+
+  city = city.replace(/^\d{4,5}\s+/, '').trim();
+  city = city.replace(/\s+[A-Z]{2}$/, '').trim();
+
+  if (isCountryLabel(city)) return '';
+
+  return city;
+}
+
 function parseAddress(fullAddress) {
   const raw = String(fullAddress || '').trim();
   if (!raw) return { address: '', city: '' };
 
   const parts = raw.split(',').map((p) => p.trim()).filter(Boolean);
   if (parts.length >= 2) {
+    const lastPart = parts.at(-1) || '';
+    const hasCountrySuffix = isCountryLabel(lastPart);
+    const citySource = hasCountrySuffix ? parts.at(-2) || '' : lastPart;
+    const city = cleanCityLabel(citySource);
+    const addressParts = parts.slice(0, hasCountrySuffix ? -2 : -1);
+
     return {
-      address: parts.slice(0, -1).join(', '),
-      city: parts.at(-1) || ''
+      address: addressParts.join(', '),
+      city
     };
   }
 
   return { address: raw, city: '' };
+}
+
+function normalizeAddressAndCity(addressValue, cityValue) {
+  const address = String(addressValue || '').trim();
+  const city = String(cityValue || '').trim();
+  const combined = [address, city].filter(Boolean).join(', ');
+
+  if (combined) {
+    const parsed = parseAddress(combined);
+    if (parsed.address || parsed.city) return parsed;
+  }
+
+  return {
+    address,
+    city: cleanCityLabel(city)
+  };
 }
 
 function disciplinesFromField(value) {
@@ -157,6 +229,7 @@ function toBoolean(value) {
 }
 
 function normalizeGymRecord(gym, fallbackId) {
+  const { address, city } = normalizeAddressAndCity(gym?.address, gym?.city);
   const disciplines = Array.isArray(gym?.disciplines)
     ? gym.disciplines.map((d) => String(d).trim()).filter(Boolean)
     : disciplinesFromField(gym?.discipline);
@@ -171,8 +244,8 @@ function normalizeGymRecord(gym, fallbackId) {
     name: String(gym?.name || '').trim(),
     disciplines,
     discipline: String(gym?.discipline || primaryDiscipline(disciplines)).trim() || 'Fitness',
-    address: String(gym?.address || '').trim(),
-    city: String(gym?.city || '').trim(),
+    address,
+    city,
     phone: String(gym?.phone || '').trim(),
     hours_info: String(gym?.hours_info || '').trim() || 'Orari da verificare',
     website: String(gym?.website || '').trim(),
