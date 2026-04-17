@@ -1,4 +1,4 @@
-import { fail, redirect } from '@sveltejs/kit';
+﻿import { fail, redirect } from '@sveltejs/kit';
 import { randomUUID } from 'node:crypto';
 import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -233,7 +233,7 @@ export const actions = {
     if (!canPersistWrites()) {
       return fail(503, {
         error:
-          'L\'eliminazione dal deploy pubblico non e persistente. Usa l\'ambiente locale oppure collega un database.'
+          'L\'eliminazione dal deploy pubblico non è persistente. Usa l\'ambiente locale oppure collega un database.'
       });
     }
 
@@ -260,3 +260,4 @@ export const actions = {
     throw redirect(303, '/admin/schede?deleted=1');
   }
 };
+

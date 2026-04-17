@@ -1,4 +1,4 @@
-<script>
+﻿<script>
   import {
     buildGymFaqItems,
     buildGymSeoHighlights,
@@ -179,7 +179,7 @@
                 {fixGymText(gym?.name)}
               </h1>
               <p class="mt-3 max-w-2xl text-sm leading-7 text-slate-600 sc-detail-copy">
-                Dati essenziali per capire se {fixGymText(gym?.name)} e una scelta sensata per allenarti{cityLabel ? ` a ${cityLabel}` : ''}: disciplina principale, contatti, orari e riferimenti ufficiali.
+                Dati essenziali per capire se {fixGymText(gym?.name)} è una scelta sensata per allenarti{cityLabel ? ` a ${cityLabel}` : ''}: disciplina principale, contatti, orari e riferimenti ufficiali.
               </p>
             </div>
 
@@ -248,7 +248,7 @@
           {presentation}
         </p>
         <p class="mt-4 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">
-          Qui sotto trovi i dati che contano davvero quando stai confrontando piu opzioni: dove si trova, quando e aperta, come contattarla e quali discipline dichiara.
+          Qui sotto trovi i dati che contano davvero quando stai confrontando più opzioni: dove si trova, quando è aperta, come contattarla e quali discipline dichiara.
         </p>
       </div>
     </section>
@@ -259,7 +259,7 @@
           <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Dati ufficiali del club</p>
           <h2 class="mt-2 text-2xl font-bold text-slate-900">Informazioni utili per chi sta valutando FitActive Mendrisio</h2>
           <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">
-            Abbiamo raccolto i dettagli piu utili pubblicati dal club per aiutarti a confrontare la struttura con alternative simili senza dover uscire subito dalla scheda.
+            Abbiamo raccolto i dettagli più utili pubblicati dal club per aiutarti a confrontare la struttura con alternative simili senza dover uscire subito dalla scheda.
           </p>
         </div>
 
@@ -412,7 +412,7 @@
           <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Percorsi utili</p>
           <h2 class="mt-2 text-2xl font-bold text-slate-900">Altre opzioni vicine da confrontare</h2>
           <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">
-            Se vuoi tenere aperte piu alternative, qui puoi restare sulla stessa disciplina o sulla stessa area senza rifare la ricerca.
+            Se vuoi tenere aperte più alternative, qui puoi restare sulla stessa disciplina o sulla stessa area senza rifare la ricerca.
           </p>
         </div>
         <div class="flex flex-wrap gap-2">
@@ -517,4 +517,5 @@
     </div>
   </div>
 </div>
+
 

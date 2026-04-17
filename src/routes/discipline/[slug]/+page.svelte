@@ -1,4 +1,4 @@
-<script>
+﻿<script>
   import { disciplinePreviewForGym, gymHref, imageForGym } from '$lib/gym-detail';
   import { absoluteUrl, SITE_NAME, jsonLdScript } from '$lib/site';
 
@@ -16,13 +16,13 @@
       answer: `La pagina raccoglie ${gyms.length} schede pubbliche legate a ${discipline.name}. Serve a vedere subito quali strutture del catalogo ricadono davvero in questa disciplina.`
     },
     {
-      question: `In quali zone sono presenti piu schede di ${discipline.name}?`,
+      question: `In quali zone sono presenti più schede di ${discipline.name}?`,
       answer: exampleAreas
-        ? `Le aree che emergono di piu in questa raccolta sono ${exampleAreas}.`
-        : `Le zone coperte da questa disciplina si stanno ampliando e la raccolta locale e ancora in crescita.`
+        ? `Le aree che emergono di più in questa raccolta sono ${exampleAreas}.`
+        : `Le zone coperte da questa disciplina si stanno ampliando e la raccolta locale è ancora in crescita.`
     },
     {
-      question: `Perche aprire la scheda completa di una palestra di ${discipline.name}?`,
+      question: `Perché aprire la scheda completa di una palestra di ${discipline.name}?`,
       answer: `Aprendo la scheda completa puoi controllare indirizzo, orari, contatti e discipline associate prima di decidere se approfondire.`
     }
   ];
@@ -114,11 +114,11 @@
         <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Panoramica della disciplina</p>
         <h2 class="mt-1 text-2xl font-bold text-slate-900">Come leggere il catalogo di {discipline.name}</h2>
         <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
-          Qui compaiono solo le schede che nel database risultano legate a {discipline.name}. Il vantaggio e semplice: non stai guardando una raccolta generica, ma un sottoinsieme gia filtrato.
+          Qui compaiono solo le schede che nel database risultano legate a {discipline.name}. Il vantaggio è semplice: non stai guardando una raccolta generica, ma un sottoinsieme già filtrato.
         </p>
         <p class="mt-4 text-sm leading-7 text-slate-600 sm:text-base">
-          Le strutture pubblicate in questa pagina coprono soprattutto queste aree: <strong>{exampleAreas || 'zone gia presenti nel catalogo'}</strong>.
-          Aprendo una scheda completa puoi controllare impostazione tecnica, contatti, orari e praticita rispetto alla tua posizione.
+          Le strutture pubblicate in questa pagina coprono soprattutto queste aree: <strong>{exampleAreas || 'zone già presenti nel catalogo'}</strong>.
+          Aprendo una scheda completa puoi controllare impostazione tecnica, contatti, orari e praticità rispetto alla tua posizione.
         </p>
       </div>
     </section>
@@ -136,11 +136,11 @@
         </div>
         <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
           <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Confronto</p>
-          <p class="mt-2 text-sm leading-7 text-slate-700">Puoi confrontare piu strutture guardando indirizzo, orari e discipline associate prima di aprire il dettaglio completo.</p>
+          <p class="mt-2 text-sm leading-7 text-slate-700">Puoi confrontare più strutture guardando indirizzo, orari e discipline associate prima di aprire il dettaglio completo.</p>
         </div>
         <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
           <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Contesto locale</p>
-          <p class="mt-2 text-sm leading-7 text-slate-700">La distribuzione delle schede ti fa capire anche in quali zone questa disciplina e oggi piu rappresentata nel catalogo.</p>
+          <p class="mt-2 text-sm leading-7 text-slate-700">La distribuzione delle schede ti fa capire anche in quali zone questa disciplina è oggi più rappresentata nel catalogo.</p>
         </div>
       </div>
     </section>
@@ -215,5 +215,7 @@
     </section>
   </main>
 </div>
+
+
 
 

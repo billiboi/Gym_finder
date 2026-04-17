@@ -1,4 +1,4 @@
-<script>
+﻿<script>
   import { disciplinePreviewForGym, gymHref, imageForGym } from '$lib/gym-detail';
   import { absoluteUrl, SITE_NAME, jsonLdScript } from '$lib/site';
 
@@ -16,14 +16,14 @@
       answer: `La pagina raccoglie ${gyms.length} schede pubbliche collegate a ${location.name}. Serve a vedere in un colpo solo quali strutture del catalogo ricadono davvero in quest'area.`
     },
     {
-      question: `Quali discipline sono piu presenti a ${location.name}?`,
+      question: `Quali discipline sono più presenti a ${location.name}?`,
       answer: disciplineSummary
-        ? `In questo momento le discipline che emergono di piu in questa zona sono ${disciplineSummary}.`
-        : `In questa zona il catalogo e ancora in crescita e la panoramica delle discipline si sta consolidando.`
+        ? `In questo momento le discipline che emergono di più in questa zona sono ${disciplineSummary}.`
+        : `In questa zona il catalogo è ancora in crescita e la panoramica delle discipline si sta consolidando.`
     },
     {
       question: `Le schede di ${location.name} mostrano contatti e orari?`,
-      answer: `Si. Quando disponibili, le schede mostrano indirizzo, orari e riferimenti per contattare la struttura o controllare il sito ufficiale.`
+      answer: `Sì. Quando disponibili, le schede mostrano indirizzo, orari e riferimenti per contattare la struttura o controllare il sito ufficiale.`
     }
   ];
   const structuredData = {
@@ -116,11 +116,11 @@
         <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Panoramica della zona</p>
         <h2 class="mt-1 text-2xl font-bold text-slate-900">Allenarsi a {location.name}: come leggere questa raccolta</h2>
         <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
-          Questa landing raccoglie schede pubbliche legate a {location.name} e alle localita vicine gia presenti nel catalogo. In pratica, qui vedi subito quali strutture abbiamo gia mappato in quest'area.
+          Questa landing raccoglie schede pubbliche legate a {location.name} e alle località vicine già presenti nel catalogo. In pratica, qui vedi subito quali strutture abbiamo già mappato in quest'area.
         </p>
         <p class="mt-4 text-sm leading-7 text-slate-600 sm:text-base">
-          In questo momento le discipline che emergono di piu in zona sono <strong>{disciplineSummary || 'fitness e arti marziali'}</strong>.
-          Se vuoi allenarti con continuita, trovare una soluzione temporanea o orientarti dopo un trasferimento, da qui puoi aprire le schede complete e controllare contatti, orari e posizione.
+          In questo momento le discipline che emergono di più in zona sono <strong>{disciplineSummary || 'fitness e arti marziali'}</strong>.
+          Se vuoi allenarti con continuità, trovare una soluzione temporanea o orientarti dopo un trasferimento, da qui puoi aprire le schede complete e controllare contatti, orari e posizione.
         </p>
       </div>
     </section>
@@ -134,15 +134,15 @@
       <div class="mt-5 grid gap-3 md:grid-cols-3">
         <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
           <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Selezione</p>
-          <p class="mt-2 text-sm leading-7 text-slate-700">La pagina mette insieme solo schede gia abbastanza curate, cosi eviti risultati troppo deboli o poco informativi.</p>
+          <p class="mt-2 text-sm leading-7 text-slate-700">La pagina mette insieme solo schede già abbastanza curate, così eviti risultati troppo deboli o poco informativi.</p>
         </div>
         <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
           <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Confronto rapido</p>
-          <p class="mt-2 text-sm leading-7 text-slate-700">Puoi confrontare piu strutture della stessa area guardando indirizzo, discipline e orari prima di aprire il dettaglio completo.</p>
+          <p class="mt-2 text-sm leading-7 text-slate-700">Puoi confrontare più strutture della stessa area guardando indirizzo, discipline e orari prima di aprire il dettaglio completo.</p>
         </div>
         <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
           <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Ricerca locale</p>
-          <p class="mt-2 text-sm leading-7 text-slate-700">Se sei in viaggio o ti sei appena trasferito, qui capisci subito quali opzioni abbiamo gia censito in zona.</p>
+          <p class="mt-2 text-sm leading-7 text-slate-700">Se sei in viaggio o ti sei appena trasferito, qui capisci subito quali opzioni abbiamo già censito in zona.</p>
         </div>
       </div>
     </section>
@@ -217,5 +217,7 @@
     </section>
   </main>
 </div>
+
+
 
 

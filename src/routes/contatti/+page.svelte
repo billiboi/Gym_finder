@@ -39,7 +39,7 @@
           <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Tempi di risposta</p>
           <p class="mt-2 text-lg font-bold text-slate-900">Risposta manuale</p>
           <p class="mt-3 text-sm leading-7 text-slate-600">
-            Le richieste vengono gestite manualmente, quindi e meglio essere chiari su palestra, zona e tipo di modifica richiesta.
+            Le richieste vengono gestite manualmente, quindi è meglio essere chiari su palestra, zona e tipo di modifica richiesta.
           </p>
         </div>
       </div>

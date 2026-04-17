@@ -19,7 +19,7 @@
       <p class="text-xs font-bold uppercase tracking-[0.24em] text-amber-700">Privacy</p>
       <h1 class="mt-2 text-3xl font-bold text-slate-900 sm:text-5xl">Informativa essenziale</h1>
       <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-600 sm:text-base">
-        Palestre in Zona e un progetto editoriale e informativo. Questa pagina descrive in modo semplice quali dati possono essere trattati durante l'uso del sito.
+        Palestre in Zona è un progetto editoriale e informativo. Questa pagina descrive in modo semplice quali dati possono essere trattati durante l'uso del sito.
       </p>
     </section>
 
@@ -28,7 +28,7 @@
         <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
           <h2 class="text-lg font-bold text-slate-900">Dati di navigazione</h2>
           <p class="mt-3 text-sm leading-7 text-slate-600">
-            Il sito puo trattare dati tecnici minimi necessari al funzionamento, come richieste HTTP, log e informazioni di navigazione fornite dalla piattaforma di hosting.
+            Il sito può trattare dati tecnici minimi necessari al funzionamento, come richieste HTTP, log e informazioni di navigazione fornite dalla piattaforma di hosting.
           </p>
         </div>
         <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
@@ -38,7 +38,7 @@
           </p>
         </div>
         <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
-          <h2 class="text-lg font-bold text-slate-900">Finalita del trattamento</h2>
+          <h2 class="text-lg font-bold text-slate-900">Finalità del trattamento</h2>
           <p class="mt-3 text-sm leading-7 text-slate-600">
             Le informazioni raccolte servono a mantenere il sito funzionante, migliorare il catalogo e rispondere a richieste di aggiornamento o contatto legate al progetto.
           </p>

@@ -628,7 +628,7 @@
       <div class="max-w-3xl">
         <p class="text-xs font-bold uppercase tracking-[0.24em] text-amber-700">Palestre in Zona</p>
         <h1 class="text-3xl font-bold leading-tight text-slate-900 sm:text-5xl">Trova la palestra giusta, ovunque ti trovi</h1>
-        <p class="mt-3 text-sm text-slate-600 sm:text-base">Una ricerca piu rapida, pulita e mobile-first per continuare ad allenarti anche quando sei in viaggio o ti sei appena trasferito.</p>
+        <p class="mt-3 text-sm text-slate-600 sm:text-base">Una ricerca più rapida, pulita e mobile-first per continuare ad allenarti anche quando sei in viaggio o ti sei appena trasferito.</p>
         <div class="mt-4 flex flex-wrap gap-2">
           <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">Ricerca per vicinanza</span>
           <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">Schede complete dedicate</span>

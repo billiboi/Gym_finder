@@ -1,15 +1,15 @@
-import { normalizeDisciplineLabel } from '$lib/disciplines';
+﻿import { normalizeDisciplineLabel } from '$lib/disciplines';
 
 export function fixGymText(value) {
   let text = String(value || '');
   if (!text) return '';
 
   const replacements = [
-    ['ÃƒÆ’Ã¢â€šÂ¬', 'Ãƒâ‚¬'], ['ÃƒÆ’Ã‹â€ ', 'ÃƒË†'], ['ÃƒÆ’Ã¢â‚¬Â°', 'Ãƒâ€°'], ['ÃƒÆ’Ã…â€™', 'ÃƒÅ’'], ['ÃƒÆ’Ã¢â‚¬â„¢', 'Ãƒâ€™'], ['ÃƒÆ’Ã¢â€žÂ¢', 'Ãƒâ„¢'],
-    ['ÃƒÆ’Ã‚Â ', 'ÃƒÂ '], ['ÃƒÆ’Ã‚Â¨', 'ÃƒÂ¨'], ['ÃƒÆ’Ã‚Â©', 'ÃƒÂ©'], ['ÃƒÆ’Ã‚Â¬', 'ÃƒÂ¬'], ['ÃƒÆ’Ã‚Â²', 'ÃƒÂ²'], ['ÃƒÆ’Ã‚Â¹', 'ÃƒÂ¹'],
-    ['ÃƒÆ’Ã‚Â¶', 'ÃƒÂ¶'], ['ÃƒÆ’Ã‚Â¤', 'ÃƒÂ¤'], ['ÃƒÆ’Ã…Â¸', 'ÃƒÅ¸'], ['ÃƒÆ’Ã¢â‚¬â€œ', 'Ãƒâ€“'], ['ÃƒÆ’Ã‚Â¼', 'ÃƒÂ¼'], ['ÃƒÆ’Ã…â€œ', 'ÃƒÅ“'],
-    ['ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“', '-'], ['ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â', '-'], ['ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“', "'"], ['ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢', "'"], ['ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ', '"'], ['ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â', '"'],
-    ['Ãƒâ€š', '']
+    ['ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬', 'ÃƒÆ’Ã¢â€šÂ¬'], ['ÃƒÆ’Ã†â€™Ãƒâ€¹Ã¢â‚¬Â ', 'ÃƒÆ’Ã‹â€ '], ['ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â°', 'ÃƒÆ’Ã¢â‚¬Â°'], ['ÃƒÆ’Ã†â€™Ãƒâ€¦Ã¢â‚¬â„¢', 'ÃƒÆ’Ã…â€™'], ['ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢', 'ÃƒÆ’Ã¢â‚¬â„¢'], ['ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢', 'ÃƒÆ’Ã¢â€žÂ¢'],
+    ['ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â ', 'ÃƒÆ’Ã‚Â '], ['ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¨', 'ÃƒÆ’Ã‚Â¨'], ['ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©', 'ÃƒÆ’Ã‚Â©'], ['ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¬', 'ÃƒÆ’Ã‚Â¬'], ['ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â²', 'ÃƒÆ’Ã‚Â²'], ['ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¹', 'ÃƒÆ’Ã‚Â¹'],
+    ['ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¶', 'ÃƒÆ’Ã‚Â¶'], ['ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤', 'ÃƒÆ’Ã‚Â¤'], ['ÃƒÆ’Ã†â€™Ãƒâ€¦Ã‚Â¸', 'ÃƒÆ’Ã…Â¸'], ['ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“', 'ÃƒÆ’Ã¢â‚¬â€œ'], ['ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¼', 'ÃƒÆ’Ã‚Â¼'], ['ÃƒÆ’Ã†â€™Ãƒâ€¦Ã¢â‚¬Å“', 'ÃƒÆ’Ã…â€œ'],
+    ['ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ', '-'], ['ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â', '-'], ['ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¹Ã…â€œ', "'"], ['ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢', "'"], ['ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“', '"'], ['ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â', '"'],
+    ['ÃƒÆ’Ã¢â‚¬Å¡', '']
   ];
 
   for (const [from, to] of replacements) {
@@ -359,10 +359,10 @@ export function buildGymPresentation(gym) {
   const address = formatAddressForDisplay(gym);
 
   if (disciplines.length > 1) {
-    return `${name} e presente a ${address} e nel catalogo risulta collegata a ${disciplines.join(', ')}. In questa scheda trovi i dati principali per capire se puo avere senso approfondire.`;
+    return `${name} è presente a ${address} e nel catalogo risulta collegata a ${disciplines.join(', ')}. In questa scheda trovi i dati principali per capire se può avere senso approfondire.`;
   }
 
-  return `${name} e una palestra di ${first} in ${address}. Qui abbiamo raccolto indirizzo, orari e riferimenti utili per una prima verifica.`;
+  return `${name} è una palestra di ${first} in ${address}. Qui abbiamo raccolto indirizzo, orari e riferimenti utili per una prima verifica.`;
 }
 
 export function cityLabelForGym(gym) {
@@ -378,11 +378,11 @@ export function buildGymSeoHighlights(gym) {
   const hoursInfo = fixGymText(gym?.hours_info || '');
   const points = [
     `${fixGymText(gym?.name || 'La struttura')} nel catalogo compare con queste discipline: ${disciplines.join(', ')}${city ? `, nella zona di ${city}` : ''}.`,
-    `L'indirizzo pubblicato e ${address}, quindi puoi capire subito se la struttura e compatibile con i tuoi spostamenti.`,
+    `L'indirizzo pubblicato è ${address}, quindi puoi capire subito se la struttura è compatibile con i tuoi spostamenti.`,
     hoursInfo && hoursInfo !== 'Orari da verificare'
-      ? `Gli orari sono gia visibili nella scheda, quindi puoi controllare disponibilita e fascia oraria senza passare da altri canali.`
+      ? `Gli orari sono già visibili nella scheda, quindi puoi controllare disponibilità e fascia oraria senza passare da altri canali.`
       : `Gli orari non sono completi, ma restano disponibili i riferimenti principali per contattare la struttura.`,
-    `${primary}${city ? ` a ${city}` : ''} e il taglio con cui questa pagina viene presentata, cosi capisci subito se stai guardando il tipo di struttura che ti interessa.`
+    `${primary}${city ? ` a ${city}` : ''} è il taglio con cui questa pagina viene presentata, così capisci subito se stai guardando il tipo di struttura che ti interessa.`
   ];
 
   return points.filter(Boolean);
@@ -399,7 +399,7 @@ export function buildGymFaqItems(gym) {
   return [
     {
       question: `Quali discipline si praticano da ${name}?`,
-      answer: `${name} nel catalogo risulta collegata a ${disciplines.join(', ')}. Se stai confrontando piu strutture, questo e il primo dato da verificare.`
+      answer: `${name} nel catalogo risulta collegata a ${disciplines.join(', ')}. Se stai confrontando più strutture, questo è il primo dato da verificare.`
     },
     {
       question: `Dove si trova ${name}?`,
@@ -416,7 +416,7 @@ export function buildGymFaqItems(gym) {
     {
       question: `Gli orari di ${name} sono disponibili?`,
       answer: hoursInfo && hoursInfo !== 'Orari da verificare'
-        ? `Si, gli orari pubblicati per ${name} sono: ${hoursInfo}.`
+        ? `Sì, gli orari pubblicati per ${name} sono: ${hoursInfo}.`
         : `Gli orari di ${name} non sono ancora completi nella scheda pubblica e conviene verificarli direttamente con la struttura.`
     }
   ];
@@ -439,12 +439,12 @@ const OFFICIAL_GYM_OVERRIDES = {
       }
     ],
     presentation:
-      'FitActive Mendrisio e una palestra fitness a Mendrisio che, secondo la pagina ufficiale del club, punta su allenamento illimitato, attrezzature cardio e isotoniche di qualita e una proposta orientata a un uso frequente e senza complicazioni.',
+      'FitActive Mendrisio è una palestra fitness a Mendrisio che, secondo la pagina ufficiale del club, punta su allenamento illimitato, attrezzature cardio e isotoniche di qualità e una proposta orientata a un uso frequente e senza complicazioni.',
     highlights: [
       'La pagina ufficiale del club presenta FitActive Mendrisio come una palestra fitness a Mendrisio con accesso illimitato e formula da 49,90 CHF al mese, un messaggio forte per chi sta confrontando prezzo e posizionamento nella zona.',
-      'Tra i punti messi in evidenza dal club ci sono attrezzature cardio e isotoniche, utili per chi cerca una sala fitness orientata all allenamento completo piu che a una sola attivita specifica.',
+      'Tra i punti messi in evidenza dal club ci sono attrezzature cardio e isotoniche, utili per chi cerca una sala fitness orientata all’allenamento completo più che a una sola attività specifica.',
       'Nel materiale ufficiale compaiono anche corsi di gruppo, lampade abbronzanti, bevande energetiche, pedane vibranti e poltrone relax: dettagli che aiutano a capire subito il taglio commerciale e i servizi accessori della struttura.',
-      'Per questa sede sono pubblicati anche contatti diretti, email ufficiale e orari di prevendita, quindi la scheda puo rispondere bene sia a chi vuole allenarsi sia a chi vuole chiedere informazioni prima di iscriversi.'
+      'Per questa sede sono pubblicati anche contatti diretti, email ufficiale e orari di prevendita, quindi la scheda può rispondere bene sia a chi vuole allenarsi sia a chi vuole chiedere informazioni prima di iscriversi.'
     ],
     faqItems: [
       {
@@ -460,7 +460,7 @@ const OFFICIAL_GYM_OVERRIDES = {
       {
         question: 'Ci sono contatti diretti per FitActive Mendrisio?',
         answer:
-          'Si. La pagina ufficiale del club riporta il numero +41 76 424 68 50, l email mendrisio@fitactive.ch e i profili Facebook e Instagram della sede.'
+          'Sì. La pagina ufficiale del club riporta il numero +41 76 424 68 50, l’email mendrisio@fitactive.ch e i profili Facebook e Instagram della sede.'
       },
       {
         question: 'Quali orari sono indicati per la prevendita di FitActive Mendrisio?',
@@ -491,5 +491,8 @@ export function isIndexableGym(gym) {
 
   return Boolean(name && address && disciplines.length > 0 && hasIndexingSignal);
 }
+
+
+
 
 

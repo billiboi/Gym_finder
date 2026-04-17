@@ -1,4 +1,4 @@
-<script>
+﻿<script>
   export let path = '/';
 
   const isHome = path === '/';
@@ -21,9 +21,9 @@
     : isDetail
       ? 'Approfondisci contatti, orari e informazioni della palestra.'
       : isZone
-        ? 'Una selezione locale per scoprire piu rapidamente le palestre della zona.'
+        ? 'Una selezione locale per scoprire più rapidamente le palestre della zona.'
         : isDiscipline
-          ? 'Una raccolta dedicata a una singola disciplina, utile anche per ricerche piu mirate.'
+          ? 'Una raccolta dedicata a una singola disciplina, utile anche per ricerche più mirate.'
           : 'Navigazione coerente su tutte le pagine pubbliche.';
 </script>
 
@@ -74,3 +74,4 @@
     </div>
   </div>
 </header>
+

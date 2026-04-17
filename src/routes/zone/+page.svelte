@@ -46,7 +46,7 @@
       <p class="text-xs font-bold uppercase tracking-[0.24em] text-amber-700">Hub zone</p>
       <h1 class="mt-2 text-3xl font-bold text-slate-900 sm:text-5xl">Sfoglia tutte le zone</h1>
       <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-600 sm:text-base">
-        Qui trovi l'accesso alle raccolte locali presenti nel catalogo pubblico, cosi puoi partire dalla zona che ti interessa invece di finire su una pagina scelta in automatico.
+        Qui trovi l'accesso alle raccolte locali presenti nel catalogo pubblico, così puoi partire dalla zona che ti interessa invece di finire su una pagina scelta in automatico.
       </p>
       <div class="mt-5 flex flex-wrap gap-2">
         <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">{totalLocations} zone disponibili</span>
@@ -57,9 +57,9 @@
     <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
       <div class="max-w-4xl">
         <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Pagine prioritarie</p>
-        <h2 class="mt-1 text-2xl font-bold text-slate-900">Landing zona gia curate</h2>
+        <h2 class="mt-1 text-2xl font-bold text-slate-900">Landing zona già curate</h2>
         <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
-          Qui trovi le zone che hanno gia una pagina piu strutturata. Sono i punti migliori da cui partire se vuoi confrontare piu schede locali con una selezione ordinata.
+          Qui trovi le zone che hanno già una pagina più strutturata. Sono i punti migliori da cui partire se vuoi confrontare più schede locali con una selezione ordinata.
         </p>
       </div>
 
@@ -81,7 +81,7 @@
           <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Catalogo completo</p>
           <h2 class="mt-1 text-2xl font-bold text-slate-900">Altre zone presenti nel catalogo</h2>
           <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
-            Queste localita compaiono gia nelle schede pubbliche. L'hub ti permette di raggiungerle senza passare da scorciatoie arbitrarie nell'header.
+            Queste località compaiono già nelle schede pubbliche. L'hub ti permette di raggiungerle senza passare da scorciatoie arbitrarie nell'header.
           </p>
         </div>
 
@@ -98,3 +98,4 @@
     {/if}
   </main>
 </div>
+

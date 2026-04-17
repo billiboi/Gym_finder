@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+﻿import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';
 
@@ -273,7 +273,7 @@ export async function createClaimRequest(input) {
   } else {
     if (isReadOnlyRuntime) {
       throw new Error(
-        'Il flusso richieste non puo salvare dati in questo ambiente. Configura Supabase oppure usa un ambiente con scrittura persistente.'
+        'Il flusso richieste non può salvare dati in questo ambiente. Configura Supabase oppure usa un ambiente con scrittura persistente.'
       );
     }
 
@@ -288,3 +288,4 @@ export async function createClaimRequest(input) {
 
   return saved;
 }
+
