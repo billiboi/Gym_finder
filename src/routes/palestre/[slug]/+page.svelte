@@ -194,9 +194,6 @@
               <h1 class="text-4xl font-bold leading-none text-slate-900 sm:text-[3.4rem] sc-detail-title">
                 {fixGymText(gym?.name)}
               </h1>
-              <p class="mt-2.5 max-w-2xl text-sm leading-7 text-slate-600 sc-detail-copy">
-                Dati essenziali per capire se {fixGymText(gym?.name)} è una scelta sensata per allenarti{cityLabel ? ` a ${cityLabel}` : ''}: disciplina principale, contatti, orari e riferimenti ufficiali.
-              </p>
             </div>
 
             <p class="text-sm leading-7 text-slate-600 sm:text-[0.98rem] sc-detail-copy">{presentation}</p>
