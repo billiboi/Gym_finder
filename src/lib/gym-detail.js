@@ -468,6 +468,41 @@ const OFFICIAL_GYM_OVERRIDES = {
           'Secondo la pagina ufficiale del club, gli orari di prevendita sono Lun-Ven 10:00-20:00 e Sab 10:00-18:00.'
       }
     ]
+  },
+  'PilActive Saronno': {
+    sourceUrl: 'https://pilactive.com/',
+    website: 'https://pilactive.com/',
+    email: 'info@pilactive.it',
+    presentation:
+      'PilActive Saronno è uno studio Pilates a Saronno che il sito ufficiale presenta come centro dedicato al benessere psico-fisico, con un’offerta focalizzata su movimento consapevole, controllo del corpo e lavoro tecnico su più format.',
+    highlights: [
+      'Il sito ufficiale PilActive descrive il brand come un centro completamente dedicato al benessere psico-fisico: un messaggio utile per chi sta cercando a Saronno una proposta più orientata a postura, controllo e qualità del movimento che a una palestra fitness generica.',
+      'Tra le classi messe in evidenza sul sito ufficiale compaiono Group Reformer, Pilates Matwork, Yoga e Personal Pilates/Posturale. Questo aiuta a capire subito che la scheda non riguarda solo lezioni di Pilates tradizionale, ma un’offerta più articolata.',
+      'La presentazione ufficiale del Reformer insiste su un allenamento completo ed efficace, mentre il Matwork viene descritto come lavoro utile per forza, resistenza muscolare, mobilità articolare e modellamento muscolare: dettagli concreti per chi sta confrontando approcci diversi.',
+      'Il sito ufficiale invita anche a consultare il palinsesto corsi e a contattare direttamente il centro per maggiori informazioni. In pratica, questa pagina è utile per una prima scrematura, ma il passaggio finale resta verificare disponibilità, lezioni e organizzazione direttamente con PilActive.'
+    ],
+    faqItems: [
+      {
+        question: 'Che tipo di centro è PilActive Saronno secondo il sito ufficiale?',
+        answer:
+          'Il sito ufficiale presenta PilActive come un centro completamente dedicato al benessere psico-fisico, con un lavoro basato su Pilates, movimento consapevole e controllo del corpo.'
+      },
+      {
+        question: 'Quali attività vengono messe in evidenza per PilActive Saronno?',
+        answer:
+          'Nel sito ufficiale PilActive vengono messe in evidenza classi Group Reformer, Pilates Matwork, Yoga e percorsi Personal Pilates/Posturale.'
+      },
+      {
+        question: 'Perché PilActive Saronno può essere interessante per chi cerca Pilates a Saronno?',
+        answer:
+          'Perché la proposta ufficiale non si limita al Pilates a corpo libero: include anche Reformer e percorsi più mirati, quindi può essere utile sia a chi cerca lavoro tecnico sia a chi vuole un contesto più orientato a postura e benessere.'
+      },
+      {
+        question: 'Dove trovare informazioni aggiornate su corsi e contatti di PilActive Saronno?',
+        answer:
+          'Il sito ufficiale PilActive invita a consultare il palinsesto corsi e a contattare direttamente il centro. In questa scheda trovi i dati base per una prima verifica, ma per disponibilità e organizzazione conviene usare i canali ufficiali.'
+      }
+    ]
   }
 };
 

@@ -39,18 +39,18 @@
   const address = formatAddressForDisplay(gym);
   const structuredAddress = structuredAddressForGym(gym);
   const isIndexable = isIndexableGym(gym);
-  const phone = fixGymText(gym?.phone) || 'Non disponibile';
-  const website = fixGymText(gym?.website);
-  const hasPhone = phone && phone !== 'Non disponibile';
-  const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
-  const pageUrl = absoluteUrl(`/palestre/${data.gymSlug}`);
-  const seoDescription = `${fixGymText(gym?.name)}: ${primaryDiscipline} a ${address}. ${presentation}`;
-  const claimHref = `/rivendica-scheda?gym=${encodeURIComponent(fixGymText(gym?.name))}&url=${encodeURIComponent(pageUrl)}&reason=${encodeURIComponent('Aggiornamento o rivendicazione scheda')}`;
   const officialSourceUrl = officialOverride?.sourceUrl || '';
   const officialEmail = officialOverride?.email || '';
   const officialPreSaleHours = officialOverride?.preSaleHours || '';
   const officialMonthlyPrice = officialOverride?.monthlyPrice || '';
   const officialSocialLinks = officialOverride?.socialLinks || [];
+  const phone = fixGymText(gym?.phone) || 'Non disponibile';
+  const website = fixGymText(gym?.website) || officialOverride?.website || officialSourceUrl;
+  const hasPhone = phone && phone !== 'Non disponibile';
+  const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+  const pageUrl = absoluteUrl(`/palestre/${data.gymSlug}`);
+  const seoDescription = `${fixGymText(gym?.name)}: ${primaryDiscipline} a ${address}. ${presentation}`;
+  const claimHref = `/rivendica-scheda?gym=${encodeURIComponent(fixGymText(gym?.name))}&url=${encodeURIComponent(pageUrl)}&reason=${encodeURIComponent('Aggiornamento o rivendicazione scheda')}`;
 
   const detailStructuredData = [
       {
