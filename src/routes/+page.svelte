@@ -55,11 +55,11 @@
     if (!text) return '';
 
     const replacements = [
-      ['Ãƒâ‚¬', 'Ã€'], ['ÃƒË†', 'Ãˆ'], ['Ãƒâ€°', 'Ã‰'], ['ÃƒÅ’', 'ÃŒ'], ['Ãƒâ€™', 'Ã’'], ['Ãƒâ„¢', 'Ã™'],
-      ['ÃƒÂ ', 'Ã '], ['ÃƒÂ¨', 'Ã¨'], ['ÃƒÂ©', 'Ã©'], ['ÃƒÂ¬', 'Ã¬'], ['ÃƒÂ²', 'Ã²'], ['ÃƒÂ¹', 'Ã¹'],
-      ['ÃƒÂ¶', 'Ã¶'], ['ÃƒÂ¤', 'Ã¤'], ['ÃƒÅ¸', 'ÃŸ'], ['Ãƒâ€“', 'Ã–'], ['ÃƒÂ¼', 'Ã¼'], ['ÃƒÅ“', 'Ãœ'],
-      ['Ã¢â‚¬â€œ', '-'], ['Ã¢â‚¬â€', '-'], ['Ã¢â‚¬Ëœ', "'"], ['Ã¢â‚¬â„¢', "'"], ['Ã¢â‚¬Å“', '"'], ['Ã¢â‚¬Â', '"'],
-      ['Ã‚', '']
+      ['ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬', 'ÃƒÆ’Ã¢â€šÂ¬'], ['ÃƒÆ’Ã†â€™Ãƒâ€¹Ã¢â‚¬Â ', 'ÃƒÆ’Ã‹â€ '], ['ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â°', 'ÃƒÆ’Ã¢â‚¬Â°'], ['ÃƒÆ’Ã†â€™Ãƒâ€¦Ã¢â‚¬â„¢', 'ÃƒÆ’Ã…â€™'], ['ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢', 'ÃƒÆ’Ã¢â‚¬â„¢'], ['ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢', 'ÃƒÆ’Ã¢â€žÂ¢'],
+      ['ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â ', 'ÃƒÆ’Ã‚Â '], ['ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¨', 'ÃƒÆ’Ã‚Â¨'], ['ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©', 'ÃƒÆ’Ã‚Â©'], ['ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¬', 'ÃƒÆ’Ã‚Â¬'], ['ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â²', 'ÃƒÆ’Ã‚Â²'], ['ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¹', 'ÃƒÆ’Ã‚Â¹'],
+      ['ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¶', 'ÃƒÆ’Ã‚Â¶'], ['ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤', 'ÃƒÆ’Ã‚Â¤'], ['ÃƒÆ’Ã†â€™Ãƒâ€¦Ã‚Â¸', 'ÃƒÆ’Ã…Â¸'], ['ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“', 'ÃƒÆ’Ã¢â‚¬â€œ'], ['ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¼', 'ÃƒÆ’Ã‚Â¼'], ['ÃƒÆ’Ã†â€™Ãƒâ€¦Ã¢â‚¬Å“', 'ÃƒÆ’Ã…â€œ'],
+      ['ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ', '-'], ['ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â', '-'], ['ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¹Ã…â€œ', "'"], ['ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢', "'"], ['ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“', '"'], ['ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â', '"'],
+      ['ÃƒÆ’Ã¢â‚¬Å¡', '']
     ];
 
     for (const [from, to] of replacements) {
@@ -628,7 +628,7 @@
       <div class="max-w-3xl">
         <p class="text-xs font-bold uppercase tracking-[0.24em] text-amber-700">Palestre in Zona</p>
         <h1 class="text-3xl font-bold leading-tight text-slate-900 sm:text-5xl">Trova la palestra giusta, ovunque ti trovi</h1>
-        <p class="mt-3 text-sm text-slate-600 sm:text-base">Una ricerca più rapida, pulita e mobile-first per continuare ad allenarti anche quando sei in viaggio o ti sei appena trasferito.</p>
+        <p class="mt-3 text-sm text-slate-600 sm:text-base">Una ricerca piÃƒÂ¹ rapida, pulita e mobile-first per continuare ad allenarti anche quando sei in viaggio o ti sei appena trasferito.</p>
         <div class="mt-4 flex flex-wrap gap-2">
           <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">Ricerca per vicinanza</span>
           <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">Schede complete dedicate</span>
@@ -659,9 +659,7 @@
   <section class="reveal mt-5 rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sm:p-5 sc-panel sc-filter-panel">
     <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between">
       <div>
-        <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Ricerca guidata</p>
-        <h2 class="mt-1 text-lg font-bold text-slate-900">Affina i risultati</h2>
-        <p class="text-sm text-slate-500">Filtra per zona, disciplina e distanza per restringere il catalogo in modo sensato.</p>
+        <h2 class="text-lg font-bold text-slate-900">Affina i risultati</h2>
       </div>
       <div class="flex flex-wrap gap-2">
         <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">
@@ -766,9 +764,7 @@
     <div class="border-b border-slate-200 px-4 py-4 sm:px-5">
       <div class="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Esplora la zona</p>
-          <h2 class="mt-1 text-lg font-bold text-slate-900">Mappa palestre</h2>
-          <p class="text-sm text-slate-500">Marker ordinati in base ai filtri attivi e alla tua posizione.</p>
+          <h2 class="text-lg font-bold text-slate-900">Mappa palestre</h2>
         </div>
         <div class="rounded-2xl sc-map-chip px-3 py-2 text-xs font-semibold">
           {filteredGyms.length} risultati visibili
@@ -791,9 +787,7 @@
   <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-5">
     <div class="flex flex-wrap items-end justify-between gap-3">
       <div>
-        <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Ricerche popolari</p>
-        <h2 class="mt-1 text-lg font-bold text-slate-900">Esplora per zona</h2>
-        <p class="text-sm text-slate-500">Landing locali pensate per ricerche geografiche più specifiche e facili da condividere.</p>
+        <h2 class="text-lg font-bold text-slate-900">Esplora per zona</h2>
       </div>
     </div>
     <div class="mt-4 grid gap-3 sm:grid-cols-3">
@@ -811,9 +805,7 @@
   <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-5">
     <div class="flex flex-wrap items-end justify-between gap-3">
       <div>
-        <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Ricerche per disciplina</p>
-        <h2 class="mt-1 text-lg font-bold text-slate-900">Esplora per tipologia</h2>
-        <p class="text-sm text-slate-500">Landing dedicate alle discipline più cercate per intercettare ricerche più precise.</p>
+        <h2 class="text-lg font-bold text-slate-900">Esplora per tipologia</h2>
       </div>
     </div>
     <div class="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
@@ -826,7 +818,8 @@
         </a>
       {/each}
     </div>
-  </section>
+  </section>
+
 <section id="elenco-palestre" class="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
     {#if isBootstrapping && filteredGyms.length === 0}
       {#each Array(6) as _, i}
