@@ -59,7 +59,7 @@
         <a href="/" class="sc-header-link rounded-full border border-slate-200 bg-white px-3.5 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
           Home
         </a>
-        <a href="/zone/varese" class="sc-header-link rounded-full border border-slate-200 bg-white px-3.5 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
+        <a href="/zone" class="sc-header-link rounded-full border border-slate-200 bg-white px-3.5 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
           Zone
         </a>
         <a href="/discipline" class="sc-header-link rounded-full border border-slate-200 bg-white px-3.5 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
