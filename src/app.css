@@ -53,6 +53,11 @@ body {
 .sc-header {
   position: relative;
   overflow: hidden;
+  transition:
+    background-color 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease;
 }
 
 .sc-header::after {
@@ -103,10 +108,16 @@ body {
     rgba(255, 255, 255, 0.82) !important;
 }
 
+.sc-header {
+  box-shadow:
+    0 12px 28px rgba(31, 54, 45, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.42);
+}
+
 @media (max-width: 640px) {
   .sc-header {
     border-radius: 1.25rem;
-    padding: 0.85rem !important;
+    padding: 0.8rem !important;
   }
 
   .sc-header::after {

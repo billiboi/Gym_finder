@@ -4,8 +4,9 @@
   const isHome = path === '/';
 </script>
 
-<header class="mx-auto w-full max-w-7xl px-4 pt-3 sm:px-6 sm:pt-4 lg:px-8">
-  <div class="rounded-[1.35rem] border border-white/70 bg-white/85 px-4 py-2.5 shadow-lg backdrop-blur-sm sc-panel sc-header sm:px-5">
+<header class="sticky top-0 z-50">
+  <div class="mx-auto w-full max-w-7xl px-4 pt-2 sm:px-6 sm:pt-3 lg:px-8">
+    <div class="rounded-[1.2rem] border border-white/70 bg-white/85 px-4 py-2 shadow-lg backdrop-blur-md sc-panel sc-header sm:px-5">
     <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
       <a href="/" class="inline-flex max-w-full items-center gap-3">
         <span class="min-w-0">
@@ -30,5 +31,6 @@
         {/if}
       </nav>
     </div>
+  </div>
   </div>
 </header>
