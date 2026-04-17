@@ -7,7 +7,7 @@
   const pageUrl = absoluteUrl('/rivendica-scheda');
   const title = `Rivendica una scheda | ${SITE_NAME}`;
   const description =
-    'Richiedi l’aggiornamento o la rivendicazione di una pagina palestra con un form interno pensato per il progetto.';
+    'Richiedi lâ€™aggiornamento o la rivendicazione di una pagina palestra con un form interno pensato per il progetto.';
 
   $: currentValues = {
     gym_name: form?.values?.gym_name ?? data.prefill.gym ?? '',
@@ -89,9 +89,9 @@
           <p class="mt-2 text-lg font-bold text-slate-900">{data.persistentClaimFlow ? 'Richiesta interna' : 'Fallback via email'}</p>
           <p class="mt-3 text-sm leading-7 text-slate-600">
             {#if data.persistentClaimFlow}
-              La richiesta puÃƒÂ² essere salvata direttamente dal sito.
+              La richiesta può essere salvata direttamente dal sito.
             {:else}
-              In questo ambiente il salvataggio diretto non ÃƒÂ¨ disponibile, ma puoi comunque usare la mail precompilata.
+              In questo ambiente il salvataggio diretto non è disponibile, ma puoi comunque usare la mail precompilata.
             {/if}
           </p>
         </div>
