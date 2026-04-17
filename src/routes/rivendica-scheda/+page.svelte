@@ -89,9 +89,9 @@
           <p class="mt-2 text-lg font-bold text-slate-900">{data.persistentClaimFlow ? 'Richiesta interna' : 'Fallback via email'}</p>
           <p class="mt-3 text-sm leading-7 text-slate-600">
             {#if data.persistentClaimFlow}
-              La richiesta può essere salvata direttamente dal sito.
+              La richiesta puÃƒÂ² essere salvata direttamente dal sito.
             {:else}
-              In questo ambiente il salvataggio diretto non è disponibile, ma puoi comunque usare la mail precompilata.
+              In questo ambiente il salvataggio diretto non ÃƒÂ¨ disponibile, ma puoi comunque usare la mail precompilata.
             {/if}
           </p>
         </div>
