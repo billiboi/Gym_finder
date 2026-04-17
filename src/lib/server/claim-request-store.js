@@ -7,12 +7,7 @@ const claimRequestsFilePath = path.join(dataDir, 'claim-requests.json');
 const isReadOnlyRuntime = process.env.VERCEL === '1' || process.env.NODE_ENV === 'production';
 
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL || '';
-const SUPABASE_KEY =
-  process.env.SUPABASE_SERVICE_ROLE_KEY ||
-  process.env.SUPABASE_KEY ||
-  process.env.SUPABASE_ANON_KEY ||
-  process.env.PUBLIC_SUPABASE_ANON_KEY ||
-  '';
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY || '';
 const SUPABASE_CLAIMS_TABLE = process.env.SUPABASE_CLAIMS_TABLE || 'claim_requests';
 const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
 const CLAIM_NOTIFICATION_TO =
@@ -90,6 +85,12 @@ async function writeClaimRequestToSupabase(request) {
       );
     }
 
+    if (response.status === 401 || response.status === 403) {
+      throw new Error(
+        `Claim flow non autorizzato su Supabase: configura SUPABASE_SERVICE_ROLE_KEY lato server e verifica che la tabella "${SUPABASE_CLAIMS_TABLE}" non sia esposta pubblicamente. ${details}`.trim()
+      );
+    }
+
     throw new Error(`Salvataggio richiesta fallito (${response.status}). ${details}`.trim());
   }
 
@@ -127,6 +128,12 @@ async function updateClaimRequestInSupabase(id, patch) {
       details = String(payload?.message || payload?.hint || '').trim();
     } catch {
       details = '';
+    }
+
+    if (response.status === 401 || response.status === 403) {
+      throw new Error(
+        `Aggiornamento richiesta non autorizzato su Supabase: verifica SUPABASE_SERVICE_ROLE_KEY e le policy RLS di "${SUPABASE_CLAIMS_TABLE}". ${details}`.trim()
+      );
     }
 
     throw new Error(`Aggiornamento richiesta fallito (${response.status}). ${details}`.trim());
@@ -211,6 +218,12 @@ async function readClaimRequestsFromSupabase() {
       details = String(payload?.message || payload?.hint || '').trim();
     } catch {
       details = '';
+    }
+
+    if (response.status === 401 || response.status === 403) {
+      throw new Error(
+        `Lettura richieste non autorizzata su Supabase: verifica SUPABASE_SERVICE_ROLE_KEY e le policy RLS di "${SUPABASE_CLAIMS_TABLE}". ${details}`.trim()
+      );
     }
 
     throw new Error(`Lettura richieste fallita (${response.status}). ${details}`.trim());
