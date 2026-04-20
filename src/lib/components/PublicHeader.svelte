@@ -1,7 +1,8 @@
 <script>
-  export let path = '/';
+  import { page } from '$app/stores';
 
-  const isHome = path === '/';
+  $: path = $page.url.pathname;
+  $: isHome = path === '/';
 
   const pageLabels = [
     ['/zone', 'Zone'],

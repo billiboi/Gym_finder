@@ -41,7 +41,7 @@
 </svelte:head>
 
 {#if !isAdminRoute}
-  <PublicHeader path={pathname} />
+  <PublicHeader />
 {/if}
 
 <slot />
