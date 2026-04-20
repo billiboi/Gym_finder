@@ -2,6 +2,21 @@
   export let path = '/';
 
   const isHome = path === '/';
+
+  function isActive(target) {
+    if (target === '/') return path === '/';
+    return path === target || path.startsWith(`${target}/`);
+  }
+
+  function navClass(target) {
+    const active = isActive(target);
+    return [
+      'sc-header-link rounded-full px-3.5 py-2 text-sm font-semibold transition',
+      active
+        ? 'border border-emerald-700 bg-emerald-700 text-white shadow-sm'
+        : 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-100'
+    ].join(' ');
+  }
 </script>
 
 <header class="sticky top-0 z-50">
@@ -15,13 +30,13 @@
       </a>
 
       <nav class="sc-header-nav flex gap-2 overflow-x-auto sm:flex-wrap sm:overflow-visible md:justify-end" aria-label="Navigazione pubblica">
-        <a href="/" class="sc-header-link rounded-full border border-slate-200 bg-white px-3.5 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
+        <a href="/" class={navClass('/') } aria-current={isActive('/') ? 'page' : undefined}>
           Home
         </a>
-        <a href="/zone" class="sc-header-link rounded-full border border-slate-200 bg-white px-3.5 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
+        <a href="/zone" class={navClass('/zone')} aria-current={isActive('/zone') ? 'page' : undefined}>
           Zone
         </a>
-        <a href="/discipline" class="sc-header-link rounded-full border border-slate-200 bg-white px-3.5 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
+        <a href="/discipline" class={navClass('/discipline')} aria-current={isActive('/discipline') ? 'page' : undefined}>
           Discipline
         </a>
         {#if !isHome}
