@@ -24,6 +24,10 @@
     return match ? match[1] : 'Pagina corrente';
   }
 
+  function shouldShowCurrentPagePill() {
+    return !['Home', 'Zone', 'Discipline'].includes(currentPageLabel());
+  }
+
   function navClass(target) {
     const active = isActive(target);
     return [
@@ -58,6 +62,11 @@
         <a href="/discipline" class={navClass('/discipline')} aria-current={isActive('/discipline') ? 'page' : undefined}>
           Discipline
         </a>
+        {#if shouldShowCurrentPagePill()}
+          <span class="sc-header-link rounded-full border border-emerald-700 bg-emerald-700 px-3.5 py-2 text-sm font-semibold text-white shadow-sm" aria-current="page">
+            {currentPageLabel()}
+          </span>
+        {/if}
         {#if !isHome}
           <a href="/" class="sc-header-link rounded-full border border-slate-200 bg-white px-3.5 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
             Torna all'elenco
