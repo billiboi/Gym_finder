@@ -1,4 +1,4 @@
-﻿<script>
+<script>
   import { absoluteUrl, SITE_NAME, jsonLdScript } from '$lib/site';
 
   export let data;

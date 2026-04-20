@@ -1,4 +1,4 @@
-﻿<script>
+<script>
   import { disciplinePreviewForGym, gymHref, imageForGym } from '$lib/gym-detail';
   import { absoluteUrl, SITE_NAME, jsonLdScript } from '$lib/site';
 

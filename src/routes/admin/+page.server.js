@@ -1,4 +1,4 @@
-﻿import { readGyms } from '$lib/server/gym-store';
+import { readGyms } from '$lib/server/gym-store';
 
 async function getGymsWithFallback(fetchFn) {
   const gyms = await readGyms();

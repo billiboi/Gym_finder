@@ -1,4 +1,4 @@
-﻿[
+[
     {
         "id":  "csv-1",
         "name":  "101 running - servizi per lo sport",
@@ -362,7 +362,7 @@
     },
     {
         "id":  "csv-20",
-        "name":  "Ã©Sport Caronno Pertusella",
+        "name":  "Sport Caronno Pertusella",
         "discipline":  "Fitness",
         "disciplines":  [
                             "Fitness"
@@ -743,7 +743,7 @@
     },
     {
         "id":  "csv-40",
-        "name":  "AliZÃ©Studio di Vera Viligiardi - Fitness with Vera",
+        "name":  "AliZStudio di Vera Viligiardi - Fitness with Vera",
         "discipline":  "Fitness",
         "disciplines":  [
                             "Fitness"
@@ -762,7 +762,7 @@
     },
     {
         "id":  "csv-41",
-        "name":  "Alma BotÃ¡nica- Holistic Studio Massage",
+        "name":  "Alma Botnica- Holistic Studio Massage",
         "discipline":  "Fitness",
         "disciplines":  [
                             "Fitness"
@@ -1845,7 +1845,7 @@
     },
     {
         "id":  "csv-98",
-        "name":  "BUSHI NO TE, Arti marziali, Karate-Do, Kenjutsu, Kobudo, Antiaggressione femminile, MÂ° T. GÃ¼ney",
+        "name":  "BUSHI NO TE, Arti marziali, Karate-Do, Kenjutsu, Kobudo, Antiaggressione femminile, M T. Gney",
         "discipline":  "Karate",
         "disciplines":  [
                             "Karate"
@@ -1940,7 +1940,7 @@
     },
     {
         "id":  "csv-103",
-        "name":  "Centro Ã‰lite Fitness",
+        "name":  "Centro 0lite Fitness",
         "discipline":  "Fitness",
         "disciplines":  [
                             "Fitness"
@@ -1959,7 +1959,7 @@
     },
     {
         "id":  "csv-104",
-        "name":  "Centro Ã‰lite Fitness Varese",
+        "name":  "Centro 0lite Fitness Varese",
         "discipline":  "Fitness",
         "disciplines":  [
                             "Fitness"
@@ -2002,7 +2002,7 @@
         "disciplines":  [
                             "Judo"
                         ],
-        "address":  "Centro Arti Marziali Judo DO YU KAI, Via Carlo Cattaneo, Pedrinate, Chiasso, Circolo di Balerna, Distretto di Mendrisio, Ticino, 6832, Schweiz/Suisse/Svizzera/Svizra",
+        "address":  "Centro Arti Marziali Judo DO YU KAI, Via Carlo Cattaneo, Pedrinate, Chiasso, Circolo di Balerna, Distretto di Mendrisio, Ticino, 6832, Svizzera",
         "city":  "",
         "phone":  "",
         "hours_info":  "Orari da verificare",
@@ -2130,7 +2130,7 @@
     },
     {
         "id":  "csv-113",
-        "name":  "Centro GioventÃ¹ e Sport Bellinzona",
+        "name":  "Centro Giovent e Sport Bellinzona",
         "discipline":  "Fitness",
         "disciplines":  [
                             "Fitness"
@@ -4619,7 +4619,7 @@
     },
     {
         "id":  "csv-246",
-        "name":  "GiÃ¹SeVuoi",
+        "name":  "GiSeVuoi",
         "discipline":  "Fitness",
         "disciplines":  [
                             "Fitness"
@@ -5461,7 +5461,7 @@
         "disciplines":  [
                             "Pilates"
                         ],
-        "address":  "Piazza del PodestÃ  , 1, 21100 Varese VA, Italia",
+        "address":  "Piazza del Podest , 1, 21100 Varese VA, Italia",
         "city":  "",
         "phone":  "",
         "hours_info":  "Lun 09-19 | Mar 09-19 | Mer 09-19 | Gio 09-19 | Ven 09-19 | Sab 09-19 | Dom chiuso",
@@ -5665,7 +5665,7 @@
     },
     {
         "id":  "csv-301",
-        "name":  "Jita KyÃ…Âei - judo Gallarate",
+        "name":  "Jita Ky&ei - judo Gallarate",
         "discipline":  "Judo",
         "disciplines":  [
                             "Judo"
@@ -5817,7 +5817,7 @@
     },
     {
         "id":  "csv-309",
-        "name":  "kÃ¶rperformen Locarno",
+        "name":  "krperformen Locarno",
         "discipline":  "Fitness",
         "disciplines":  [
                             "Fitness"
@@ -5936,7 +5936,7 @@
         "disciplines":  [
                             "Fitness"
                         ],
-        "address":  "Via BertÃ¨ 1, 6533 Lumino, Svizzera",
+        "address":  "Via Bert 1, 6533 Lumino, Svizzera",
         "city":  "",
         "phone":  "+41 76 588 50 81",
         "hours_info":  "Lun 09-18 | Mar 09-18 | Mer 09-18 | Gio 09-18 | Ven 09-18 | Sab chiuso | Dom chiuso",
@@ -6142,7 +6142,7 @@
     },
     {
         "id":  "csv-326",
-        "name":  "Krav Maga Kick Boxing Boxe MMA Savate Boxe de Rue Ju Jitsu Judo Fit Boxe PsicomotrictÃ  sportiva Fitness kidsSaronno- Milano",
+        "name":  "Krav Maga Kick Boxing Boxe MMA Savate Boxe de Rue Ju Jitsu Judo Fit Boxe Psicomotrict sportiva Fitness kidsSaronno- Milano",
         "discipline":  "MMA",
         "disciplines":  [
                             "MMA",
@@ -6208,7 +6208,7 @@
                             "Tai Chi",
                             "Kung Fu"
                         ],
-        "address":  "Via Vicinale LongÃ¹, 10, 21052 Busto Arsizio VA, Italia",
+        "address":  "Via Vicinale Long, 10, 21052 Busto Arsizio VA, Italia",
         "city":  "",
         "phone":  "+39 339 396 3520",
         "hours_info":  "Lun chiuso | Mar 19:30-21:30 | Mer chiuso | Gio 20:30-21:30 | Ven chiuso | Sab chiuso | Dom chiuso",
@@ -6431,7 +6431,7 @@
     },
     {
         "id":  "csv-341",
-        "name":  "Le TonÃ¬c Club",
+        "name":  "Le Tonc Club",
         "discipline":  "Fitness",
         "disciplines":  [
                             "Fitness"
@@ -7191,7 +7191,7 @@
     },
     {
         "id":  "csv-381",
-        "name":  "MomÃ² Boxing Club",
+        "name":  "Mom Boxing Club",
         "discipline":  "Boxe",
         "disciplines":  [
                             "Boxe"
@@ -7381,7 +7381,7 @@
     },
     {
         "id":  "csv-391",
-        "name":  "My Workout con la Manu - di Manuela ClericÃ²",
+        "name":  "My Workout con la Manu - di Manuela Cleric",
         "discipline":  "Fitness",
         "disciplines":  [
                             "Fitness"
@@ -8008,7 +8008,7 @@
     },
     {
         "id":  "csv-424",
-        "name":  "Osteofit Center A.s.d Ã¢â‚¬Â¢ Palestra Busto Arsizio",
+        "name":  "Osteofit Center A.s.d  Palestra Busto Arsizio",
         "discipline":  "Fitness",
         "disciplines":  [
                             "Fitness"
@@ -8602,7 +8602,7 @@
         "disciplines":  [
                             "Fitness"
                         ],
-        "address":  "Via GiosuÃ¨ Carducci, 1, 21049 Tradate VA, Italia",
+        "address":  "Via Giosu Carducci, 1, 21049 Tradate VA, Italia",
         "city":  "",
         "phone":  "",
         "hours_info":  "Lun 00:00-24:00 | Mar 00:00-24:00 | Mer 00:00-24:00 | Gio 00:00-24:00 | Ven 00:00-24:00 | Sab 00:00-24:00 | Dom 00:00-24:00",
@@ -8925,7 +8925,7 @@
         "disciplines":  [
                             "Pilates"
                         ],
-        "address":  "Via Monte BrÃ© 10, 6900 Lugano, Svizzera",
+        "address":  "Via Monte Br 10, 6900 Lugano, Svizzera",
         "city":  "",
         "phone":  "+41 76 539 69 00",
         "hours_info":  "Lun 09-21 | Mar 12-21 | Mer 09-21 | Gio 09-21 | Ven 12-17 | Sab 10-12 | Dom chiuso",
@@ -9243,7 +9243,7 @@
     },
     {
         "id":  "csv-489",
-        "name":  "Piscina Il Seme SocietÃ  Cooperativa Sociale",
+        "name":  "Piscina Il Seme Societ Cooperativa Sociale",
         "discipline":  "Nuoto",
         "disciplines":  [
                             "Nuoto"
@@ -10270,7 +10270,7 @@
     },
     {
         "id":  "csv-543",
-        "name":  "SocietÃ  Canottieri Varese A.S.D",
+        "name":  "Societ Canottieri Varese A.S.D",
         "discipline":  "Fitness",
         "disciplines":  [
                             "Fitness"
@@ -10289,7 +10289,7 @@
     },
     {
         "id":  "csv-544",
-        "name":  "SocietÃ  Federale di Ginnastica Chiasso",
+        "name":  "Societ Federale di Ginnastica Chiasso",
         "discipline":  "Fitness",
         "disciplines":  [
                             "Fitness"
@@ -10422,7 +10422,7 @@
     },
     {
         "id":  "csv-551",
-        "name":  "Spazio 360Â°",
+        "name":  "Spazio 360",
         "discipline":  "Fitness",
         "disciplines":  [
                             "Fitness"
@@ -10479,7 +10479,7 @@
     },
     {
         "id":  "csv-554",
-        "name":  "Spazio EsychÃ¬a - Anna Arturi",
+        "name":  "Spazio Esycha - Anna Arturi",
         "discipline":  "Yoga",
         "disciplines":  [
                             "Yoga"
@@ -10574,7 +10574,7 @@
     },
     {
         "id":  "csv-559",
-        "name":  "Sport CafÃ© Locarno",
+        "name":  "Sport Caf Locarno",
         "discipline":  "Fitness",
         "disciplines":  [
                             "Fitness"
@@ -10841,7 +10841,7 @@
     },
     {
         "id":  "csv-573",
-        "name":  "Studio Benessere Arti Marziali - MÂº Roberto Pavesi",
+        "name":  "Studio Benessere Arti Marziali - M Roberto Pavesi",
         "discipline":  "MMA",
         "disciplines":  [
                             "MMA"
@@ -11202,7 +11202,7 @@
     },
     {
         "id":  "csv-592",
-        "name":  "StudioÃ¢â‚¬Â¢104 Fitness al Femminile",
+        "name":  "Studio104 Fitness al Femminile",
         "discipline":  "Fitness",
         "disciplines":  [
                             "Fitness"
@@ -11664,7 +11664,7 @@
         "disciplines":  [
                             "Fitness"
                         ],
-        "address":  "In di BÃ¼gÃ©i 13, 6950 Tesserete, Svizzera",
+        "address":  "In di Bgi 13, 6950 Tesserete, Svizzera",
         "city":  "",
         "phone":  "+41 76 280 12 22",
         "hours_info":  "Lun 08-22 | Mar 08-22 | Mer 08-22 | Gio 08-22 | Ven 08-22 | Sab 08-22 | Dom 08-22",
@@ -11697,7 +11697,7 @@
     },
     {
         "id":  "csv-618",
-        "name":  "TigotÃ ",
+        "name":  "Tigot",
         "discipline":  "Fitness",
         "disciplines":  [
                             "Fitness"
@@ -11868,7 +11868,7 @@
     },
     {
         "id":  "csv-627",
-        "name":  "UniversitÃ  degli Studi dell\u0027Insubria - PalaInsubria",
+        "name":  "Universit degli Studi dell\u0027Insubria - PalaInsubria",
         "discipline":  "Fitness",
         "disciplines":  [
                             "Fitness"
@@ -12063,7 +12063,7 @@
         "disciplines":  [
                             "Fitness"
                         ],
-        "address":  "Via GiosuÃ¨ Carducci, 32, 21049 Tradate VA, Italia",
+        "address":  "Via Giosu Carducci, 32, 21049 Tradate VA, Italia",
         "city":  "",
         "phone":  "+39 338 757 3851",
         "hours_info":  "Lun chiuso | Mar chiuso | Mer chiuso | Gio 21-23 | Ven chiuso | Sab chiuso | Dom chiuso",
@@ -12324,7 +12324,7 @@
     },
     {
         "id":  "csv-651",
-        "name":  "Wing Chun XuÃ© XiÃ  o",
+        "name":  "Wing Chun Xu Xi o",
         "discipline":  "Wing Chun",
         "disciplines":  [
                             "Wing Chun",
@@ -12992,3 +12992,4 @@
                          }
     }
 ]
+
