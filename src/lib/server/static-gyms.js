@@ -1,4 +1,5 @@
-﻿import { PALESTRE_CSV } from './palestre-data.js';
+import { PALESTRE_CSV } from './palestre-data.js';
+import { repairMojibake } from '$lib/text-repair';
 
 function splitCsvLine(line, delimiter = ',') {
   const out = [];
@@ -33,7 +34,7 @@ function splitCsvLine(line, delimiter = ',') {
 }
 
 function parseAddress(fullAddress) {
-  const raw = String(fullAddress || '').trim();
+  const raw = repairMojibake(fullAddress).trim();
   if (!raw) return { address: '', city: '' };
 
   const parts = raw.split(',').map((p) => p.trim()).filter(Boolean);
@@ -48,7 +49,7 @@ function parseAddress(fullAddress) {
 }
 
 function disciplinesFromField(value) {
-  return String(value || '')
+  return repairMojibake(value)
     .split('|')
     .map((d) => d.trim())
     .filter(Boolean);
@@ -112,7 +113,7 @@ export function readStaticGyms() {
     const cols = splitCsvLine(lines[i], delimiter);
     const read = (columnIndex) => (columnIndex >= 0 ? cols[columnIndex] ?? '' : '');
 
-    const name = String(read(idx.name)).trim();
+    const name = repairMojibake(read(idx.name)).trim();
     if (!name) continue;
 
     const disciplineList = disciplinesFromField(read(idx.disciplines));
@@ -125,8 +126,8 @@ export function readStaticGyms() {
       discipline: disciplineList[0] || 'Fitness',
       address,
       city,
-      phone: String(read(idx.phone) || '').trim(),
-      hours_info: String(read(idx.hours) || '').trim() || 'Orari da verificare',
+      phone: repairMojibake(read(idx.phone)).trim(),
+      hours_info: repairMojibake(read(idx.hours)).trim() || 'Orari da verificare',
       website: String(read(idx.website) || '').trim(),
       latitude: toNumberOrNull(read(idx.lat)),
       longitude: toNumberOrNull(read(idx.long)),

@@ -1,5 +1,6 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { repairMojibake } from '$lib/text-repair';
 
 const dataDir = path.join(process.cwd(), 'data');
 const staticDir = path.join(process.cwd(), 'static');
@@ -120,7 +121,7 @@ function csvEscape(value) {
 }
 
 function normalizeToken(value) {
-  return String(value || '')
+  return repairMojibake(value)
     .trim()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
@@ -148,7 +149,7 @@ const COUNTRY_LABELS = new Set([
 const EXCLUDED_LOCATION_TOKENS = new Set(['rostock']);
 
 function isCountryLabel(value) {
-  const raw = String(value || '').trim();
+  const raw = repairMojibake(value).trim();
   if (!raw) return false;
 
   const chunks = raw
@@ -160,7 +161,7 @@ function isCountryLabel(value) {
 }
 
 function cleanCityLabel(value) {
-  let city = String(value || '').trim().replace(/\s+/g, ' ');
+  let city = repairMojibake(value).trim().replace(/\s+/g, ' ');
   if (!city) return '';
 
   city = city.replace(/^\d{4,5}\s+/, '').trim();
@@ -185,7 +186,7 @@ function isExcludedGymRecord(gym) {
 }
 
 function parseAddress(fullAddress) {
-  const raw = String(fullAddress || '').trim();
+  const raw = repairMojibake(fullAddress).trim();
   if (!raw) return { address: '', city: '' };
 
   const parts = raw.split(',').map((p) => p.trim()).filter(Boolean);
@@ -206,8 +207,8 @@ function parseAddress(fullAddress) {
 }
 
 function normalizeAddressAndCity(addressValue, cityValue) {
-  const address = String(addressValue || '').trim();
-  const city = String(cityValue || '').trim();
+  const address = repairMojibake(addressValue).trim();
+  const city = repairMojibake(cityValue).trim();
   const combined = [address, city].filter(Boolean).join(', ');
 
   if (combined) {
@@ -222,7 +223,7 @@ function normalizeAddressAndCity(addressValue, cityValue) {
 }
 
 function disciplinesFromField(value) {
-  return String(value || '')
+  return repairMojibake(value)
     .split('|')
     .map((d) => d.trim())
     .filter(Boolean);
@@ -239,14 +240,14 @@ function toNumberOrNull(value) {
 
 function toBoolean(value) {
   if (typeof value === 'boolean') return value;
-  const raw = String(value ?? '').trim().toLowerCase();
-  return ['1', 'true', 'si', 'sì', 'yes'].includes(raw);
+  const raw = repairMojibake(value).trim().toLowerCase();
+  return ['1', 'true', 'si', 's\u00EC', 'yes'].includes(raw);
 }
 
 function normalizeGymRecord(gym, fallbackId) {
   const { address, city } = normalizeAddressAndCity(gym?.address, gym?.city);
   const disciplines = Array.isArray(gym?.disciplines)
-    ? gym.disciplines.map((d) => String(d).trim()).filter(Boolean)
+    ? gym.disciplines.map((d) => repairMojibake(d).trim()).filter(Boolean)
     : disciplinesFromField(gym?.discipline);
   const weeklyHours =
     gym?.weekly_hours && typeof gym.weekly_hours === 'object' && !Array.isArray(gym.weekly_hours)
@@ -256,15 +257,15 @@ function normalizeGymRecord(gym, fallbackId) {
 
   return {
     id: String(gym?.id || fallbackId),
-    name: String(gym?.name || '').trim(),
+    name: repairMojibake(gym?.name).trim(),
     disciplines,
-    discipline: String(gym?.discipline || primaryDiscipline(disciplines)).trim() || 'Fitness',
+    discipline: repairMojibake(gym?.discipline || primaryDiscipline(disciplines)).trim() || 'Fitness',
     address,
     city,
-    phone: String(gym?.phone || '').trim(),
-    hours_info: String(gym?.hours_info || '').trim() || 'Orari da verificare',
+    phone: repairMojibake(gym?.phone).trim(),
+    hours_info: repairMojibake(gym?.hours_info).trim() || 'Orari da verificare',
     website: String(gym?.website || '').trim(),
-    description: String(gym?.description || gym?.presentazione || '').trim(),
+    description: repairMojibake(gym?.description || gym?.presentazione).trim(),
     verified,
     latitude: gym?.latitude === null || gym?.latitude === undefined ? null : toNumberOrNull(gym.latitude),
     longitude: gym?.longitude === null || gym?.longitude === undefined ? null : toNumberOrNull(gym.longitude),
