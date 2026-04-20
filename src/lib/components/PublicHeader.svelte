@@ -3,9 +3,25 @@
 
   const isHome = path === '/';
 
+  const pageLabels = [
+    ['/zone', 'Zone'],
+    ['/discipline', 'Discipline'],
+    ['/palestre', 'Palestra'],
+    ['/contatti', 'Contatti'],
+    ['/privacy', 'Privacy'],
+    ['/per-le-palestre', 'Per le palestre'],
+    ['/rivendica-scheda', 'Rivendica scheda']
+  ];
+
   function isActive(target) {
     if (target === '/') return path === '/';
     return path === target || path.startsWith(`${target}/`);
+  }
+
+  function currentPageLabel() {
+    if (path === '/') return 'Home';
+    const match = pageLabels.find(([prefix]) => path === prefix || path.startsWith(`${prefix}/`));
+    return match ? match[1] : 'Pagina corrente';
   }
 
   function navClass(target) {
@@ -26,6 +42,9 @@
       <a href="/" class="inline-flex max-w-full items-center gap-3">
         <span class="min-w-0">
           <span class="block text-[10px] font-bold uppercase tracking-[0.28em] text-amber-700 sm:text-xs">Palestre in Zona</span>
+          <span class="mt-1 inline-flex rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-800">
+            {currentPageLabel()}
+          </span>
         </span>
       </a>
 
@@ -40,7 +59,7 @@
           Discipline
         </a>
         {#if !isHome}
-          <a href="/" class="sc-header-link rounded-full bg-slate-900 px-3.5 py-2 text-sm font-semibold text-white transition hover:bg-slate-800 sc-button">
+          <a href="/" class="sc-header-link rounded-full border border-slate-200 bg-white px-3.5 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
             Torna all'elenco
           </a>
         {/if}
