@@ -46,7 +46,7 @@
       <p class="text-xs font-bold uppercase tracking-[0.24em] text-amber-700">Hub discipline</p>
       <h1 class="mt-2 text-3xl font-bold text-slate-900 sm:text-5xl">Sfoglia tutte le discipline</h1>
       <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-600 sm:text-base">
-        Qui trovi l'accesso a tutte le discipline presenti nel catalogo pubblico, cos non vieni
+        Qui trovi l'accesso a tutte le discipline presenti nel catalogo pubblico, cos&igrave; non vieni
         reindirizzato su una pagina arbitraria e puoi scegliere direttamente l'area che ti interessa.
       </p>
       <div class="mt-5 flex flex-wrap gap-2">
@@ -61,7 +61,7 @@
         <h2 class="mt-1 text-2xl font-bold text-slate-900">Landing disciplina gi curate</h2>
         <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
           Qui trovi le discipline che hanno gi una landing dedicata e pi strutturata. Sono i punti migliori da cui
-          partire se vuoi esplorare palestre con una selezione pi ordinata e una pagina pi forte anche lato SEO.
+          partire se vuoi esplorare palestre con una selezione pi&ugrave; ordinata e una pagina pi&ugrave; forte anche lato SEO.
         </p>
       </div>
 
@@ -83,7 +83,7 @@
           <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Catalogo completo</p>
           <h2 class="mt-1 text-2xl font-bold text-slate-900">Altre discipline presenti nel catalogo</h2>
           <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
-            Queste discipline compaiono gi nelle schede pubbliche e ci aiutano a dare una navigazione pi sensata
+            Queste discipline compaiono gi&agrave; nelle schede pubbliche e ci aiutano a dare una navigazione pi&ugrave; sensata
             dallheader. Possiamo poi decidere quali trasformare in vere landing prioritarie.
           </p>
         </div>
