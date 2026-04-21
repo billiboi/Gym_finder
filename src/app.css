@@ -40,7 +40,7 @@ body {
     linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
   background-size: 60px 60px;
   pointer-events: none;
-  opacity: 0.4;
+  opacity: 0.22;
   z-index: 0;
 }
 
@@ -298,8 +298,8 @@ body {
 
 .sc-detail-actions {
   background:
-    linear-gradient(135deg, rgba(31, 92, 74, 0.08), rgba(214, 207, 176, 0.12)),
-    rgba(255, 255, 255, 0.82) !important;
+    linear-gradient(135deg, rgba(31, 92, 74, 0.06), rgba(214, 207, 176, 0.1)),
+    rgba(255, 255, 255, 0.84) !important;
 }
 
 .sc-detail-section-title {
@@ -700,6 +700,20 @@ body {
   .sc-button-ghost,
   .sc-button-muted {
     width: auto;
+  }
+}
+
+@media (min-width: 1024px) {
+  .sc-detail-title {
+    font-size: 3.15rem;
+  }
+
+  .sc-detail-copy {
+    max-width: 62ch;
+  }
+
+  .sc-contact-card .sc-detail-copy {
+    max-width: none;
   }
 }
 

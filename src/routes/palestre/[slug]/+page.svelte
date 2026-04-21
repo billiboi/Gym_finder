@@ -41,7 +41,6 @@
   const isIndexable = isIndexableGym(gym);
   const officialSourceUrl = officialOverride?.sourceUrl || '';
   const officialEmail = officialOverride?.email || '';
-  const officialPreSaleHours = officialOverride?.preSaleHours || '';
   const officialMonthlyPrice = officialOverride?.monthlyPrice || '';
   const officialSocialLinks = officialOverride?.socialLinks || [];
   const officialInfoCards = officialOverride?.infoCards || [];
@@ -70,57 +69,57 @@
   const claimHref = `/rivendica-scheda?gym=${encodeURIComponent(fixGymText(gym?.name))}&url=${encodeURIComponent(pageUrl)}&reason=${encodeURIComponent('Aggiornamento o rivendicazione scheda')}`;
 
   const detailStructuredData = [
-      {
-        '@context': 'https://schema.org',
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          {
-            '@type': 'ListItem',
-            position: 1,
-            name: SITE_NAME,
-            item: absoluteUrl('/')
-          },
-          {
-            '@type': 'ListItem',
-            position: 2,
-            name: fixGymText(gym?.name),
-            item: pageUrl
-          }
-        ]
-      },
-      {
-        '@context': 'https://schema.org',
-        '@type': 'SportsActivityLocation',
-        name: fixGymText(gym?.name),
-        description: presentation,
-        url: pageUrl,
-        image: imageSrc.startsWith('http') ? imageSrc : absoluteUrl(imageSrc),
-        telephone: hasPhone ? phone : undefined,
-        sameAs: website || undefined,
-        sport: disciplines,
-        address: structuredAddress,
-        geo:
-          gym?.latitude !== null && gym?.latitude !== undefined && gym?.longitude !== null && gym?.longitude !== undefined
-            ? {
-                '@type': 'GeoCoordinates',
-                latitude: gym.latitude,
-                longitude: gym.longitude
-              }
-            : undefined
-      },
-      {
-        '@context': 'https://schema.org',
-        '@type': 'FAQPage',
-        mainEntity: faqItems.map((item) => ({
-          '@type': 'Question',
-          name: item.question,
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: item.answer
-          }
-        }))
-      }
-    ];
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: SITE_NAME,
+          item: absoluteUrl('/')
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: fixGymText(gym?.name),
+          item: pageUrl
+        }
+      ]
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'SportsActivityLocation',
+      name: fixGymText(gym?.name),
+      description: presentation,
+      url: pageUrl,
+      image: imageSrc.startsWith('http') ? imageSrc : absoluteUrl(imageSrc),
+      telephone: hasPhone ? phone : undefined,
+      sameAs: website || undefined,
+      sport: disciplines,
+      address: structuredAddress,
+      geo:
+        gym?.latitude !== null && gym?.latitude !== undefined && gym?.longitude !== null && gym?.longitude !== undefined
+          ? {
+              '@type': 'GeoCoordinates',
+              latitude: gym.latitude,
+              longitude: gym.longitude
+            }
+          : undefined
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqItems.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.answer
+        }
+      }))
+    }
+  ];
   const detailStructuredDataScript = jsonLdScript(detailStructuredData);
 
   function handleImageError(event) {
@@ -170,18 +169,18 @@
     </nav>
 
     <section class="overflow-hidden rounded-3xl border border-white/70 bg-white/80 shadow-xl backdrop-blur-sm sc-panel">
-      <div class="grid gap-0 lg:grid-cols-[1fr_1fr]">
-        <div class="relative min-h-[280px] bg-slate-100 lg:min-h-[500px]">
+      <div class="grid gap-0 lg:grid-cols-[minmax(0,1.08fr)_minmax(340px,0.92fr)]">
+        <div class="relative min-h-[260px] bg-slate-100 lg:min-h-[430px]">
           <img
             src={imageSrc}
             alt={`Foto di ${fixGymText(gym?.name)}`}
-            class="h-full min-h-[280px] w-full object-cover"
+            class="h-full min-h-[260px] w-full object-cover"
             on:error={handleImageError}
           />
         </div>
 
-        <div class="flex flex-col gap-3 p-4 sm:p-4.5">
-          <div class="space-y-2.5">
+        <div class="flex flex-col gap-3 p-4 lg:justify-between">
+          <div class="space-y-3">
             <div class="flex flex-wrap gap-2">
               {#each disciplines as discipline}
                 <span class="rounded-full bg-slate-900 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-white sc-badge sc-badge--accent">
@@ -190,25 +189,36 @@
               {/each}
             </div>
 
-            <div class="rounded-3xl sc-detail-hero p-3.5 sm:p-4">
-              <h1 class="text-4xl font-bold leading-none text-slate-900 sm:text-[3.4rem] sc-detail-title">
+            <div class="rounded-3xl sc-detail-hero p-4 lg:p-5">
+              <h1 class="text-4xl font-bold leading-none text-slate-900 sm:text-[3.3rem] sc-detail-title">
                 {fixGymText(gym?.name)}
               </h1>
             </div>
 
-            <p class="text-sm leading-7 text-slate-600 sm:text-[0.98rem] sc-detail-copy">{presentation}</p>
+            <div class="grid gap-2 sm:grid-cols-2">
+              <div class="rounded-2xl border border-slate-200 bg-white/92 p-3 sc-detail-meta">
+                <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Disciplina</p>
+                <p class="mt-2 text-sm font-semibold text-slate-900 sc-detail-value">{primaryDiscipline}</p>
+              </div>
+              <div class="rounded-2xl border border-slate-200 bg-white/92 p-3 sc-detail-meta">
+                <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Citt&agrave;</p>
+                <p class="mt-2 text-sm font-semibold text-slate-900 sc-detail-value">{cityLabel}</p>
+              </div>
+            </div>
           </div>
+
+          <p class="text-sm leading-7 text-slate-600 sm:text-[0.98rem] sc-detail-copy">{presentation}</p>
         </div>
       </div>
 
       <div class="border-t border-slate-200/70 p-3.5 sm:p-4.5">
-        <div class="grid gap-2 sm:gap-3 xl:grid-cols-12">
-          <div class="rounded-2xl border border-slate-200 bg-white/90 p-3 sm:p-4 sc-detail-meta xl:col-span-3 xl:self-start">
+        <div class="grid gap-3 lg:grid-cols-[minmax(220px,0.9fr)_minmax(0,1.55fr)_minmax(240px,0.85fr)] lg:items-start">
+          <div class="rounded-2xl border border-slate-200 bg-white/90 p-4 sc-detail-meta">
             <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Indirizzo</p>
             <p class="mt-2 text-sm font-semibold text-slate-900 sm:text-base sc-detail-value">{address}</p>
           </div>
 
-          <div class="rounded-2xl border border-slate-200 bg-white/90 p-3 sm:p-4 sc-detail-meta xl:col-span-6 xl:self-start">
+          <div class="rounded-2xl border border-slate-200 bg-white/90 p-4 sc-detail-meta">
             <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Orari</p>
             {#if hoursRows.length}
               <div class="mt-2 space-y-2">
@@ -231,13 +241,13 @@
             {/if}
           </div>
 
-          <div class="grid gap-2 sm:gap-3 xl:col-span-3 xl:self-start">
-            <div class="rounded-2xl border border-slate-200 bg-white/90 p-3 sm:p-4 sc-detail-meta">
+          <div class="grid gap-3">
+            <div class="rounded-2xl border border-slate-200 bg-white/90 p-4 sc-detail-meta">
               <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Telefono</p>
               <p class="mt-2 text-sm font-semibold text-slate-900 sm:text-base sc-detail-value">{phone}</p>
             </div>
 
-            <div class="rounded-2xl border border-slate-200 bg-white/90 p-3 sm:p-4 sc-detail-meta">
+            <div class="rounded-2xl border border-slate-200 bg-white/90 p-4 sc-detail-meta">
               <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Sito web</p>
               {#if website}
                 <a
@@ -257,268 +267,217 @@
       </div>
     </section>
 
-    {#if officialOverride}
-      <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-5">
-        <div class="max-w-4xl">
-          <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Dati ufficiali del club</p>
-          <h2 class="mt-2 text-2xl font-bold text-slate-900">Le informazioni più importanti da vedere subito</h2>
-          <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">
-            Abbiamo portato qui in alto i dettagli più utili pubblicati dai canali ufficiali, così puoi capire in pochi secondi se {fixGymText(gym?.name)} merita davvero un approfondimento.
-          </p>
-        </div>
+    <div class="grid gap-3 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
+      <div class="flex min-w-0 flex-col gap-3">
+        {#if officialOverride}
+          <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-5">
+            <div class="max-w-4xl">
+              <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Dati ufficiali del club</p>
+              <h2 class="mt-2 text-2xl font-bold text-slate-900">Le informazioni pi&ugrave; importanti da vedere subito</h2>
+            </div>
 
-        <div class="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-          {#if officialCards.length}
-            {#each officialCards as card}
-              <div class={`rounded-2xl border p-4 ${card.featured ? 'border-emerald-300 bg-emerald-50/80 md:col-span-2 xl:col-span-2' : 'border-slate-200 bg-white/90'}`}>
-                <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">{card.label}</p>
-                {#if card.value}
-                  <p class={`mt-2 font-bold text-slate-900 ${card.featured ? 'text-2xl leading-tight sm:text-[1.9rem]' : 'text-lg'}`}>{card.value}</p>
-                {/if}
-                {#if card.body}
-                  <p class={`text-sm leading-7 text-slate-700 ${card.value ? 'mt-2' : 'mt-2'}`}>{card.body}</p>
-                {/if}
+            <div class="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+              {#if officialCards.length}
+                {#each officialCards as card}
+                  <div class={`rounded-2xl border p-4 ${card.featured ? 'border-emerald-300 bg-emerald-50/80 md:col-span-2 xl:col-span-2' : 'border-slate-200 bg-white/90'}`}>
+                    <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">{card.label}</p>
+                    {#if card.value}
+                      <p class={`mt-2 font-bold text-slate-900 ${card.featured ? 'text-2xl leading-tight sm:text-[1.9rem]' : 'text-lg'}`}>{card.value}</p>
+                    {/if}
+                    {#if card.body}
+                      <p class="mt-2 text-sm leading-7 text-slate-700">{card.body}</p>
+                    {/if}
+                  </div>
+                {/each}
+              {/if}
+            </div>
+
+            <div class="mt-4 flex flex-wrap gap-3">
+              {#if officialEmail}
+                <a href={`mailto:${officialEmail}`} class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50">
+                  Scrivi a {officialEmail}
+                </a>
+              {/if}
+              {#each officialSocialLinks as social}
+                <a href={social.href} target="_blank" rel="noreferrer" class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50">
+                  {social.label}
+                </a>
+              {/each}
+              {#if officialSourceUrl}
+                <a href={officialSourceUrl} target="_blank" rel="noreferrer" class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
+                  Fonte ufficiale club
+                </a>
+              {/if}
+            </div>
+          </section>
+        {/if}
+
+        <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-5">
+          <div class="max-w-3xl">
+            <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Presentazione</p>
+            <h2 class="mt-2 text-2xl font-bold text-slate-900">Cosa sapere prima di contattarla</h2>
+            <p class="mt-4 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">{presentation}</p>
+          </div>
+        </section>
+
+        <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-5">
+          <div class="max-w-4xl">
+            <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Verifiche rapide</p>
+            <h2 class="mt-2 text-2xl font-bold text-slate-900">Cosa puoi capire prima di contattare la struttura</h2>
+            <div class="mt-4 grid gap-3">
+              {#each seoHighlights as highlight}
+                <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
+                  <p class="text-sm leading-7 text-slate-700 sm:text-base">{highlight}</p>
+                </div>
+              {/each}
+            </div>
+          </div>
+        </section>
+
+        <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-5">
+          <div class="flex flex-wrap items-start justify-between gap-4">
+            <div class="max-w-3xl">
+              <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Percorsi utili</p>
+              <h2 class="mt-2 text-2xl font-bold text-slate-900">Altre opzioni vicine da confrontare</h2>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              {#if relatedDiscipline}
+                <a href={`/discipline/${relatedDiscipline.slug}`} class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:border-slate-300 hover:bg-slate-50">
+                  Altre palestre di {relatedDiscipline.name}
+                </a>
+              {/if}
+              {#if relatedLocation}
+                <a href={`/zone/${relatedLocation.slug}`} class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:border-slate-300 hover:bg-slate-50">
+                  Esplora {relatedLocation.name}
+                </a>
+              {/if}
+            </div>
+          </div>
+        </section>
+
+        {#if relatedGyms.length}
+          <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-5">
+            <div class="max-w-3xl">
+              <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Schede correlate</p>
+              <h2 class="mt-2 text-2xl font-bold text-slate-900">Altre strutture da confrontare</h2>
+            </div>
+
+            <div class="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+              {#each relatedGyms as relatedGym}
+                <a href={gymHref(relatedGym)} class="rounded-2xl border border-slate-200 bg-white/90 p-4 transition hover:-translate-y-0.5 hover:shadow-md">
+                  <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">{primaryDisciplineForGym(relatedGym)}</p>
+                  <h3 class="mt-2 text-lg font-bold text-slate-900">{fixGymText(relatedGym.name)}</h3>
+                  <p class="mt-2 text-sm leading-6 text-slate-600">{formatAddressForDisplay(relatedGym)}</p>
+                </a>
+              {/each}
+            </div>
+          </section>
+        {/if}
+
+        <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-5">
+          <div class="max-w-4xl">
+            <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Domande frequenti</p>
+            <h2 class="mt-2 text-2xl font-bold text-slate-900">Informazioni rapide sulla scheda</h2>
+          </div>
+
+          <div class="mt-5 grid gap-3">
+            {#each faqItems as item}
+              <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
+                <h3 class="text-base font-bold text-slate-900">{item.question}</h3>
+                <p class="mt-2 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">{item.answer}</p>
               </div>
             {/each}
-          {:else}
-            {#if officialMonthlyPrice}
-              <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
-                <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Formula</p>
-                <p class="mt-2 text-lg font-bold text-slate-900">{officialMonthlyPrice}</p>
-              </div>
-            {/if}
-            <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
-              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Attrezzature</p>
-              <p class="mt-2 text-sm leading-7 text-slate-700">Cardio e isotoniche per un allenamento fitness completo.</p>
-            </div>
-            <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
-              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Servizi extra</p>
-              <p class="mt-2 text-sm leading-7 text-slate-700">Corsi di gruppo, lampade abbronzanti, bevande energetiche, pedane vibranti e poltrone relax.</p>
-            </div>
-            {#if officialPreSaleHours}
-              <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
-                <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Prevendita</p>
-                <p class="mt-2 text-sm font-semibold leading-7 text-slate-900">{officialPreSaleHours}</p>
-              </div>
-            {/if}
-          {/if}
-        </div>
-
-        <div class="mt-4 flex flex-wrap gap-3">
-          {#if officialEmail}
-            <a href={`mailto:${officialEmail}`} class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50">
-              Scrivi a {officialEmail}
-            </a>
-          {/if}
-          {#each officialSocialLinks as social}
-            <a href={social.href} target="_blank" rel="noreferrer" class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50">
-              {social.label}
-            </a>
-          {/each}
-          {#if officialSourceUrl}
-            <a href={officialSourceUrl} target="_blank" rel="noreferrer" class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
-              Fonte ufficiale club
-            </a>
-          {/if}
-        </div>
-      </section>
-    {/if}
-
-    <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-5">
-      <div class="max-w-3xl">
-        <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Presentazione</p>
-        <h2 class="mt-2 text-2xl font-bold text-slate-900">Cosa sapere prima di contattarla</h2>
-        <p class="mt-4 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">
-          {presentation}
-        </p>
-        <p class="mt-4 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">
-          Qui sotto trovi i dati che contano davvero quando stai confrontando più opzioni: dove si trova, quando è aperta, come contattarla e quali discipline dichiara.
-        </p>
-      </div>
-    </section>
-
-    <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-5">
-      <div class="max-w-4xl">
-        <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Verifiche rapide</p>
-        <h2 class="mt-2 text-2xl font-bold text-slate-900">Cosa puoi capire prima di contattare la struttura</h2>
-        <div class="mt-4 grid gap-3">
-          {#each seoHighlights as highlight}
-            <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
-              <p class="text-sm leading-7 text-slate-700 sm:text-base">{highlight}</p>
-            </div>
-          {/each}
-        </div>
-      </div>
-    </section>
-
-    <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sc-detail-actions sm:p-5">
-      <div class="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Contatti rapidi</p>
-          <h2 class="mt-2 text-2xl font-bold text-slate-900">Raggiungi la palestra in un attimo</h2>
-          <p class="mt-2 text-sm text-slate-600 sc-detail-copy">
-            Apri il percorso, chiama direttamente o visita il sito ufficiale.
-          </p>
-        </div>
-      </div>
-
-      <div class="mt-5 grid gap-3 sm:grid-cols-3">
-        <a
-          href={mapsHref}
-          target="_blank"
-          rel="noreferrer"
-          class="rounded-2xl border border-slate-200 bg-white/90 p-4 transition hover:-translate-y-0.5 hover:shadow-md sc-detail-meta sc-contact-card"
-        >
-          <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Percorso</p>
-          <p class="mt-2 text-base font-bold text-slate-900 sc-detail-value">Apri in mappa</p>
-          <p class="mt-2 text-sm text-slate-600 sc-detail-copy">{address}</p>
-        </a>
-
-        <a
-          href={hasPhone ? `tel:${phone.replace(/\s+/g, '')}` : mapsHref}
-          class="rounded-2xl border border-slate-200 bg-white/90 p-4 transition hover:-translate-y-0.5 hover:shadow-md sc-detail-meta sc-contact-card"
-        >
-          <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Telefono</p>
-          <p class="mt-2 text-base font-bold text-slate-900 sc-detail-value">{hasPhone ? 'Chiama ora' : 'Contatto non disponibile'}</p>
-          <p class="mt-2 text-sm text-slate-600 sc-detail-copy">{phone}</p>
-        </a>
-
-        <a
-          href={website || mapsHref}
-          target={website ? '_blank' : undefined}
-          rel={website ? 'noreferrer' : undefined}
-          class="rounded-2xl border border-slate-200 bg-white/90 p-4 transition hover:-translate-y-0.5 hover:shadow-md sc-detail-meta sc-contact-card"
-        >
-          <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Online</p>
-          <p class="mt-2 text-base font-bold text-slate-900 sc-detail-value">{website ? 'Visita il sito' : 'Nessun sito indicato'}</p>
-          <p class="mt-2 text-sm text-slate-600 sc-detail-copy">
-            {website || 'Puoi comunque aprire la posizione sulla mappa.'}
-          </p>
-        </a>
-      </div>
-    </section>
-
-    <section class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
-      <div class="flex flex-wrap items-end justify-between gap-4">
-        <div class="max-w-3xl">
-          <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Passo successivo</p>
-          <h2 class="mt-2 text-2xl font-bold text-slate-900">Se la struttura ti convince, qui chiudi il cerchio</h2>
-          <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">
-            Apri il percorso, chiama la struttura oppure controlla il sito ufficiale: sono le tre azioni che contano davvero quando stai decidendo.
-          </p>
-        </div>
-      </div>
-
-      <div class="mt-5 flex flex-wrap gap-3">
-        <a
-          href={mapsHref}
-          target="_blank"
-          rel="noreferrer"
-          class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
-        >
-          Apri in mappa
-        </a>
-        <a
-          href={hasPhone ? `tel:${phone.replace(/\s+/g, '')}` : mapsHref}
-          class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50"
-        >
-          {hasPhone ? 'Chiama la palestra' : 'Contatto non disponibile'}
-        </a>
-        {#if website}
-          <a
-            href={website}
-            target="_blank"
-            rel="noreferrer"
-            class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50"
-          >
-            Visita il sito
-          </a>
-        {/if}
-      </div>
-    </section>
-
-    <section class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
-      <div class="flex flex-wrap items-start justify-between gap-4">
-        <div class="max-w-3xl">
-          <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Percorsi utili</p>
-          <h2 class="mt-2 text-2xl font-bold text-slate-900">Altre opzioni vicine da confrontare</h2>
-          <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">
-            Se vuoi tenere aperte più alternative, qui puoi restare sulla stessa disciplina o sulla stessa area senza rifare la ricerca.
-          </p>
-        </div>
-        <div class="flex flex-wrap gap-2">
-          {#if relatedDiscipline}
-            <a href={`/discipline/${relatedDiscipline.slug}`} class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:border-slate-300 hover:bg-slate-50">
-              Altre palestre di {relatedDiscipline.name}
-            </a>
-          {/if}
-          {#if relatedLocation}
-            <a href={`/zone/${relatedLocation.slug}`} class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:border-slate-300 hover:bg-slate-50">
-              Esplora {relatedLocation.name}
-            </a>
-          {/if}
-        </div>
-      </div>
-    </section>
-
-    <section class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
-      <div class="flex flex-wrap items-start justify-between gap-4">
-        <div class="max-w-3xl">
-          <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Gestisci questa scheda</p>
-          <h2 class="mt-2 text-2xl font-bold text-slate-900">Se rappresenti la palestra, puoi chiedere un aggiornamento</h2>
-          <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">
-            Se sei il gestore o fai parte dello staff, puoi usare un percorso guidato per richiedere correzioni, integrazioni o la rivendicazione della scheda pubblica.
-          </p>
-        </div>
-
-        <div class="flex flex-wrap gap-3">
-          <a href={claimHref} class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
-            Rivendica o aggiorna
-          </a>
-          <a href="/per-le-palestre" class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50">
-            Info per le palestre
-          </a>
-        </div>
-      </div>
-    </section>
-
-    {#if relatedGyms.length}
-      <section class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
-        <div class="max-w-3xl">
-          <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Schede correlate</p>
-          <h2 class="mt-2 text-2xl font-bold text-slate-900">Altre strutture da confrontare</h2>
-          <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">
-            Qui sotto compaiono alcune schede vicine per disciplina o per area geografica, pensate per un confronto diretto.
-          </p>
-        </div>
-
-        <div class="mt-5 grid gap-3 md:grid-cols-3">
-          {#each relatedGyms as relatedGym}
-            <a href={gymHref(relatedGym)} class="rounded-2xl border border-slate-200 bg-white/90 p-4 transition hover:-translate-y-0.5 hover:shadow-md">
-              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">{primaryDisciplineForGym(relatedGym)}</p>
-              <h3 class="mt-2 text-lg font-bold text-slate-900">{fixGymText(relatedGym.name)}</h3>
-              <p class="mt-2 text-sm leading-6 text-slate-600">{formatAddressForDisplay(relatedGym)}</p>
-            </a>
-          {/each}
-        </div>
-      </section>
-    {/if}
-
-    <section class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
-      <div class="max-w-4xl">
-        <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Domande frequenti</p>
-        <h2 class="mt-2 text-2xl font-bold text-slate-900">Informazioni rapide sulla scheda</h2>
-      </div>
-
-      <div class="mt-5 grid gap-3">
-        {#each faqItems as item}
-          <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
-            <h3 class="text-base font-bold text-slate-900">{item.question}</h3>
-            <p class="mt-2 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">{item.answer}</p>
           </div>
-        {/each}
+        </section>
       </div>
-    </section>
+
+      <aside class="flex min-w-0 flex-col gap-3 lg:sticky lg:top-24">
+        <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sc-detail-actions sm:p-5">
+          <div>
+            <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Contatti rapidi</p>
+            <h2 class="mt-2 text-2xl font-bold text-slate-900">Raggiungi la palestra in un attimo</h2>
+            <p class="mt-2 text-sm text-slate-600 sc-detail-copy">Mappa, telefono e sito in un unico punto.</p>
+          </div>
+
+          <div class="mt-4 grid gap-3">
+            <a
+              href={mapsHref}
+              target="_blank"
+              rel="noreferrer"
+              class="rounded-2xl border border-slate-200 bg-white/90 p-4 transition hover:-translate-y-0.5 hover:shadow-md sc-detail-meta sc-contact-card"
+            >
+              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Percorso</p>
+              <p class="mt-2 text-base font-bold text-slate-900 sc-detail-value">Apri in mappa</p>
+              <p class="mt-2 text-sm text-slate-600 sc-detail-copy">{address}</p>
+            </a>
+
+            <a
+              href={hasPhone ? `tel:${phone.replace(/\s+/g, '')}` : mapsHref}
+              class="rounded-2xl border border-slate-200 bg-white/90 p-4 transition hover:-translate-y-0.5 hover:shadow-md sc-detail-meta sc-contact-card"
+            >
+              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Telefono</p>
+              <p class="mt-2 text-base font-bold text-slate-900 sc-detail-value">{hasPhone ? 'Chiama ora' : 'Contatto non disponibile'}</p>
+              <p class="mt-2 text-sm text-slate-600 sc-detail-copy">{phone}</p>
+            </a>
+
+            <a
+              href={website || mapsHref}
+              target={website ? '_blank' : undefined}
+              rel={website ? 'noreferrer' : undefined}
+              class="rounded-2xl border border-slate-200 bg-white/90 p-4 transition hover:-translate-y-0.5 hover:shadow-md sc-detail-meta sc-contact-card"
+            >
+              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Online</p>
+              <p class="mt-2 text-base font-bold text-slate-900 sc-detail-value">{website ? 'Visita il sito' : 'Nessun sito indicato'}</p>
+              <p class="mt-2 text-sm text-slate-600 sc-detail-copy">{website || 'Puoi comunque aprire la posizione sulla mappa.'}</p>
+            </a>
+          </div>
+
+          <div class="mt-4 flex flex-col gap-2">
+            <a
+              href={mapsHref}
+              target="_blank"
+              rel="noreferrer"
+              class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
+            >
+              Apri in mappa
+            </a>
+            <a
+              href={hasPhone ? `tel:${phone.replace(/\s+/g, '')}` : mapsHref}
+              class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50"
+            >
+              {hasPhone ? 'Chiama la palestra' : 'Contatto non disponibile'}
+            </a>
+            {#if website}
+              <a
+                href={website}
+                target="_blank"
+                rel="noreferrer"
+                class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50"
+              >
+                Visita il sito
+              </a>
+            {/if}
+          </div>
+        </section>
+
+        <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-5">
+          <div>
+            <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Gestisci questa scheda</p>
+            <h2 class="mt-2 text-xl font-bold text-slate-900">Se rappresenti la palestra, puoi chiedere un aggiornamento</h2>
+            <p class="mt-3 text-sm leading-7 text-slate-600 sc-detail-copy">Percorso guidato per correzioni, integrazioni o rivendicazione della scheda pubblica.</p>
+          </div>
+
+          <div class="mt-4 flex flex-col gap-2">
+            <a href={claimHref} class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
+              Rivendica o aggiorna
+            </a>
+            <a href="/per-le-palestre" class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50">
+              Info per le palestre
+            </a>
+          </div>
+        </section>
+      </aside>
+    </div>
   </main>
 
   <div class="sc-mobile-actionbar md:hidden">
@@ -548,5 +507,3 @@
     </div>
   </div>
 </div>
-
-
