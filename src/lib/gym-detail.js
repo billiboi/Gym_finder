@@ -422,7 +422,68 @@ export function buildGymFaqItems(gym) {
   ];
 }
 
+const OFFICIAL_20TRAININGLAB_OVERRIDE = {
+  sourceUrl: 'https://www.20traininglab.it/',
+  website: 'https://www.20traininglab.it/',
+  infoCards: [
+    {
+      label: 'Formula',
+      value: 'EMS 20 min · Vaculab 30 min',
+      body: 'Il sito ufficiale presenta due format rapidi: EMS da 20 minuti e Vaculab da 30 minuti, entrambi costruiti per chi vuole allenarsi bene senza sedute molto lunghe.'
+    },
+    {
+      label: 'Metodo',
+      value: 'EMS + Vacuum Terapia',
+      body: '20 Training Lab combina allenamento EMS con tuta dedicata e Vaculab con tapis roulant, infrarossi e ambiente sottovuoto.'
+    },
+    {
+      label: 'Supporto',
+      value: 'Personal trainer qualificati',
+      body: 'Il brand insiste su un percorso guidato da trainer specializzati, con allenamento personalizzato costruito sugli obiettivi della persona.'
+    },
+    {
+      label: 'Network',
+      value: '65+ sedi · 120+ trainer',
+      body: 'La home ufficiale mette in evidenza una rete ampia, con oltre 65 sedi in Italia e più di 120 personal trainer.'
+    }
+  ],
+  presentation:
+    '20 Training Lab è un network fitness che il sito ufficiale presenta come soluzione rapida e personalizzata per il benessere, con allenamenti EMS e Vaculab costruiti per chi vuole ottimizzare il tempo senza rinunciare a un lavoro guidato da trainer qualificati.',
+  highlights: [
+    'La proposta ufficiale di 20 Training Lab ruota attorno a due format precisi: EMS, descritto come allenamento rapido da 20 minuti con tuta elettrostimolante, e Vaculab, percorso da 30 minuti con vacuum terapia e infrarossi.',
+    'Il brand non si presenta come palestra tradizionale, ma come metodo centrato sulla qualità del tempo. Questo è un dettaglio importante per chi cerca una struttura adatta a routine fitte o allenamenti molto efficienti.',
+    'Nella sezione EMS il sito collega il metodo a obiettivi come tonificazione, riduzione massa grassa, contrasto alla cellulite, beneficio posturale e supporto contro la sarcopenia. La scheda diventa quindi più leggibile per chi confronta obiettivi concreti, non solo marchi.',
+    'La sezione Vaculab mette in evidenza dimagrimento localizzato, drenaggio, lavoro sul microcircolo e tonificazione di gambe, glutei e addome. In pratica, la differenza rispetto a un centro fitness standard sta anche nella combinazione di tecnologie e protocolli dedicati.'
+  ],
+  faqItems: [
+    {
+      question: 'Che tipo di centro è 20 Training Lab secondo il sito ufficiale?',
+      answer:
+        'Il sito ufficiale presenta 20 Training Lab come network dedicato a EMS e Vaculab, con allenamenti brevi, personalizzati e guidati da trainer qualificati.'
+    },
+    {
+      question: 'Quanto durano le sessioni in 20 Training Lab?',
+      answer:
+        'La home ufficiale parla di sessioni EMS da 20 minuti e di allenamenti Vaculab da 30 minuti, pensati per offrire un lavoro mirato in poco tempo.'
+    },
+    {
+      question: 'Quali obiettivi vengono messi in evidenza da 20 Training Lab?',
+      answer:
+        'Il sito collega il metodo a obiettivi come tonificazione, dimagrimento, riduzione della cellulite, miglioramento posturale, drenaggio e benessere generale.'
+    },
+    {
+      question: '20 Training Lab opera come singolo centro o come rete più ampia?',
+      answer:
+        'Secondo la home ufficiale, il brand conta oltre 65 sedi in Italia e più di 120 personal trainer, quindi si presenta come rete strutturata e non come singolo studio isolato.'
+    }
+  ]
+};
+
 const OFFICIAL_GYM_OVERRIDES = {
+  "20' Training Lab Busto Arsizio": OFFICIAL_20TRAININGLAB_OVERRIDE,
+  "20' Training Lab Gallarate": OFFICIAL_20TRAININGLAB_OVERRIDE,
+  "20' Training Lab Saronno": OFFICIAL_20TRAININGLAB_OVERRIDE,
+  "20' Training Lab Varese": OFFICIAL_20TRAININGLAB_OVERRIDE,
   'FitActive Mendrisio': {
     sourceUrl: 'https://www.fitactive.it/i-club/Mendrisio.php',
     monthlyPrice: 'Da 49,90 CHF al mese',
