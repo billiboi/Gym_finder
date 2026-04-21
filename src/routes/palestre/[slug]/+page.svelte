@@ -332,26 +332,28 @@
           </div>
         </section>
 
-        <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-5">
-          <div class="flex flex-wrap items-start justify-between gap-4">
-            <div class="max-w-3xl">
-              <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Percorsi utili</p>
-              <h2 class="mt-2 text-2xl font-bold text-slate-900">Altre opzioni vicine da confrontare</h2>
+        {#if relatedDiscipline || relatedLocation}
+          <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-5">
+            <div class="flex flex-wrap items-start justify-between gap-4">
+              <div class="max-w-3xl">
+                <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Percorsi utili</p>
+                <h2 class="mt-2 text-2xl font-bold text-slate-900">Altre opzioni vicine da confrontare</h2>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                {#if relatedDiscipline}
+                  <a href={`/discipline/${relatedDiscipline.slug}`} class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:border-slate-300 hover:bg-slate-50">
+                    Altre palestre di {relatedDiscipline.name}
+                  </a>
+                {/if}
+                {#if relatedLocation}
+                  <a href={`/zone/${relatedLocation.slug}`} class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:border-slate-300 hover:bg-slate-50">
+                    Esplora {relatedLocation.name}
+                  </a>
+                {/if}
+              </div>
             </div>
-            <div class="flex flex-wrap gap-2">
-              {#if relatedDiscipline}
-                <a href={`/discipline/${relatedDiscipline.slug}`} class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:border-slate-300 hover:bg-slate-50">
-                  Altre palestre di {relatedDiscipline.name}
-                </a>
-              {/if}
-              {#if relatedLocation}
-                <a href={`/zone/${relatedLocation.slug}`} class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:border-slate-300 hover:bg-slate-50">
-                  Esplora {relatedLocation.name}
-                </a>
-              {/if}
-            </div>
-          </div>
-        </section>
+          </section>
+        {/if}
 
         {#if relatedGyms.length}
           <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-5">
