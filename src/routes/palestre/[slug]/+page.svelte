@@ -276,10 +276,10 @@
               <h2 class="mt-2 text-2xl font-bold text-slate-900">Le informazioni pi&ugrave; importanti da vedere subito</h2>
             </div>
 
-            <div class="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+            <div class="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
               {#if officialCards.length}
                 {#each officialCards as card}
-                  <div class={`rounded-2xl border p-4 ${card.featured ? 'border-emerald-300 bg-emerald-50/80 md:col-span-2 xl:col-span-2' : 'border-slate-200 bg-white/90'}`}>
+                  <div class={`rounded-2xl border p-4 ${card.featured ? 'border-emerald-300 bg-emerald-50/80 md:col-span-2 xl:col-span-3' : 'border-slate-200 bg-white/90'}`}>
                     <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">{card.label}</p>
                     {#if card.value}
                       <p class={`mt-2 font-bold text-slate-900 ${card.featured ? 'text-2xl leading-tight sm:text-[1.9rem]' : 'text-lg'}`}>{card.value}</p>
