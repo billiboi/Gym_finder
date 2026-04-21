@@ -659,6 +659,64 @@ const OFFICIAL_GYM_OVERRIDES = {
           'Secondo la pagina ufficiale, lo studio si trova a poche centinaia di metri dall’uscita autostradale Bellinzona Sud e dispone di parcheggi gratuiti per i soci nelle vicinanze.'
       }
     ]
+  },
+  '1CYCLE': {
+    sourceUrl: 'https://www.1cycle.ch/',
+    website: 'https://www.1cycle.ch/',
+    email: 'info@1cycle.ch',
+    monthlyPrice: 'Pacchetti a crediti',
+    infoCards: [
+      {
+        label: 'Formula',
+        value: 'Pacchetti a crediti',
+        body: 'Il sito ufficiale spiega che puoi costruire il tuo programma acquistando crediti da usare nelle diverse pratiche dello studio.'
+      },
+      {
+        label: 'Workouts',
+        value: 'Ride, Flow, Personal Training',
+        body: '1CYCLE distingue tra indoor cycling ad alta intensità, lezioni orientate a yoga e postura e percorsi individuali.'
+      },
+      {
+        label: 'Crediti',
+        value: '45/50 min = 2 crediti',
+        body: 'Le sessioni da 30 minuti in pausa pranzo corrispondono invece a 1 credito, secondo la pagina ufficiale dedicata ai crediti.'
+      },
+      {
+        label: 'Orari studio',
+        value: 'Lun-Ven 6:30-20:00 · Sab 6:30-12:30',
+        body: 'La pagina contatti indica domenica chiuso e riporta gli stessi riferimenti telefonici e email presenti nella scheda.'
+      }
+    ],
+    presentation:
+      '1CYCLE è uno studio fitness boutique a Massagno che il sito ufficiale presenta come luogo dedicato a Ride, Flow e personal training, con un’impostazione centrata su energia, movimento consapevole e flessibilità di utilizzo tramite pacchetti a crediti.',
+    highlights: [
+      'Il sito ufficiale 1CYCLE non si presenta come palestra tradizionale, ma come studio con tre aree molto chiare: Ride, Flow e personal training. Questo aiuta subito a capire che la proposta è più vicina a un format boutique che a una sala fitness generalista.',
+      'Nella sezione Ride il brand parla di ambiente adrenalinico ed energico, con classi che combinano bici e panca funzionale. È un dettaglio utile per chi sta cercando indoor cycling a Lugano o Massagno con un taglio più intenso e strutturato.',
+      'La sezione Flow descrive invece lezioni di vinyasa yoga, balance e postural, in un contesto più caldo e accogliente. Questo rende la scheda interessante anche per chi sta confrontando opzioni che uniscono lavoro fisico e recupero.',
+      'La pagina crediti spiega che i pacchetti possono essere usati nelle diverse sale e pratiche dello studio, con 1 sessione da 45/50 minuti pari a 2 crediti e la sessione pausa pranzo da 30 minuti pari a 1 credito. È un’informazione concreta per capire il modello di accesso prima di prenotare.'
+    ],
+    faqItems: [
+      {
+        question: 'Che tipo di studio è 1CYCLE secondo il sito ufficiale?',
+        answer:
+          'Il sito ufficiale presenta 1CYCLE come uno studio focalizzato su Ride, Flow e personal training, con un’identità più boutique che da palestra fitness tradizionale.'
+      },
+      {
+        question: 'Quali attività vengono messe in evidenza da 1CYCLE?',
+        answer:
+          'Le sezioni principali del sito ufficiale sono Ride, Flow e Personal Training. Ride combina bici e panca funzionale, mentre Flow include vinyasa yoga, balance e postural.'
+      },
+      {
+        question: 'Come funziona il sistema a crediti di 1CYCLE?',
+        answer:
+          'La pagina ufficiale dei crediti spiega che una sessione da 45/50 minuti corrisponde a 2 crediti, mentre una sessione da 30 minuti in pausa pranzo corrisponde a 1 credito.'
+      },
+      {
+        question: 'Dove trovare contatti e orari aggiornati di 1CYCLE?',
+        answer:
+          'La pagina contatti ufficiale riporta indirizzo in Via S. Gottardo 99 a Massagno, email info@1cycle.ch, telefono +41 789585282 e orari Lun-Ven 6:30-20:00, Sab 6:30-12:30, domenica chiuso.'
+      }
+    ]
   }
 };
 
