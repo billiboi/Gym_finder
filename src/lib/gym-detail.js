@@ -717,6 +717,63 @@ const OFFICIAL_GYM_OVERRIDES = {
           'La pagina contatti ufficiale riporta indirizzo in Via S. Gottardo 99 a Massagno, email info@1cycle.ch, telefono +41 789585282 e orari Lun-Ven 6:30-20:00, Sab 6:30-12:30, domenica chiuso.'
       }
     ]
+  },
+  '1to1 Fitness': {
+    sourceUrl: 'https://www.1to1fitness.it/',
+    website: 'https://www.1to1fitness.it/',
+    monthlyPrice: 'Pacchetti di sessioni / open annuale',
+    infoCards: [
+      {
+        label: 'Formula',
+        value: '12 / 24 / 48 sessioni',
+        body: 'La pagina ufficiale spiega che non ci sono abbonamenti a tempo tradizionali: i protocolli prevedono pacchetti di sessioni oppure formula open annuale.'
+      },
+      {
+        label: 'Metodo',
+        value: 'EMS XBody · 20 minuti',
+        body: 'Il metodo 1to1 Fitness ruota attorno alla tuta EMS e a sessioni brevi guidate da personal trainer, presentate come alternativa all’allenamento classico più lungo.'
+      },
+      {
+        label: 'Approccio',
+        value: 'Percorso individuale',
+        body: 'Il sito mette in evidenza appuntamenti programmati, assenza di attese, spogliatoi e docce individuali e un lavoro continuativo con trainer dedicato.'
+      },
+      {
+        label: 'Protocolli',
+        value: 'Dimagrimento · Tonificazione · Posturale',
+        body: 'L’offerta ufficiale cita protocolli specifici per dimagrimento, tonicità, postura e percorsi personalizzati in base alle esigenze.'
+      }
+    ],
+    presentation:
+      '1to1 Fitness è un centro fitness EMS che il sito ufficiale presenta come alternativa alla palestra tradizionale, con sessioni brevi da 20 minuti, personal trainer dedicato e protocolli costruiti su obiettivi come dimagrimento, tonificazione e postura.',
+    highlights: [
+      'La homepage di 1to1 Fitness descrive la tecnologia EMS XBody come allenamento ad alta efficienza: sessioni da 20 minuti, tuta dedicata e lavoro muscolare amplificato rispetto all’allenamento tradizionale.',
+      'Il metodo ufficiale insiste su un percorso individuale con appuntamenti programmati, nessuna attesa e presenza costante del personal trainer. È un’informazione importante per chi non cerca una sala pesi libera ma una struttura molto guidata.',
+      'La pagina dell’offerta chiarisce che il centro non lavora con abbonamenti mensili o annuali standard. I protocolli sono organizzati in pacchetti da 12, 24 o 48 sessioni, con possibilità di formula open annuale.',
+      'Tra i protocolli citati dal sito compaiono dimagrimento, tonificazione/rassodamento, posturale e percorsi specific personalizzati. Questo aiuta a capire che la scheda non rappresenta una palestra generalista, ma un centro con proposta molto focalizzata.'
+    ],
+    faqItems: [
+      {
+        question: 'Che tipo di allenamento propone 1to1 Fitness secondo il sito ufficiale?',
+        answer:
+          'Il sito ufficiale presenta 1to1 Fitness come centro focalizzato sull’allenamento EMS con tuta XBody, sessioni brevi da 20 minuti e supporto costante di un personal trainer.'
+      },
+      {
+        question: '1to1 Fitness lavora con abbonamenti tradizionali?',
+        answer:
+          'No. La pagina ufficiale dell’offerta spiega che non ci sono abbonamenti a tempo classici: i protocolli prevedono pacchetti di sessioni, con opzioni da 12, 24 o 48 sessioni e formula open annuale.'
+      },
+      {
+        question: 'Quali obiettivi vengono messi in evidenza da 1to1 Fitness?',
+        answer:
+          'Nelle pagine ufficiali compaiono protocolli per dimagrimento, tonificazione/rassodamento, rafforzamento muscolare, miglioramento posturale e percorsi personalizzati specific.'
+      },
+      {
+        question: 'Che esperienza promette 1to1 Fitness rispetto a una palestra classica?',
+        answer:
+          'Il sito mette in evidenza percorso individuale, appuntamenti pianificati, assenza di attese, spogliatoi e docce individuali e la possibilità di arrivare senza borsa, con tutto il necessario fornito in sede.'
+      }
+    ]
   }
 };
 
