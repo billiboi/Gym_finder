@@ -2,9 +2,11 @@
     {
         "id":  "csv-1",
         "name":  "101 running - servizi per lo sport",
-        "discipline":  "Fitness",
+        "discipline":  "Judo",
         "disciplines":  [
-                            "Fitness"
+                            "Judo",
+                            "Difesa Personale",
+                            "Boxe"
                         ],
         "address":  "Corso Sempione, 101, 21013 Gallarate VA, Italia",
         "city":  "",
@@ -181,7 +183,7 @@
         "city":  "",
         "phone":  "+39 392 811 1970",
         "hours_info":  "Lun 18-21 | Mar 19-20 | Mer 18-21 | Gio chiuso | Ven 16-17 | Sab 12:30-16 | Dom chiuso",
-        "website":  "http://www.arashi21100.it/",
+        "website":  "https://www.arashi21100.it/",
         "latitude":  45.807833,
         "longitude":  8.835543,
         "image_url":  "",

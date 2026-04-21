@@ -835,6 +835,63 @@ const OFFICIAL_GYM_OVERRIDES = {
           'Il sito mette in evidenza percorso individuale, appuntamenti pianificati, assenza di attese, spogliatoi e docce individuali e la possibilità di arrivare senza borsa, con tutto il necessario fornito in sede.'
       }
     ]
+  },
+  'A.S.D. Arashi 21100': {
+    sourceUrl: 'https://www.arashi21100.it/',
+    website: 'https://www.arashi21100.it/',
+    email: 'arashi21100@gmail.com',
+    infoCards: [
+      {
+        label: 'Disciplina guida',
+        value: 'Judo',
+        body: 'Il sito ufficiale presenta Arashi 21100 come ASD Judo & Arti Marziali, con il judo come disciplina principale del progetto.'
+      },
+      {
+        label: 'Attività',
+        value: 'Judo · Fit Boxe · Close Combat',
+        body: 'Nel sito ufficiale compaiono anche Fit Boxe, Difesa personale e Close Combat, quindi l’offerta è più ampia della sola disciplina base.'
+      },
+      {
+        label: 'Target',
+        value: 'Bambini · ragazzi · adulti',
+        body: 'La pagina Judo cita corsi per bambini, ragazzi e adulti, con lavoro tecnico e attenzione anche al lato educativo della pratica.'
+      },
+      {
+        label: 'Contatti',
+        value: '392 8111970 · 392 3684001',
+        body: 'Il sito ufficiale riporta due numeri di riferimento, oltre alla mail associativa e alla sede di Via Donatello 1 a Varese.'
+      }
+    ],
+    presentation:
+      'A.S.D. Arashi 21100 è una scuola di judo e arti marziali a Varese che il sito ufficiale presenta come percorso tecnico ed educativo per bambini, ragazzi e adulti, con una proposta che unisce judo, fit boxe, close combat e difesa personale.',
+    highlights: [
+      'La home ufficiale definisce Arashi 21100 come ASD Judo & Arti Marziali. Questo chiarisce subito che non si tratta di una palestra fitness generica, ma di una realtà focalizzata su discipline marziali strutturate.',
+      'Nella pagina Judo il club descrive il lavoro come combinazione di tecnica, stretching, potenziamento, disciplina, sicurezza e combattimento. La scheda diventa utile per chi cerca una scuola con un’impostazione più tecnica che ricreativa.',
+      'Il sito evidenzia anche corsi per bambini, con attenzione a valori come rispetto, amicizia, onore e disciplina. È un elemento forte per famiglie o genitori che vogliono capire il taglio educativo della scuola.',
+      'Oltre al judo, il menu ufficiale include Fit Boxe, Close Combat, Difesa personale e corsi spray al peperoncino. Questo amplia molto il profilo della struttura rispetto al vecchio dato generico del catalogo.'
+    ],
+    faqItems: [
+      {
+        question: 'Che tipo di centro è A.S.D. Arashi 21100 secondo il sito ufficiale?',
+        answer:
+          'Il sito ufficiale presenta Arashi 21100 come ASD Judo & Arti Marziali a Varese, con il judo come disciplina centrale e un’offerta che include anche fit boxe, close combat e difesa personale.'
+      },
+      {
+        question: 'Arashi 21100 propone corsi anche per bambini?',
+        answer:
+          'Sì. La pagina Judo indica esplicitamente corsi per bambini, oltre a gruppi per ragazzi e adulti, con un approccio che insiste anche sui valori educativi della disciplina.'
+      },
+      {
+        question: 'Quali attività compaiono sul sito ufficiale di Arashi 21100?',
+        answer:
+          'Nel sito ufficiale compaiono Judo, Fit Boxe, Close Combat, Difesa personale e corsi dedicati allo spray al peperoncino, oltre alle informazioni associative e ai contatti.'
+      },
+      {
+        question: 'Dove si trova Arashi 21100 e quali contatti ufficiali riporta?',
+        answer:
+          'Il sito indica la sede in Via Donatello 1 a Varese e riporta la mail arashi21100@gmail.com, oltre ai numeri 392 8111970 e 392 3684001.'
+      }
+    ]
   }
 };
 
