@@ -60,6 +60,12 @@
       featured: index === 0 && String(card.label || '').trim().toLowerCase() === 'formula'
     }));
   })();
+  const hasFeaturedOfficialCard = officialCards.some((card) => card.featured);
+  const officialCardsGridClass = hasFeaturedOfficialCard
+    ? 'md:grid-cols-2 xl:grid-cols-3'
+    : officialCards.length === 4
+      ? 'md:grid-cols-2 xl:grid-cols-2'
+      : 'md:grid-cols-2 xl:grid-cols-3';
   const phone = fixGymText(gym?.phone) || 'Non disponibile';
   const website = fixGymText(gym?.website) || officialOverride?.website || officialSourceUrl;
   const hasPhone = phone && phone !== 'Non disponibile';
@@ -274,7 +280,7 @@
               <h2 class="mt-2 text-2xl font-bold text-slate-900">Le informazioni pi&ugrave; importanti da vedere subito</h2>
             </div>
 
-            <div class="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+            <div class={`mt-4 grid gap-3 ${officialCardsGridClass}`}>
               {#if officialCards.length}
                 {#each officialCards as card}
                   <div class={`rounded-2xl border p-4 ${card.featured ? 'border-emerald-300 bg-emerald-50/80 md:col-span-2 xl:col-span-3' : 'border-slate-200 bg-white/90'}`}>
