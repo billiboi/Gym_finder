@@ -15,8 +15,18 @@ function redirectResponse(target) {
 }
 
 export async function handle({ event, resolve }) {
-  const { pathname, search } = event.url;
+  const { pathname, search, hostname } = event.url;
   const isAdminRoute = pathname === '/admin' || pathname.startsWith('/admin/');
+
+  if (hostname === 'www.palestreinzona.it') {
+    const target = `https://palestreinzona.it${pathname}${search}`;
+    return new Response(null, {
+      status: 308,
+      headers: {
+        location: target
+      }
+    });
+  }
 
   if (!isAdminRoute) {
     return resolve(event);
