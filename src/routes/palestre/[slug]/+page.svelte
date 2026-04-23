@@ -185,8 +185,8 @@
           />
         </div>
 
-        <div class="flex flex-col gap-4 p-4">
-          <div class="space-y-4">
+        <div class="flex flex-col gap-3 p-4">
+          <div class="space-y-3">
             <div class="flex flex-wrap gap-2">
               {#each disciplines as discipline}
                 <span class="rounded-full bg-slate-900 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-white sc-badge sc-badge--accent">
@@ -195,18 +195,18 @@
               {/each}
             </div>
 
-            <div class="rounded-3xl sc-detail-hero p-4 lg:p-5">
+            <div class="rounded-3xl sc-detail-hero p-3.5 lg:p-4">
               <h1 class="text-4xl font-bold leading-none text-slate-900 sm:text-[3.3rem] sc-detail-title">
                 {fixGymText(gym?.name)}
               </h1>
             </div>
 
             <div class="grid gap-2 sm:grid-cols-2">
-              <div class="rounded-2xl border border-slate-200 bg-white/92 p-3 sc-detail-meta">
+              <div class="rounded-2xl border border-slate-200 bg-white/92 p-2.5 sc-detail-meta">
                 <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Disciplina</p>
                 <p class="mt-2 text-sm font-semibold text-slate-900 sc-detail-value">{primaryDiscipline}</p>
               </div>
-              <div class="rounded-2xl border border-slate-200 bg-white/92 p-3 sc-detail-meta">
+              <div class="rounded-2xl border border-slate-200 bg-white/92 p-2.5 sc-detail-meta">
                 <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Citt&agrave;</p>
                 <p class="mt-2 text-sm font-semibold text-slate-900 sc-detail-value">{cityLabel}</p>
               </div>
