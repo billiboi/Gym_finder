@@ -5,8 +5,8 @@
 
   const { featuredDisciplines = [], extraDisciplines = [], totalDisciplines = 0 } = data;
   const pageUrl = absoluteUrl('/discipline');
-  const title = `Discipline | ${SITE_NAME}`;
-  const description = `Esplora le discipline presenti nel catalogo pubblico e apri le pagine dedicate o le raccolte disponibili.`;
+  const title = `Discipline sportive e attività | ${SITE_NAME}`;
+  const description = `Esplora discipline come fitness, Pilates, nuoto, boxe e arti marziali e apri le pagine dedicate del catalogo Palestre in Zona.`;
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
@@ -43,11 +43,10 @@
 <div class="min-h-screen w-full sc-page">
   <main class="mx-auto w-full max-w-7xl px-4 pb-10 pt-4 sm:px-6 lg:px-8">
     <section class="rounded-3xl border border-white/80 bg-white/80 p-5 shadow-xl backdrop-blur-sm sc-panel sm:p-7">
-      <p class="text-xs font-bold uppercase tracking-[0.24em] text-amber-700">Hub discipline</p>
+      <p class="text-xs font-bold uppercase tracking-[0.24em] text-amber-700">Discipline sportive</p>
       <h1 class="mt-2 text-3xl font-bold text-slate-900 sm:text-5xl">Sfoglia tutte le discipline</h1>
       <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-600 sm:text-base">
-        Qui trovi l'accesso a tutte le discipline presenti nel catalogo pubblico, cos&igrave; non vieni
-        reindirizzato su una pagina arbitraria e puoi scegliere direttamente l'area che ti interessa.
+        Qui trovi le discipline presenti nel catalogo, così puoi aprire subito la pagina giusta per fitness, Pilates, nuoto, boxe o arti marziali.
       </p>
       <div class="mt-5 flex flex-wrap gap-2">
         <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">{totalDisciplines} discipline disponibili</span>
@@ -58,10 +57,9 @@
     <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
       <div class="max-w-4xl">
         <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Pagine prioritarie</p>
-        <h2 class="mt-1 text-2xl font-bold text-slate-900">Landing disciplina gi curate</h2>
+        <h2 class="mt-1 text-2xl font-bold text-slate-900">Discipline con pagina dedicata</h2>
         <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
-          Qui trovi le discipline che hanno gi una landing dedicata e pi strutturata. Sono i punti migliori da cui
-          partire se vuoi esplorare palestre con una selezione pi&ugrave; ordinata e una pagina pi&ugrave; forte anche lato SEO.
+          Qui trovi le discipline che hanno già una pagina più forte e più utile per esplorare palestre, schede complete e raccolte ordinate.
         </p>
       </div>
 
@@ -82,10 +80,6 @@
         <div class="max-w-4xl">
           <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Catalogo completo</p>
           <h2 class="mt-1 text-2xl font-bold text-slate-900">Altre discipline presenti nel catalogo</h2>
-          <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
-            Queste discipline compaiono gi&agrave; nelle schede pubbliche e ci aiutano a dare una navigazione pi&ugrave; sensata
-            dallheader. Possiamo poi decidere quali trasformare in vere landing prioritarie.
-          </p>
         </div>
 
         <div class="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
