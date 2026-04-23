@@ -948,6 +948,63 @@ const OFFICIAL_GYM_OVERRIDES = {
           'Sì. La scheda Treatwell segnala la vicinanza a una fermata dell’autobus e a una stazione ferroviaria, oltre all’indirizzo in Via Contardo Ferrini 31 a Busto Arsizio.'
       }
     ]
+  },
+  'Acinque Ice Arena - Palaghiaccio di Varese': {
+    sourceUrl: 'https://www.acinqueicearena.com/',
+    website: 'https://www.acinqueicearena.com/',
+    email: 'info@acinqueicearena.com',
+    infoCards: [
+      {
+        label: 'Impianto',
+        value: 'Centro polisportivo nel cuore di Varese',
+        body: 'Il sito ufficiale lo presenta come punto di riferimento sportivo cittadino, non come singola palestra monotematica.'
+      },
+      {
+        label: 'Aree',
+        value: 'Ghiaccio · Acqua · Fitness · Padel',
+        body: 'La struttura unisce pista coperta 60x30, due piscine, area fitness e campi da padel in un unico complesso.'
+      },
+      {
+        label: 'Fitness',
+        value: 'Sala attrezzi 400 m²',
+        body: 'La pagina fitness cita sala attrezzi rinnovata con macchinari Technogym, cardio, isotonici e spazi funzionali seguiti da personale qualificato.'
+      },
+      {
+        label: 'Contatti',
+        value: 'info@acinqueicearena.com · 0332 1575576',
+        body: 'Il sito ufficiale riporta anche contatti dedicati per ghiaccio, acqua, fitness e padel.'
+      }
+    ],
+    presentation:
+      'Acinque Ice Arena - Palaghiaccio di Varese è un centro polisportivo a Varese che il sito ufficiale presenta come punto di riferimento per ghiaccio, acqua, fitness e padel, con una struttura rinnovata pensata sia per appassionati sia per chi cerca un impianto completo in città.',
+    highlights: [
+      'La home ufficiale non descrive Acinque Ice Arena come semplice palestra fitness, ma come centro polisportivo rinnovato con quattro aree distinte: ghiaccio, acqua, fitness e padel. Questo cambia subito il modo corretto di leggere la scheda.',
+      'Nell’area ghiaccio il sito mette in evidenza un impianto coperto 60x30 metri e pagine dedicate a pattinaggio libero, eventi e calendari. Per il nome e il posizionamento del centro, questa è la componente più identitaria della struttura.',
+      'La pagina fitness parla di una sala attrezzi da 400 m² con macchinari Technogym, cardio, isotonici e spazi funzionali, oltre a programmi personalizzati seguiti da personale qualificato. Quindi il fitness è presente, ma dentro un’offerta più ampia.',
+      'La sezione struttura aggiunge anche due piscine, sale corsi, due campi da padel e area ristoro. In pratica la scheda è utile soprattutto a chi cerca un centro completo a Varese, non solo una sala pesi tradizionale.'
+    ],
+    faqItems: [
+      {
+        question: 'Che tipo di struttura è Acinque Ice Arena secondo il sito ufficiale?',
+        answer:
+          'Il sito ufficiale presenta Acinque Ice Arena come centro polisportivo a Varese con aree dedicate a ghiaccio, acqua, fitness e padel.'
+      },
+      {
+        question: 'Perché questa scheda non va letta come semplice palestra fitness?',
+        answer:
+          'Perché il sito ufficiale descrive il complesso come palaghiaccio 2.0 e centro sportivo completo. Il fitness è una delle aree presenti, ma non esaurisce l’identità della struttura.'
+      },
+      {
+        question: 'Che cosa viene citato per l’area fitness di Acinque Ice Arena?',
+        answer:
+          'La pagina fitness parla di una sala attrezzi rinnovata da 400 m² con macchinari Technogym, area funzionale e programmi personalizzati seguiti da trainer qualificati.'
+      },
+      {
+        question: 'Quali contatti ufficiali sono indicati per Acinque Ice Arena?',
+        answer:
+          'Il sito ufficiale riporta il numero 0332 1575576, la mail generale info@acinqueicearena.com e contatti separati per ghiaccio, acqua, fitness e padel.'
+      }
+    ]
   }
 };
 

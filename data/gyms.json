@@ -23,8 +23,10 @@
     {
         "id":  "csv-2",
         "name":  "1CYCLE",
-        "discipline":  "Fitness",
+        "discipline":  "Pattinaggio",
         "disciplines":  [
+                            "Pattinaggio",
+                            "Nuoto",
                             "Fitness"
                         ],
         "address":  "Via S. Gottardo 99, 6900 Massagno, Svizzera",
@@ -448,7 +450,7 @@
         "address":  "Via Francesco Albani, 33, 21100 Varese VA, Italia",
         "city":  "",
         "phone":  "+39 0332 157 5576",
-        "hours_info":  "Lun 06-21:30 | Mar 06-21:30 | Mer 06-21:30 | Gio 06-21:30 | Ven 06-00 | Sab 08-18:30, 21:10-00 | Dom 08-13, 15:10-18:50",
+        "hours_info":  "Lun 06-21:30 | Mar 06-21:30 | Mer 06-21:30 | Gio 06-21:30 | Ven 06-21:30 | Sab 08-18:30 | Dom 08-13",
         "website":  "https://www.acinqueicearena.com/",
         "latitude":  45.832729,
         "longitude":  8.825664,
