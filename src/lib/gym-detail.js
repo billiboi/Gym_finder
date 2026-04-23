@@ -555,6 +555,9 @@ const OFFICIAL_GYM_OVERRIDES = {
   },
   'PilActive Saronno': {
     sourceUrl: 'https://pilactive.com/',
+    seoTitle: 'PilActive Saronno: Pilates Reformer, corsi e tariffe',
+    seoDescription:
+      'Scheda di PilActive Saronno con dati ufficiali: Reformer, Matwork, Yoga, mini classi, formula open annuale e contatti del centro Pilates.',
     website: 'https://pilactive.com/',
     email: 'info@pilactive.it',
     monthlyPrice: 'Open 12 mesi 324€ · Reformer 30 lezioni 399€',
@@ -608,6 +611,66 @@ const OFFICIAL_GYM_OVERRIDES = {
         question: 'Dove trovare informazioni aggiornate su corsi e contatti di PilActive Saronno?',
         answer:
           'Il sito ufficiale PilActive invita a consultare il palinsesto corsi e a contattare direttamente il centro. In questa scheda trovi i dati base per una prima verifica, ma per disponibilità e organizzazione conviene usare i canali ufficiali.'
+      }
+    ]
+  },
+  'Body Work Lugano - EMS e Vacu Gym': {
+    sourceUrl: 'https://bodyworklugano.ch/',
+    seoTitle: 'Body Work Lugano: EMS, Vacu Gym e orari',
+    seoDescription:
+      'Scopri Body Work Lugano - EMS e Vacu Gym: EMS, Vacu Gym, criosauna, prova gratuita, parcheggi riservati e orari ufficiali del centro.',
+    website: 'https://bodyworklugano.ch/',
+    monthlyPrice: 'Prova gratuita',
+    infoCards: [
+      {
+        label: 'Metodo',
+        value: 'EMS · Vacu Gym · Criosauna',
+        body: 'Il sito ufficiale presenta Body Work come centro dedicato a tecnologie rapide e mirate per fitness, benessere e longevità.'
+      },
+      {
+        label: 'EMS',
+        value: '20 minuti',
+        body: 'La pagina ufficiale spiega che le sessioni EMS puntano a stimolare fino al 90% della contrazione muscolare in tempi molto brevi.'
+      },
+      {
+        label: 'Vacu Gym',
+        value: '30 minuti',
+        body: 'La proposta unisce tapis roulant, sottovuoto ed effetto termico per lavorare su metabolismo, circolazione e tonicità.'
+      },
+      {
+        label: 'Comodità',
+        value: 'Prova gratuita e parcheggi riservati',
+        body: 'Il sito invita a prenotare una prova gratuita e segnala posti auto disponibili direttamente davanti al centro.'
+      }
+    ],
+    presentation:
+      'Body Work Lugano è un centro fitness a Lugano che il sito ufficiale presenta come struttura specializzata in EMS, Vacu Gym e criosauna, con percorsi personalizzati pensati per chi cerca risultati rapidi e allenamenti seguiti senza la logica della palestra tradizionale.',
+    highlights: [
+      'Il sito ufficiale parla di una nuova frontiera del fitness a Lugano, con un posizionamento molto chiaro: sessioni brevi, tecnologie specifiche e supporto professionale invece di frequenza libera da palestra generalista.',
+      'Tra le proposte messe in evidenza compaiono allenamento EMS, Vacu Gym e criosauna. Questo rende subito leggibile la differenza rispetto a un centro fitness classico e aiuta chi cerca un format più mirato e time-efficient.',
+      'La pagina dedicata all’EMS insiste su sessioni da 20 minuti, mentre il Vacu Gym viene presentato come trattamento da 30 minuti orientato a metabolismo, circolazione e contrasto a cellulite e ritenzione idrica.',
+      'Il sito ufficiale segnala anche prova gratuita, parcheggi riservati davanti al centro, consigli alimentari gratuiti e riconoscimento Qualitop: elementi pratici utili per chi sta confrontando opzioni a Lugano.'
+    ],
+    faqItems: [
+      {
+        question: 'Che tipo di centro è Body Work Lugano secondo il sito ufficiale?',
+        answer:
+          'Il sito ufficiale presenta Body Work Lugano come centro specializzato in EMS, Vacu Gym e criosauna, con percorsi personalizzati orientati a benessere, fitness e longevità.'
+      },
+      {
+        question: 'Quanto dura una sessione EMS a Body Work Lugano?',
+        answer:
+          'La pagina ufficiale spiega che l’allenamento EMS è strutturato su sessioni da 20 minuti, pensate per massimizzare il lavoro muscolare in tempi brevi.'
+      },
+      {
+        question: 'Body Work Lugano offre una prova iniziale?',
+        answer:
+          'Sì. Il sito ufficiale invita a prenotare una prova gratuita per conoscere il centro e i diversi percorsi disponibili.'
+      },
+      {
+        question: 'Ci sono parcheggi disponibili da Body Work Lugano?',
+        answer:
+          'Sì. La pagina ufficiale segnala parcheggi riservati direttamente davanti al centro, oltre alla sede in Via Tesserete 65 a Lugano.'
       }
     ]
   },
@@ -963,6 +1026,9 @@ const OFFICIAL_GYM_OVERRIDES = {
   },
   'Tempo Pilates': {
     sourceUrl: 'https://www.treatwell.it/salone/tempo-pilates/',
+    seoTitle: 'Tempo Pilates Busto Arsizio: Reformer, orari e contatti',
+    seoDescription:
+      'Scheda di Tempo Pilates a Busto Arsizio: studio specializzato in Reformer Pilates, team, accessibilità, orari e riferimenti ufficiali.',
     website: 'https://www.treatwell.it/salone/tempo-pilates/',
     infoCards: [
       {
@@ -1079,6 +1145,9 @@ const OFFICIAL_GYM_OVERRIDES = {
   },
   'Studio Dr. Massimo Sartorello - Chinesiologo clinico - Personal Trainer a Saronno': {
     sourceUrl: 'https://www.massimosartorello.studio/',
+    seoTitle: 'Massimo Sartorello Saronno: chinesiologo clinico e personal trainer',
+    seoDescription:
+      'Studio Dr. Massimo Sartorello a Saronno: chinesiologia clinica, personal training, nutrizione, Welcome Session da 45€ e approccio su misura.',
     website: 'https://www.massimosartorello.studio/',
     infoCards: [
       {
