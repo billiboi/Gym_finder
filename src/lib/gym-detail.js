@@ -1005,6 +1005,62 @@ const OFFICIAL_GYM_OVERRIDES = {
           'Il sito ufficiale riporta il numero 0332 1575576, la mail generale info@acinqueicearena.com e contatti separati per ghiaccio, acqua, fitness e padel.'
       }
     ]
+  },
+  'Studio Dr. Massimo Sartorello - Chinesiologo clinico - Personal Trainer a Saronno': {
+    sourceUrl: 'https://www.massimosartorello.studio/',
+    website: 'https://www.massimosartorello.studio/',
+    infoCards: [
+      {
+        label: 'Profilo',
+        value: 'Chinesiologo clinico e Personal Trainer',
+        body: 'Il sito ufficiale presenta Massimo Sartorello come professionista con approccio clinico, non come palestra tradizionale o studio generalista.'
+      },
+      {
+        label: 'Metodo',
+        value: 'Movimento + nutrizione + prevenzione',
+        body: 'La home insiste sull’integrazione tra chinesiologia, nutrizione clinica e sportiva e lavoro sul benessere nel lungo periodo.'
+      },
+      {
+        label: 'Prima sessione',
+        value: 'Welcome Session 45€',
+        body: 'La FAQ spiega che la prima sessione dura 75 minuti tra check-up, test e allenamento personalizzato; se inizi un percorso entro 72 ore, l’importo viene scalato.'
+      },
+      {
+        label: 'Sedute',
+        value: '50 min + 5/10 min finali',
+        body: 'La FAQ ufficiale indica 50 minuti effettivi di coaching, più breve chiusura per feedback e aggiornamento del programma.'
+      }
+    ],
+    presentation:
+      'Lo studio del Dr. Massimo Sartorello a Saronno è presentato dal sito ufficiale come spazio privato dedicato a chinesiologia clinica, personal training e nutrizione, con un approccio costruito su valutazione iniziale, programma su misura e lavoro integrato sulla salute fisica.',
+    highlights: [
+      'La home non comunica una palestra commerciale, ma uno studio privato dove movimento clinico, postura, ricomposizione corporea e salute metabolica vengono trattati in modo integrato. Questo è il punto giusto da capire subito leggendo la scheda.',
+      'La pagina about mette in evidenza doppia laurea magistrale, esperienza pluriennale e un profilo che unisce chinesiologia clinica, allenamento adattato e nutrizione umana. Quindi il valore dichiarato non è il volume di corsi, ma la competenza specialistica.',
+      'La sezione personal training descrive percorsi per dimagrimento, forza, postura, benessere psicofisico, allenamento adattato e schede personalizzate. È una proposta più vicina a consulenza e lavoro individuale che a frequenza libera da palestra tradizionale.',
+      'La FAQ ufficiale chiarisce anche la struttura commerciale: Welcome Session da 45€, nessun costo nascosto, percorsi costruiti in base a persone, frequenza e durata. Questo rende la scheda più utile per chi vuole capire metodo e impostazione prima del contatto.'
+    ],
+    faqItems: [
+      {
+        question: 'Che tipo di struttura è lo studio di Massimo Sartorello secondo il sito ufficiale?',
+        answer:
+          'Il sito ufficiale presenta lo studio come spazio privato a Saronno dedicato a chinesiologia clinica, personal training e nutrizione, con approccio individuale e non da palestra commerciale.'
+      },
+      {
+        question: 'Come funziona la prima sessione con Massimo Sartorello?',
+        answer:
+          'La FAQ ufficiale parla di una Welcome Session da 75 minuti con check-up, test di mobilità e forza e allenamento personalizzato al costo di 45 euro; se inizi un percorso entro 72 ore, l’importo viene scalato dal pacchetto.'
+      },
+      {
+        question: 'Quanto dura una seduta standard nello studio di Saronno?',
+        answer:
+          'La FAQ indica 50 minuti effettivi di coaching, seguiti da 5-10 minuti per feedback e aggiornamento del programma.'
+      },
+      {
+        question: 'Quali obiettivi vengono messi in evidenza nel sito di Massimo Sartorello?',
+        answer:
+          'Le pagine ufficiali citano dimagrimento, postura, forza, massa muscolare, benessere psicofisico, recupero dopo infortuni e percorsi integrati con nutrizione clinica e sportiva.'
+      }
+    ]
   }
 };
 
