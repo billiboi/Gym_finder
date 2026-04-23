@@ -185,8 +185,8 @@
           />
         </div>
 
-        <div class="flex flex-col gap-3 p-4 lg:justify-between">
-          <div class="space-y-3">
+        <div class="flex flex-col gap-4 p-4">
+          <div class="space-y-4">
             <div class="flex flex-wrap gap-2">
               {#each disciplines as discipline}
                 <span class="rounded-full bg-slate-900 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-white sc-badge sc-badge--accent">
@@ -211,9 +211,9 @@
                 <p class="mt-2 text-sm font-semibold text-slate-900 sc-detail-value">{cityLabel}</p>
               </div>
             </div>
-          </div>
 
-          <p class="text-sm leading-7 text-slate-600 sm:text-[0.98rem] sc-detail-copy">{presentation}</p>
+            <p class="text-sm leading-7 text-slate-600 sm:text-[0.98rem] sc-detail-copy">{presentation}</p>
+          </div>
         </div>
       </div>
 
