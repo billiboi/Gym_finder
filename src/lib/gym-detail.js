@@ -892,6 +892,62 @@ const OFFICIAL_GYM_OVERRIDES = {
           'Il sito indica la sede in Via Donatello 1 a Varese e riporta la mail arashi21100@gmail.com, oltre ai numeri 392 8111970 e 392 3684001.'
       }
     ]
+  },
+  'Tempo Pilates': {
+    sourceUrl: 'https://www.treatwell.it/salone/tempo-pilates/',
+    website: 'https://www.treatwell.it/salone/tempo-pilates/',
+    infoCards: [
+      {
+        label: 'Specialità',
+        value: 'Reformer Pilates',
+        body: 'La scheda Treatwell indica esplicitamente lo studio come specializzato in Reformer Pilates.'
+      },
+      {
+        label: 'Team',
+        value: 'Valentina',
+        body: 'Nella sezione dedicata al team compare Valentina, indicata come riferimento dello studio.'
+      },
+      {
+        label: 'Ambiente',
+        value: 'Curato e professionale',
+        body: 'Tra i punti forti riportati dalla scheda compaiono ambiente curato e approccio professionale.'
+      },
+      {
+        label: 'Accesso',
+        value: 'Comodo con bus e treno',
+        body: 'Treatwell segnala vicinanza a fermata autobus e stazione ferroviaria, utile per chi si muove in zona Busto Arsizio.'
+      }
+    ],
+    presentation:
+      'Tempo Pilates è uno studio Pilates a Busto Arsizio che la scheda Treatwell presenta come spazio specializzato dove ritrovare il ritmo giusto per corpo e mente, con focus sul Reformer Pilates e un’impostazione curata e professionale.',
+    highlights: [
+      'La scheda Treatwell di Tempo Pilates lo descrive come studio specializzato, non come palestra generalista. Questo aiuta subito a capire che il posizionamento è centrato sul Pilates e su un contesto più raccolto e guidato.',
+      'Tra i punti forti viene citato in modo esplicito il Reformer Pilates. È l’informazione più utile per distinguere lo studio da corsi Pilates a corpo libero o da centri fitness con offerta mista.',
+      'Il team indicato nella pagina è rappresentato da Valentina, descritta come professionista che accoglie ogni cliente con gentilezza e attenzione. Per chi cerca uno studio più personale, è un segnale concreto.',
+      'Treatwell segnala anche la vicinanza a fermata autobus e stazione ferroviaria. È un dettaglio pratico utile per chi sta confrontando studi Pilates a Busto Arsizio con criteri di accessibilità oltre che di metodo.'
+    ],
+    faqItems: [
+      {
+        question: 'Che tipo di studio è Tempo Pilates secondo la scheda Treatwell?',
+        answer:
+          'La scheda Treatwell presenta Tempo Pilates come studio specializzato a Busto Arsizio, orientato al benessere di corpo e mente e focalizzato sul metodo Pilates.'
+      },
+      {
+        question: 'In cosa è specializzato Tempo Pilates?',
+        answer:
+          'Tra i punti forti indicati su Treatwell compare in modo esplicito il Reformer Pilates, che risulta la specializzazione più caratterizzante dello studio.'
+      },
+      {
+        question: 'Chi compare come riferimento del team di Tempo Pilates?',
+        answer:
+          'Nella sezione team della scheda Treatwell compare Valentina, presentata come figura che accoglie i clienti con professionalità e attenzione.'
+      },
+      {
+        question: 'Tempo Pilates è comodo da raggiungere con i mezzi?',
+        answer:
+          'Sì. La scheda Treatwell segnala la vicinanza a una fermata dell’autobus e a una stazione ferroviaria, oltre all’indirizzo in Via Contardo Ferrini 31 a Busto Arsizio.'
+      }
+    ]
   }
 };
 
