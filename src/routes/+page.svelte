@@ -110,7 +110,8 @@
   $: disciplineCount = disciplines.length;
   $: locationReady = Boolean(userLocation);
   $: isBootstrapping = loadingGyms || loadingDisciplines;
-  $: quickSearchSuggestions = buildQuickSuggestions(gyms, disciplines, filterText);
+  $: quickSuggestionPool = buildQuickSuggestionPool(gyms, disciplines);
+  $: quickSearchSuggestions = filterQuickSuggestions(quickSuggestionPool, filterText);
 
   let csvGymsCache = null;
 
@@ -299,13 +300,15 @@
     return out;
   }
 
-  function buildQuickSuggestions(allGyms, allDisciplines, query) {
-    const q = String(query || '').trim().toLowerCase();
-    if (!q || q.length < 2) return [];
-
+  function buildQuickSuggestionPool(allGyms, allDisciplines) {
     const names = allGyms.map((gym) => displayName(gym.name)).filter(Boolean);
     const cities = allGyms.map((gym) => displayName(gym.city)).filter(Boolean);
-    const pool = dedupeDisciplines([...allDisciplines, ...cities, ...names]);
+    return dedupeDisciplines([...allDisciplines, ...cities, ...names]);
+  }
+
+  function filterQuickSuggestions(pool, query) {
+    const q = String(query || '').trim().toLowerCase();
+    if (!q || q.length < 2) return [];
 
     return pool.filter((value) => value.toLowerCase().includes(q)).slice(0, 6);
   }
@@ -369,13 +372,12 @@
     locationError = '';
 
     navigator.geolocation.getCurrentPosition(
-      async (position) => {
+      (position) => {
         userLocation = {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude
         };
         locating = false;
-        await loadGyms();
       },
       (error) => {
         locating = false;
@@ -388,7 +390,6 @@
   function clearLocation() {
     userLocation = null;
     locationError = '';
-    loadGyms();
   }
 
   async function ensureLeaflet() {
@@ -652,10 +653,11 @@
 
     <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-6">
       <input
+        id="gym-search"
+        name="gym-search"
         class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none ring-slate-900 transition focus:ring-2 lg:col-span-2 sc-input sc-filter-field"
         placeholder="Cerca per nome o zona"
         bind:value={filterText}
-        on:input={loadGyms}
         list="quick-search-suggestions"
       />
       <datalist id="quick-search-suggestions">
@@ -665,9 +667,10 @@
       </datalist>
 
       <select
+        id="discipline-filter"
+        name="discipline-filter"
         class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
         bind:value={filterDiscipline}
-        on:change={loadGyms}
         disabled={loadingDisciplines}
       >
         <option value="">Tutte le discipline</option>
@@ -677,9 +680,10 @@
       </select>
 
       <select
+        id="open-state-filter"
+        name="open-state-filter"
         class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
         bind:value={filterOpenState}
-        on:change={loadGyms}
       >
         <option value="all">Aperte e chiuse</option>
         <option value="open">Aperte adesso</option>
@@ -687,11 +691,11 @@
       </select>
 
       <label class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 sc-pill sc-filter-toggle">
-        <input type="checkbox" bind:checked={nearbyOnly} on:change={loadGyms} />
+        <input id="nearby-only" name="nearby-only" type="checkbox" bind:checked={nearbyOnly} />
         Nel raggio
       </label>
 
-      <select class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field" bind:value={locationRadius} on:change={loadGyms}>
+      <select id="radius-filter" name="radius-filter" class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field" bind:value={locationRadius}>
         <option value={5}>5 km</option>
         <option value={10}>10 km</option>
         <option value={20}>20 km</option>
