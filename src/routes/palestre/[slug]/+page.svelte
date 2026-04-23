@@ -317,14 +317,6 @@
         {/if}
 
         <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-5">
-          <div class="max-w-3xl">
-            <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Presentazione</p>
-            <h2 class="mt-2 text-2xl font-bold text-slate-900">Cosa sapere prima di contattarla</h2>
-            <p class="mt-4 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">{presentation}</p>
-          </div>
-        </section>
-
-        <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-5">
           <div class="max-w-4xl">
             <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Verifiche rapide</p>
             <h2 class="mt-2 text-2xl font-bold text-slate-900">Cosa puoi capire prima di contattare la struttura</h2>
