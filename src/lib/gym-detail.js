@@ -486,6 +486,9 @@ const OFFICIAL_GYM_OVERRIDES = {
   "20' Training Lab Varese": OFFICIAL_20TRAININGLAB_OVERRIDE,
   'FitActive Mendrisio': {
     sourceUrl: 'https://www.fitactive.it/i-club/Mendrisio.php',
+    seoTitle: 'FitActive Mendrisio: palestra 24/7, prezzi e contatti',
+    seoDescription:
+      'Scheda completa di FitActive Mendrisio: palestra fitness 24/7, formula da 49,90 CHF al mese, contatti, posizione e dettagli ufficiali del club.',
     monthlyPrice: 'Da 49,90 CHF al mese',
     preSaleHours: 'Lun-Ven 10:00-20:00 · Sab 10:00-18:00',
     email: 'mendrisio@fitactive.ch',
@@ -610,6 +613,9 @@ const OFFICIAL_GYM_OVERRIDES = {
   },
   'NonStop Gym Lugano (The CLUB GetFIT)': {
     sourceUrl: 'https://www.nonstopgym.com/nostri-club/lugano/',
+    seoTitle: 'NonStop Gym Lugano: palestra 24/7, prezzi e servizi',
+    seoDescription:
+      'Scopri NonStop Gym Lugano: palestra aperta 24/7, abbonamenti da 49 CHF al mese, Boost Zone, attrezzature e contatti ufficiali.',
     website: 'https://www.nonstopgym.com/nostri-club/lugano/',
     monthlyPrice: 'Annuale 49 CHF/mese · Mensile 69 CHF/mese',
     infoCards: [
@@ -667,6 +673,9 @@ const OFFICIAL_GYM_OVERRIDES = {
   },
   'Activ Fitness Giubiasco': {
     sourceUrl: 'https://www.activfitness.ch/it/studios/activ-fitness-giubiasco/',
+    seoTitle: 'Activ Fitness Giubiasco: corsi, sauna e palestra',
+    seoDescription:
+      'Scheda di Activ Fitness Giubiasco con dati ufficiali: 800 m², oltre 50 postazioni, più di 25 corsi a settimana, sauna, biosauna e contatti.',
     website: 'https://www.activfitness.ch/it/studios/activ-fitness-giubiasco/',
     infoCards: [
       {
@@ -893,6 +902,65 @@ const OFFICIAL_GYM_OVERRIDES = {
       }
     ]
   },
+  'Spartan Gym Busto Arsizio': {
+    sourceUrl: 'https://spartangymbustoarsizio.it/',
+    seoTitle: 'Spartan Gym Busto Arsizio: palestra, prezzi e orari',
+    seoDescription:
+      'Scopri Spartan Gym Busto Arsizio: palestra fitness e performance, abbonamenti da 37€ al mese, personal training, parcheggio privato e orari completi.',
+    website: 'https://spartangymbustoarsizio.it/',
+    infoCards: [
+      {
+        label: 'Abbonamenti',
+        value: 'Base da 37€/mese',
+        body: 'Il sito ufficiale pubblica formule base da 37 euro al mese annuale e opzioni mensili, trimestrali e semestrali.'
+      },
+      {
+        label: 'Allenamenti',
+        value: 'Trainer e programmi inclusi',
+        body: 'È presente anche una linea di abbonamenti con allenamenti seguiti e programmi inclusi, con annuale da 45 euro al mese.'
+      },
+      {
+        label: 'Extra',
+        value: 'Ingresso singolo 12€ · PT 25€/h',
+        body: 'La pagina ufficiale mostra anche tariffa ingresso singolo e personal training, utile per chi vuole capire subito la flessibilità commerciale.'
+      },
+      {
+        label: 'Comodità',
+        value: 'Parcheggio privato adiacente',
+        body: 'Il sito evidenzia un parcheggio privato accessibile agli iscritti tramite badge, con ingresso da Via Ugo Foscolo.'
+      }
+    ],
+    presentation:
+      'Spartan Gym Busto Arsizio è una palestra fitness e performance a Busto Arsizio che il sito ufficiale presenta come struttura focalizzata su allenamento, programmi seguiti e formule chiare, con orari ampi, personal training e parcheggio privato adiacente.',
+    highlights: [
+      'Il sito ufficiale di Spartan Gym Busto Arsizio si presenta in modo molto diretto come palestra fitness e performance. Per chi cerca una struttura concreta e orientata all’allenamento, il posizionamento è leggibile subito.',
+      'Uno dei segnali più forti lato SEO e conversione è la trasparenza sui prezzi: il sito mostra abbonamenti base e formule con trainer e programmi inclusi, con annuale base da 37 euro al mese e annuale guidato da 45 euro al mese.',
+      'La scheda ufficiale riporta anche ingresso singolo a 12 euro e personal training a 25 euro l’ora. Questo aiuta molto chi sta confrontando Busto Arsizio non solo per branding, ma per accessibilità economica e flessibilità.',
+      'La presenza di parcheggio privato adiacente, accessibile tramite badge, è un dettaglio pratico importante. In molte ricerche locali su palestra a Busto Arsizio, questo tipo di informazione può spostare il click.'
+    ],
+    faqItems: [
+      {
+        question: 'Quanto costa Spartan Gym Busto Arsizio secondo il sito ufficiale?',
+        answer:
+          'Il sito ufficiale mostra abbonamenti base da 37 euro al mese nella formula annuale, oltre a formule mensili, trimestrali e semestrali e a una linea con trainer e programmi inclusi da 45 euro al mese annuale.'
+      },
+      {
+        question: 'Spartan Gym Busto Arsizio offre personal training?',
+        answer:
+          'Sì. Il sito ufficiale indica anche personal training a 25 euro l’ora, oltre agli abbonamenti con programmi di allenamento inclusi.'
+      },
+      {
+        question: 'Ci sono formule flessibili per provare Spartan Gym Busto Arsizio?',
+        answer:
+          'Sì. La pagina ufficiale riporta anche ingresso singolo a 12 euro, utile per chi vuole provare la struttura prima di scegliere un abbonamento.'
+      },
+      {
+        question: 'Spartan Gym Busto Arsizio ha parcheggio?',
+        answer:
+          'Sì. Il sito ufficiale evidenzia un parcheggio privato adiacente alla struttura, accessibile agli iscritti tramite badge.'
+      }
+    ]
+  },
   'Tempo Pilates': {
     sourceUrl: 'https://www.treatwell.it/salone/tempo-pilates/',
     website: 'https://www.treatwell.it/salone/tempo-pilates/',
@@ -951,6 +1019,9 @@ const OFFICIAL_GYM_OVERRIDES = {
   },
   'Acinque Ice Arena - Palaghiaccio di Varese': {
     sourceUrl: 'https://www.acinqueicearena.com/',
+    seoTitle: 'Acinque Ice Arena Varese: palaghiaccio, pattinaggio e orari',
+    seoDescription:
+      'Scheda di Acinque Ice Arena - Palaghiaccio di Varese: pattinaggio, ghiaccio, fitness, nuoto, contatti e orari del centro sportivo.',
     website: 'https://www.acinqueicearena.com/',
     email: 'info@acinqueicearena.com',
     infoCards: [

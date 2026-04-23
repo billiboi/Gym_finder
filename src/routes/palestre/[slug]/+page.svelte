@@ -71,7 +71,12 @@
   const hasPhone = phone && phone !== 'Non disponibile';
   const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
   const pageUrl = absoluteUrl(`/palestre/${data.gymSlug}`);
-  const seoDescription = `${fixGymText(gym?.name)}: ${primaryDiscipline} a ${address}. ${presentation}`;
+  const seoTitle = officialOverride?.seoTitle
+    ? `${officialOverride.seoTitle} | ${SITE_NAME}`
+    : `${fixGymText(gym?.name)} | ${SITE_NAME}`;
+  const seoDescription =
+    officialOverride?.seoDescription ||
+    `${fixGymText(gym?.name)}: ${primaryDiscipline} a ${address}. ${presentation}`;
   const claimHref = `/rivendica-scheda?gym=${encodeURIComponent(fixGymText(gym?.name))}&url=${encodeURIComponent(pageUrl)}&reason=${encodeURIComponent('Aggiornamento o rivendicazione scheda')}`;
 
   const detailStructuredData = [
@@ -147,16 +152,16 @@
 </script>
 
 <svelte:head>
-  <title>{fixGymText(gym?.name)} | {SITE_NAME}</title>
+  <title>{seoTitle}</title>
   <meta name="description" content={seoDescription} />
   <meta name="robots" content={isIndexable ? 'index,follow' : 'noindex,follow'} />
   <link rel="canonical" href={pageUrl} />
-  <meta property="og:title" content={`${fixGymText(gym?.name)} | ${SITE_NAME}`} />
+  <meta property="og:title" content={seoTitle} />
   <meta property="og:description" content={seoDescription} />
   <meta property="og:type" content="article" />
   <meta property="og:url" content={pageUrl} />
   <meta property="og:image" content={imageSrc.startsWith('http') ? imageSrc : absoluteUrl(imageSrc)} />
-  <meta name="twitter:title" content={`${fixGymText(gym?.name)} | ${SITE_NAME}`} />
+  <meta name="twitter:title" content={seoTitle} />
   <meta name="twitter:description" content={seoDescription} />
   <meta name="twitter:image" content={imageSrc.startsWith('http') ? imageSrc : absoluteUrl(imageSrc)} />
   {@html detailStructuredDataScript}
