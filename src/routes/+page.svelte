@@ -301,16 +301,67 @@
   }
 
   function buildQuickSuggestionPool(allGyms, allDisciplines) {
-    const names = allGyms.map((gym) => displayName(gym.name)).filter(Boolean);
-    const cities = allGyms.map((gym) => displayName(gym.city)).filter(Boolean);
-    return dedupeDisciplines([...allDisciplines, ...cities, ...names]);
+    const pool = new Map();
+
+    for (const gym of allGyms) {
+      const name = displayName(gym.name);
+      if (name && !pool.has(name.toLowerCase())) {
+        pool.set(name.toLowerCase(), { value: name, type: 'gym' });
+      }
+    }
+
+    for (const discipline of dedupeDisciplines(allDisciplines)) {
+      const value = displayName(discipline);
+      if (value && !pool.has(value.toLowerCase())) {
+        pool.set(value.toLowerCase(), { value, type: 'discipline' });
+      }
+    }
+
+    for (const gym of allGyms) {
+      const city = displayName(gym.city);
+      if (city && !pool.has(city.toLowerCase())) {
+        pool.set(city.toLowerCase(), { value: city, type: 'city' });
+      }
+    }
+
+    return [...pool.values()];
   }
 
   function filterQuickSuggestions(pool, query) {
     const q = String(query || '').trim().toLowerCase();
     if (!q || q.length < 2) return [];
 
-    return pool.filter((value) => value.toLowerCase().includes(q)).slice(0, 6);
+    const typeWeight = {
+      gym: 0,
+      discipline: 1,
+      city: 2
+    };
+
+    return pool
+      .map((entry) => {
+        const text = entry.value.toLowerCase();
+        const startsWith = text.startsWith(q);
+        const wordBoundary = new RegExp(`(^|\\s)${q}`).test(text);
+        const includes = text.includes(q);
+
+        if (!includes) return null;
+
+        return {
+          ...entry,
+          score: startsWith ? 0 : wordBoundary ? 1 : 2,
+          length: entry.value.length,
+          typeScore: typeWeight[entry.type] ?? 9
+        };
+      })
+      .filter(Boolean)
+      .sort((a, b) => {
+        if (a.score !== b.score) return a.score - b.score;
+        if (a.typeScore !== b.typeScore) return a.typeScore - b.typeScore;
+        if (a.length !== b.length) return a.length - b.length;
+        return a.value.localeCompare(b.value, 'it');
+      })
+      .slice(0, 6)
+      .map((entry) => entry.value);
   }
 
   async function getCsvGyms() {
