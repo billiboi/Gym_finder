@@ -1,5 +1,5 @@
 export const SITE_NAME = 'Palestre in Zona';
-export const SITE_URL = 'https://palestreinzona.it';
+export const SITE_URL = 'https://www.palestreinzona.it';
 export const SITE_DESCRIPTION =
   'Palestre in Zona ti aiuta a trovare palestre vicine con filtri per disciplina, posizione e distanza.';
 export const SITE_CONTACT_EMAIL = 'vdauria94@gmail.com';

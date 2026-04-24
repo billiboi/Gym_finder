@@ -18,6 +18,12 @@ export async function GET() {
   const indexableGyms = gyms.filter((gym) => isIndexableGym(gym));
   const urls = [
     `${SITE_URL}/`,
+    `${SITE_URL}/zone`,
+    `${SITE_URL}/discipline`,
+    `${SITE_URL}/contatti`,
+    `${SITE_URL}/per-le-palestre`,
+    `${SITE_URL}/privacy`,
+    `${SITE_URL}/rivendica-scheda`,
     ...SEO_LOCATIONS.map((location) => `${SITE_URL}/zone/${location.slug}`),
     ...SEO_DISCIPLINES.map((discipline) => `${SITE_URL}/discipline/${discipline.slug}`),
     ...indexableGyms.map((gym) => `${SITE_URL}/palestre/${slugifyGym(gym)}`)

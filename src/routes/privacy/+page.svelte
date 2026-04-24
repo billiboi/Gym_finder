@@ -1,16 +1,31 @@
 <script>
-  import { SITE_NAME, absoluteUrl } from '$lib/site';
+  import { SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
 
   const pageUrl = absoluteUrl('/privacy');
   const title = `Privacy | ${SITE_NAME}`;
   const description =
     'Informativa privacy essenziale di Palestre in Zona per utenti, visitatori e segnalazioni inviate al progetto.';
+  const structuredDataScript = jsonLdScript({
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: title,
+    description,
+    url: pageUrl
+  });
 </script>
 
 <svelte:head>
   <title>{title}</title>
   <meta name="description" content={description} />
+  <meta name="robots" content="index,follow" />
   <link rel="canonical" href={pageUrl} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={pageUrl} />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  {@html structuredDataScript}
 </svelte:head>
 
 <div class="min-h-screen w-full sc-page">

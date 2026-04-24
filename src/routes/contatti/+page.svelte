@@ -1,16 +1,31 @@
 <script>
-  import { SITE_CONTACT_EMAIL, SITE_CONTACT_MAILTO, SITE_NAME, absoluteUrl } from '$lib/site';
+  import { SITE_CONTACT_EMAIL, SITE_CONTACT_MAILTO, SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
 
   const pageUrl = absoluteUrl('/contatti');
   const title = `Contatti | ${SITE_NAME}`;
   const description =
     'Contatta Palestre in Zona per segnalazioni, aggiornamenti schede, richieste commerciali o collaborazioni.';
+  const structuredDataScript = jsonLdScript({
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    name: title,
+    description,
+    url: pageUrl
+  });
 </script>
 
 <svelte:head>
   <title>{title}</title>
   <meta name="description" content={description} />
+  <meta name="robots" content="index,follow" />
   <link rel="canonical" href={pageUrl} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={pageUrl} />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  {@html structuredDataScript}
 </svelte:head>
 
 <div class="min-h-screen w-full sc-page">

@@ -1,5 +1,5 @@
 <script>
-  import { SITE_CONTACT_EMAIL, SITE_NAME, absoluteUrl } from '$lib/site';
+  import { SITE_CONTACT_EMAIL, SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
 
   export let data;
   export let form;
@@ -7,7 +7,14 @@
   const pageUrl = absoluteUrl('/rivendica-scheda');
   const title = `Rivendica una scheda | ${SITE_NAME}`;
   const description =
-    'Richiedi l"aggiornamento o la rivendicazione di una pagina palestra con un form interno pensato per il progetto.';
+    "Richiedi l'aggiornamento o la rivendicazione di una pagina palestra con un form interno pensato per il progetto.";
+  const structuredDataScript = jsonLdScript({
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: title,
+    description,
+    url: pageUrl
+  });
 
   $: currentValues = {
     gym_name: form?.values?.gym_name ?? data.prefill.gym ?? '',
@@ -46,7 +53,15 @@
 <svelte:head>
   <title>{title}</title>
   <meta name="description" content={description} />
+  <meta name="robots" content="index,follow" />
   <link rel="canonical" href={pageUrl} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={pageUrl} />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  {@html structuredDataScript}
 </svelte:head>
 
 <div class="min-h-screen w-full sc-page">
