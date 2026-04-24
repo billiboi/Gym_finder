@@ -444,6 +444,28 @@ body {
     rgba(255, 255, 255, 0.64);
 }
 
+.sc-filter-panel .sc-filter-field,
+.sc-filter-panel .sc-filter-toggle {
+  border-color: rgba(31, 92, 74, 0.1) !important;
+  background: rgba(255, 255, 255, 0.88) !important;
+}
+
+.sc-filter-panel .sc-filter-field {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 8px 18px rgba(31, 54, 45, 0.04);
+}
+
+.sc-filter-panel .sc-filter-toggle {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    0 8px 18px rgba(31, 54, 45, 0.04);
+}
+
+.sc-filter-panel .sc-filter-chip {
+  background: rgba(255, 255, 255, 0.82);
+}
+
 .sc-loading-pill {
   border: 1px solid rgba(31, 92, 74, 0.14);
   background: rgba(31, 92, 74, 0.08);
