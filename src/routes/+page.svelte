@@ -748,7 +748,7 @@
 
   <section class="reveal mt-5 rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sm:p-5 sc-panel sc-filter-panel">
     <div class="sc-filter-shell">
-      <div class="mb-5 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+      <div class="mb-5 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div class="max-w-2xl">
           <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Affina i risultati</p>
           <h2 class="mt-2 text-xl font-bold leading-tight text-slate-900 sm:text-2xl">Trova la struttura giusta senza perdere tempo</h2>
@@ -756,27 +756,40 @@
             Cerca per nome o zona, scegli la disciplina e usa la distanza solo quando ti serve davvero.
           </p>
         </div>
-        <div class="flex flex-wrap gap-2">
-          <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">
-            {filterDiscipline || 'Tutte le discipline'}
-          </span>
-          <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">
-            {nearbyOnly ? `Nel raggio ${locationRadius} km` : 'Senza raggio'}
-          </span>
-          <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">
-            {filterOpenState === 'open' ? 'Aperte adesso' : filterOpenState === 'closed' ? 'Chiuse adesso' : 'Aperte e chiuse'}
-          </span>
+        <div class="flex flex-col gap-2 lg:items-end">
+          <div class="flex flex-wrap gap-2">
+            <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">
+              {filterDiscipline || 'Tutte le discipline'}
+            </span>
+            <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">
+              {nearbyOnly ? `Nel raggio ${locationRadius} km` : 'Senza raggio'}
+            </span>
+            <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">
+              {filterOpenState === 'open' ? 'Aperte adesso' : filterOpenState === 'closed' ? 'Chiuse adesso' : 'Aperte e chiuse'}
+            </span>
+          </div>
+          <div class="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+            <button type="button" class="rounded-2xl bg-slate-900 px-4 py-3 text-sm font-bold text-white hover:bg-slate-800 sc-button" on:click={detectLocation} disabled={locating}>
+              {locating ? 'Rilevamento posizione...' : 'Usa la mia posizione'}
+            </button>
+            {#if locationReady}
+              <button type="button" class="rounded-2xl bg-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-300 sc-button-muted" on:click={clearLocation}>
+                Rimuovi posizione
+              </button>
+            {/if}
+          </div>
         </div>
       </div>
 
-      <div class="grid gap-3 md:grid-cols-2 xl:grid-cols-12">
-          <label class="grid gap-2 xl:col-span-4">
-            <span class="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-slate-500">Nome o zona</span>
+      <div class="rounded-[1.8rem] p-4 sm:p-5 sc-filter-surface">
+        <div class="grid gap-4 lg:grid-cols-[minmax(0,1.45fr)_minmax(280px,0.55fr)] lg:items-end">
+          <label class="grid gap-2">
+            <span class="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-slate-500">Ricerca principale</span>
             <input
               id="gym-search"
               name="gym-search"
-              class="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
-              placeholder="Cerca per nome o zona"
+              class="rounded-[1.7rem] border border-slate-200 bg-white px-5 py-4 text-base outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field sc-filter-search"
+              placeholder="Cerca per nome, città o zona"
               bind:value={filterText}
               list="quick-search-suggestions"
             />
@@ -787,7 +800,18 @@
             {/each}
           </datalist>
 
-          <label class="grid gap-2 xl:col-span-3">
+          <div class="rounded-[1.6rem] p-4 sc-filter-local-card">
+            <p class="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-slate-500">Ricerca locale</p>
+            <label class="mt-3 inline-flex min-h-[3.1rem] w-full items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 sc-pill sc-filter-toggle">
+              <input id="nearby-only" name="nearby-only" type="checkbox" bind:checked={nearbyOnly} />
+              Attiva ricerca nel raggio
+            </label>
+            <p class="mt-3 text-sm leading-6 text-slate-600">Usala quando vuoi dare priorità alle palestre più vicine senza sporcare il resto della ricerca.</p>
+          </div>
+        </div>
+
+        <div class="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          <label class="grid gap-2">
             <span class="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-slate-500">Disciplina</span>
             <select
               id="discipline-filter"
@@ -803,7 +827,7 @@
             </select>
           </label>
 
-          <label class="grid gap-2 xl:col-span-2">
+          <label class="grid gap-2">
             <span class="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-slate-500">Stato</span>
             <select
               id="open-state-filter"
@@ -817,15 +841,7 @@
             </select>
           </label>
 
-          <label class="grid gap-2 xl:col-span-3">
-            <span class="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-slate-500">Ricerca locale</span>
-            <span class="inline-flex min-h-[3.1rem] items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 sc-pill sc-filter-toggle">
-              <input id="nearby-only" name="nearby-only" type="checkbox" bind:checked={nearbyOnly} />
-              Attiva ricerca nel raggio
-            </span>
-          </label>
-
-          <label class="grid gap-2 xl:col-span-2">
+          <label class="grid gap-2">
             <span class="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-slate-500">Distanza massima</span>
             <select
               id="radius-filter"
@@ -840,33 +856,30 @@
               <option value={50}>50 km</option>
             </select>
           </label>
-      </div>
 
-      <div class="mt-4 flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
-        <div class="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
-          <button type="button" class="rounded-2xl bg-slate-900 px-4 py-3 text-sm font-bold text-white hover:bg-slate-800 sc-button" on:click={detectLocation} disabled={locating}>
-            {locating ? 'Rilevamento posizione...' : 'Usa la mia posizione'}
-          </button>
-          {#if locationReady}
-            <button type="button" class="rounded-2xl bg-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-300 sc-button-muted" on:click={clearLocation}>
-              Rimuovi posizione
-            </button>
-          {/if}
-        </div>
-
-        <div class="flex flex-wrap gap-2">
-          {#if locationReady}
-            <span class="rounded-full px-3 py-1 text-xs font-semibold text-emerald-700 sc-filter-status">Ordinamento per vicinanza attivo</span>
-          {/if}
-          {#if isBootstrapping}
-            <span class="rounded-full sc-loading-pill px-3 py-1 text-xs font-semibold">Aggiornamento risultati...</span>
-          {/if}
+          <div class="grid gap-2">
+            <span class="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-slate-500">Stato ricerca</span>
+            <div class="flex min-h-[3.25rem] flex-wrap items-center gap-2 rounded-2xl px-3 py-2 sc-filter-meta">
+              {#if locationReady}
+                <span class="rounded-full px-3 py-1 text-xs font-semibold text-emerald-700 sc-filter-status">Ordinamento per vicinanza attivo</span>
+              {/if}
+              {#if isBootstrapping}
+                <span class="rounded-full sc-loading-pill px-3 py-1 text-xs font-semibold">Aggiornamento risultati...</span>
+              {/if}
+              {#if !locationReady && !isBootstrapping}
+                <span class="text-sm font-medium text-slate-500">Nessun stato attivo</span>
+              {/if}
+            </div>
+          </div>
         </div>
       </div>
 
       {#if quickSearchSuggestions.length}
         <div class="mt-4 rounded-[1.35rem] px-4 py-4 sc-filter-suggestions">
-          <p class="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-slate-500">Suggerimenti rapidi</p>
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <p class="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-slate-500">Suggerimenti rapidi</p>
+            <p class="text-sm text-slate-500">Tocca una località o un nome frequente per compilare subito la ricerca.</p>
+          </div>
           <div class="mt-3 flex flex-wrap gap-2">
             {#each quickSearchSuggestions as suggestion}
               <button
