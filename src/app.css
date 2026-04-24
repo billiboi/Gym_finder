@@ -145,14 +145,49 @@ body {
 
 .sc-hero h1 {
   letter-spacing: -0.03em;
-  max-width: 11ch;
+  max-width: 9ch;
 }
 
 .sc-hero {
   background:
-    radial-gradient(circle at top right, rgba(214, 207, 176, 0.32), transparent 34%),
+    radial-gradient(circle at top right, rgba(214, 207, 176, 0.28), transparent 34%),
+    radial-gradient(circle at 78% 70%, rgba(31, 92, 74, 0.08), transparent 28%),
     linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(251, 250, 245, 0.92)),
     rgba(255, 255, 255, 0.72) !important;
+}
+
+.sc-hero-copy {
+  min-width: 0;
+}
+
+.sc-hero-benefits {
+  max-width: 58rem;
+}
+
+.sc-hero-benefit {
+  border: 1px solid rgba(31, 92, 74, 0.08);
+  background: rgba(255, 255, 255, 0.54);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+.sc-hero-side {
+  border: 1px solid rgba(31, 92, 74, 0.1);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(248, 246, 238, 0.88)),
+    rgba(255, 255, 255, 0.65);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 18px 34px rgba(31, 54, 45, 0.08);
+}
+
+.sc-hero-shortcut {
+  border: 1px solid rgba(31, 92, 74, 0.09);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(249, 247, 240, 0.84)),
+    rgba(255, 255, 255, 0.7);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    0 10px 24px rgba(31, 54, 45, 0.06);
 }
 
 .sc-pill {
@@ -192,9 +227,11 @@ body {
 }
 
 .sc-stat {
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: #21312b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background:
+    linear-gradient(160deg, rgba(24, 39, 34, 0.98), rgba(41, 65, 56, 0.96));
   color: white;
+  box-shadow: 0 18px 30px rgba(20, 31, 27, 0.22);
 }
 
 .sc-stat--accent {
@@ -606,6 +643,16 @@ body {
     max-width: 100%;
     font-size: 2.15rem !important;
     line-height: 1.02;
+  }
+
+  .sc-hero-side {
+    border-radius: 1.45rem !important;
+    padding: 0.95rem !important;
+  }
+
+  .sc-hero-shortcut,
+  .sc-hero-benefit {
+    border-radius: 1.15rem !important;
   }
 
   .sc-filter-panel,
