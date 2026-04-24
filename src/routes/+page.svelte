@@ -905,6 +905,63 @@
     </div>
   </section>
 
+  <section class="reveal mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sm:p-6 sc-panel sc-biz-panel">
+    <div class="grid gap-5 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)] lg:items-stretch">
+      <div>
+        <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Per le palestre</p>
+        <h2 class="mt-2 max-w-2xl text-2xl font-bold leading-tight text-slate-900 sm:text-3xl">Trasforma la tua scheda in un canale che porta fiducia, richieste e dati più corretti</h2>
+        <p class="mt-3 max-w-2xl text-sm leading-7 text-slate-600 sm:text-base">
+          Se gestisci una struttura, puoi usare Palestre in Zona per migliorare la tua presenza pubblica, correggere dati importanti e aprire un dialogo commerciale sul progetto.
+        </p>
+
+        <div class="mt-4 grid gap-3 sm:grid-cols-3">
+          <div class="rounded-2xl px-4 py-4 sc-biz-card">
+            <p class="text-sm font-bold text-slate-900">Scheda più credibile</p>
+            <p class="mt-2 text-sm leading-6 text-slate-600">Indirizzo, telefono, sito, orari e descrizione possono diventare molto più chiari per chi ti scopre.</p>
+          </div>
+          <div class="rounded-2xl px-4 py-4 sc-biz-card">
+            <p class="text-sm font-bold text-slate-900">Percorso semplice</p>
+            <p class="mt-2 text-sm leading-6 text-slate-600">Hai già un flusso dedicato per aggiornamenti, rivendicazione scheda e prime richieste commerciali.</p>
+          </div>
+          <div class="rounded-2xl px-4 py-4 sc-biz-card">
+            <p class="text-sm font-bold text-slate-900">Più controllo</p>
+            <p class="mt-2 text-sm leading-6 text-slate-600">Non devi passare da email confuse: puoi partire con un form pensato per il catalogo e per l'admin del sito.</p>
+          </div>
+        </div>
+      </div>
+
+      <aside class="rounded-[1.8rem] p-4 sm:p-5 sc-biz-side">
+        <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Perch&eacute; muoversi ora</p>
+        <div class="mt-4 grid grid-cols-2 gap-3">
+          <div class="rounded-2xl px-4 py-4 sc-biz-metric">
+            <p class="text-[0.72rem] font-bold uppercase tracking-[0.2em] text-slate-500">Schede</p>
+            <p class="mt-2 text-3xl font-bold text-slate-900">{totalGyms}</p>
+            <p class="mt-1 text-sm text-slate-600">gi&agrave; nel catalogo</p>
+          </div>
+          <div class="rounded-2xl px-4 py-4 sc-biz-metric">
+            <p class="text-[0.72rem] font-bold uppercase tracking-[0.2em] text-slate-500">Discipline</p>
+            <p class="mt-2 text-3xl font-bold text-slate-900">{disciplineCount}</p>
+            <p class="mt-1 text-sm text-slate-600">percorsi gi&agrave; cercabili</p>
+          </div>
+        </div>
+
+        <div class="mt-4 rounded-2xl px-4 py-4 sc-biz-note">
+          <p class="text-sm font-semibold text-slate-900">Punto di partenza concreto</p>
+          <p class="mt-2 text-sm leading-6 text-slate-600">La monetizzazione pi&ugrave; realistica qui parte da richieste di aggiornamento, rivendicazioni, visibilit&agrave; migliore e collaborazioni con strutture gi&agrave; presenti.</p>
+        </div>
+
+        <div class="mt-4 flex flex-col gap-2">
+          <a href="/per-le-palestre" class="inline-flex items-center justify-center rounded-2xl bg-slate-900 px-4 py-3 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
+            Vai alla pagina per le palestre
+          </a>
+          <a href="/rivendica-scheda?reason=Collaborazione%20commerciale" class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-900 transition hover:bg-slate-50">
+            Richiedi contatto commerciale
+          </a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
   <section class="mt-5 overflow-hidden rounded-3xl border border-white/70 bg-white/85 shadow-lg sc-panel sc-map">
     <div class="border-b border-slate-200 px-4 py-4 sm:px-5">
       <div class="flex flex-wrap items-start justify-between gap-3">
