@@ -393,6 +393,21 @@ body {
     var(--surface-muted) !important;
 }
 
+.sc-filter-shell {
+  min-width: 0;
+}
+
+.sc-filter-summary {
+  min-width: min(100%, 24rem);
+}
+
+.sc-filter-summary-card {
+  border: 1px solid rgba(31, 92, 74, 0.09);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(248, 246, 239, 0.78)),
+    rgba(255, 255, 255, 0.72);
+}
+
 .sc-filter-chip {
   border: 1px solid rgba(31, 92, 74, 0.12);
   background: rgba(255, 255, 255, 0.68);
@@ -405,6 +420,28 @@ body {
 
 .sc-filter-toggle {
   background: rgba(255, 255, 255, 0.72);
+}
+
+.sc-filter-actions {
+  border: 1px solid rgba(31, 92, 74, 0.1);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(248, 246, 238, 0.88)),
+    rgba(255, 255, 255, 0.7);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 12px 28px rgba(31, 54, 45, 0.06);
+}
+
+.sc-filter-status {
+  border: 1px solid rgba(31, 92, 74, 0.14);
+  background: rgba(227, 246, 237, 0.92);
+}
+
+.sc-filter-suggestions {
+  border: 1px solid rgba(31, 92, 74, 0.09);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.76), rgba(248, 246, 239, 0.68)),
+    rgba(255, 255, 255, 0.64);
 }
 
 .sc-loading-pill {
@@ -651,7 +688,10 @@ body {
   }
 
   .sc-hero-shortcut,
-  .sc-hero-benefit {
+  .sc-hero-benefit,
+  .sc-filter-actions,
+  .sc-filter-suggestions,
+  .sc-filter-summary-card {
     border-radius: 1.15rem !important;
   }
 
