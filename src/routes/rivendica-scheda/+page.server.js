@@ -1,8 +1,20 @@
 import { fail } from '@sveltejs/kit';
 import { canPersistClaimRequests, createClaimRequest } from '$lib/server/claim-request-store';
 
+const ALLOWED_REASONS = new Set([
+  'Aggiornamento dati',
+  'Correzione scheda',
+  'Rivendicazione scheda',
+  'Collaborazione commerciale'
+]);
+
 function clean(value) {
   return String(value ?? '').trim();
+}
+
+function normalizeReason(value) {
+  const cleaned = clean(value);
+  return ALLOWED_REASONS.has(cleaned) ? cleaned : 'Aggiornamento dati';
 }
 
 export async function load({ url }) {
@@ -10,7 +22,7 @@ export async function load({ url }) {
     prefill: {
       gym: clean(url.searchParams.get('gym')),
       url: clean(url.searchParams.get('url')),
-      reason: clean(url.searchParams.get('reason')) || 'Aggiornamento dati'
+      reason: normalizeReason(url.searchParams.get('reason'))
     },
     persistentClaimFlow: canPersistClaimRequests()
   };
@@ -23,7 +35,7 @@ export const actions = {
     const payload = {
       gym_name: clean(form.get('gym_name')),
       gym_url: clean(form.get('gym_url')),
-      reason: clean(form.get('reason')) || 'Aggiornamento dati',
+      reason: normalizeReason(form.get('reason')),
       requester_name: clean(form.get('requester_name')),
       requester_role: clean(form.get('requester_role')),
       requester_email: clean(form.get('requester_email')),
