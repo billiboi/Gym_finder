@@ -19,8 +19,8 @@ Current priority order:
 
 1. Home above the fold: clearer hero, immediate search, stronger first-screen hierarchy, mobile-first layout. Status: initial pass completed.
 2. Filters and results UX: make filters compact, predictable, easy to reset, and comfortable on mobile.
-3. Mobile-first review: test common phone/tablet/desktop viewport sizes for overflow, tap targets, map/list usability, and text fit.
-4. Map/list relationship: improve how users switch between map and results, especially on mobile.
+3. Mobile-first review: test common phone/tablet/desktop viewport sizes for overflow, tap targets, map/list usability, and text fit. Status: initial pass completed with compact mobile results and list/map switching.
+4. Map/list relationship: improve how users switch between map and results, especially on mobile. Status: started with mobile list/map toggle and card-to-marker action.
 5. Gym result cards: make cards easier to scan, with clearer hierarchy and actions.
 6. Gym detail pages: improve trust, contact clarity, map placement, discipline details, FAQs, and claim/update actions.
 7. Visual system consistency: colors, spacing, cards, shadows, buttons, hover/focus states.
