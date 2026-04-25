@@ -32,6 +32,7 @@ Current priority order:
 - Keep edits scoped to the requested priority.
 - Avoid landing-page fluff. Build usable product UI first.
 - Avoid redundant UI sections. If a control appears in the hero, later sections should add new capability or context rather than repeat the same task.
+- Apply Stop Slop criteria to all UI copy and explanations: cut filler, avoid formulaic three-card sections, use direct active language, remove vague claims, and keep only text that helps the user act.
 - Use stable responsive constraints so mobile layouts do not overflow or shift unexpectedly.
 - Run `bun run check` after frontend changes.
 - If possible, verify locally on desktop and mobile viewport sizes.

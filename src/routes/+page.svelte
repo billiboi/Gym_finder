@@ -656,22 +656,21 @@
 <div class="min-h-screen w-full sc-page relative">
   <main class="mx-auto w-full max-w-7xl px-4 pb-8 pt-4 sm:px-6 lg:px-8">
   <section class="reveal rounded-3xl border border-white/80 bg-white/70 p-4 shadow-xl backdrop-blur-sm sm:p-7 sc-panel sc-hero">
-    <div class="grid gap-5 lg:grid-cols-[minmax(0,1.2fr)_minmax(300px,0.8fr)] lg:items-stretch">
-      <div class="flex flex-col justify-between gap-6 sc-hero-copy">
+    <div class="mx-auto flex max-w-5xl flex-col gap-6 sc-hero-copy">
         <div class="max-w-3xl">
           <div class="inline-flex items-center rounded-full border border-emerald-900/10 bg-white/65 px-3 py-1 text-[0.7rem] font-bold uppercase tracking-[0.24em] text-amber-700">
             Palestre in Zona
           </div>
-          <h1 class="mt-4 text-3xl font-bold leading-tight text-slate-900 sm:text-5xl">Trova palestre e corsi vicino a te</h1>
+          <h1 class="mt-4 text-3xl font-bold leading-tight text-slate-900 sm:text-5xl">Trova una palestra vicino a te</h1>
           <p class="mt-4 max-w-2xl text-sm leading-7 text-slate-600 sm:text-[1.05rem]">
-            Cerca per zona, nome o disciplina e confronta subito contatti, orari, mappa e schede utili senza passaggi inutili.
+            Cerca per città, palestra o disciplina. Apri la scheda per contatti, orari e mappa.
           </p>
         </div>
 
-        <div class="rounded-[1.75rem] p-3 sm:p-4 sc-hero-search">
-          <div class="grid gap-3 lg:grid-cols-[minmax(0,1.35fr)_minmax(190px,0.65fr)_auto] lg:items-end">
+        <div class="rounded-[1.5rem] p-3 sm:p-4 sc-hero-search">
+          <div class="grid gap-3 lg:grid-cols-[minmax(0,1.45fr)_minmax(190px,0.65fr)_auto] lg:items-end">
             <label class="grid gap-2">
-              <span class="text-[0.72rem] font-bold uppercase tracking-[0.2em] text-slate-500">Cosa cerchi</span>
+              <span class="text-[0.72rem] font-bold uppercase tracking-[0.2em] text-slate-500">Cerca</span>
               <input
                 id="hero-gym-search"
                 name="hero-gym-search"
@@ -706,11 +705,11 @@
             {/each}
           </datalist>
 
-          <div class="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <div class="flex flex-wrap gap-2">
-              <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">{totalGyms} risultati</span>
-              <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">{disciplineCount} discipline</span>
-              <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">Italia e Svizzera</span>
+          <div class="mt-3 flex flex-col gap-3 border-t border-slate-200/70 pt-3 sm:flex-row sm:items-center sm:justify-between">
+            <div class="flex flex-wrap gap-3 text-sm font-semibold text-slate-600">
+              <a href="/zone" class="transition hover:text-emerald-800">Zone</a>
+              <a href="/discipline" class="transition hover:text-emerald-800">Discipline</a>
+              <span>{totalGyms} risultati</span>
             </div>
             <button type="button" class="inline-flex min-h-[2.7rem] items-center justify-center rounded-xl bg-white px-4 text-sm font-bold text-slate-700 transition hover:bg-slate-100 sc-button-ghost" on:click={detectLocation} disabled={locating}>
               {locating ? 'Rilevamento...' : 'Usa posizione'}
@@ -718,88 +717,15 @@
           </div>
         </div>
 
-        <div class="grid gap-2 text-sm text-slate-600 sm:grid-cols-3 sc-hero-benefits">
-          <div class="rounded-2xl px-3 py-3 sc-hero-benefit">
-            <p class="font-bold text-slate-900">Filtri rapidi</p>
-            <p class="mt-1">Disciplina, stato e distanza restano facili da regolare.</p>
-          </div>
-          <div class="rounded-2xl px-3 py-3 sc-hero-benefit">
-            <p class="font-bold text-slate-900">Confronto chiaro</p>
-            <p class="mt-1">Ogni risultato mette in evidenza dati utili e azioni principali.</p>
-          </div>
-          <div class="rounded-2xl px-3 py-3 sc-hero-benefit">
-            <p class="font-bold text-slate-900">Pensato mobile</p>
-            <p class="mt-1">La ricerca resta comoda anche su schermi piccoli.</p>
-          </div>
-        </div>
-      </div>
-      <aside class="rounded-[2rem] p-4 sm:p-5 sc-hero-side">
-        <div class="flex items-start justify-between gap-3">
-          <div>
-            <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Inizia da qui</p>
-            <h2 class="mt-2 text-2xl font-bold leading-tight text-slate-900">Catalogo subito leggibile</h2>
-          </div>
-          <div class="hidden rounded-full border border-white/70 bg-white/70 px-3 py-1 text-xs font-semibold text-slate-600 sm:inline-flex">
-            Catalogo live
-          </div>
-        </div>
-
-        <div class="mt-4 grid grid-cols-2 gap-3">
-          <div class="rounded-3xl px-4 py-4 text-white sc-stat">
-            <p class="text-[0.7rem] font-bold uppercase tracking-[0.22em] opacity-70">Risultati</p>
-            <p class="mt-3 text-3xl font-bold leading-none">{totalGyms}</p>
-            <p class="mt-2 text-sm opacity-80">schede gi&agrave; consultabili</p>
-          </div>
-          <div class="rounded-3xl px-4 py-4 text-white sc-stat sc-stat--accent">
-            <p class="text-[0.7rem] font-bold uppercase tracking-[0.22em] opacity-70">Discipline</p>
-            <p class="mt-3 text-3xl font-bold leading-none">{disciplineCount}</p>
-            <p class="mt-2 text-sm opacity-80">percorsi da esplorare</p>
-          </div>
-        </div>
-
-        <div class="mt-4 grid gap-3">
-          <a href="/zone" class="rounded-3xl p-4 transition hover:-translate-y-0.5 sc-hero-shortcut">
-            <p class="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">Parti dalla zona</p>
-            <div class="mt-2 flex items-center justify-between gap-3">
-              <div>
-                <p class="text-lg font-bold text-slate-900">Aree e citt&agrave;</p>
-                <p class="mt-1 text-sm leading-6 text-slate-600">Vedi subito le zone disponibili nel catalogo.</p>
-              </div>
-              <span class="text-xl font-bold text-emerald-800">&rarr;</span>
-            </div>
-          </a>
-
-          <a href="/discipline" class="rounded-3xl p-4 transition hover:-translate-y-0.5 sc-hero-shortcut">
-            <p class="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">Parti dalla disciplina</p>
-            <div class="mt-2 flex items-center justify-between gap-3">
-              <div>
-                <p class="text-lg font-bold text-slate-900">Sport e corsi</p>
-                <p class="mt-1 text-sm leading-6 text-slate-600">Apri le categorie principali senza passare dai filtri.</p>
-              </div>
-              <span class="text-xl font-bold text-emerald-800">&rarr;</span>
-            </div>
-          </a>
-        </div>
-      </aside>
     </div>
   </section>
 
   <section class="reveal mt-5 rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sm:p-5 sc-panel sc-filter-panel">
     <div class="sc-filter-shell">
-      <div class="mb-4 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+      <div class="mb-4">
         <div class="max-w-xl">
           <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Filtri avanzati</p>
           <h2 class="mt-2 text-xl font-bold leading-tight text-slate-900 sm:text-2xl">Restringi i risultati</h2>
-        </div>
-        <div class="flex flex-col gap-2 sm:flex-row sm:flex-wrap lg:justify-end">
-          <button type="button" class="inline-flex min-h-[2.75rem] items-center justify-center rounded-2xl bg-slate-900 px-4 text-sm font-bold text-white hover:bg-slate-800 sc-button" on:click={detectLocation} disabled={locating}>
-            {locating ? 'Rilevamento...' : 'Usa posizione'}
-          </button>
-          {#if locationReady}
-            <button type="button" class="inline-flex min-h-[2.75rem] items-center justify-center rounded-2xl bg-slate-200 px-4 text-sm font-semibold text-slate-700 hover:bg-slate-300 sc-button-muted" on:click={clearLocation}>
-              Rimuovi posizione
-            </button>
-          {/if}
         </div>
       </div>
 
@@ -847,11 +773,13 @@
             <span class="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-slate-500">Stato</span>
             <div class="flex min-h-[3rem] items-center rounded-2xl px-4 py-2 sc-filter-meta">
               {#if locationReady}
-                <span class="text-sm font-semibold text-emerald-700">Posizione attiva</span>
+                <button type="button" class="text-left text-sm font-semibold text-emerald-700 transition hover:text-emerald-900" on:click={clearLocation}>
+                  Posizione attiva. Rimuovi
+                </button>
               {:else if isBootstrapping}
                 <span class="text-sm font-semibold text-slate-600">Aggiornamento...</span>
               {:else}
-                <span class="text-sm font-medium text-slate-500">Nessun filtro locale</span>
+                <span class="text-sm font-medium text-slate-500">Posizione non attiva</span>
               {/if}
             </div>
           </div>
