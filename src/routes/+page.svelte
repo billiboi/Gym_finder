@@ -89,11 +89,13 @@
   let locationError = '';
   let locationRadius = 20;
   let nearbyOnly = true;
+  let resultsView = 'list';
 
   let mapContainer;
   let mapInstance = null;
   let markersLayer = null;
   let usingMarkerCluster = false;
+  let markerByGymId = new Map();
   let userMarker = null;
   let radiusCircle = null;
 
@@ -520,6 +522,7 @@
     if (!mapInstance || !window.L || !markersLayer) return;
 
     markersLayer.clearLayers();
+    markerByGymId = new Map();
 
     for (const gym of filteredGyms) {
       const lat = Number(gym.latitude);
@@ -535,8 +538,7 @@
       const detailHref = gymHref(gym);
       const popupDiscipline = disciplineListForGym(gym).join(' | ');
 
-      window.L.marker([lat, lng])
-        .bindPopup(
+      const marker = window.L.marker([lat, lng]).bindPopup(
           `<div class="sc-map-popup">
             <div class="sc-map-popup-title">${gym.name}</div>
             <div class="sc-map-popup-row">
@@ -557,8 +559,10 @@
             </div>
           </div>`,
           { className: 'sc-map-popup-shell' }
-        )
-        .addTo(markersLayer);
+        );
+
+      marker.addTo(markersLayer);
+      markerByGymId.set(String(gym.id), marker);
     }
 
     if (userMarker) {
@@ -587,6 +591,45 @@
       }
 
       mapInstance.setView([userLocation.latitude, userLocation.longitude], 11);
+    }
+  }
+
+  function focusGymOnMap(gym) {
+    const lat = Number(gym.latitude);
+    const lng = Number(gym.longitude);
+    if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+
+    resultsView = 'map';
+
+    setTimeout(() => {
+      if (!mapInstance) return;
+
+      mapInstance.invalidateSize();
+      document.getElementById('mappa-palestre')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      const marker = markerByGymId.get(String(gym.id));
+      const openMarker = () => {
+        mapInstance.setView([lat, lng], Math.max(mapInstance.getZoom(), 14));
+        marker?.openPopup();
+      };
+
+      if (usingMarkerCluster && marker && markersLayer?.zoomToShowLayer) {
+        markersLayer.zoomToShowLayer(marker, openMarker);
+        return;
+      }
+
+      openMarker();
+    }, 0);
+  }
+
+  function setResultsView(view) {
+    resultsView = view;
+
+    if (view === 'map' && mapInstance) {
+      setTimeout(() => {
+        mapInstance?.invalidateSize();
+        refreshMap();
+      }, 0);
     }
   }
 
@@ -770,7 +813,26 @@
     </div>
   </section>
 
-  <section class="mt-5 overflow-hidden rounded-3xl border border-white/70 bg-white/85 shadow-lg sc-panel sc-map">
+  <div class="mt-5 grid grid-cols-2 gap-2 rounded-2xl border border-white/70 bg-white/80 p-1 shadow-lg lg:hidden">
+    <button
+      type="button"
+      class={`min-h-[2.8rem] rounded-xl px-3 text-sm font-bold transition ${resultsView === 'list' ? 'sc-button' : 'text-slate-700 hover:bg-white'}`}
+      aria-pressed={resultsView === 'list'}
+      on:click={() => setResultsView('list')}
+    >
+      Lista
+    </button>
+    <button
+      type="button"
+      class={`min-h-[2.8rem] rounded-xl px-3 text-sm font-bold transition ${resultsView === 'map' ? 'sc-button' : 'text-slate-700 hover:bg-white'}`}
+      aria-pressed={resultsView === 'map'}
+      on:click={() => setResultsView('map')}
+    >
+      Mappa
+    </button>
+  </div>
+
+  <section id="mappa-palestre" class:hidden={resultsView !== 'map'} class="mt-5 overflow-hidden rounded-3xl border border-white/70 bg-white/85 shadow-lg sc-panel sc-map lg:block">
     <div class="border-b border-slate-200 px-4 py-4 sm:px-5">
       <div class="flex flex-wrap items-start justify-between gap-3">
         <div>
@@ -799,7 +861,7 @@
     </div>
   </section>
 
-<section id="elenco-palestre" class="mt-5">
+<section id="elenco-palestre" class:hidden={resultsView !== 'list'} class="mt-5 lg:block">
   <div class="mb-3 flex flex-wrap items-end justify-between gap-3">
     <div>
       <h2 class="text-lg font-bold text-slate-900">Risultati</h2>
@@ -892,12 +954,23 @@
 
             <div class="flex flex-col gap-2 border-t border-slate-200 pt-3 sm:flex-row sm:items-center sm:justify-between">
               <p class="min-w-0 truncate text-sm font-semibold text-slate-600">Tel. {displayName(gym.phone) || '-'}</p>
-              <a
-                href={gymHref(gym)}
-                class="inline-flex min-h-[2.6rem] shrink-0 items-center justify-center rounded-xl bg-slate-900 px-3 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
-              >
-                Apri scheda
-              </a>
+              <div class="flex shrink-0 gap-2">
+                {#if Number.isFinite(Number(gym.latitude)) && Number.isFinite(Number(gym.longitude))}
+                  <button
+                    type="button"
+                    class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl bg-white px-3 text-sm font-bold text-slate-700 transition hover:bg-slate-100 sc-button-ghost"
+                    on:click={() => focusGymOnMap(gym)}
+                  >
+                    Mappa
+                  </button>
+                {/if}
+                <a
+                  href={gymHref(gym)}
+                  class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl bg-slate-900 px-3 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
+                >
+                  Apri scheda
+                </a>
+              </div>
             </div>
           </div>
         </article>
