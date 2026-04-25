@@ -638,6 +638,18 @@
     }
   }
 
+  function showResultsList() {
+    resultsView = 'list';
+
+    setTimeout(() => {
+      const target = activeGymId
+        ? document.getElementById(`gym-${activeGymId}`)
+        : document.getElementById('elenco-palestre');
+
+      target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 0);
+  }
+
   async function initMap() {
     if (mapInstance || !mapContainer) return;
 
@@ -846,9 +858,9 @@
           <p class="mt-1 hidden text-sm font-semibold text-slate-600 lg:block">Usala mentre scorri i risultati.</p>
         </div>
         <div class="flex flex-wrap items-center gap-2">
-          <a href="#elenco-palestre" class="rounded-2xl sc-map-chip px-3 py-2 text-xs font-semibold transition hover:bg-white">
-            Vai alla lista
-          </a>
+          <button type="button" class="rounded-2xl sc-map-chip px-3 py-2 text-xs font-semibold transition hover:bg-white" on:click={showResultsList}>
+            {activeGymId ? 'Vedi nella lista' : 'Vai alla lista'}
+          </button>
           <div class="rounded-2xl sc-map-chip px-3 py-2 text-xs font-semibold">
             {filteredGyms.length} risultati
           </div>
