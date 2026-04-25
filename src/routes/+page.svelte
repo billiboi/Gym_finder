@@ -53,6 +53,12 @@
     return repairMojibake(value).replace(/\s+/g, ' ').trim();
   }
 
+  function phoneHref(value) {
+    const phone = displayName(value);
+    const cleaned = phone.replace(/[^\d+]/g, '');
+    return cleaned ? `tel:${cleaned}` : '';
+  }
+
   function formatAddressForDisplay(gym) {
     const raw = displayName([gym?.address, gym?.city].filter(Boolean).join(', '));
     if (!raw) return 'Indirizzo non disponibile';
@@ -921,9 +927,12 @@
       {#each filteredGyms as gym, i}
         {@const image = resolveImageSource(gym)}
         {@const disciplinePreview = disciplinePreviewForGym(gym, 4)}
+        {@const phone = displayName(gym.phone)}
+        {@const phoneLink = phoneHref(gym.phone)}
+        {@const hasMapLocation = Number.isFinite(Number(gym.latitude)) && Number.isFinite(Number(gym.longitude))}
         <article
           id={`gym-${gym.id}`}
-          class={`group overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg sc-card sc-gym-card ${activeGymId === String(gym.id) ? 'border-emerald-700 ring-2 ring-emerald-900/15' : 'border-slate-200'}`}
+          class={`group flex h-full flex-col overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg sc-card sc-gym-card ${activeGymId === String(gym.id) ? 'border-emerald-700 ring-2 ring-emerald-900/15' : 'border-slate-200'}`}
           style={`animation-delay:${i * 20}ms`}
         >
           <div class="relative h-40 overflow-hidden">
@@ -940,45 +949,53 @@
             </span>
           </div>
 
-          <div class="space-y-3 p-4">
-            <div class="space-y-2">
-              <h3 class="text-lg font-bold leading-tight text-slate-900">
-                <a href={gymHref(gym)} class="transition hover:text-emerald-800">
-                  {displayName(gym.name)}
-                </a>
-              </h3>
-              <div class="flex flex-wrap gap-2 text-xs font-semibold text-slate-500">
-                {#if gym.distance_km !== null && gym.distance_km !== undefined}
-                  <span class="rounded-full bg-slate-100 px-2.5 py-1">{gym.distance_km} km</span>
-                {/if}
-                {#if displayName(gym.city)}
-                  <span class="rounded-full bg-slate-100 px-2.5 py-1">{displayName(gym.city)}</span>
-                {/if}
-              </div>
-              <div class="flex flex-wrap gap-2 sc-discipline-list">
-                <span class="rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.14em] sc-discipline-chip sc-discipline-chip--primary">
-                  {disciplinePreview.primary}
-                </span>
-                {#if disciplinePreview.secondary.length || disciplinePreview.remaining}
-                  {#each disciplinePreview.secondary as label}
-                    <span class="rounded-full px-2.5 py-1 text-[11px] font-semibold sc-discipline-chip">{label}</span>
-                  {/each}
-                  {#if disciplinePreview.remaining}
-                    <span class="rounded-full px-2.5 py-1 text-[11px] font-semibold sc-discipline-chip sc-discipline-chip--muted">+{disciplinePreview.remaining}</span>
+          <div class="flex flex-1 flex-col gap-3 p-4">
+            <div class="flex-1 space-y-3">
+              <div class="space-y-2">
+                <h3 class="text-lg font-bold leading-tight text-slate-900">
+                  <a href={gymHref(gym)} class="transition hover:text-emerald-800">
+                    {displayName(gym.name)}
+                  </a>
+                </h3>
+                <div class="flex flex-wrap gap-2 text-xs font-semibold text-slate-500">
+                  {#if gym.distance_km !== null && gym.distance_km !== undefined}
+                    <span class="rounded-full bg-slate-100 px-2.5 py-1">{gym.distance_km} km</span>
                   {/if}
-                {/if}
+                  {#if displayName(gym.city)}
+                    <span class="rounded-full bg-slate-100 px-2.5 py-1">{displayName(gym.city)}</span>
+                  {/if}
+                </div>
+                <div class="flex flex-wrap gap-2 sc-discipline-list">
+                  <span class="rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.14em] sc-discipline-chip sc-discipline-chip--primary">
+                    {disciplinePreview.primary}
+                  </span>
+                  {#if disciplinePreview.secondary.length || disciplinePreview.remaining}
+                    {#each disciplinePreview.secondary as label}
+                      <span class="rounded-full px-2.5 py-1 text-[11px] font-semibold sc-discipline-chip">{label}</span>
+                    {/each}
+                    {#if disciplinePreview.remaining}
+                      <span class="rounded-full px-2.5 py-1 text-[11px] font-semibold sc-discipline-chip sc-discipline-chip--muted">+{disciplinePreview.remaining}</span>
+                    {/if}
+                  {/if}
+                </div>
+              </div>
+
+              <div class="grid gap-2 text-sm leading-6 text-slate-700">
+                <p class="rounded-xl bg-slate-50 px-3 py-2"><span class="font-semibold text-slate-900">Indirizzo:</span> {formatAddressForDisplay(gym)}</p>
+                <p class="line-clamp-2 rounded-xl bg-slate-50 px-3 py-2"><span class="font-semibold text-slate-900">Orari:</span> {displayName(gym.hours_info) || 'Da verificare'}</p>
               </div>
             </div>
 
-            <div class="grid gap-1.5 text-sm leading-6 text-slate-700">
-              <p><span class="font-semibold text-slate-900">Indirizzo:</span> {formatAddressForDisplay(gym)}</p>
-              <p class="line-clamp-2"><span class="font-semibold text-slate-900">Orari:</span> {displayName(gym.hours_info) || 'Da verificare'}</p>
-            </div>
-
-            <div class="flex flex-col gap-2 border-t border-slate-200 pt-3 sm:flex-row sm:items-center sm:justify-between">
-              <p class="min-w-0 truncate text-sm font-semibold text-slate-600">Tel. {displayName(gym.phone) || '-'}</p>
-              <div class="flex shrink-0 gap-2">
-                {#if Number.isFinite(Number(gym.latitude)) && Number.isFinite(Number(gym.longitude))}
+            <div class="grid gap-2 border-t border-slate-200 pt-3">
+              <div class="flex min-h-[2.4rem] items-center rounded-xl bg-slate-50 px-3 text-sm font-semibold text-slate-700">
+                {#if phoneLink}
+                  <a href={phoneLink} class="min-w-0 truncate transition hover:text-emerald-800">Tel. {phone}</a>
+                {:else}
+                  <span>Telefono non disponibile</span>
+                {/if}
+              </div>
+              <div class={`grid gap-2 ${hasMapLocation ? 'grid-cols-2' : 'grid-cols-1'}`}>
+                {#if hasMapLocation}
                   <button
                     type="button"
                     class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl bg-white px-3 text-sm font-bold text-slate-700 transition hover:bg-slate-100 sc-button-ghost"
@@ -991,7 +1008,7 @@
                   href={gymHref(gym)}
                   class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl bg-slate-900 px-3 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
                 >
-                  Apri scheda
+                  Scheda
                 </a>
               </div>
             </div>
