@@ -305,12 +305,29 @@ body {
 }
 
 .sc-gym-card-facts strong {
-  display: -webkit-box;
-  overflow: hidden;
   color: #334155;
   font-weight: 650;
+}
+
+.sc-gym-card-facts p:not(.sc-gym-card-hours) strong {
+  display: -webkit-box;
+  overflow: hidden;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+}
+
+.sc-gym-card-hours strong {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.sc-gym-card-hours em {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  padding: 0.18rem 0.45rem;
+  font-style: normal;
+  line-height: 1.35;
 }
 
 .sc-discipline-list {

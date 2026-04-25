@@ -59,6 +59,14 @@
     return cleaned ? `tel:${cleaned}` : '';
   }
 
+  function hoursForCard(value) {
+    const hours = displayName(value) || 'Da verificare';
+    return hours
+      .split('|')
+      .map((part) => part.trim())
+      .filter(Boolean);
+  }
+
   function formatAddressForDisplay(gym) {
     const raw = displayName([gym?.address, gym?.city].filter(Boolean).join(', '));
     if (!raw) return 'Indirizzo non disponibile';
@@ -932,6 +940,7 @@
         {@const hasMapLocation = Number.isFinite(Number(gym.latitude)) && Number.isFinite(Number(gym.longitude))}
         {@const openLabel = gym.is_open_now === true ? 'Aperta ora' : gym.is_open_now === false ? 'Chiusa ora' : 'Orari n/d'}
         {@const openClass = gym.is_open_now === true ? 'sc-status-pill--open' : gym.is_open_now === false ? 'sc-status-pill--closed' : 'sc-status-pill--muted'}
+        {@const hours = hoursForCard(gym.hours_info)}
         <article
           id={`gym-${gym.id}`}
           class={`group flex h-full flex-col overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg sc-card sc-gym-card ${activeGymId === String(gym.id) ? 'sc-gym-card--active' : ''}`}
@@ -984,9 +993,13 @@
                   <span>Indirizzo</span>
                   <strong>{formatAddressForDisplay(gym)}</strong>
                 </p>
-                <p>
+                <p class="sc-gym-card-hours">
                   <span>Orari</span>
-                  <strong>{displayName(gym.hours_info) || 'Da verificare'}</strong>
+                  <strong>
+                    {#each hours as part}
+                      <em>{part}</em>
+                    {/each}
+                  </strong>
                 </p>
               </div>
             </div>

@@ -21,7 +21,7 @@ Current priority order:
 2. Filters and results UX: make filters compact, predictable, easy to reset, and comfortable on mobile.
 3. Mobile-first review: test common phone/tablet/desktop viewport sizes for overflow, tap targets, map/list usability, and text fit. Status: initial pass completed with compact mobile results and list/map switching.
 4. Map/list relationship: improve how users switch between map and results, especially on mobile. Status: initial pass completed with mobile list/map toggle, desktop companion map, card-to-marker action, active result highlighting, and return-to-list behavior.
-5. Gym result cards: make cards easier to scan, with clearer hierarchy and actions. Status: in progress with steadier card layout, clearer scan row for status/distance/city, structured info blocks, tappable phone, tighter actions, less duplicate labeling, and stronger selected-card state.
+5. Gym result cards: make cards easier to scan, with clearer hierarchy and actions. Status: in progress with steadier card layout, clearer scan row for status/distance/city, structured info blocks, full visible hours, tappable phone, tighter actions, less duplicate labeling, and stronger selected-card state.
 6. Gym detail pages: improve trust, contact clarity, map placement, discipline details, FAQs, and claim/update actions.
 7. Visual system consistency: colors, spacing, cards, shadows, buttons, hover/focus states.
 8. Accessibility and performance: contrast, focus states, labels, keyboard use, loading states, optimized assets.
