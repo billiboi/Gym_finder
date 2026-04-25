@@ -700,6 +700,11 @@
               Cerca
             </a>
           </div>
+          <datalist id="quick-search-suggestions">
+            {#each quickSearchSuggestions as suggestion}
+              <option value={suggestion}></option>
+            {/each}
+          </datalist>
 
           <div class="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div class="flex flex-wrap gap-2">
@@ -783,10 +788,10 @@
     <div class="sc-filter-shell">
       <div class="mb-5 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div class="max-w-2xl">
-          <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Affina i risultati</p>
-          <h2 class="mt-2 text-xl font-bold leading-tight text-slate-900 sm:text-2xl">Trova la struttura giusta senza perdere tempo</h2>
+          <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Filtri avanzati</p>
+          <h2 class="mt-2 text-xl font-bold leading-tight text-slate-900 sm:text-2xl">Regola solo quello che cambia davvero i risultati</h2>
           <p class="mt-2 max-w-xl text-sm leading-7 text-slate-600 sm:text-base">
-            Cerca per nome o zona, scegli la disciplina e usa la distanza solo quando ti serve davvero.
+            La ricerca principale resta in alto. Qui puoi restringere per apertura, distanza e vicinanza.
           </p>
         </div>
         <div class="flex flex-col gap-2 lg:items-end">
@@ -815,50 +820,15 @@
       </div>
 
       <div class="rounded-[1.8rem] p-4 sm:p-5 sc-filter-surface">
-        <div class="grid gap-4 lg:grid-cols-[minmax(0,1.45fr)_minmax(280px,0.55fr)] lg:items-end">
-          <label class="grid gap-2">
-            <span class="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-slate-500">Ricerca principale</span>
-            <input
-              id="gym-search"
-              name="gym-search"
-              class="rounded-[1.7rem] border border-slate-200 bg-white px-5 py-4 text-base outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field sc-filter-search"
-              placeholder="Cerca per nome, città o zona"
-              bind:value={filterText}
-              list="quick-search-suggestions"
-            />
-          </label>
-          <datalist id="quick-search-suggestions">
-            {#each quickSearchSuggestions as suggestion}
-              <option value={suggestion}></option>
-            {/each}
-          </datalist>
-
-          <div class="rounded-[1.6rem] p-4 sc-filter-local-card">
-            <p class="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-slate-500">Ricerca locale</p>
-            <label class="mt-3 inline-flex min-h-[3.1rem] w-full items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 sc-pill sc-filter-toggle">
+        <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          <div class="grid gap-2 rounded-[1.6rem] p-4 sc-filter-local-card">
+            <span class="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-slate-500">Ricerca locale</span>
+            <label class="inline-flex min-h-[3.1rem] w-full items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 sc-pill sc-filter-toggle">
               <input id="nearby-only" name="nearby-only" type="checkbox" bind:checked={nearbyOnly} />
               Attiva ricerca nel raggio
             </label>
-            <p class="mt-3 text-sm leading-6 text-slate-600">Usala quando vuoi dare priorità alle palestre più vicine senza sporcare il resto della ricerca.</p>
+            <p class="text-sm leading-6 text-slate-600">Dà priorità alle palestre vicine quando usi la posizione.</p>
           </div>
-        </div>
-
-        <div class="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          <label class="grid gap-2">
-            <span class="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-slate-500">Disciplina</span>
-            <select
-              id="discipline-filter"
-              name="discipline-filter"
-              class="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
-              bind:value={filterDiscipline}
-              disabled={loadingDisciplines}
-            >
-              <option value="">Tutte le discipline</option>
-              {#each disciplines as discipline}
-                <option value={discipline}>{discipline}</option>
-              {/each}
-            </select>
-          </label>
 
           <label class="grid gap-2">
             <span class="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-slate-500">Stato</span>

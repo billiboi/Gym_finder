@@ -31,7 +31,7 @@ Current priority order:
 - Preserve existing SvelteKit and Tailwind-style patterns unless there is a clear reason to change them.
 - Keep edits scoped to the requested priority.
 - Avoid landing-page fluff. Build usable product UI first.
+- Avoid redundant UI sections. If a control appears in the hero, later sections should add new capability or context rather than repeat the same task.
 - Use stable responsive constraints so mobile layouts do not overflow or shift unexpectedly.
 - Run `bun run check` after frontend changes.
 - If possible, verify locally on desktop and mobile viewport sizes.
-
