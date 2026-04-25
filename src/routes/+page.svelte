@@ -655,43 +655,76 @@
 
 <div class="min-h-screen w-full sc-page relative">
   <main class="mx-auto w-full max-w-7xl px-4 pb-8 pt-4 sm:px-6 lg:px-8">
-  <section class="reveal rounded-3xl border border-white/80 bg-white/70 p-5 shadow-xl backdrop-blur-sm sm:p-7 sc-panel sc-hero">
-    <div class="grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(290px,0.85fr)] lg:items-stretch">
+  <section class="reveal rounded-3xl border border-white/80 bg-white/70 p-4 shadow-xl backdrop-blur-sm sm:p-7 sc-panel sc-hero">
+    <div class="grid gap-5 lg:grid-cols-[minmax(0,1.2fr)_minmax(300px,0.8fr)] lg:items-stretch">
       <div class="flex flex-col justify-between gap-6 sc-hero-copy">
         <div class="max-w-3xl">
-        <div class="inline-flex items-center rounded-full border border-emerald-900/10 bg-white/65 px-3 py-1 text-[0.7rem] font-bold uppercase tracking-[0.28em] text-amber-700">
-          Palestre in Zona
+          <div class="inline-flex items-center rounded-full border border-emerald-900/10 bg-white/65 px-3 py-1 text-[0.7rem] font-bold uppercase tracking-[0.24em] text-amber-700">
+            Palestre in Zona
+          </div>
+          <h1 class="mt-4 text-3xl font-bold leading-tight text-slate-900 sm:text-5xl">Trova palestre e corsi vicino a te</h1>
+          <p class="mt-4 max-w-2xl text-sm leading-7 text-slate-600 sm:text-[1.05rem]">
+            Cerca per zona, nome o disciplina e confronta subito contatti, orari, mappa e schede utili senza passaggi inutili.
+          </p>
         </div>
-        <h1 class="mt-4 text-3xl font-bold leading-tight text-slate-900 sm:text-5xl">Trova la palestra giusta, ovunque ti trovi</h1>
-        <p class="mt-4 max-w-2xl text-sm leading-7 text-slate-600 sm:text-[1.05rem]">
-          Una ricerca pi&ugrave; rapida e pulita per trovare palestre, fitness e arti marziali con contatti, filtri utili e risultati davvero facili da confrontare.
-        </p>
+
+        <div class="rounded-[1.75rem] p-3 sm:p-4 sc-hero-search">
+          <div class="grid gap-3 lg:grid-cols-[minmax(0,1.35fr)_minmax(190px,0.65fr)_auto] lg:items-end">
+            <label class="grid gap-2">
+              <span class="text-[0.72rem] font-bold uppercase tracking-[0.2em] text-slate-500">Cosa cerchi</span>
+              <input
+                id="hero-gym-search"
+                name="hero-gym-search"
+                class="min-h-[3.35rem] rounded-2xl border border-slate-200 bg-white px-4 text-base font-semibold outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
+                placeholder="Città, palestra o disciplina"
+                bind:value={filterText}
+                list="quick-search-suggestions"
+              />
+            </label>
+            <label class="grid gap-2">
+              <span class="text-[0.72rem] font-bold uppercase tracking-[0.2em] text-slate-500">Disciplina</span>
+              <select
+                id="hero-discipline-filter"
+                name="hero-discipline-filter"
+                class="min-h-[3.35rem] rounded-2xl border border-slate-200 bg-white px-4 text-sm font-semibold outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
+                bind:value={filterDiscipline}
+                disabled={loadingDisciplines}
+              >
+                <option value="">Tutte</option>
+                {#each disciplines as discipline}
+                  <option value={discipline}>{discipline}</option>
+                {/each}
+              </select>
+            </label>
+            <a href="#elenco-palestre" class="inline-flex min-h-[3.35rem] items-center justify-center rounded-2xl px-5 text-center text-sm font-bold text-white transition sc-button">
+              Cerca
+            </a>
+          </div>
+
+          <div class="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div class="flex flex-wrap gap-2">
+              <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">{totalGyms} risultati</span>
+              <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">{disciplineCount} discipline</span>
+              <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">Italia e Svizzera</span>
+            </div>
+            <button type="button" class="inline-flex min-h-[2.7rem] items-center justify-center rounded-xl bg-white px-4 text-sm font-bold text-slate-700 transition hover:bg-slate-100 sc-button-ghost" on:click={detectLocation} disabled={locating}>
+              {locating ? 'Rilevamento...' : 'Usa posizione'}
+            </button>
+          </div>
         </div>
-        <div class="mt-4 flex flex-wrap gap-2">
-          <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">Ricerca per vicinanza</span>
-          <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">Schede complete dedicate</span>
-          <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">Esperienza mobile-first</span>
-        </div>
-        <div class="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-          <a href="#elenco-palestre" class="rounded-xl bg-slate-900 px-4 py-2.5 text-center text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
-            Esplora le palestre
-          </a>
-          <button type="button" class="rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 sc-button-ghost" on:click={detectLocation} disabled={locating}>
-            {locating ? 'Rilevamento posizione...' : 'Trova quelle vicine'}
-          </button>
-        </div>
+
         <div class="grid gap-2 text-sm text-slate-600 sm:grid-cols-3 sc-hero-benefits">
           <div class="rounded-2xl px-3 py-3 sc-hero-benefit">
-            <p class="font-bold text-slate-900">Vai subito al punto</p>
-            <p class="mt-1">Filtri semplici e risultati ordinati per essere confrontati in pochi secondi.</p>
+            <p class="font-bold text-slate-900">Filtri rapidi</p>
+            <p class="mt-1">Disciplina, stato e distanza restano facili da regolare.</p>
           </div>
           <div class="rounded-2xl px-3 py-3 sc-hero-benefit">
-            <p class="font-bold text-slate-900">Scopri zone e discipline</p>
-            <p class="mt-1">Puoi partire da citt&agrave;, area o sport senza perderti in menu troppo pesanti.</p>
+            <p class="font-bold text-slate-900">Confronto chiaro</p>
+            <p class="mt-1">Ogni risultato mette in evidenza dati utili e azioni principali.</p>
           </div>
           <div class="rounded-2xl px-3 py-3 sc-hero-benefit">
-            <p class="font-bold text-slate-900">Usa la posizione</p>
-            <p class="mt-1">Quando vuoi, la ricerca locale ti porta subito alle opzioni pi&ugrave; vicine.</p>
+            <p class="font-bold text-slate-900">Pensato mobile</p>
+            <p class="mt-1">La ricerca resta comoda anche su schermi piccoli.</p>
           </div>
         </div>
       </div>
@@ -699,7 +732,7 @@
         <div class="flex items-start justify-between gap-3">
           <div>
             <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Inizia da qui</p>
-            <h2 class="mt-2 text-2xl font-bold leading-tight text-slate-900">Due modi rapidi per orientarti</h2>
+            <h2 class="mt-2 text-2xl font-bold leading-tight text-slate-900">Catalogo subito leggibile</h2>
           </div>
           <div class="hidden rounded-full border border-white/70 bg-white/70 px-3 py-1 text-xs font-semibold text-slate-600 sm:inline-flex">
             Catalogo live
@@ -724,8 +757,8 @@
             <p class="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">Parti dalla zona</p>
             <div class="mt-2 flex items-center justify-between gap-3">
               <div>
-                <p class="text-lg font-bold text-slate-900">Esplora aree e citt&agrave;</p>
-                <p class="mt-1 text-sm leading-6 text-slate-600">Ideale se vuoi vedere rapidamente cosa c&rsquo;&egrave; vicino a te o dove andrai.</p>
+                <p class="text-lg font-bold text-slate-900">Aree e citt&agrave;</p>
+                <p class="mt-1 text-sm leading-6 text-slate-600">Vedi subito le zone disponibili nel catalogo.</p>
               </div>
               <span class="text-xl font-bold text-emerald-800">&rarr;</span>
             </div>
@@ -735,8 +768,8 @@
             <p class="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">Parti dalla disciplina</p>
             <div class="mt-2 flex items-center justify-between gap-3">
               <div>
-                <p class="text-lg font-bold text-slate-900">Scegli lo sport giusto</p>
-                <p class="mt-1 text-sm leading-6 text-slate-600">Boxe, MMA, yoga, fitness e molte altre categorie con pagine dedicate.</p>
+                <p class="text-lg font-bold text-slate-900">Sport e corsi</p>
+                <p class="mt-1 text-sm leading-6 text-slate-600">Apri le categorie principali senza passare dai filtri.</p>
               </div>
               <span class="text-xl font-bold text-emerald-800">&rarr;</span>
             </div>
@@ -902,63 +935,6 @@
           {locationError}
         </div>
       {/if}
-    </div>
-  </section>
-
-  <section class="reveal mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sm:p-6 sc-panel sc-biz-panel">
-    <div class="grid gap-5 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)] lg:items-stretch">
-      <div>
-        <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Per le palestre</p>
-        <h2 class="mt-2 max-w-2xl text-2xl font-bold leading-tight text-slate-900 sm:text-3xl">Trasforma la tua scheda in un canale che porta fiducia, richieste e dati più corretti</h2>
-        <p class="mt-3 max-w-2xl text-sm leading-7 text-slate-600 sm:text-base">
-          Se gestisci una struttura, puoi usare Palestre in Zona per migliorare la tua presenza pubblica, correggere dati importanti e aprire un dialogo commerciale sul progetto.
-        </p>
-
-        <div class="mt-4 grid gap-3 sm:grid-cols-3">
-          <div class="rounded-2xl px-4 py-4 sc-biz-card">
-            <p class="text-sm font-bold text-slate-900">Scheda più credibile</p>
-            <p class="mt-2 text-sm leading-6 text-slate-600">Indirizzo, telefono, sito, orari e descrizione possono diventare molto più chiari per chi ti scopre.</p>
-          </div>
-          <div class="rounded-2xl px-4 py-4 sc-biz-card">
-            <p class="text-sm font-bold text-slate-900">Percorso semplice</p>
-            <p class="mt-2 text-sm leading-6 text-slate-600">Hai già un flusso dedicato per aggiornamenti, rivendicazione scheda e prime richieste commerciali.</p>
-          </div>
-          <div class="rounded-2xl px-4 py-4 sc-biz-card">
-            <p class="text-sm font-bold text-slate-900">Più controllo</p>
-            <p class="mt-2 text-sm leading-6 text-slate-600">Non devi passare da email confuse: puoi partire con un form pensato per il catalogo e per l'admin del sito.</p>
-          </div>
-        </div>
-      </div>
-
-      <aside class="rounded-[1.8rem] p-4 sm:p-5 sc-biz-side">
-        <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Perch&eacute; muoversi ora</p>
-        <div class="mt-4 grid grid-cols-2 gap-3">
-          <div class="rounded-2xl px-4 py-4 sc-biz-metric">
-            <p class="text-[0.72rem] font-bold uppercase tracking-[0.2em] text-slate-500">Schede</p>
-            <p class="mt-2 text-3xl font-bold text-slate-900">{totalGyms}</p>
-            <p class="mt-1 text-sm text-slate-600">gi&agrave; nel catalogo</p>
-          </div>
-          <div class="rounded-2xl px-4 py-4 sc-biz-metric">
-            <p class="text-[0.72rem] font-bold uppercase tracking-[0.2em] text-slate-500">Discipline</p>
-            <p class="mt-2 text-3xl font-bold text-slate-900">{disciplineCount}</p>
-            <p class="mt-1 text-sm text-slate-600">percorsi gi&agrave; cercabili</p>
-          </div>
-        </div>
-
-        <div class="mt-4 rounded-2xl px-4 py-4 sc-biz-note">
-          <p class="text-sm font-semibold text-slate-900">Punto di partenza concreto</p>
-          <p class="mt-2 text-sm leading-6 text-slate-600">La monetizzazione pi&ugrave; realistica qui parte da richieste di aggiornamento, rivendicazioni, visibilit&agrave; migliore e collaborazioni con strutture gi&agrave; presenti.</p>
-        </div>
-
-        <div class="mt-4 flex flex-col gap-2">
-          <a href="/per-le-palestre" class="inline-flex items-center justify-center rounded-2xl bg-slate-900 px-4 py-3 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
-            Vai alla pagina per le palestre
-          </a>
-          <a href="/rivendica-scheda?reason=Collaborazione%20commerciale" class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-900 transition hover:bg-slate-50">
-            Richiedi contatto commerciale
-          </a>
-        </div>
-      </aside>
     </div>
   </section>
 

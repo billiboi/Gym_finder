@@ -144,8 +144,9 @@ body {
 }
 
 .sc-hero h1 {
-  letter-spacing: -0.03em;
-  max-width: 9ch;
+  letter-spacing: 0;
+  max-width: 13ch;
+  text-wrap: balance;
 }
 
 .sc-hero {
@@ -162,6 +163,26 @@ body {
 
 .sc-hero-benefits {
   max-width: 58rem;
+}
+
+.sc-hero-search {
+  border: 1px solid rgba(31, 92, 74, 0.1);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(248, 246, 238, 0.86)),
+    rgba(255, 255, 255, 0.76);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.58),
+    0 18px 34px rgba(31, 54, 45, 0.08);
+}
+
+.sc-hero-search input,
+.sc-hero-search select {
+  width: 100%;
+}
+
+.sc-hero-search .sc-button,
+.sc-hero-search .sc-button-ghost {
+  white-space: nowrap;
 }
 
 .sc-hero-benefit {
@@ -188,6 +209,25 @@ body {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.45),
     0 10px 24px rgba(31, 54, 45, 0.06);
+}
+
+@media (max-width: 640px) {
+  .sc-hero h1 {
+    max-width: 12ch;
+  }
+
+  .sc-hero-search {
+    border-radius: 1.35rem;
+  }
+
+  .sc-hero-search .sc-button,
+  .sc-hero-search .sc-button-ghost {
+    width: 100%;
+  }
+
+  .sc-hero-benefits {
+    font-size: 0.88rem;
+  }
 }
 
 .sc-pill {
