@@ -705,115 +705,67 @@
             {/each}
           </datalist>
 
-          <div class="mt-3 flex flex-col gap-3 border-t border-slate-200/70 pt-3 sm:flex-row sm:items-center sm:justify-between">
-            <div class="flex flex-wrap gap-3 text-sm font-semibold text-slate-600">
-              <a href="/zone" class="transition hover:text-emerald-800">Zone</a>
-              <a href="/discipline" class="transition hover:text-emerald-800">Discipline</a>
-              <span>{totalGyms} risultati</span>
-            </div>
-            <button type="button" class="inline-flex min-h-[2.7rem] items-center justify-center rounded-xl bg-white px-4 text-sm font-bold text-slate-700 transition hover:bg-slate-100 sc-button-ghost" on:click={detectLocation} disabled={locating}>
-              {locating ? 'Rilevamento...' : 'Usa posizione'}
-            </button>
-          </div>
-        </div>
+          <div class="mt-3 grid gap-3 border-t border-slate-200/70 pt-3 sm:grid-cols-2 lg:grid-cols-[minmax(170px,0.7fr)_minmax(150px,0.5fr)_minmax(170px,0.65fr)_auto] lg:items-end">
+            <label class="grid gap-2">
+              <span class="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-slate-500">Apertura</span>
+              <select
+                id="open-state-filter"
+                name="open-state-filter"
+                class="min-h-[3rem] rounded-2xl border border-slate-200 bg-white px-4 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
+                bind:value={filterOpenState}
+              >
+                <option value="all">Aperte e chiuse</option>
+                <option value="open">Aperte adesso</option>
+                <option value="closed">Chiuse adesso</option>
+              </select>
+            </label>
 
-    </div>
-  </section>
+            <label class="grid gap-2">
+              <span class="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-slate-500">Distanza</span>
+              <select
+                id="radius-filter"
+                name="radius-filter"
+                class="min-h-[3rem] rounded-2xl border border-slate-200 bg-white px-4 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
+                bind:value={locationRadius}
+              >
+                <option value={5}>5 km</option>
+                <option value={10}>10 km</option>
+                <option value={20}>20 km</option>
+                <option value={30}>30 km</option>
+                <option value={50}>50 km</option>
+              </select>
+            </label>
 
-  <section class="reveal mt-5 rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sm:p-5 sc-panel sc-filter-panel">
-    <div class="sc-filter-shell">
-      <div class="mb-4">
-        <div class="max-w-xl">
-          <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Filtri avanzati</p>
-          <h2 class="mt-2 text-xl font-bold leading-tight text-slate-900 sm:text-2xl">Restringi i risultati</h2>
-        </div>
-      </div>
-
-      <div class="rounded-[1.6rem] p-3 sm:p-4 sc-filter-surface">
-        <div class="grid gap-3 lg:grid-cols-[minmax(220px,0.85fr)_minmax(180px,0.65fr)_minmax(180px,0.65fr)_minmax(220px,0.85fr)] lg:items-end">
-          <div class="grid gap-2 sc-filter-compact-group">
-            <span class="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-slate-500">Vicinanza</span>
-            <label class="inline-flex min-h-[3rem] w-full items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 sc-pill sc-filter-toggle">
+            <label class="inline-flex min-h-[3rem] items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 sc-pill sc-filter-toggle">
               <input id="nearby-only" name="nearby-only" type="checkbox" bind:checked={nearbyOnly} />
               Usa raggio
             </label>
+
+            {#if locationReady}
+              <button type="button" class="inline-flex min-h-[3rem] items-center justify-center rounded-xl bg-white px-4 text-sm font-bold text-emerald-800 transition hover:bg-slate-100 sc-button-ghost" on:click={clearLocation}>
+                Rimuovi posizione
+              </button>
+            {:else}
+              <button type="button" class="inline-flex min-h-[3rem] items-center justify-center rounded-xl bg-white px-4 text-sm font-bold text-slate-700 transition hover:bg-slate-100 sc-button-ghost" on:click={detectLocation} disabled={locating}>
+                {locating ? 'Rilevamento...' : 'Usa posizione'}
+              </button>
+            {/if}
           </div>
 
-          <label class="grid gap-2">
-            <span class="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-slate-500">Apertura</span>
-            <select
-              id="open-state-filter"
-              name="open-state-filter"
-              class="min-h-[3rem] rounded-2xl border border-slate-200 bg-white px-4 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
-              bind:value={filterOpenState}
-            >
-              <option value="all">Aperte e chiuse</option>
-              <option value="open">Aperte adesso</option>
-              <option value="closed">Chiuse adesso</option>
-            </select>
-          </label>
-
-          <label class="grid gap-2">
-            <span class="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-slate-500">Distanza</span>
-            <select
-              id="radius-filter"
-              name="radius-filter"
-              class="min-h-[3rem] rounded-2xl border border-slate-200 bg-white px-4 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
-              bind:value={locationRadius}
-            >
-              <option value={5}>5 km</option>
-              <option value={10}>10 km</option>
-              <option value={20}>20 km</option>
-              <option value={30}>30 km</option>
-              <option value={50}>50 km</option>
-            </select>
-          </label>
-
-          <div class="grid gap-2">
-            <span class="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-slate-500">Stato</span>
-            <div class="flex min-h-[3rem] items-center rounded-2xl px-4 py-2 sc-filter-meta">
-              {#if locationReady}
-                <button type="button" class="text-left text-sm font-semibold text-emerald-700 transition hover:text-emerald-900" on:click={clearLocation}>
-                  Posizione attiva. Rimuovi
-                </button>
-              {:else if isBootstrapping}
-                <span class="text-sm font-semibold text-slate-600">Aggiornamento...</span>
-              {:else}
-                <span class="text-sm font-medium text-slate-500">Posizione non attiva</span>
-              {/if}
+          <div class="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <p class="text-sm font-semibold text-slate-600">{filteredGyms.length} palestre trovate</p>
+            <div class="flex gap-3 text-sm font-semibold text-slate-600">
+              <a href="/zone" class="transition hover:text-emerald-800">Sfoglia zone</a>
+              <a href="/discipline" class="transition hover:text-emerald-800">Sfoglia discipline</a>
             </div>
           </div>
-        </div>
 
-        {#if locationError}
-          <div class="mt-3 rounded-2xl border border-red-200 bg-red-50/85 px-4 py-3 text-sm font-semibold text-red-700">
-            {locationError}
-          </div>
-        {/if}
-      </div>
-
-      {#if quickSearchSuggestions.length}
-        <div class="mt-4 rounded-[1.35rem] px-4 py-4 sc-filter-suggestions">
-          <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <p class="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-slate-500">Suggerimenti rapidi</p>
-            <p class="text-sm text-slate-500">Tocca una località o un nome frequente per compilare subito la ricerca.</p>
-          </div>
-          <div class="mt-3 flex flex-wrap gap-2">
-            {#each quickSearchSuggestions as suggestion}
-              <button
-                type="button"
-                class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold transition hover:bg-white"
-                on:click={() => {
-                  filterText = suggestion;
-                  loadGyms();
-                }}
-              >
-                {suggestion}
-              </button>
-            {/each}
-          </div>
+          {#if locationError}
+            <div class="mt-3 rounded-2xl border border-red-200 bg-red-50/85 px-4 py-3 text-sm font-semibold text-red-700">
+              {locationError}
+            </div>
+          {/if}
         </div>
-      {/if}
 
     </div>
   </section>
