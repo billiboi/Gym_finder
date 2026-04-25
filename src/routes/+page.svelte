@@ -90,6 +90,7 @@
   let locationRadius = 20;
   let nearbyOnly = true;
   let resultsView = 'list';
+  let activeGymId = '';
 
   let mapContainer;
   let mapInstance = null;
@@ -561,6 +562,9 @@
           { className: 'sc-map-popup-shell' }
         );
 
+      marker.on('click', () => {
+        activeGymId = String(gym.id);
+      });
       marker.addTo(markersLayer);
       markerByGymId.set(String(gym.id), marker);
     }
@@ -600,6 +604,7 @@
     if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
 
     resultsView = 'map';
+    activeGymId = String(gym.id);
 
     setTimeout(() => {
       if (!mapInstance) return;
@@ -832,11 +837,13 @@
     </button>
   </div>
 
-  <section id="mappa-palestre" class:hidden={resultsView !== 'map'} class="mt-5 overflow-hidden rounded-3xl border border-white/70 bg-white/85 shadow-lg sc-panel sc-map lg:block">
+  <div class="mt-5 lg:grid lg:grid-cols-[minmax(340px,0.8fr)_minmax(0,1.2fr)] lg:items-start lg:gap-5">
+  <section id="mappa-palestre" class:hidden={resultsView !== 'map'} class="overflow-hidden rounded-3xl border border-white/70 bg-white/85 shadow-lg sc-panel sc-map lg:sticky lg:top-5 lg:block">
     <div class="border-b border-slate-200 px-4 py-4 sm:px-5">
       <div class="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h2 class="text-lg font-bold text-slate-900">Mappa</h2>
+          <p class="mt-1 hidden text-sm font-semibold text-slate-600 lg:block">Usala mentre scorri i risultati.</p>
         </div>
         <div class="flex flex-wrap items-center gap-2">
           <a href="#elenco-palestre" class="rounded-2xl sc-map-chip px-3 py-2 text-xs font-semibold transition hover:bg-white">
@@ -850,7 +857,7 @@
     </div>
     <div class="relative">
       <div class="pointer-events-none absolute inset-x-0 top-0 z-[400] h-16 bg-gradient-to-b from-white/70 to-transparent sc-map-fade"></div>
-      <div bind:this={mapContainer} class="h-[300px] w-full sm:h-[420px] lg:h-[460px]"></div>
+      <div bind:this={mapContainer} class="h-[300px] w-full sm:h-[420px] lg:h-[calc(100vh-15rem)] lg:min-h-[520px]"></div>
       {#if isBootstrapping}
         <div class="pointer-events-none absolute inset-0 z-[450] flex items-center justify-center bg-white/55 backdrop-blur-[2px]">
           <div class="rounded-2xl border border-white/70 bg-white/85 px-4 py-3 text-sm font-semibold text-slate-700 shadow-lg sc-loading-card">
@@ -861,7 +868,7 @@
     </div>
   </section>
 
-<section id="elenco-palestre" class:hidden={resultsView !== 'list'} class="mt-5 lg:block">
+<section id="elenco-palestre" class:hidden={resultsView !== 'list'} class="lg:block">
   <div class="mb-3 flex flex-wrap items-end justify-between gap-3">
     <div>
       <h2 class="text-lg font-bold text-slate-900">Risultati</h2>
@@ -872,7 +879,7 @@
     </a>
   </div>
 
-  <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+  <div class="grid gap-3 sm:grid-cols-2">
     {#if isBootstrapping && filteredGyms.length === 0}
       {#each Array(6) as _, i}
         <article class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm sc-card sc-skeleton-card" style={`animation-delay:${i * 40}ms`}>
@@ -902,7 +909,11 @@
       {#each filteredGyms as gym, i}
         {@const image = resolveImageSource(gym)}
         {@const disciplinePreview = disciplinePreviewForGym(gym, 4)}
-        <article class="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg sc-card sc-gym-card" style={`animation-delay:${i * 20}ms`}>
+        <article
+          id={`gym-${gym.id}`}
+          class={`group overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg sc-card sc-gym-card ${activeGymId === String(gym.id) ? 'border-emerald-700 ring-2 ring-emerald-900/15' : 'border-slate-200'}`}
+          style={`animation-delay:${i * 20}ms`}
+        >
           <div class="relative h-40 overflow-hidden">
             <img
               src={image.src}
@@ -978,6 +989,7 @@
     {/if}
   </div>
   </section>
+  </div>
   </main>
 </div>
 
