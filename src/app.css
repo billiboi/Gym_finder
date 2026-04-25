@@ -272,6 +272,47 @@ body {
   display: block;
 }
 
+.sc-status-pill--open {
+  background: rgba(16, 185, 129, 0.12);
+  color: #047857;
+}
+
+.sc-status-pill--closed {
+  background: rgba(239, 68, 68, 0.12);
+  color: #b91c1c;
+}
+
+.sc-status-pill--muted {
+  background: rgba(100, 116, 139, 0.12);
+  color: #475569;
+}
+
+.sc-gym-card-facts p {
+  display: grid;
+  gap: 0.2rem;
+  min-height: 3.2rem;
+  border-radius: 0.85rem;
+  background: rgba(248, 250, 252, 0.92);
+  padding: 0.55rem 0.7rem;
+}
+
+.sc-gym-card-facts span {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.sc-gym-card-facts strong {
+  display: -webkit-box;
+  overflow: hidden;
+  color: #334155;
+  font-weight: 650;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
 .sc-discipline-list {
   align-items: center;
 }
