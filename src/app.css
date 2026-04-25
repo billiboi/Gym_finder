@@ -259,6 +259,10 @@ body {
   position: relative;
 }
 
+.sc-gym-card h3 {
+  text-wrap: balance;
+}
+
 .sc-gym-card img {
   display: block;
 }
@@ -698,6 +702,18 @@ body {
   .sc-filter-field,
   .sc-filter-toggle {
     min-height: 2.85rem;
+  }
+
+  .sc-hero-search {
+    padding: 0.8rem !important;
+  }
+
+  .sc-hero-search input,
+  .sc-hero-search select,
+  .sc-hero-search .sc-button,
+  .sc-hero-search .sc-button-ghost,
+  .sc-hero-search .sc-filter-toggle {
+    min-height: 2.9rem !important;
   }
 
   .sc-button,

@@ -850,9 +850,6 @@
               on:error={(event) => handleImageError(event, image)}
             />
             <span class="absolute left-3 top-3 rounded-full bg-slate-900/85 px-2.5 py-1 text-xs font-bold text-white sc-badge sc-badge--accent">{disciplinePreview.primary}</span>
-            {#if gym.distance_km !== null && gym.distance_km !== undefined}
-              <span class="absolute right-3 top-3 rounded-full bg-emerald-600 px-2.5 py-1 text-xs font-bold text-white sc-badge">{gym.distance_km} km</span>
-            {/if}
             <span class="absolute bottom-3 right-3 rounded-full px-2.5 py-1 text-xs font-bold text-white sc-badge {gym.is_open_now === true ? 'sc-badge--open' : gym.is_open_now === false ? 'sc-badge--closed' : 'bg-slate-500'}">
               {gym.is_open_now === true ? 'Aperta ora' : gym.is_open_now === false ? 'Chiusa ora' : 'Stato orario n/d'}
             </span>
@@ -894,10 +891,10 @@
             </div>
 
             <div class="flex flex-col gap-2 border-t border-slate-200 pt-3 sm:flex-row sm:items-center sm:justify-between">
-              <p class="text-sm font-semibold text-slate-600">Tel. {displayName(gym.phone) || '-'}</p>
+              <p class="min-w-0 truncate text-sm font-semibold text-slate-600">Tel. {displayName(gym.phone) || '-'}</p>
               <a
                 href={gymHref(gym)}
-                class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl bg-slate-900 px-3 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
+                class="inline-flex min-h-[2.6rem] shrink-0 items-center justify-center rounded-xl bg-slate-900 px-3 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
               >
                 Apri scheda
               </a>
