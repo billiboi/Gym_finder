@@ -932,7 +932,7 @@
         {@const hasMapLocation = Number.isFinite(Number(gym.latitude)) && Number.isFinite(Number(gym.longitude))}
         <article
           id={`gym-${gym.id}`}
-          class={`group flex h-full flex-col overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg sc-card sc-gym-card ${activeGymId === String(gym.id) ? 'border-emerald-700 ring-2 ring-emerald-900/15' : 'border-slate-200'}`}
+          class={`group flex h-full flex-col overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg sc-card sc-gym-card ${activeGymId === String(gym.id) ? 'sc-gym-card--active' : ''}`}
           style={`animation-delay:${i * 20}ms`}
         >
           <div class="relative h-40 overflow-hidden">
@@ -943,8 +943,7 @@
               loading="lazy"
               on:error={(event) => handleImageError(event, image)}
             />
-            <span class="absolute left-3 top-3 rounded-full bg-slate-900/85 px-2.5 py-1 text-xs font-bold text-white sc-badge sc-badge--accent">{disciplinePreview.primary}</span>
-            <span class="absolute bottom-3 right-3 rounded-full px-2.5 py-1 text-xs font-bold text-white sc-badge {gym.is_open_now === true ? 'sc-badge--open' : gym.is_open_now === false ? 'sc-badge--closed' : 'bg-slate-500'}">
+            <span class="absolute left-3 top-3 rounded-full px-2.5 py-1 text-xs font-bold text-white sc-badge {gym.is_open_now === true ? 'sc-badge--open' : gym.is_open_now === false ? 'sc-badge--closed' : 'bg-slate-500'}">
               {gym.is_open_now === true ? 'Aperta ora' : gym.is_open_now === false ? 'Chiusa ora' : 'Stato orario n/d'}
             </span>
           </div>
@@ -1000,6 +999,7 @@
                     type="button"
                     class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl bg-white px-3 text-sm font-bold text-slate-700 transition hover:bg-slate-100 sc-button-ghost"
                     on:click={() => focusGymOnMap(gym)}
+                    aria-label={`Mostra ${displayName(gym.name)} sulla mappa`}
                   >
                     Mappa
                   </button>

@@ -259,33 +259,17 @@ body {
   position: relative;
 }
 
+.sc-gym-card--active {
+  border-color: rgba(4, 120, 87, 0.7) !important;
+  box-shadow: 0 0 0 2px rgba(6, 95, 70, 0.14), 0 18px 34px rgba(31, 54, 45, 0.16);
+}
+
 .sc-gym-card h3 {
   text-wrap: balance;
 }
 
 .sc-gym-card img {
   display: block;
-}
-
-.sc-gym-card-head {
-  background:
-    linear-gradient(135deg, rgba(31, 92, 74, 0.08), rgba(214, 207, 176, 0.14)),
-    rgba(255, 255, 255, 0.52);
-  border: 1px solid rgba(31, 92, 74, 0.08);
-}
-
-.sc-gym-card-cta {
-  background:
-    linear-gradient(135deg, rgba(31, 92, 74, 0.08), rgba(214, 207, 176, 0.14)),
-    rgba(255, 255, 255, 0.72);
-  border: 1px solid rgba(31, 92, 74, 0.1);
-  display: flex;
-  justify-content: flex-start;
-}
-
-.sc-gym-card-row {
-  background: rgba(255, 255, 255, 0.66);
-  border: 1px solid rgba(31, 92, 74, 0.08);
 }
 
 .sc-discipline-list {
@@ -308,10 +292,6 @@ body {
 .sc-discipline-chip--muted {
   background: rgba(27, 39, 35, 0.06);
   color: #6b746f;
-}
-
-.sc-gym-card-kicker {
-  color: var(--accent-red) !important;
 }
 
 .sc-admin-modal {
