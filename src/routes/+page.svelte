@@ -705,7 +705,7 @@
             {/each}
           </datalist>
 
-          <div class="mt-3 grid gap-3 border-t border-slate-200/70 pt-3 sm:grid-cols-2 lg:grid-cols-[minmax(170px,0.7fr)_minmax(150px,0.5fr)_minmax(170px,0.65fr)_auto] lg:items-end">
+          <div class="mt-3 grid gap-3 border-t border-slate-200/70 pt-3 sm:grid-cols-2 lg:grid-cols-[minmax(170px,0.85fr)_minmax(130px,0.45fr)_max-content_auto] lg:items-end">
             <label class="grid gap-2">
               <span class="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-slate-500">Apertura</span>
               <select
@@ -736,9 +736,9 @@
               </select>
             </label>
 
-            <label class="inline-flex min-h-[3rem] items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 sc-pill sc-filter-toggle">
+            <label class="inline-flex min-h-[3rem] items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 sc-pill sc-filter-toggle sc-radius-toggle">
               <input id="nearby-only" name="nearby-only" type="checkbox" bind:checked={nearbyOnly} />
-              Usa raggio
+              <span>Usa raggio</span>
             </label>
 
             {#if locationReady}

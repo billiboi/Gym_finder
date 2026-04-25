@@ -408,6 +408,11 @@ body {
   background: rgba(255, 255, 255, 0.72);
 }
 
+.sc-radius-toggle {
+  width: max-content;
+  white-space: nowrap;
+}
+
 .sc-filter-search {
   font-weight: 600;
   letter-spacing: -0.01em;
