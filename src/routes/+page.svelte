@@ -654,7 +654,7 @@
 </svelte:head>
 
 <div class="min-h-screen w-full sc-page relative">
-  <main class="mx-auto w-full max-w-7xl px-4 pb-8 pt-4 sm:px-6 lg:px-8">
+  <main id="top" class="mx-auto w-full max-w-7xl px-4 pb-8 pt-4 sm:px-6 lg:px-8">
   <section class="reveal rounded-3xl border border-white/80 bg-white/70 p-4 shadow-xl backdrop-blur-sm sm:p-7 sc-panel sc-hero">
     <div class="mx-auto flex max-w-5xl flex-col gap-6 sc-hero-copy">
         <div class="max-w-3xl">
@@ -774,16 +774,21 @@
     <div class="border-b border-slate-200 px-4 py-4 sm:px-5">
       <div class="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h2 class="text-lg font-bold text-slate-900">Mappa palestre</h2>
+          <h2 class="text-lg font-bold text-slate-900">Mappa</h2>
         </div>
-        <div class="rounded-2xl sc-map-chip px-3 py-2 text-xs font-semibold">
-          {filteredGyms.length} risultati visibili
+        <div class="flex flex-wrap items-center gap-2">
+          <a href="#elenco-palestre" class="rounded-2xl sc-map-chip px-3 py-2 text-xs font-semibold transition hover:bg-white">
+            Vai alla lista
+          </a>
+          <div class="rounded-2xl sc-map-chip px-3 py-2 text-xs font-semibold">
+            {filteredGyms.length} risultati
+          </div>
         </div>
       </div>
     </div>
     <div class="relative">
       <div class="pointer-events-none absolute inset-x-0 top-0 z-[400] h-16 bg-gradient-to-b from-white/70 to-transparent sc-map-fade"></div>
-      <div bind:this={mapContainer} class="h-[420px] w-full sm:h-[460px]"></div>
+      <div bind:this={mapContainer} class="h-[300px] w-full sm:h-[420px] lg:h-[460px]"></div>
       {#if isBootstrapping}
         <div class="pointer-events-none absolute inset-0 z-[450] flex items-center justify-center bg-white/55 backdrop-blur-[2px]">
           <div class="rounded-2xl border border-white/70 bg-white/85 px-4 py-3 text-sm font-semibold text-slate-700 shadow-lg sc-loading-card">
@@ -794,7 +799,18 @@
     </div>
   </section>
 
-<section id="elenco-palestre" class="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+<section id="elenco-palestre" class="mt-5">
+  <div class="mb-3 flex flex-wrap items-end justify-between gap-3">
+    <div>
+      <h2 class="text-lg font-bold text-slate-900">Risultati</h2>
+      <p class="mt-1 text-sm font-semibold text-slate-600">{filteredGyms.length} palestre trovate</p>
+    </div>
+    <a href="#top" class="rounded-2xl sc-map-chip px-3 py-2 text-xs font-semibold transition hover:bg-white">
+      Torna alla ricerca
+    </a>
+  </div>
+
+  <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
     {#if isBootstrapping && filteredGyms.length === 0}
       {#each Array(6) as _, i}
         <article class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm sc-card sc-skeleton-card" style={`animation-delay:${i * 40}ms`}>
@@ -890,6 +906,7 @@
         </article>
       {/each}
     {/if}
+  </div>
   </section>
   </main>
 </div>
