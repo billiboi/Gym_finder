@@ -786,56 +786,39 @@
 
   <section class="reveal mt-5 rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sm:p-5 sc-panel sc-filter-panel">
     <div class="sc-filter-shell">
-      <div class="mb-5 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-        <div class="max-w-2xl">
+      <div class="mb-4 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+        <div class="max-w-xl">
           <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Filtri avanzati</p>
-          <h2 class="mt-2 text-xl font-bold leading-tight text-slate-900 sm:text-2xl">Regola solo quello che cambia davvero i risultati</h2>
-          <p class="mt-2 max-w-xl text-sm leading-7 text-slate-600 sm:text-base">
-            La ricerca principale resta in alto. Qui puoi restringere per apertura, distanza e vicinanza.
-          </p>
+          <h2 class="mt-2 text-xl font-bold leading-tight text-slate-900 sm:text-2xl">Restringi i risultati</h2>
         </div>
-        <div class="flex flex-col gap-2 lg:items-end">
-          <div class="flex flex-wrap gap-2">
-            <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">
-              {filterDiscipline || 'Tutte le discipline'}
-            </span>
-            <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">
-              {nearbyOnly ? `Nel raggio ${locationRadius} km` : 'Senza raggio'}
-            </span>
-            <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">
-              {filterOpenState === 'open' ? 'Aperte adesso' : filterOpenState === 'closed' ? 'Chiuse adesso' : 'Aperte e chiuse'}
-            </span>
-          </div>
-          <div class="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
-            <button type="button" class="rounded-2xl bg-slate-900 px-4 py-3 text-sm font-bold text-white hover:bg-slate-800 sc-button" on:click={detectLocation} disabled={locating}>
-              {locating ? 'Rilevamento posizione...' : 'Usa la mia posizione'}
+        <div class="flex flex-col gap-2 sm:flex-row sm:flex-wrap lg:justify-end">
+          <button type="button" class="inline-flex min-h-[2.75rem] items-center justify-center rounded-2xl bg-slate-900 px-4 text-sm font-bold text-white hover:bg-slate-800 sc-button" on:click={detectLocation} disabled={locating}>
+            {locating ? 'Rilevamento...' : 'Usa posizione'}
+          </button>
+          {#if locationReady}
+            <button type="button" class="inline-flex min-h-[2.75rem] items-center justify-center rounded-2xl bg-slate-200 px-4 text-sm font-semibold text-slate-700 hover:bg-slate-300 sc-button-muted" on:click={clearLocation}>
+              Rimuovi posizione
             </button>
-            {#if locationReady}
-              <button type="button" class="rounded-2xl bg-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-300 sc-button-muted" on:click={clearLocation}>
-                Rimuovi posizione
-              </button>
-            {/if}
-          </div>
+          {/if}
         </div>
       </div>
 
-      <div class="rounded-[1.8rem] p-4 sm:p-5 sc-filter-surface">
-        <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          <div class="grid gap-2 rounded-[1.6rem] p-4 sc-filter-local-card">
-            <span class="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-slate-500">Ricerca locale</span>
-            <label class="inline-flex min-h-[3.1rem] w-full items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 sc-pill sc-filter-toggle">
+      <div class="rounded-[1.6rem] p-3 sm:p-4 sc-filter-surface">
+        <div class="grid gap-3 lg:grid-cols-[minmax(220px,0.85fr)_minmax(180px,0.65fr)_minmax(180px,0.65fr)_minmax(220px,0.85fr)] lg:items-end">
+          <div class="grid gap-2 sc-filter-compact-group">
+            <span class="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-slate-500">Vicinanza</span>
+            <label class="inline-flex min-h-[3rem] w-full items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 sc-pill sc-filter-toggle">
               <input id="nearby-only" name="nearby-only" type="checkbox" bind:checked={nearbyOnly} />
-              Attiva ricerca nel raggio
+              Usa raggio
             </label>
-            <p class="text-sm leading-6 text-slate-600">Dà priorità alle palestre vicine quando usi la posizione.</p>
           </div>
 
           <label class="grid gap-2">
-            <span class="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-slate-500">Stato</span>
+            <span class="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-slate-500">Apertura</span>
             <select
               id="open-state-filter"
               name="open-state-filter"
-              class="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
+              class="min-h-[3rem] rounded-2xl border border-slate-200 bg-white px-4 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
               bind:value={filterOpenState}
             >
               <option value="all">Aperte e chiuse</option>
@@ -845,11 +828,11 @@
           </label>
 
           <label class="grid gap-2">
-            <span class="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-slate-500">Distanza massima</span>
+            <span class="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-slate-500">Distanza</span>
             <select
               id="radius-filter"
               name="radius-filter"
-              class="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
+              class="min-h-[3rem] rounded-2xl border border-slate-200 bg-white px-4 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
               bind:value={locationRadius}
             >
               <option value={5}>5 km</option>
@@ -861,20 +844,24 @@
           </label>
 
           <div class="grid gap-2">
-            <span class="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-slate-500">Stato ricerca</span>
-            <div class="flex min-h-[3.25rem] flex-wrap items-center gap-2 rounded-2xl px-3 py-2 sc-filter-meta">
+            <span class="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-slate-500">Stato</span>
+            <div class="flex min-h-[3rem] items-center rounded-2xl px-4 py-2 sc-filter-meta">
               {#if locationReady}
-                <span class="rounded-full px-3 py-1 text-xs font-semibold text-emerald-700 sc-filter-status">Ordinamento per vicinanza attivo</span>
-              {/if}
-              {#if isBootstrapping}
-                <span class="rounded-full sc-loading-pill px-3 py-1 text-xs font-semibold">Aggiornamento risultati...</span>
-              {/if}
-              {#if !locationReady && !isBootstrapping}
-                <span class="text-sm font-medium text-slate-500">Nessun stato attivo</span>
+                <span class="text-sm font-semibold text-emerald-700">Posizione attiva</span>
+              {:else if isBootstrapping}
+                <span class="text-sm font-semibold text-slate-600">Aggiornamento...</span>
+              {:else}
+                <span class="text-sm font-medium text-slate-500">Nessun filtro locale</span>
               {/if}
             </div>
           </div>
         </div>
+
+        {#if locationError}
+          <div class="mt-3 rounded-2xl border border-red-200 bg-red-50/85 px-4 py-3 text-sm font-semibold text-red-700">
+            {locationError}
+          </div>
+        {/if}
       </div>
 
       {#if quickSearchSuggestions.length}
@@ -900,11 +887,6 @@
         </div>
       {/if}
 
-      {#if locationError}
-        <div class="mt-4 rounded-2xl border border-red-200 bg-red-50/85 px-4 py-3 text-sm font-semibold text-red-700">
-          {locationError}
-        </div>
-      {/if}
     </div>
   </section>
 
