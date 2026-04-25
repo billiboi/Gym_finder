@@ -824,8 +824,8 @@
       {#each filteredGyms as gym, i}
         {@const image = resolveImageSource(gym)}
         {@const disciplinePreview = disciplinePreviewForGym(gym, 4)}
-        <article class="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl sc-card sc-gym-card" style={`animation-delay:${i * 20}ms`}>
-          <div class="relative h-44 overflow-hidden">
+        <article class="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg sc-card sc-gym-card" style={`animation-delay:${i * 20}ms`}>
+          <div class="relative h-40 overflow-hidden">
             <img
               src={image.src}
               alt={`Immagine ${gym.name}`}
@@ -842,15 +842,14 @@
             </span>
           </div>
 
-          <div class="space-y-3 p-3 sm:p-4">
-            <div class="space-y-1 rounded-2xl sc-gym-card-head p-3">
-              <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Dettagli palestra</p>
+          <div class="space-y-3 p-4">
+            <div class="space-y-2">
               <h3 class="text-lg font-bold leading-tight text-slate-900">
                 <a href={gymHref(gym)} class="transition hover:text-emerald-800">
                   {displayName(gym.name)}
                 </a>
               </h3>
-              <div class="mt-2 flex flex-wrap gap-2 text-xs font-semibold text-slate-500">
+              <div class="flex flex-wrap gap-2 text-xs font-semibold text-slate-500">
                 {#if gym.distance_km !== null && gym.distance_km !== undefined}
                   <span class="rounded-full bg-slate-100 px-2.5 py-1">{gym.distance_km} km</span>
                 {/if}
@@ -858,7 +857,7 @@
                   <span class="rounded-full bg-slate-100 px-2.5 py-1">{displayName(gym.city)}</span>
                 {/if}
               </div>
-              <div class="mt-3 flex flex-wrap gap-2 sc-discipline-list">
+              <div class="flex flex-wrap gap-2 sc-discipline-list">
                 <span class="rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.14em] sc-discipline-chip sc-discipline-chip--primary">
                   {disciplinePreview.primary}
                 </span>
@@ -873,25 +872,19 @@
               </div>
             </div>
 
-            <div class="grid gap-2">
-              <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Indirizzo:</strong> {formatAddressForDisplay(gym)}</p>
-              <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Orari:</strong> {displayName(gym.hours_info)}</p>
-              <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Telefono:</strong> {displayName(gym.phone) || '-'}</p>
+            <div class="grid gap-1.5 text-sm leading-6 text-slate-700">
+              <p><span class="font-semibold text-slate-900">Indirizzo:</span> {formatAddressForDisplay(gym)}</p>
+              <p class="line-clamp-2"><span class="font-semibold text-slate-900">Orari:</span> {displayName(gym.hours_info) || 'Da verificare'}</p>
             </div>
 
-            <div class="rounded-2xl sc-gym-card-cta p-3">
-              <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Prossimo passo</p>
-                  <p class="mt-1 text-sm text-slate-600">Apri la scheda per vedere contatti, mappa e dettagli utili.</p>
-                </div>
-                <a
-                  href={gymHref(gym)}
-                  class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-3 py-2 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
-                >
-                  Scheda completa
-                </a>
-              </div>
+            <div class="flex flex-col gap-2 border-t border-slate-200 pt-3 sm:flex-row sm:items-center sm:justify-between">
+              <p class="text-sm font-semibold text-slate-600">Tel. {displayName(gym.phone) || '-'}</p>
+              <a
+                href={gymHref(gym)}
+                class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl bg-slate-900 px-3 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
+              >
+                Apri scheda
+              </a>
             </div>
           </div>
         </article>
