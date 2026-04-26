@@ -1,5 +1,5 @@
 <script>
-  import { onDestroy, onMount } from 'svelte';
+  import { onDestroy, onMount, tick } from 'svelte';
   import { dedupeDisciplines, normalizeDisciplineLabel } from '$lib/disciplines';
   import { disciplinePreviewForGym, gymHref, imageForGym } from '$lib/gym-detail';
   import { isGymOpenNow } from '$lib/hours';
@@ -182,6 +182,7 @@
       }
     ];
   $: homeStructuredDataScript = jsonLdScript(homeStructuredData);
+  $: activeGym = activeGymId ? filteredGyms.find((gym) => String(gym.id) === activeGymId) : null;
 
   function splitCsvLine(line, delimiter = ',') {
     const out = [];
@@ -624,10 +625,14 @@
               <a href="${detailHref}" class="sc-map-popup-link">Scheda completa</a>
             </div>
           </div>`,
-          { className: 'sc-map-popup-shell' }
+          { autoPan: true, className: 'sc-map-popup-shell', keepInView: true, maxWidth: 320 }
         );
 
       marker.on('click', () => {
+        activeGymId = String(gym.id);
+        marker.openPopup();
+      });
+      marker.on('popupopen', () => {
         activeGymId = String(gym.id);
       });
       marker.addTo(markersLayer);
@@ -663,13 +668,14 @@
     }
   }
 
-  function focusGymOnMap(gym) {
+  async function focusGymOnMap(gym) {
     const lat = Number(gym.latitude);
     const lng = Number(gym.longitude);
     if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
 
     resultsView = 'map';
     activeGymId = String(gym.id);
+    await tick();
 
     setTimeout(() => {
       if (!mapInstance) return;
@@ -692,14 +698,18 @@
     }, 0);
   }
 
-  function setResultsView(view) {
+  async function setResultsView(view) {
     resultsView = view;
+    await tick();
 
     if (view === 'map' && mapInstance) {
       setTimeout(() => {
         mapInstance?.invalidateSize();
         refreshMap();
       }, 0);
+      setTimeout(() => {
+        mapInstance?.invalidateSize();
+      }, 180);
     }
   }
 
@@ -1012,6 +1022,25 @@
         </div>
       {/if}
     </div>
+    {#if activeGym}
+      <div class="border-t border-slate-200 bg-white/92 p-4 sm:p-5">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div class="min-w-0">
+            <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Palestra selezionata</p>
+            <h3 class="mt-1 line-clamp-2 text-lg font-bold text-slate-900">{displayName(activeGym.name)}</h3>
+            <p class="mt-1 text-sm font-semibold leading-6 text-slate-600">{formatAddressForDisplay(activeGym)}</p>
+          </div>
+          <div class="flex flex-wrap gap-2 sm:justify-end">
+            <button type="button" class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button-ghost" on:click={showResultsList}>
+              Vedi nella lista
+            </button>
+            <a href={gymHref(activeGym)} class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl px-4 text-sm font-bold text-white transition sc-button">
+              Scheda completa
+            </a>
+          </div>
+        </div>
+      </div>
+    {/if}
   </section>
 
 <section id="elenco-palestre" class:hidden={resultsView !== 'list'} class="lg:block">
