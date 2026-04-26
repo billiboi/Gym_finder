@@ -41,6 +41,29 @@
     </div>
   </section>
 
+  <section class="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+    <a href="/admin/richieste" class="rounded-2xl border border-white/80 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+      <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Richieste aperte</p>
+      <p class="mt-2 text-3xl font-bold text-slate-900">{data.requestStats.open}</p>
+      <p class="mt-1 text-sm text-slate-600">{data.requestStats.new} nuove, {data.requestStats.reviewed} in revisione</p>
+    </a>
+    <a href="/admin/schede" class="rounded-2xl border border-white/80 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+      <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Senza contatti</p>
+      <p class="mt-2 text-3xl font-bold text-slate-900">{data.qualityStats.noContact}</p>
+      <p class="mt-1 text-sm text-slate-600">Schede prive di telefono e sito.</p>
+    </a>
+    <a href="/admin/schede" class="rounded-2xl border border-white/80 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+      <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Orari da verificare</p>
+      <p class="mt-2 text-3xl font-bold text-slate-900">{data.qualityStats.hoursToVerify}</p>
+      <p class="mt-1 text-sm text-slate-600">Priorita utile per fiducia e conversione.</p>
+    </a>
+    <a href="/admin/schede" class="rounded-2xl border border-white/80 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+      <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Contatti parziali</p>
+      <p class="mt-2 text-3xl font-bold text-slate-900">{data.qualityStats.noPhone + data.qualityStats.noWebsite}</p>
+      <p class="mt-1 text-sm text-slate-600">{data.qualityStats.noPhone} senza telefono, {data.qualityStats.noWebsite} senza sito.</p>
+    </a>
+  </section>
+
   <section class="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
     {#if filtered.length === 0}
       <div class="col-span-full rounded-2xl border border-dashed border-slate-300 p-8 text-center text-slate-500">
