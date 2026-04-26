@@ -94,6 +94,7 @@
   let loadingGyms = !Array.isArray(data?.initialGyms);
   let loadingDisciplines = !Array.isArray(data?.initialDisciplines);
 
+  let searchInput = '';
   let filterText = '';
   let filterDiscipline = '';
   let filterOpenState = 'all';
@@ -115,6 +116,8 @@
   let markerByGymId = new Map();
   let userMarker = null;
   let radiusCircle = null;
+  let searchDebounceTimer = null;
+  let scheduledSearchValue = '';
 
   $: {
   filterText;
@@ -131,9 +134,9 @@
   $: locationReady = Boolean(userLocation);
   $: isBootstrapping = loadingGyms || loadingDisciplines;
   $: quickSuggestionPool = buildQuickSuggestionPool(gyms, disciplines);
-  $: quickSearchSuggestions = filterQuickSuggestions(quickSuggestionPool, filterText);
+  $: quickSearchSuggestions = filterQuickSuggestions(quickSuggestionPool, searchInput);
   $: activeFilterCount = [
-    filterText.trim(),
+    searchInput.trim(),
     filterDiscipline.trim(),
     filterOpenState !== 'all',
     locationReady,
@@ -141,6 +144,7 @@
   ].filter(Boolean).length;
   $: hasActiveFilters = activeFilterCount > 0;
   $: if (!locationReady && sortMode === 'distance') sortMode = 'recommended';
+  $: if (searchInput !== filterText) scheduleSearchApply(searchInput);
 
   let csvGymsCache = null;
 
@@ -352,21 +356,21 @@
     for (const gym of allGyms) {
       const name = displayName(gym.name);
       if (name && !pool.has(name.toLowerCase())) {
-        pool.set(name.toLowerCase(), { value: name, type: 'gym' });
+        pool.set(name.toLowerCase(), { value: name, searchText: name.toLowerCase(), type: 'gym' });
       }
     }
 
     for (const discipline of dedupeDisciplines(allDisciplines)) {
       const value = displayName(discipline);
       if (value && !pool.has(value.toLowerCase())) {
-        pool.set(value.toLowerCase(), { value, type: 'discipline' });
+        pool.set(value.toLowerCase(), { value, searchText: value.toLowerCase(), type: 'discipline' });
       }
     }
 
     for (const gym of allGyms) {
       const city = displayName(gym.city);
       if (city && !pool.has(city.toLowerCase())) {
-        pool.set(city.toLowerCase(), { value: city, type: 'city' });
+        pool.set(city.toLowerCase(), { value: city, searchText: city.toLowerCase(), type: 'city' });
       }
     }
 
@@ -394,9 +398,9 @@
 
     return pool
       .map((entry) => {
-        const text = entry.value.toLowerCase();
+        const text = entry.searchText;
         const startsWith = text.startsWith(q);
-        const wordBoundary = new RegExp(`(^|\\s)${q}`).test(text);
+        const wordBoundary = text.includes(` ${q}`);
         const includes = text.includes(q);
 
         if (!includes) return null;
@@ -417,6 +421,28 @@
       })
       .slice(0, 6)
       .map((entry) => entry.value);
+  }
+
+  function applySearchNow() {
+    if (searchDebounceTimer) {
+      clearTimeout(searchDebounceTimer);
+      searchDebounceTimer = null;
+    }
+
+    scheduledSearchValue = searchInput;
+    filterText = searchInput;
+  }
+
+  function scheduleSearchApply(value) {
+    if (value === scheduledSearchValue && searchDebounceTimer) return;
+
+    scheduledSearchValue = value;
+    if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
+
+    searchDebounceTimer = setTimeout(() => {
+      filterText = value;
+      searchDebounceTimer = null;
+    }, 140);
   }
 
   async function getCsvGyms() {
@@ -499,6 +525,8 @@
   }
 
   function resetFilters() {
+    searchInput = '';
+    scheduledSearchValue = '';
     filterText = '';
     filterDiscipline = '';
     filterOpenState = 'all';
@@ -769,6 +797,10 @@
       mapInstance.remove();
       mapInstance = null;
     }
+    if (searchDebounceTimer) {
+      clearTimeout(searchDebounceTimer);
+      searchDebounceTimer = null;
+    }
   });
 </script>
 
@@ -809,8 +841,11 @@
                 name="hero-gym-search"
                 class="min-h-[3.35rem] rounded-2xl border border-slate-200 bg-white px-4 text-base font-semibold outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
                 placeholder="Citta, palestra o disciplina"
-                bind:value={filterText}
+                bind:value={searchInput}
                 list="quick-search-suggestions"
+                on:keydown={(event) => {
+                  if (event.key === 'Enter') applySearchNow();
+                }}
               />
             </label>
             <label class="grid gap-2">
@@ -828,7 +863,7 @@
                 {/each}
               </select>
             </label>
-            <a href="#elenco-palestre" class="inline-flex min-h-[3.35rem] items-center justify-center rounded-2xl px-5 text-center text-sm font-bold text-white transition sc-button">
+            <a href="#elenco-palestre" class="inline-flex min-h-[3.35rem] items-center justify-center rounded-2xl px-5 text-center text-sm font-bold text-white transition sc-button" on:click={applySearchNow}>
               Cerca
             </a>
           </div>
@@ -860,9 +895,9 @@
 
           {#if hasActiveFilters}
             <div class="mt-3 flex flex-wrap gap-2" aria-label="Filtri attivi">
-              {#if filterText.trim()}
-                <button type="button" class="rounded-full px-3 py-1.5 text-xs font-bold sc-active-filter-chip" aria-label="Rimuovi filtro testo" on:click={() => (filterText = '')}>
-                  Testo: {filterText.trim()} x
+              {#if searchInput.trim()}
+                <button type="button" class="rounded-full px-3 py-1.5 text-xs font-bold sc-active-filter-chip" aria-label="Rimuovi filtro testo" on:click={() => { searchInput = ''; scheduledSearchValue = ''; filterText = ''; }}>
+                  Testo: {searchInput.trim()} x
                 </button>
               {/if}
               {#if filterDiscipline.trim()}
