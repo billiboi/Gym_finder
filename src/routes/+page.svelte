@@ -1,5 +1,5 @@
 <script>
-  import { afterUpdate, onDestroy, onMount } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
   import { dedupeDisciplines, normalizeDisciplineLabel } from '$lib/disciplines';
   import { disciplinePreviewForGym, gymHref, imageForGym } from '$lib/gym-detail';
   import { isGymOpenNow } from '$lib/hours';
@@ -105,6 +105,7 @@
   let nearbyOnly = true;
   let resultsView = 'list';
   let activeGymId = '';
+  let filtersExpanded = false;
 
   let mapContainer;
   let mapInstance = null;
@@ -129,6 +130,13 @@
   $: isBootstrapping = loadingGyms || loadingDisciplines;
   $: quickSuggestionPool = buildQuickSuggestionPool(gyms, disciplines);
   $: quickSearchSuggestions = filterQuickSuggestions(quickSuggestionPool, filterText);
+  $: activeFilterCount = [
+    filterText.trim(),
+    filterDiscipline.trim(),
+    filterOpenState !== 'all',
+    locationReady
+  ].filter(Boolean).length;
+  $: hasActiveFilters = activeFilterCount > 0;
 
   let csvGymsCache = null;
 
@@ -142,7 +150,7 @@
 
   $: homepageTitle = `${SITE_NAME} | Trova palestre vicine, fitness e arti marziali`;
   $: homepageDescription =
-    'Cerca palestre vicine, fitness, Pilates, nuoto e arti marziali in Italia e Svizzera con filtri per disciplina, città e distanza.';
+    'Cerca palestre vicine, fitness, Pilates, nuoto e arti marziali in Italia e Svizzera con filtri per disciplina, citta e distanza.';
   $: featuredGyms = filteredGyms.slice(0, 12);
   $: homeStructuredData = [
       {
@@ -344,6 +352,15 @@
     return [...pool.values()];
   }
 
+  function escapeHtml(value) {
+    return String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
   function filterQuickSuggestions(pool, query) {
     const q = String(query || '').trim().toLowerCase();
     if (!q || q.length < 2) return [];
@@ -460,6 +477,17 @@
     locationError = '';
   }
 
+  function resetFilters() {
+    filterText = '';
+    filterDiscipline = '';
+    filterOpenState = 'all';
+    userLocation = null;
+    locationError = '';
+    locationRadius = 20;
+    nearbyOnly = true;
+    activeGymId = '';
+  }
+
   async function ensureLeaflet() {
     if (typeof window === 'undefined') return;
     if (window.L && window.L.markerClusterGroup) return;
@@ -549,20 +577,22 @@
       const escapedName = String(gym.name || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       const namePrefix = new RegExp(`^${escapedName}\\s*,\\s*`, 'i');
       const fullAddress = (rawAddress ? rawAddress.replace(namePrefix, '') : '') || 'Indirizzo non disponibile';
-      const popupPhone = displayName(gym.phone) || 'Non disponibile';
-      const detailHref = gymHref(gym);
-      const popupDiscipline = disciplineListForGym(gym).join(' | ');
+      const popupName = escapeHtml(displayName(gym.name));
+      const popupPhone = escapeHtml(displayName(gym.phone) || 'Non disponibile');
+      const detailHref = escapeHtml(gymHref(gym));
+      const popupDiscipline = escapeHtml(disciplineListForGym(gym).join(' | '));
+      const popupAddress = escapeHtml(fullAddress);
 
       const marker = window.L.marker([lat, lng]).bindPopup(
           `<div class="sc-map-popup">
-            <div class="sc-map-popup-title">${gym.name}</div>
+            <div class="sc-map-popup-title">${popupName}</div>
             <div class="sc-map-popup-row">
               <span class="sc-map-popup-label">Disciplina</span>
               <span class="sc-map-popup-value">${popupDiscipline}</span>
             </div>
             <div class="sc-map-popup-row">
               <span class="sc-map-popup-label">Indirizzo</span>
-              <span class="sc-map-popup-value">${fullAddress}</span>
+              <span class="sc-map-popup-value">${popupAddress}</span>
             </div>
             <div class="sc-map-popup-row">
               <span class="sc-map-popup-label">Distanza</span>
@@ -690,19 +720,17 @@
     refreshMap();
   }
 
-  $: if (mapInstance) {
+  $: if (mapInstance && markersLayer) {
+    filteredGyms;
+    userLocation;
+    nearbyOnly;
+    locationRadius;
     refreshMap();
   }
 
   onMount(async () => {
     await Promise.all([loadGyms(), loadDisciplines()]);
     await initMap();
-  });
-
-  afterUpdate(() => {
-    if (mapInstance && markersLayer) {
-      refreshMap();
-    }
   });
 
   onDestroy(() => {
@@ -779,7 +807,49 @@
             {/each}
           </datalist>
 
-          <div class="mt-3 grid gap-3 border-t border-slate-200/70 pt-3 sm:grid-cols-2 lg:grid-cols-[minmax(170px,0.85fr)_minmax(130px,0.45fr)_max-content_auto] lg:items-end">
+          <div class="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-slate-200/70 pt-3">
+            <button
+              type="button"
+              class="inline-flex min-h-[2.7rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button-muted lg:hidden"
+              aria-expanded={filtersExpanded}
+              aria-controls="advanced-search-filters"
+              on:click={() => (filtersExpanded = !filtersExpanded)}
+            >
+              Filtri{activeFilterCount ? ` (${activeFilterCount})` : ''}
+            </button>
+            <p class="text-sm font-semibold text-slate-600" aria-live="polite">{filteredGyms.length} palestre trovate</p>
+            {#if hasActiveFilters}
+              <button type="button" class="inline-flex min-h-[2.7rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button-ghost" on:click={resetFilters}>
+                Reset
+              </button>
+            {/if}
+          </div>
+
+          {#if hasActiveFilters}
+            <div class="mt-3 flex flex-wrap gap-2" aria-label="Filtri attivi">
+              {#if filterText.trim()}
+                <span class="rounded-full px-3 py-1.5 text-xs font-bold sc-active-filter-chip">Testo: {filterText.trim()}</span>
+              {/if}
+              {#if filterDiscipline.trim()}
+                <span class="rounded-full px-3 py-1.5 text-xs font-bold sc-active-filter-chip">{filterDiscipline}</span>
+              {/if}
+              {#if filterOpenState !== 'all'}
+                <span class="rounded-full px-3 py-1.5 text-xs font-bold sc-active-filter-chip">
+                  {filterOpenState === 'open' ? 'Aperte adesso' : 'Chiuse adesso'}
+                </span>
+              {/if}
+              {#if locationReady}
+                <span class="rounded-full px-3 py-1.5 text-xs font-bold sc-active-filter-chip">
+                  {nearbyOnly ? `Entro ${locationRadius} km` : 'Posizione attiva'}
+                </span>
+              {/if}
+            </div>
+          {/if}
+
+          <div
+            id="advanced-search-filters"
+            class={`mt-3 gap-3 sm:grid-cols-2 lg:grid lg:grid-cols-[minmax(170px,0.85fr)_minmax(130px,0.45fr)_max-content_auto] lg:items-end ${filtersExpanded ? 'grid' : 'hidden'}`}
+          >
             <label class="grid gap-2">
               <span class="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-slate-500">Apertura</span>
               <select
@@ -801,6 +871,7 @@
                 name="radius-filter"
                 class="min-h-[3rem] rounded-2xl border border-slate-200 bg-white px-4 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
                 bind:value={locationRadius}
+                disabled={!locationReady}
               >
                 <option value={5}>5 km</option>
                 <option value={10}>10 km</option>
@@ -810,8 +881,8 @@
               </select>
             </label>
 
-            <label class="inline-flex min-h-[3rem] items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 sc-pill sc-filter-toggle sc-radius-toggle">
-              <input id="nearby-only" name="nearby-only" type="checkbox" bind:checked={nearbyOnly} />
+            <label class={`inline-flex min-h-[3rem] items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 sc-pill sc-filter-toggle sc-radius-toggle ${!locationReady ? 'opacity-60' : ''}`}>
+              <input id="nearby-only" name="nearby-only" type="checkbox" bind:checked={nearbyOnly} disabled={!locationReady} />
               <span>Usa raggio</span>
             </label>
 
@@ -827,7 +898,9 @@
           </div>
 
           <div class="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <p class="text-sm font-semibold text-slate-600">{filteredGyms.length} palestre trovate</p>
+            <p class="text-sm font-semibold text-slate-600">
+              {locationReady ? 'Risultati ordinati dalla tua posizione.' : 'Attiva la posizione per ordinare per distanza.'}
+            </p>
             <div class="flex gap-3 text-sm font-semibold text-slate-600">
               <a href="/zone" class="transition hover:text-emerald-800">Sfoglia zone</a>
               <a href="/discipline" class="transition hover:text-emerald-800">Sfoglia discipline</a>
@@ -898,7 +971,7 @@
   <div class="mb-3 flex flex-wrap items-end justify-between gap-3">
     <div>
       <h2 class="text-lg font-bold text-slate-900">Risultati</h2>
-      <p class="mt-1 text-sm font-semibold text-slate-600">{filteredGyms.length} palestre trovate</p>
+      <p class="mt-1 text-sm font-semibold text-slate-600" aria-live="polite">{filteredGyms.length} palestre trovate</p>
     </div>
     <a href="#top" class="rounded-2xl sc-map-chip px-3 py-2 text-xs font-semibold transition hover:bg-white">
       Torna alla ricerca
@@ -937,6 +1010,7 @@
         {@const disciplinePreview = disciplinePreviewForGym(gym, 4)}
         {@const phone = displayName(gym.phone)}
         {@const phoneLink = phoneHref(gym.phone)}
+        {@const hasWebsite = Boolean(displayName(gym.website))}
         {@const hasMapLocation = Number.isFinite(Number(gym.latitude)) && Number.isFinite(Number(gym.longitude))}
         {@const openLabel = gym.is_open_now === true ? 'Aperta ora' : gym.is_open_now === false ? 'Chiusa ora' : 'Orari n/d'}
         {@const openClass = gym.is_open_now === true ? 'sc-status-pill--open' : gym.is_open_now === false ? 'sc-status-pill--closed' : 'sc-status-pill--muted'}
@@ -952,6 +1026,7 @@
               alt={`Immagine ${gym.name}`}
               class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
               loading="lazy"
+              decoding="async"
               on:error={(event) => handleImageError(event, image)}
             />
           </div>
@@ -1002,6 +1077,18 @@
                   </strong>
                 </p>
               </div>
+
+              <div class="flex flex-wrap gap-2 text-xs font-bold sc-card-signal-list">
+                <span class={`rounded-full px-2.5 py-1 ${phoneLink ? 'sc-card-signal--ok' : 'sc-card-signal--muted'}`}>
+                  {phoneLink ? 'Telefono' : 'Tel. n/d'}
+                </span>
+                <span class={`rounded-full px-2.5 py-1 ${hasWebsite ? 'sc-card-signal--ok' : 'sc-card-signal--muted'}`}>
+                  {hasWebsite ? 'Sito' : 'Sito n/d'}
+                </span>
+                <span class={`rounded-full px-2.5 py-1 ${hasMapLocation ? 'sc-card-signal--ok' : 'sc-card-signal--muted'}`}>
+                  {hasMapLocation ? 'Mappa' : 'Mappa n/d'}
+                </span>
+              </div>
             </div>
 
             <div class="grid gap-2 border-t border-slate-200 pt-3">
@@ -1027,7 +1114,7 @@
                   href={gymHref(gym)}
                   class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl bg-slate-900 px-3 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
                 >
-                  Scheda
+                  Scheda completa
                 </a>
               </div>
             </div>
