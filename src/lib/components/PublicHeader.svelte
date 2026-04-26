@@ -4,7 +4,7 @@
   $: path = $page.url.pathname;
   $: isHome = path === '/';
   function navClass() {
-    return 'sc-header-link rounded-full border border-slate-200 bg-white px-3.5 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100';
+    return 'sc-header-link sc-ui-pill px-3.5 py-2 text-sm';
   }
 </script>
 
@@ -28,11 +28,11 @@
         <a href="/discipline" class={navClass()}>
           Discipline
         </a>
-        <a href="/per-le-palestre" class="sc-header-link rounded-full border border-emerald-900/10 bg-emerald-900 px-3.5 py-2 text-sm font-semibold text-white transition hover:bg-emerald-800">
+        <a href="/per-le-palestre" class="sc-header-link sc-ui-pill sc-ui-pill--primary px-3.5 py-2 text-sm">
           Per le palestre
         </a>
         {#if !isHome}
-          <a href="/" class="sc-header-link rounded-full border border-slate-200 bg-white px-3.5 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
+          <a href="/" class="sc-header-link sc-ui-pill px-3.5 py-2 text-sm">
             Torna all'elenco
           </a>
         {/if}

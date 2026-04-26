@@ -14,7 +14,12 @@
   --accent-red: #1f5c4a;
   --accent-blue: #2f6f5b;
   --accent-gold: #d6cfb0;
+  --accent-danger: #b42318;
   --glow: 0 20px 46px rgba(31, 54, 45, 0.12);
+  --shadow-card: 0 12px 26px rgba(31, 54, 45, 0.08);
+  --shadow-card-hover: 0 18px 36px rgba(31, 54, 45, 0.13);
+  --shadow-control: inset 0 1px 0 rgba(255, 255, 255, 0.48);
+  --focus-ring: 0 0 0 3px rgba(31, 92, 74, 0.22);
   color-scheme: light;
 }
 
@@ -48,6 +53,62 @@ body {
   background: var(--surface-muted) !important;
   border: 1px solid var(--border) !important;
   box-shadow: var(--glow);
+}
+
+.sc-ui-pill {
+  display: inline-flex;
+  min-height: 2.55rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(251, 250, 245, 0.82)),
+    rgba(255, 255, 255, 0.8);
+  color: var(--ink-muted) !important;
+  box-shadow: var(--shadow-control);
+  font-weight: 700;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.sc-ui-pill:hover {
+  border-color: rgba(31, 92, 74, 0.24);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(244, 247, 240, 0.94)),
+    rgba(255, 255, 255, 0.9);
+  box-shadow: var(--shadow-card);
+  color: var(--accent-red) !important;
+  transform: translateY(-1px);
+}
+
+.sc-ui-pill--primary {
+  border-color: transparent;
+  background: linear-gradient(120deg, var(--accent-red), var(--accent-blue));
+  color: white !important;
+  box-shadow: 0 14px 28px rgba(31, 92, 74, 0.2);
+}
+
+.sc-ui-pill--primary:hover {
+  border-color: transparent;
+  background: linear-gradient(120deg, #246c55, #347a62);
+  color: white !important;
+}
+
+.sc-ui-pill--danger {
+  border-color: rgba(180, 35, 24, 0.18);
+  background: rgba(180, 35, 24, 0.08);
+  color: var(--accent-danger) !important;
+}
+
+.sc-ui-pill--danger:hover {
+  border-color: rgba(180, 35, 24, 0.28);
+  background: rgba(180, 35, 24, 0.12);
+  color: var(--accent-danger) !important;
 }
 
 .sc-header {
@@ -207,6 +268,11 @@ body {
   border-color: var(--border) !important;
   background: var(--surface) !important;
   color: var(--ink) !important;
+  box-shadow: var(--shadow-control);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
 }
 
 .sc-button {
@@ -214,10 +280,16 @@ body {
   color: white !important;
   border: none;
   box-shadow: 0 16px 30px rgba(31, 92, 74, 0.22);
+  transition:
+    filter 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
 }
 
 .sc-button:hover {
   filter: brightness(1.05);
+  box-shadow: 0 18px 34px rgba(31, 92, 74, 0.26);
+  transform: translateY(-1px);
 }
 
 .sc-button:focus-visible,
@@ -227,9 +299,11 @@ a:focus-visible,
 button:focus-visible,
 select:focus-visible,
 input:focus-visible,
+textarea:focus-visible,
 summary:focus-visible {
   outline: 3px solid rgba(31, 92, 74, 0.26);
   outline-offset: 3px;
+  box-shadow: var(--focus-ring);
 }
 
 .sc-button-ghost {
@@ -237,12 +311,14 @@ summary:focus-visible {
   border: 1px solid var(--border);
   color: var(--ink) !important;
   pointer-events: auto;
+  box-shadow: var(--shadow-control);
 }
 
 .sc-button-muted {
   background: rgba(31, 92, 74, 0.08);
   border: 1px solid var(--border);
   color: var(--ink) !important;
+  box-shadow: var(--shadow-control);
 }
 
 .sc-stat {
@@ -264,7 +340,62 @@ summary:focus-visible {
 .sc-card {
   background: var(--surface) !important;
   border: 1px solid var(--border) !important;
-  box-shadow: 0 16px 30px rgba(31, 54, 45, 0.1);
+  box-shadow: var(--shadow-card);
+}
+
+.sc-card,
+main article.rounded-2xl.border.bg-white,
+main .rounded-2xl.border.bg-white,
+main .rounded-3xl.border.bg-white,
+main .rounded-3xl.border.bg-white\/80 {
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+main article.rounded-2xl.border.bg-white,
+main .rounded-2xl.border.bg-white {
+  border-color: var(--border) !important;
+  box-shadow: var(--shadow-card);
+}
+
+main article.rounded-2xl.border.bg-white:hover {
+  border-color: rgba(31, 92, 74, 0.22) !important;
+  box-shadow: var(--shadow-card-hover);
+}
+
+.bg-blue-700,
+.bg-emerald-700,
+.bg-sky-700,
+.bg-amber-700 {
+  background: linear-gradient(120deg, var(--accent-red), var(--accent-blue)) !important;
+}
+
+.hover\:bg-blue-800:hover,
+.hover\:bg-emerald-800:hover,
+.hover\:bg-sky-800:hover,
+.hover\:bg-amber-800:hover {
+  background: linear-gradient(120deg, #246c55, #347a62) !important;
+}
+
+.bg-slate-900,
+.bg-slate-700 {
+  background: #173129 !important;
+}
+
+.hover\:bg-slate-800:hover {
+  background: #214238 !important;
+}
+
+.bg-slate-200 {
+  background: rgba(31, 92, 74, 0.08) !important;
+}
+
+.hover\:bg-slate-300:hover,
+.hover\:bg-slate-100:hover,
+.hover\:bg-slate-50:hover {
+  background: rgba(31, 92, 74, 0.1) !important;
 }
 
 .sc-gym-card {

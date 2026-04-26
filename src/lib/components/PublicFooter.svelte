@@ -8,10 +8,10 @@
         </p>
       </div>
 
-      <nav class="flex flex-wrap gap-2 text-sm font-semibold text-slate-700">
-        <a href="/contatti" class="rounded-full border border-slate-200 bg-white px-3 py-2 transition hover:bg-slate-50">Contatti</a>
-        <a href="/per-le-palestre" class="rounded-full border border-slate-200 bg-white px-3 py-2 transition hover:bg-slate-50">Per le palestre</a>
-        <a href="/privacy" class="rounded-full border border-slate-200 bg-white px-3 py-2 transition hover:bg-slate-50">Privacy</a>
+      <nav class="flex flex-wrap gap-2 text-sm">
+        <a href="/contatti" class="sc-ui-pill px-3 py-2">Contatti</a>
+        <a href="/per-le-palestre" class="sc-ui-pill px-3 py-2">Per le palestre</a>
+        <a href="/privacy" class="sc-ui-pill px-3 py-2">Privacy</a>
       </nav>
     </div>
   </div>
