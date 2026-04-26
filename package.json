@@ -13,7 +13,8 @@
     "check:copy": "bun run scripts/check-copy-slop.mjs",
     "check:text": "bun run scripts/check-visible-mojibake.mjs",
     "check:data": "bun run scripts/check-data-quality.mjs",
-    "clean:data": "bun run scripts/clean-data-control-chars.mjs"
+    "clean:data": "bun run scripts/clean-data-control-chars.mjs",
+    "sync:gyms:prod": "bun scripts/sync-supabase-gyms.mjs --env-file=.env.vercel.production.check --confirm"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^7.0.1",
