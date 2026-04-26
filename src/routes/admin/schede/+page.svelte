@@ -14,6 +14,7 @@
   let q = '';
   let selectedGymId = '';
   let createDisciplineInput = '';
+  let qualityFilter = 'all';
 
   function disciplinesForGym(gym) {
     if (Array.isArray(gym.disciplines) && gym.disciplines.length) {
@@ -67,12 +68,28 @@
   }
 
   $: query = q.trim().toLowerCase();
+  $: qualityStats = {
+    noPhone: data.gyms.filter((gym) => !String(gym.phone || '').trim()).length,
+    noWebsite: data.gyms.filter((gym) => !String(gym.website || '').trim()).length,
+    noContact: data.gyms.filter((gym) => !String(gym.phone || '').trim() && !String(gym.website || '').trim()).length,
+    hoursToVerify: data.gyms.filter((gym) => !String(gym.hours_info || '').trim() || /orari da verificare/i.test(String(gym.hours_info || ''))).length,
+    noCoordinates: data.gyms.filter((gym) => !Number.isFinite(Number(gym.latitude)) || !Number.isFinite(Number(gym.longitude))).length
+  };
   $: filtered = data.gyms.filter((gym) => {
-    if (!query) return true;
-    return [gym.name, disciplinesForGym(gym).join(' | '), gym.address_display, gym.city]
+    const matchesQuery = !query || [gym.name, disciplinesForGym(gym).join(' | '), gym.address_display, gym.city]
       .join(' | ')
       .toLowerCase()
       .includes(query);
+
+    if (!matchesQuery) return false;
+
+    if (qualityFilter === 'no-phone') return !String(gym.phone || '').trim();
+    if (qualityFilter === 'no-website') return !String(gym.website || '').trim();
+    if (qualityFilter === 'no-contact') return !String(gym.phone || '').trim() && !String(gym.website || '').trim();
+    if (qualityFilter === 'hours-to-verify') return !String(gym.hours_info || '').trim() || /orari da verificare/i.test(String(gym.hours_info || ''));
+    if (qualityFilter === 'no-coordinates') return !Number.isFinite(Number(gym.latitude)) || !Number.isFinite(Number(gym.longitude));
+
+    return true;
   });
   $: selectedGym = data.gyms.find((gym) => gym.id === selectedGymId) || null;
   $: createPreview = previewAssetsForDiscipline(createDisciplineInput);
@@ -131,15 +148,50 @@
       </p>
     {/if}
 
-    <div class="mt-5 grid gap-3 sm:grid-cols-2">
+    <div class="mt-5 grid gap-3 sm:grid-cols-[minmax(0,1fr)_220px_minmax(160px,auto)]">
       <input
         class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none ring-slate-900 transition focus:ring-2"
         bind:value={q}
         placeholder="Cerca palestra, disciplina, città"
       />
+      <select
+        class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none ring-slate-900 transition focus:ring-2"
+        bind:value={qualityFilter}
+        aria-label="Filtro qualita dati"
+      >
+        <option value="all">Tutte le schede</option>
+        <option value="no-contact">Senza contatti</option>
+        <option value="no-phone">Senza telefono</option>
+        <option value="no-website">Senza sito</option>
+        <option value="hours-to-verify">Orari da verificare</option>
+        <option value="no-coordinates">Senza coordinate</option>
+      </select>
       <div class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700">
         Risultati: <strong>{filtered.length}</strong> su {data.gyms.length}
       </div>
+    </div>
+
+    <div class="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
+      <button type="button" class={`rounded-2xl border px-3 py-3 text-left text-sm transition ${qualityFilter === 'no-contact' ? 'border-amber-300 bg-amber-50 text-amber-900' : 'border-slate-200 bg-white/85 text-slate-700 hover:bg-slate-50'}`} on:click={() => (qualityFilter = 'no-contact')}>
+        <span class="block text-xl font-bold">{qualityStats.noContact}</span>
+        <span class="font-semibold">senza contatti</span>
+      </button>
+      <button type="button" class={`rounded-2xl border px-3 py-3 text-left text-sm transition ${qualityFilter === 'no-phone' ? 'border-amber-300 bg-amber-50 text-amber-900' : 'border-slate-200 bg-white/85 text-slate-700 hover:bg-slate-50'}`} on:click={() => (qualityFilter = 'no-phone')}>
+        <span class="block text-xl font-bold">{qualityStats.noPhone}</span>
+        <span class="font-semibold">senza telefono</span>
+      </button>
+      <button type="button" class={`rounded-2xl border px-3 py-3 text-left text-sm transition ${qualityFilter === 'no-website' ? 'border-amber-300 bg-amber-50 text-amber-900' : 'border-slate-200 bg-white/85 text-slate-700 hover:bg-slate-50'}`} on:click={() => (qualityFilter = 'no-website')}>
+        <span class="block text-xl font-bold">{qualityStats.noWebsite}</span>
+        <span class="font-semibold">senza sito</span>
+      </button>
+      <button type="button" class={`rounded-2xl border px-3 py-3 text-left text-sm transition ${qualityFilter === 'hours-to-verify' ? 'border-amber-300 bg-amber-50 text-amber-900' : 'border-slate-200 bg-white/85 text-slate-700 hover:bg-slate-50'}`} on:click={() => (qualityFilter = 'hours-to-verify')}>
+        <span class="block text-xl font-bold">{qualityStats.hoursToVerify}</span>
+        <span class="font-semibold">orari da verificare</span>
+      </button>
+      <button type="button" class={`rounded-2xl border px-3 py-3 text-left text-sm transition ${qualityFilter === 'no-coordinates' ? 'border-amber-300 bg-amber-50 text-amber-900' : 'border-slate-200 bg-white/85 text-slate-700 hover:bg-slate-50'}`} on:click={() => (qualityFilter = 'no-coordinates')}>
+        <span class="block text-xl font-bold">{qualityStats.noCoordinates}</span>
+        <span class="font-semibold">senza coordinate</span>
+      </button>
     </div>
   </section>
 
@@ -264,6 +316,20 @@
             <h2 class="text-base font-bold text-slate-900">{gym.name}</h2>
             <p class="mt-1 text-sm text-slate-600">{disciplinesForGym(gym).join(' | ')}</p>
             <p class="mt-1 text-sm text-slate-700">{gym.address_display || 'Indirizzo non disponibile'}</p>
+            <div class="mt-3 flex flex-wrap gap-2 text-xs font-bold">
+              {#if !String(gym.phone || '').trim()}
+                <span class="rounded-full bg-amber-100 px-2.5 py-1 text-amber-800">telefono mancante</span>
+              {/if}
+              {#if !String(gym.website || '').trim()}
+                <span class="rounded-full bg-amber-100 px-2.5 py-1 text-amber-800">sito mancante</span>
+              {/if}
+              {#if !String(gym.hours_info || '').trim() || /orari da verificare/i.test(String(gym.hours_info || ''))}
+                <span class="rounded-full bg-amber-100 px-2.5 py-1 text-amber-800">orari da verificare</span>
+              {/if}
+              {#if !Number.isFinite(Number(gym.latitude)) || !Number.isFinite(Number(gym.longitude))}
+                <span class="rounded-full bg-amber-100 px-2.5 py-1 text-amber-800">coordinate mancanti</span>
+              {/if}
+            </div>
           </div>
 
           <div class="relative z-10 mt-3 flex flex-wrap gap-2">
