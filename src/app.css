@@ -547,6 +547,16 @@ summary:focus-visible {
   overflow-wrap: anywhere;
 }
 
+button.sc-active-filter-chip {
+  cursor: pointer;
+  text-align: left;
+}
+
+button.sc-active-filter-chip:hover {
+  border-color: rgba(31, 92, 74, 0.24);
+  background: rgba(31, 92, 74, 0.12);
+}
+
 .sc-filter-field:disabled,
 .sc-filter-toggle input:disabled {
   cursor: not-allowed;
@@ -883,6 +893,25 @@ body {
     border-radius: 1.35rem !important;
   }
 
+  .sc-gym-card > .relative {
+    height: 8.5rem !important;
+  }
+
+  .sc-gym-card-facts {
+    gap: 0.5rem;
+  }
+
+  .sc-gym-card-facts p {
+    min-height: auto;
+    padding: 0.52rem 0.65rem;
+  }
+
+  .sc-gym-card-hours strong {
+    max-height: 5.1rem;
+    overflow: auto;
+    padding-bottom: 0.1rem;
+  }
+
   .sc-gym-card .sc-button {
     width: 100%;
   }
@@ -936,6 +965,13 @@ body {
 
   .sc-mobile-actionbar {
     padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+
+  .sc-mobile-view-toggle {
+    position: sticky;
+    top: 0.5rem;
+    z-index: 30;
+    backdrop-filter: blur(14px);
   }
 }
 

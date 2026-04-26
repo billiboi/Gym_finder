@@ -97,6 +97,7 @@
   let filterText = '';
   let filterDiscipline = '';
   let filterOpenState = 'all';
+  let sortMode = 'recommended';
 
   let userLocation = null;
   let locating = false;
@@ -119,6 +120,7 @@
   filterText;
   filterDiscipline;
   filterOpenState;
+  sortMode;
   userLocation;
   nearbyOnly;
   locationRadius;
@@ -134,9 +136,11 @@
     filterText.trim(),
     filterDiscipline.trim(),
     filterOpenState !== 'all',
-    locationReady
+    locationReady,
+    sortMode !== 'recommended'
   ].filter(Boolean).length;
   $: hasActiveFilters = activeFilterCount > 0;
+  $: if (!locationReady && sortMode === 'distance') sortMode = 'recommended';
 
   let csvGymsCache = null;
 
@@ -312,17 +316,33 @@
           return { ...gym, distance_km: Math.round(distance * 10) / 10 };
         })
         .filter((gym) => !nearbyOnly || (gym.distance_km !== null && gym.distance_km <= locationRadius))
-        .sort((a, b) => {
-          if (a.distance_km === null && b.distance_km === null) return a.name.localeCompare(b.name, 'it');
-          if (a.distance_km === null) return 1;
-          if (b.distance_km === null) return -1;
-          return a.distance_km - b.distance_km;
-        });
+        .sort((a, b) => sortGyms(a, b));
     } else {
-      out = out.sort((a, b) => a.name.localeCompare(b.name, 'it'));
+      out = out.sort((a, b) => sortGyms(a, b));
     }
 
     return out;
+  }
+
+  function sortGyms(a, b) {
+    if (sortMode === 'name') return a.name.localeCompare(b.name, 'it');
+
+    if (sortMode === 'open') {
+      const openScore = (gym) => (gym.is_open_now === true ? 0 : gym.is_open_now === false ? 1 : 2);
+      const scoreDiff = openScore(a) - openScore(b);
+      if (scoreDiff !== 0) return scoreDiff;
+      return a.name.localeCompare(b.name, 'it');
+    }
+
+    if (userLocation || sortMode === 'distance') {
+      if (a.distance_km === null && b.distance_km === null) return a.name.localeCompare(b.name, 'it');
+      if (a.distance_km === null || a.distance_km === undefined) return 1;
+      if (b.distance_km === null || b.distance_km === undefined) return -1;
+      if (a.distance_km !== b.distance_km) return a.distance_km - b.distance_km;
+      return a.name.localeCompare(b.name, 'it');
+    }
+
+    return a.name.localeCompare(b.name, 'it');
   }
 
   function buildQuickSuggestionPool(allGyms, allDisciplines) {
@@ -481,6 +501,7 @@
     filterText = '';
     filterDiscipline = '';
     filterOpenState = 'all';
+    sortMode = 'recommended';
     userLocation = null;
     locationError = '';
     locationRadius = 20;
@@ -777,7 +798,7 @@
                 id="hero-gym-search"
                 name="hero-gym-search"
                 class="min-h-[3.35rem] rounded-2xl border border-slate-200 bg-white px-4 text-base font-semibold outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
-                placeholder="Città, palestra o disciplina"
+                placeholder="Citta, palestra o disciplina"
                 bind:value={filterText}
                 list="quick-search-suggestions"
               />
@@ -817,7 +838,9 @@
             >
               Filtri{activeFilterCount ? ` (${activeFilterCount})` : ''}
             </button>
-            <p class="text-sm font-semibold text-slate-600" aria-live="polite">{filteredGyms.length} palestre trovate</p>
+            <p class="min-w-0 text-sm font-semibold text-slate-600" aria-live="polite">
+              {filteredGyms.length} palestre trovate
+            </p>
             {#if hasActiveFilters}
               <button type="button" class="inline-flex min-h-[2.7rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button-ghost" on:click={resetFilters}>
                 Reset
@@ -828,27 +851,36 @@
           {#if hasActiveFilters}
             <div class="mt-3 flex flex-wrap gap-2" aria-label="Filtri attivi">
               {#if filterText.trim()}
-                <span class="rounded-full px-3 py-1.5 text-xs font-bold sc-active-filter-chip">Testo: {filterText.trim()}</span>
+                <button type="button" class="rounded-full px-3 py-1.5 text-xs font-bold sc-active-filter-chip" aria-label="Rimuovi filtro testo" on:click={() => (filterText = '')}>
+                  Testo: {filterText.trim()} x
+                </button>
               {/if}
               {#if filterDiscipline.trim()}
-                <span class="rounded-full px-3 py-1.5 text-xs font-bold sc-active-filter-chip">{filterDiscipline}</span>
+                <button type="button" class="rounded-full px-3 py-1.5 text-xs font-bold sc-active-filter-chip" aria-label="Rimuovi filtro disciplina" on:click={() => (filterDiscipline = '')}>
+                  {filterDiscipline} x
+                </button>
               {/if}
               {#if filterOpenState !== 'all'}
-                <span class="rounded-full px-3 py-1.5 text-xs font-bold sc-active-filter-chip">
-                  {filterOpenState === 'open' ? 'Aperte adesso' : 'Chiuse adesso'}
-                </span>
+                <button type="button" class="rounded-full px-3 py-1.5 text-xs font-bold sc-active-filter-chip" aria-label="Rimuovi filtro apertura" on:click={() => (filterOpenState = 'all')}>
+                  {filterOpenState === 'open' ? 'Aperte adesso' : 'Chiuse adesso'} x
+                </button>
               {/if}
               {#if locationReady}
-                <span class="rounded-full px-3 py-1.5 text-xs font-bold sc-active-filter-chip">
-                  {nearbyOnly ? `Entro ${locationRadius} km` : 'Posizione attiva'}
-                </span>
+                <button type="button" class="rounded-full px-3 py-1.5 text-xs font-bold sc-active-filter-chip" aria-label="Rimuovi filtro posizione" on:click={clearLocation}>
+                  {nearbyOnly ? `Entro ${locationRadius} km` : 'Posizione attiva'} x
+                </button>
+              {/if}
+              {#if sortMode !== 'recommended'}
+                <button type="button" class="rounded-full px-3 py-1.5 text-xs font-bold sc-active-filter-chip" aria-label="Rimuovi ordinamento" on:click={() => (sortMode = 'recommended')}>
+                  Ordine: {sortMode === 'name' ? 'Nome' : sortMode === 'open' ? 'Apertura' : 'Distanza'} x
+                </button>
               {/if}
             </div>
           {/if}
 
           <div
             id="advanced-search-filters"
-            class={`mt-3 gap-3 sm:grid-cols-2 lg:grid lg:grid-cols-[minmax(170px,0.85fr)_minmax(130px,0.45fr)_max-content_auto] lg:items-end ${filtersExpanded ? 'grid' : 'hidden'}`}
+            class={`mt-3 gap-3 sm:grid-cols-2 lg:grid lg:grid-cols-[minmax(155px,0.75fr)_minmax(140px,0.6fr)_minmax(135px,0.55fr)_max-content_auto] lg:items-end ${filtersExpanded ? 'grid' : 'hidden'}`}
           >
             <label class="grid gap-2">
               <span class="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-slate-500">Apertura</span>
@@ -861,6 +893,21 @@
                 <option value="all">Aperte e chiuse</option>
                 <option value="open">Aperte adesso</option>
                 <option value="closed">Chiuse adesso</option>
+              </select>
+            </label>
+
+            <label class="grid gap-2">
+              <span class="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-slate-500">Ordina</span>
+              <select
+                id="sort-filter"
+                name="sort-filter"
+                class="min-h-[3rem] rounded-2xl border border-slate-200 bg-white px-4 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
+                bind:value={sortMode}
+              >
+                <option value="recommended">Consigliato</option>
+                <option value="name">Nome A-Z</option>
+                <option value="open">Aperte prima</option>
+                <option value="distance" disabled={!locationReady}>Distanza</option>
               </select>
             </label>
 
@@ -917,7 +964,7 @@
     </div>
   </section>
 
-  <div class="mt-5 grid grid-cols-2 gap-2 rounded-2xl border border-white/70 bg-white/80 p-1 shadow-lg lg:hidden">
+  <div class="mt-5 grid grid-cols-2 gap-2 rounded-2xl border border-white/70 bg-white/80 p-1 shadow-lg sc-mobile-view-toggle lg:hidden">
     <button
       type="button"
       class={`min-h-[2.8rem] rounded-xl px-3 text-sm font-bold transition ${resultsView === 'list' ? 'sc-button' : 'text-slate-700 hover:bg-white'}`}
@@ -971,11 +1018,20 @@
   <div class="mb-3 flex flex-wrap items-end justify-between gap-3">
     <div>
       <h2 class="text-lg font-bold text-slate-900">Risultati</h2>
-      <p class="mt-1 text-sm font-semibold text-slate-600" aria-live="polite">{filteredGyms.length} palestre trovate</p>
+      <p class="mt-1 text-sm font-semibold text-slate-600" aria-live="polite">
+        {filteredGyms.length} palestre trovate{hasActiveFilters ? ` con ${activeFilterCount} ${activeFilterCount === 1 ? 'filtro attivo' : 'filtri attivi'}` : ''}
+      </p>
     </div>
-    <a href="#top" class="rounded-2xl sc-map-chip px-3 py-2 text-xs font-semibold transition hover:bg-white">
-      Torna alla ricerca
-    </a>
+    <div class="flex flex-wrap gap-2">
+      {#if hasActiveFilters}
+        <button type="button" class="rounded-2xl sc-map-chip px-3 py-2 text-xs font-semibold transition hover:bg-white" on:click={resetFilters}>
+          Reset
+        </button>
+      {/if}
+      <a href="#top" class="rounded-2xl sc-map-chip px-3 py-2 text-xs font-semibold transition hover:bg-white">
+        Torna alla ricerca
+      </a>
+    </div>
   </div>
 
   <div class="grid gap-3 sm:grid-cols-2">
@@ -1001,8 +1057,19 @@
         </article>
       {/each}
     {:else if filteredGyms.length === 0}
-      <div class="col-span-full rounded-2xl border border-dashed border-slate-300 p-8 text-center">
-        <p class="text-slate-500">Nessuna palestra trovata con i filtri selezionati.</p>
+      <div class="col-span-full rounded-2xl border border-dashed border-slate-300 bg-white/60 p-6 text-center sm:p-8">
+        <h3 class="text-lg font-bold text-slate-900">Nessuna palestra trovata</h3>
+        <p class="mx-auto mt-2 max-w-md text-sm font-semibold leading-6 text-slate-600">
+          Allarga la distanza, rimuovi un filtro o prova una citta vicina.
+        </p>
+        <div class="mt-4 flex flex-col gap-2 sm:flex-row sm:justify-center">
+          <button type="button" class="inline-flex min-h-[2.7rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button" on:click={resetFilters}>
+            Mostra tutte
+          </button>
+          <a href="#top" class="inline-flex min-h-[2.7rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button-ghost">
+            Modifica ricerca
+          </a>
+        </div>
       </div>
     {:else}
       {#each filteredGyms as gym, i}

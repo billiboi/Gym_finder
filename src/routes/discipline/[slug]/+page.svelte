@@ -9,7 +9,18 @@
   const title = `${discipline.title} | ${SITE_NAME}`;
   const description = `${discipline.description} ${gyms.length} schede pubbliche in catalogo.`;
   const isIndexableLanding = gyms.length >= 2;
-  const exampleAreas = [...new Set(gyms.map((gym) => String(gym.city || '').trim()).filter(Boolean))].slice(0, 6).join(', ');
+  const cityStats = [...gyms
+    .reduce((map, gym) => {
+      const city = String(gym.city || '').trim();
+      if (!city) return map;
+      map.set(city, (map.get(city) || 0) + 1);
+      return map;
+    }, new Map())
+    .entries()]
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'it'))
+    .slice(0, 6);
+  const exampleAreas = cityStats.map(([city]) => city).join(', ');
+  const hasContactSignal = (gym) => Boolean(String(gym.phone || '').trim() || String(gym.website || '').trim());
   const faqItems = [
     {
       question: `Che cosa trovo nella pagina ${discipline.title}?`,
@@ -43,7 +54,30 @@
               url: absoluteUrl(gymHref(gym)),
               name: gym.name
             }))
-          }
+        }
+        },
+        {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            {
+              '@type': 'ListItem',
+              position: 1,
+              name: SITE_NAME,
+              item: absoluteUrl('/')
+            },
+            {
+              '@type': 'ListItem',
+              position: 2,
+              name: 'Discipline',
+              item: absoluteUrl('/discipline')
+            },
+            {
+              '@type': 'ListItem',
+              position: 3,
+              name: discipline.title,
+              item: pageUrl
+            }
+          ]
         },
         {
           '@type': 'FAQPage',
@@ -106,6 +140,9 @@
       <div class="mt-5 flex flex-wrap gap-2">
         <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">{gyms.length} schede disponibili</span>
         <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">{discipline.name}</span>
+        {#each cityStats.slice(0, 3) as [city, count]}
+          <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">{city}: {count}</span>
+        {/each}
       </div>
     </section>
 
@@ -122,6 +159,25 @@
         </p>
       </div>
     </section>
+
+    {#if cityStats.length}
+      <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sc-detail-section sm:p-7">
+        <div class="max-w-4xl">
+          <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Zone piu presenti</p>
+          <h2 class="mt-1 text-2xl font-bold text-slate-900">Dove trovi piu schede di {discipline.name}</h2>
+        </div>
+
+        <div class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {#each cityStats as [city, count]}
+            <div class="rounded-2xl border border-slate-200 bg-white/90 p-4 sc-detail-card">
+              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">{city}</p>
+              <p class="mt-2 text-2xl font-bold text-slate-900">{count}</p>
+              <p class="mt-1 text-sm font-semibold text-slate-600">{count === 1 ? 'scheda collegata' : 'schede collegate'}</p>
+            </div>
+          {/each}
+        </div>
+      </section>
+    {/if}
 
     <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
       <div class="max-w-4xl">
@@ -161,6 +217,7 @@
                 alt={`Immagine ${gym.name}`}
                 class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                 loading="lazy"
+                decoding="async"
                 on:error={(event) => handleImageError(event, image)}
               />
               <span class="absolute left-3 top-3 rounded-full bg-slate-900/85 px-2.5 py-1 text-xs font-bold text-white sc-badge sc-badge--accent">
@@ -187,6 +244,14 @@
               </div>
               <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Indirizzo:</strong> {[gym.address, gym.city].filter(Boolean).join(', ') || 'Indirizzo non disponibile'}</p>
               <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Orari:</strong> {gym.hours_info || 'Orari da verificare'}</p>
+              <div class="flex flex-wrap gap-2 text-xs font-bold sc-card-signal-list">
+                <span class={`rounded-full px-2.5 py-1 ${hasContactSignal(gym) ? 'sc-card-signal--ok' : 'sc-card-signal--muted'}`}>
+                  {hasContactSignal(gym) ? 'Contatti' : 'Contatti n/d'}
+                </span>
+                <span class={`rounded-full px-2.5 py-1 ${gym.latitude && gym.longitude ? 'sc-card-signal--ok' : 'sc-card-signal--muted'}`}>
+                  {gym.latitude && gym.longitude ? 'Mappa' : 'Mappa n/d'}
+                </span>
+              </div>
               <div class="rounded-2xl sc-gym-card-cta p-3">
                 <a href={gymHref(gym)} class="inline-flex items-center rounded-xl bg-slate-900 px-3 py-2 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
                   Scheda completa

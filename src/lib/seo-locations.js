@@ -22,8 +22,32 @@ export const SEO_LOCATIONS = [
     name: 'Bellinzona',
     title: 'Palestre a Bellinzona',
     description:
-      'Esplora palestre e club sportivi a Bellinzona e nelle principali località vicine del Ticino.',
+      'Esplora palestre e club sportivi a Bellinzona e nelle principali localita vicine del Ticino.',
     keywords: ['bellinzona', 'giubiasco', 'arbedo', 'camorino', 'sant antonino', 'biasca']
+  },
+  {
+    slug: 'busto-arsizio',
+    name: 'Busto Arsizio',
+    title: 'Palestre a Busto Arsizio',
+    description:
+      'Confronta palestre, fitness club e discipline sportive a Busto Arsizio e nei comuni vicini.',
+    keywords: ['busto arsizio', 'castellanza', 'legnano', 'olgiate olona', 'samarate']
+  },
+  {
+    slug: 'gallarate',
+    name: 'Gallarate',
+    title: 'Palestre a Gallarate',
+    description:
+      'Trova palestre e centri sportivi a Gallarate con schede locali, contatti, orari e discipline.',
+    keywords: ['gallarate', 'cardano al campo', 'cassano magnago', 'samarate', 'besnate']
+  },
+  {
+    slug: 'saronno',
+    name: 'Saronno',
+    title: 'Palestre a Saronno',
+    description:
+      'Scopri palestre, studi Pilates, fitness e arti marziali a Saronno e nelle zone limitrofe.',
+    keywords: ['saronno', 'caronno pertusella', 'uboldo', 'origgio', 'gerenzano']
   }
 ];
 
