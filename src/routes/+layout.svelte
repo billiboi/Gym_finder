@@ -41,10 +41,13 @@
 </svelte:head>
 
 {#if !isAdminRoute}
+  <a href="#main-content" class="sc-skip-link">Salta al contenuto</a>
   <PublicHeader />
 {/if}
 
-<slot />
+<div id="main-content" tabindex="-1">
+  <slot />
+</div>
 
 {#if !isAdminRoute}
   <PublicFooter />

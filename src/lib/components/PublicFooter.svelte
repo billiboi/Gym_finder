@@ -8,7 +8,7 @@
         </p>
       </div>
 
-      <nav class="flex flex-wrap gap-2 text-sm">
+      <nav class="flex flex-wrap gap-2 text-sm" aria-label="Link utili">
         <a href="/contatti" class="sc-ui-pill px-3 py-2">Contatti</a>
         <a href="/per-le-palestre" class="sc-ui-pill px-3 py-2">Per le palestre</a>
         <a href="/privacy" class="sc-ui-pill px-3 py-2">Privacy</a>

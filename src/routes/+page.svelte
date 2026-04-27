@@ -819,7 +819,7 @@
 </svelte:head>
 
 <div class="min-h-screen w-full sc-page relative">
-  <main id="top" class="mx-auto w-full max-w-7xl px-4 pb-8 pt-4 sm:px-6 lg:px-8">
+  <main id="top" class="mx-auto w-full max-w-7xl px-4 pb-8 pt-4 sm:px-6 lg:px-8" aria-busy={isBootstrapping}>
   <section class="reveal rounded-3xl border border-white/80 bg-white/70 p-4 shadow-xl backdrop-blur-sm sm:p-7 sc-panel sc-hero">
     <div class="mx-auto flex max-w-5xl flex-col gap-6 sc-hero-copy">
         <div class="max-w-3xl">
@@ -874,13 +874,14 @@
           </datalist>
 
           <div class="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-slate-200/70 pt-3">
-            <button
-              type="button"
-              class="inline-flex min-h-[2.7rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button-muted lg:hidden"
-              aria-expanded={filtersExpanded}
-              aria-controls="advanced-search-filters"
-              on:click={() => (filtersExpanded = !filtersExpanded)}
-            >
+              <button
+                type="button"
+                class="inline-flex min-h-[2.7rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button-muted lg:hidden"
+                aria-expanded={filtersExpanded}
+                aria-controls="advanced-search-filters"
+                aria-label={`${filtersExpanded ? 'Nascondi' : 'Mostra'} filtri avanzati`}
+                on:click={() => (filtersExpanded = !filtersExpanded)}
+              >
               Filtri{activeFilterCount ? ` (${activeFilterCount})` : ''}
             </button>
             <p class="min-w-0 text-sm font-semibold text-slate-600" aria-live="polite">
@@ -1009,7 +1010,7 @@
     </div>
   </section>
 
-  <div class="mt-5 grid grid-cols-2 gap-2 rounded-2xl border border-white/70 bg-white/80 p-1 shadow-lg sc-mobile-view-toggle lg:hidden">
+  <div class="mt-5 grid grid-cols-2 gap-2 rounded-2xl border border-white/70 bg-white/80 p-1 shadow-lg sc-mobile-view-toggle lg:hidden" role="group" aria-label="Vista risultati">
     <button
       type="button"
       class={`min-h-[2.8rem] rounded-xl px-3 text-sm font-bold transition ${resultsView === 'list' ? 'sc-button' : 'text-slate-700 hover:bg-white'}`}
@@ -1029,7 +1030,7 @@
   </div>
 
   <div class="mt-5 lg:grid lg:grid-cols-[minmax(340px,0.8fr)_minmax(0,1.2fr)] lg:items-start lg:gap-5">
-  <section id="mappa-palestre" class:hidden={resultsView !== 'map'} class="overflow-hidden rounded-3xl border border-white/70 bg-white/85 shadow-lg sc-panel sc-map lg:sticky lg:top-5 lg:block">
+  <section id="mappa-palestre" class:hidden={resultsView !== 'map'} class="overflow-hidden rounded-3xl border border-white/70 bg-white/85 shadow-lg sc-panel sc-map lg:sticky lg:top-5 lg:block" aria-label="Mappa delle palestre filtrate">
     <div class="border-b border-slate-200 px-4 py-4 sm:px-5">
       <div class="flex flex-wrap items-start justify-between gap-3">
         <div>
@@ -1048,10 +1049,10 @@
     </div>
     <div class="relative">
       <div class="pointer-events-none absolute inset-x-0 top-0 z-[400] h-16 bg-gradient-to-b from-white/70 to-transparent sc-map-fade"></div>
-      <div bind:this={mapContainer} class="h-[300px] w-full sm:h-[420px] lg:h-[calc(100vh-15rem)] lg:min-h-[520px]"></div>
+      <div bind:this={mapContainer} class="h-[300px] w-full sm:h-[420px] lg:h-[calc(100vh-15rem)] lg:min-h-[520px]" aria-label="Mappa interattiva con i risultati filtrati"></div>
       {#if isBootstrapping}
         <div class="pointer-events-none absolute inset-0 z-[450] flex items-center justify-center bg-white/55 backdrop-blur-[2px]">
-          <div class="rounded-2xl border border-white/70 bg-white/85 px-4 py-3 text-sm font-semibold text-slate-700 shadow-lg sc-loading-card">
+          <div class="rounded-2xl border border-white/70 bg-white/85 px-4 py-3 text-sm font-semibold text-slate-700 shadow-lg sc-loading-card" role="status" aria-live="polite">
             Caricamento mappa e palestre...
           </div>
         </div>
@@ -1078,7 +1079,7 @@
     {/if}
   </section>
 
-<section id="elenco-palestre" class:hidden={resultsView !== 'list'} class="lg:block">
+<section id="elenco-palestre" class:hidden={resultsView !== 'list'} class="lg:block" aria-label="Elenco palestre filtrate">
   <div class="mb-3 flex flex-wrap items-end justify-between gap-3">
     <div>
       <h2 class="text-lg font-bold text-slate-900">Risultati</h2>
@@ -1098,10 +1099,11 @@
     </div>
   </div>
 
-  <div class="grid gap-3 sm:grid-cols-2">
+  <div class="grid gap-3 sm:grid-cols-2" aria-live="polite" aria-busy={isBootstrapping}>
     {#if isBootstrapping && filteredGyms.length === 0}
+      <p class="sr-only" role="status">Caricamento risultati in corso.</p>
       {#each Array(6) as _, i}
-        <article class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm sc-card sc-skeleton-card" style={`animation-delay:${i * 40}ms`}>
+        <article class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm sc-card sc-skeleton-card" style={`animation-delay:${i * 40}ms`} aria-hidden="true">
           <div class="h-44 w-full sc-skeleton-block"></div>
           <div class="space-y-3 p-3 sm:p-4">
             <div class="rounded-2xl p-3 sc-skeleton-panel">
@@ -1121,7 +1123,7 @@
         </article>
       {/each}
     {:else if filteredGyms.length === 0}
-      <div class="col-span-full rounded-2xl border border-dashed border-slate-300 bg-white/60 p-6 text-center sm:p-8">
+      <div class="col-span-full rounded-2xl border border-dashed border-slate-300 bg-white/60 p-6 text-center sm:p-8" role="status">
         <h3 class="text-lg font-bold text-slate-900">Nessuna palestra trovata</h3>
         <p class="mx-auto mt-2 max-w-md text-sm font-semibold leading-6 text-slate-600">
           Allarga la distanza, rimuovi un filtro o prova una citta vicina.
