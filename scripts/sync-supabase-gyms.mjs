@@ -1,10 +1,14 @@
-import { readFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const args = new Set(process.argv.slice(2));
 const envFileArg = process.argv.find((arg) => arg.startsWith('--env-file='));
 const envFile = envFileArg ? envFileArg.split('=').slice(1).join('=') : '.env.vercel.production.check';
 const confirmed = args.has('--confirm');
+const replaceReviewedProduction = args.has('--replace-reviewed-production');
+const dryRun = !args.has('--write');
+const sourceArg = process.argv.find((arg) => arg.startsWith('--source='));
+const sourceFile = sourceArg ? sourceArg.split('=').slice(1).join('=') : 'data/gyms.json';
 
 function parseEnvValue(value) {
   const trimmed = String(value || '').trim();
@@ -112,17 +116,41 @@ const supabaseUrl = requiredEnv('SUPABASE_URL').replace(/\/$/, '');
 const serviceKey = requiredEnv('SUPABASE_SERVICE_ROLE_KEY');
 const table = process.env.SUPABASE_GYMS_TABLE || 'gyms';
 const baseUrl = `${supabaseUrl}/rest/v1/${encodeURIComponent(table)}`;
-const gyms = JSON.parse(await readFile('data/gyms.json', 'utf8')).map(normalizeGym);
-
-if (!confirmed) {
-  throw new Error(`Refusing to replace Supabase table "${table}" without --confirm. Pending records: ${gyms.length}`);
-}
+const gyms = JSON.parse(await readFile(sourceFile, 'utf8')).map(normalizeGym);
 
 const before = await fetch(`${baseUrl}?select=id`, {
   method: 'HEAD',
   headers: supabaseHeaders(serviceKey, { Prefer: 'count=exact' })
 });
 const beforeCount = before.headers.get('content-range')?.split('/')?.[1] || 'unknown';
+
+const existingResponse = await fetch(`${baseUrl}?select=*&order=id.asc`, {
+  headers: supabaseHeaders(serviceKey)
+});
+if (!existingResponse.ok) {
+  throw new Error(`Backup read failed (${existingResponse.status})`);
+}
+const existingRecords = await existingResponse.json();
+const backupFile = `data/supabase-gyms-before-sync-${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
+
+console.log(
+  `[sync-supabase-gyms] mode=${dryRun ? 'dry-run' : 'write'} table=${table} before=${beforeCount} source=${gyms.length} source_file=${sourceFile}`
+);
+
+if (dryRun) {
+  console.log('[sync-supabase-gyms] no changes written. Add --write --confirm --replace-reviewed-production to replace Supabase.');
+  process.exit(0);
+}
+
+if (!confirmed || !replaceReviewedProduction) {
+  throw new Error(
+    `Refusing to replace Supabase table "${table}" without --write --confirm --replace-reviewed-production. Pending records: ${gyms.length}`
+  );
+}
+
+await mkdir(path.dirname(backupFile), { recursive: true });
+await writeFile(backupFile, `${JSON.stringify(existingRecords, null, 2)}\n`);
+console.log(`[sync-supabase-gyms] backup=${backupFile} count=${existingRecords.length}`);
 
 await requestJson(`${baseUrl}?id=not.is.null`, {
   method: 'DELETE',
