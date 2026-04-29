@@ -18,5 +18,6 @@ tmp_*
 data/palestre_backup_1027.csv
 data/palestre_backup_1027_data.csv
 data/recovery-*.json
+data/enrichment-*.json
 data/supabase-*.json
 static/preview.png

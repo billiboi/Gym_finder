@@ -10,6 +10,9 @@ These scripts support data import, normalization, inspection, and cleanup workfl
 - `check-supabase-enrichment-schema.mjs`
   Verifies that enrichment columns exist on the production `gyms` table.
 
+- `report-gym-content-enrichment.mjs`
+  Generates a read-only report of gyms with websites and missing editorial, social, or price enrichment.
+
 - `clean-palestre-dataset.cjs`
   Cleans the main CSV dataset, removes noisy records, and restores discipline labels.
 

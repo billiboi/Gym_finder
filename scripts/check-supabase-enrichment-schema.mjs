@@ -9,7 +9,14 @@ const expectedColumns = [
   'price_info',
   'price_source_url',
   'price_updated_at',
-  'data_verified_at'
+  'data_verified_at',
+  'official_source_url',
+  'editorial_summary',
+  'editorial_highlights',
+  'editorial_faq_items',
+  'enrichment_status',
+  'enrichment_notes',
+  'enrichment_updated_at'
 ];
 
 function parseEnvValue(value) {

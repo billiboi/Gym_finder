@@ -15,6 +15,7 @@ Current migration order:
 1. `20260429_001_gyms_public_readonly_rls.sql`
 2. `20260429_002_claim_requests_private_rls.sql`
 3. `20260429_003_add_gym_enrichment_fields.sql`
+4. `20260429_004_add_gym_editorial_enrichment_fields.sql`
 
 Production apply checklist:
 
