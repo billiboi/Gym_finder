@@ -2,7 +2,7 @@
   <div class="rounded-3xl border border-white/70 bg-white/80 px-4 py-4 shadow-lg backdrop-blur-sm sc-panel">
     <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
       <div class="max-w-2xl">
-        <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-amber-700">Palestre in Zona</p>
+        <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-emerald-800">Palestre in Zona</p>
         <p class="mt-2 text-sm leading-6 text-slate-600">
           Catalogo pubblico per trovare palestre e discipline vicine, con schede curate e percorsi rapidi verso contatti, orari e dettagli utili.
         </p>

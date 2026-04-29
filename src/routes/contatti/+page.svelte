@@ -31,7 +31,7 @@
 <div class="min-h-screen w-full sc-page">
   <main class="mx-auto w-full max-w-5xl px-4 pb-10 pt-4 sm:px-6 lg:px-8">
     <section class="rounded-3xl border border-white/80 bg-white/80 p-5 shadow-xl backdrop-blur-sm sc-panel sm:p-7">
-      <p class="text-xs font-bold uppercase tracking-[0.24em] text-amber-700">Contatti</p>
+      <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Contatti</p>
       <h1 class="mt-2 text-3xl font-bold text-slate-900 sm:text-5xl">Parliamone in modo semplice</h1>
       <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-600 sm:text-base">
         Se vuoi segnalare una scheda da correggere, proporre una collaborazione o chiedere informazioni sul progetto, puoi scrivere direttamente via email.

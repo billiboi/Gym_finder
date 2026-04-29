@@ -22,7 +22,7 @@
   <section class="sc-panel sc-error-shell rounded-3xl p-5 sm:p-8 lg:p-10">
     <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.55fr)] lg:items-center">
       <div class="min-w-0">
-        <p class="text-[0.72rem] font-bold uppercase tracking-[0.24em] text-amber-700">{status}</p>
+        <p class="text-[0.72rem] font-bold uppercase tracking-[0.24em] text-emerald-800">{status}</p>
         <h1 class="mt-3 max-w-3xl text-3xl font-bold leading-tight text-slate-900 sm:text-5xl">{title}</h1>
         <p class="mt-4 max-w-2xl text-base leading-8 text-slate-600">{description}</p>
 

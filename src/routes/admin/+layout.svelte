@@ -4,7 +4,7 @@
       <div class="min-w-0 flex-1">
         <a href="/" class="inline-flex max-w-full items-start">
           <span class="min-w-0">
-            <span class="block text-[10px] font-bold uppercase tracking-[0.28em] text-amber-700 sm:text-xs">Palestre in Zona</span>
+            <span class="block text-[10px] font-bold uppercase tracking-[0.28em] text-emerald-800 sm:text-xs">Palestre in Zona</span>
             <span class="mt-1 block text-[1.05rem] font-semibold leading-6 text-slate-900 sm:text-[1.1rem]">Area amministrativa</span>
             <span class="mt-1 block text-[13px] leading-5 text-slate-600 sm:text-sm">Da qui puoi gestire schede, richieste e riclassificazioni senza perdere il collegamento con il sito pubblico.</span>
           </span>

@@ -5,7 +5,7 @@
 
 <main class="mx-auto flex min-h-screen w-full max-w-7xl items-center px-4 py-10 sm:px-6 lg:px-8">
   <section class="mx-auto w-full max-w-lg rounded-[2rem] border border-white/80 bg-white/90 p-6 shadow-2xl backdrop-blur-sm sm:p-8">
-    <p class="text-xs font-bold uppercase tracking-[0.24em] text-amber-700">Area Admin</p>
+    <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Area Admin</p>
     <h1 class="mt-3 text-3xl font-bold text-slate-900">Accesso riservato</h1>
     <p class="mt-3 text-sm leading-6 text-slate-600">
       Da qui entriamo nel pannello admin senza esporre le azioni di modifica al pubblico.

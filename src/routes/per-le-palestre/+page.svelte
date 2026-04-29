@@ -31,7 +31,7 @@
 <div class="min-h-screen w-full sc-page">
   <main class="mx-auto w-full max-w-5xl px-4 pb-10 pt-4 sm:px-6 lg:px-8">
     <section class="rounded-3xl border border-white/80 bg-white/80 p-5 shadow-xl backdrop-blur-sm sc-panel sm:p-7">
-      <p class="text-xs font-bold uppercase tracking-[0.24em] text-amber-700">Per le palestre</p>
+      <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Per le palestre</p>
       <h1 class="mt-2 text-3xl font-bold text-slate-900 sm:text-5xl">Vuoi usare la tua scheda come leva commerciale, non solo come presenza passiva?</h1>
       <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-600 sm:text-base">
         Se gestisci una struttura presente nel catalogo, puoi partire da aggiornamenti, rivendicazione scheda e prime richieste commerciali per rendere la tua presenza pi&ugrave; chiara, affidabile e utile a chi ti cerca.

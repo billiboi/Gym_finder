@@ -14,7 +14,7 @@
     <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
       <a href="/" class="inline-flex max-w-full items-center gap-3">
         <span class="min-w-0">
-          <span class="block text-[10px] font-bold uppercase tracking-[0.28em] text-amber-700 sm:text-xs">Palestre in Zona</span>
+          <span class="block text-[10px] font-bold uppercase tracking-[0.28em] text-emerald-800 sm:text-xs">Palestre in Zona</span>
         </span>
       </a>
 

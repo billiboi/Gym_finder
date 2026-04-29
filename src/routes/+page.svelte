@@ -561,7 +561,7 @@
   <section class="reveal rounded-3xl border border-white/80 bg-white/70 p-4 shadow-xl backdrop-blur-sm sm:p-7 sc-panel sc-hero">
     <div class="mx-auto flex max-w-5xl flex-col gap-6 sc-hero-copy">
         <div class="max-w-3xl">
-          <div class="inline-flex items-center rounded-full border border-emerald-900/10 bg-white/65 px-3 py-1 text-[0.7rem] font-bold uppercase tracking-[0.24em] text-amber-700">
+          <div class="inline-flex items-center rounded-full border border-emerald-900/10 bg-white/65 px-3 py-1 text-[0.7rem] font-bold uppercase tracking-[0.24em] text-emerald-800">
             Palestre in Zona
           </div>
           <h1 class="mt-4 text-3xl font-bold leading-tight text-slate-900 sm:text-5xl">Trova una palestra vicino a te</h1>
@@ -762,7 +762,7 @@
   <div class="mb-4 rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg sc-panel sm:p-5">
     <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
       <div class="min-w-0">
-        <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-amber-700">Elenco palestre</p>
+        <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-emerald-800">Elenco palestre</p>
         <h2 class="mt-1 text-2xl font-bold text-slate-900 sm:text-3xl">Risultati ordinati per confronto rapido</h2>
         <p class="mt-2 text-sm font-semibold text-slate-600" aria-live="polite">
           {filteredGyms.length} palestre trovate{hasActiveFilters ? ` con ${activeFilterCount} ${activeFilterCount === 1 ? 'filtro attivo' : 'filtri attivi'}` : ''}
