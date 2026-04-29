@@ -360,28 +360,6 @@
             </div>
           </section>
         {/if}
-
-        <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sc-detail-section sm:p-5">
-          <div class="flex flex-wrap items-start justify-between gap-4">
-            <div class="max-w-3xl">
-              <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Discipline</p>
-              <h2 class="mt-2 text-2xl font-bold text-slate-900">Attivit&agrave; indicate per questa struttura</h2>
-              <p class="mt-2 text-sm leading-7 text-slate-600 sc-detail-copy">
-                Usa questo blocco per capire se la scheda corrisponde alla ricerca prima di aprire mappa o contatti.
-              </p>
-            </div>
-            <span class="rounded-full px-3 py-1.5 text-xs font-bold sc-active-filter-chip">{disciplines.length} discipline</span>
-          </div>
-
-          <div class="mt-4 flex flex-wrap gap-2 sc-discipline-list">
-            {#each disciplines as discipline}
-              <span class={`rounded-full px-3 py-1.5 text-xs font-bold ${discipline === primaryDiscipline ? 'sc-discipline-chip sc-discipline-chip--primary' : 'sc-discipline-chip'}`}>
-                {discipline}
-              </span>
-            {/each}
-          </div>
-        </section>
-
         <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sc-detail-section sm:p-5">
           <div class="max-w-4xl">
             <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Verifiche rapide</p>
