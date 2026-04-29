@@ -13,6 +13,9 @@ These scripts support data import, normalization, inspection, and cleanup workfl
 - `report-gym-content-enrichment.mjs`
   Generates a read-only report of gyms with websites and missing editorial, social, or price enrichment.
 
+- `sync-official-overrides-enrichment.mjs`
+  Dry-runs or applies the reviewed official-source overrides into additive Supabase editorial fields. Requires `--apply` to write.
+
 - `clean-palestre-dataset.cjs`
   Cleans the main CSV dataset, removes noisy records, and restores discipline labels.
 
