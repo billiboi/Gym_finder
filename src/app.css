@@ -228,8 +228,9 @@ body {
 
   .sc-header-return {
     min-height: 2.35rem;
-    padding-inline: 0.85rem !important;
+    padding-inline: 0.95rem !important;
     font-size: 0.78rem;
+    box-shadow: 0 10px 22px rgba(31, 92, 74, 0.18);
   }
 
   .sc-header-nav {
@@ -237,6 +238,14 @@ body {
     width: 100%;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     overflow: visible !important;
+  }
+
+  .sc-header-nav--with-return {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sc-header-business-link--secondary {
+    display: none !important;
   }
 
   .sc-header nav a {

@@ -3,6 +3,8 @@
 
   $: path = $page.url.pathname;
   $: isHome = path === '/';
+  $: showReturnToList = !isHome;
+  $: returnHref = path.startsWith('/palestre/') ? '/#elenco-palestre' : '/';
   function navClass() {
     return 'sc-header-link sc-ui-pill px-3.5 py-2 text-sm';
   }
@@ -18,14 +20,14 @@
           <span class="block text-[10px] font-bold uppercase tracking-[0.28em] text-emerald-800 sm:text-xs">Palestre in Zona</span>
         </span>
       </a>
-      {#if !isHome}
-        <a href="/" class="sc-header-return sc-ui-pill px-3 py-2 text-sm">
+      {#if showReturnToList}
+        <a href={returnHref} class="sc-header-return sc-ui-pill sc-ui-pill--primary px-3 py-2 text-sm">
           Torna all'elenco
         </a>
       {/if}
       </div>
 
-      <nav class="sc-header-nav flex gap-2 overflow-x-auto sm:flex-wrap sm:overflow-visible md:justify-end" aria-label="Navigazione pubblica">
+      <nav class={`sc-header-nav flex gap-2 overflow-x-auto sm:flex-wrap sm:overflow-visible md:justify-end ${showReturnToList ? 'sc-header-nav--with-return' : ''}`} aria-label="Navigazione pubblica">
         {#if isHome}
           <a href="/" class={navClass()}>
             Home
@@ -37,7 +39,7 @@
         <a href="/discipline" class={navClass()}>
           Discipline
         </a>
-        <a href="/per-le-palestre" class="sc-header-link sc-ui-pill sc-ui-pill--primary px-3.5 py-2 text-sm">
+        <a href="/per-le-palestre" class={`sc-header-link sc-header-business-link sc-ui-pill sc-ui-pill--primary px-3.5 py-2 text-sm ${showReturnToList ? 'sc-header-business-link--secondary' : ''}`}>
           Per le palestre
         </a>
       </nav>
