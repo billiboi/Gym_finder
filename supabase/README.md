@@ -1,8 +1,17 @@
 # Supabase security notes
 
+Schema and policy changes should be added under `supabase/migrations/`.
+
+The root SQL files in this folder are legacy/manual references. New changes must be
+versioned as migrations and reviewed before being applied to production.
+
 ## `claim_requests`
 
-If Supabase reports `Table publicly accessible` / `rls_disabled_in_public` for `claim_requests`, run:
+If Supabase reports `Table publicly accessible` / `rls_disabled_in_public` for `claim_requests`, use:
+
+- `supabase/migrations/20260429_002_claim_requests_private_rls.sql`
+
+Legacy manual reference:
 
 - `supabase/claim_requests_rls.sql`
 
@@ -25,7 +34,11 @@ For `public.gyms`, the safe target is different:
 - public write access must be blocked
 - server-side writes should use `SUPABASE_SERVICE_ROLE_KEY`
 
-Run:
+Use:
+
+- `supabase/migrations/20260429_001_gyms_public_readonly_rls.sql`
+
+Legacy manual reference:
 
 - `supabase/gyms_public_readonly_rls.sql`
 
