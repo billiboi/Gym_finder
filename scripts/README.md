@@ -4,6 +4,12 @@ These scripts support data import, normalization, inspection, and cleanup workfl
 
 ## Main Reusable Scripts
 
+- `export-supabase-gyms.mjs`
+  Exports the live Supabase `gyms` table to a timestamped local JSON backup. Use before any production data change.
+
+- `check-supabase-enrichment-schema.mjs`
+  Verifies that enrichment columns exist on the production `gyms` table.
+
 - `clean-palestre-dataset.cjs`
   Cleans the main CSV dataset, removes noisy records, and restores discipline labels.
 
@@ -39,3 +45,4 @@ These are task-specific import helpers used during dataset building.
 
 - Script filenames are intentionally preserved to avoid breaking existing local workflows.
 - New reusable scripts should prefer English naming unless there is a strong compatibility reason not to rename or replace an older one.
+- Scripts that mutate production data must create or require a reviewed backup path and should default to dry-run behavior where possible.

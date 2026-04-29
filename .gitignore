@@ -6,6 +6,7 @@ npm-debug.log*
 .DS_Store
 .env
 .env.*
+!.env.example
 static/uploads/*
 !static/uploads/.gitkeep
 

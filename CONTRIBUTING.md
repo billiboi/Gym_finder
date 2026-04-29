@@ -41,14 +41,25 @@ bun run dev
 ## Data and Persistence
 
 - Local development relies on `data/palestre.csv` and `static/palestre.csv`.
-- Production writes should go through Supabase.
+- The manually reviewed Supabase catalog is the production source of truth.
+- Production writes should go through Supabase server-side flows.
+- Before production data changes, export the live table, record the row count, review the exact write, and verify the row count after the change.
+- Do not replace production data from local JSON/CSV files as a shortcut.
 - Do not commit temporary CSV exports, personal backups, or ad hoc import artifacts.
+
+## Database Changes
+
+- Schema and policy changes belong in `supabase/migrations/`.
+- Use timestamped migration names such as `20260429_003_add_gym_enrichment_fields.sql`.
+- Prefer additive, idempotent migrations.
+- Do not apply production migrations as part of unrelated UI, SEO, accessibility, or performance work.
 
 ## Repository Hygiene
 
 - Keep temporary files out of the repository.
 - Avoid committing local environment dumps or scratch scripts.
 - Document new scripts in `scripts/README.md` if they are meant to be reused.
+- Keep secrets in local environment files or Vercel, never in committed files.
 
 ## Pull Request Guidance
 
@@ -56,4 +67,4 @@ When opening a change, include:
 - what changed
 - why it changed
 - whether `bun run check` passed
-- whether the change affects data flow, admin writes, or deployment behavior
+- whether the change affects data flow, admin writes, migrations, permissions, or deployment behavior
