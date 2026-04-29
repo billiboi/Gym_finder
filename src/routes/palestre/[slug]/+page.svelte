@@ -24,13 +24,32 @@
   let relatedLocation;
   let relatedDiscipline;
 
+  function textArray(value) {
+    if (!Array.isArray(value)) return [];
+    return value.map((item) => fixGymText(item)).filter(Boolean);
+  }
+
+  function faqArray(value) {
+    if (!Array.isArray(value)) return [];
+    return value
+      .map((item) => ({
+        question: fixGymText(item?.question),
+        answer: fixGymText(item?.answer)
+      }))
+      .filter((item) => item.question && item.answer);
+  }
+
   $: ({ gym, relatedGyms = [], relatedLocation, relatedDiscipline } = data);
   $: officialOverride = officialGymOverride(gym);
   $: disciplines = disciplineListForGym(gym);
   $: primaryDiscipline = primaryDisciplineForGym(gym);
-  $: presentation = officialOverride?.presentation || buildGymPresentation(gym);
-  $: seoHighlights = officialOverride?.highlights || buildGymSeoHighlights(gym);
-  $: faqItems = officialOverride?.faqItems || buildGymFaqItems(gym);
+  $: editorialSummary = fixGymText(gym?.editorial_summary);
+  $: editorialHighlights = textArray(gym?.editorial_highlights);
+  $: editorialFaqItems = faqArray(gym?.editorial_faq_items);
+  $: hasEditorialContent = Boolean(editorialSummary || editorialHighlights.length || editorialFaqItems.length);
+  $: presentation = officialOverride?.presentation || editorialSummary || buildGymPresentation(gym);
+  $: seoHighlights = officialOverride?.highlights || editorialHighlights.length ? (officialOverride?.highlights || editorialHighlights) : buildGymSeoHighlights(gym);
+  $: faqItems = officialOverride?.faqItems || editorialFaqItems.length ? (officialOverride?.faqItems || editorialFaqItems) : buildGymFaqItems(gym);
   $: cityLabel = cityLabelForGym(gym);
   $: imageAsset = imageForGym(gym);
   $: imageMeta =
@@ -44,13 +63,20 @@
   $: address = formatAddressForDisplay(gym);
   $: structuredAddress = structuredAddressForGym(gym);
   $: isIndexable = isIndexableGym(gym);
-  $: officialSourceUrl = officialOverride?.sourceUrl || '';
+  $: officialSourceUrl = officialOverride?.sourceUrl || fixGymText(gym?.official_source_url) || '';
   $: officialEmail = officialOverride?.email || '';
   $: officialMonthlyPrice = officialOverride?.monthlyPrice || '';
   $: officialSocialLinks = officialOverride?.socialLinks || [];
   $: officialInfoCards = officialOverride?.infoCards || [];
+  $: editorialInfoCards = !officialOverride && editorialHighlights.length
+    ? editorialHighlights.slice(0, 3).map((highlight, index) => ({
+        label: index === 0 ? 'Fonte ufficiale' : `Dettaglio ${index + 1}`,
+        value: index === 0 ? 'Informazione verificata' : '',
+        body: highlight
+      }))
+    : [];
   $: officialCards = (() => {
-    const cards = officialInfoCards.map((card) => ({ ...card }));
+    const cards = (officialInfoCards.length ? officialInfoCards : editorialInfoCards).map((card) => ({ ...card }));
     const hasFormulaCard = cards.some((card) => String(card.label || '').trim().toLowerCase() === 'formula');
 
     if (officialMonthlyPrice && !hasFormulaCard) {
@@ -323,7 +349,7 @@
 
     <div class="grid gap-3 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
       <div class="flex min-w-0 flex-col gap-3">
-        {#if officialOverride}
+        {#if officialOverride || hasEditorialContent}
           <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-5">
             <div class="max-w-4xl">
               <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Dati ufficiali del club</p>

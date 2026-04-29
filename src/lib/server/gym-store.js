@@ -38,7 +38,14 @@ const SUPABASE_EXPECTED_COLUMNS = [
   'latitude',
   'longitude',
   'image_url',
-  'weekly_hours'
+  'weekly_hours',
+  'official_source_url',
+  'editorial_summary',
+  'editorial_highlights',
+  'editorial_faq_items',
+  'enrichment_status',
+  'enrichment_notes',
+  'enrichment_updated_at'
 ];
 
 function getRuntimeGyms() {
@@ -270,6 +277,13 @@ function normalizeGymRecord(gym, fallbackId) {
     latitude: gym?.latitude === null || gym?.latitude === undefined ? null : toNumberOrNull(gym.latitude),
     longitude: gym?.longitude === null || gym?.longitude === undefined ? null : toNumberOrNull(gym.longitude),
     image_url: String(gym?.image_url || '').trim(),
+    official_source_url: String(gym?.official_source_url || '').trim(),
+    editorial_summary: repairMojibake(gym?.editorial_summary || '').trim(),
+    editorial_highlights: Array.isArray(gym?.editorial_highlights) ? gym.editorial_highlights : [],
+    editorial_faq_items: Array.isArray(gym?.editorial_faq_items) ? gym.editorial_faq_items : [],
+    enrichment_status: repairMojibake(gym?.enrichment_status || 'pending').trim() || 'pending',
+    enrichment_notes: repairMojibake(gym?.enrichment_notes || '').trim(),
+    enrichment_updated_at: String(gym?.enrichment_updated_at || '').trim(),
     weekly_hours: {
       ...weeklyHours,
       _verified: verified
