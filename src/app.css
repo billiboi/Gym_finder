@@ -559,12 +559,27 @@ main article.rounded-2xl.border.bg-white:hover {
 }
 
 .sc-price-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
   border: 1px solid rgba(126, 93, 18, 0.2);
   background:
     linear-gradient(135deg, rgba(252, 244, 215, 0.96), rgba(255, 255, 255, 0.9)),
     rgba(252, 244, 215, 0.82);
   color: #715b13;
   box-shadow: var(--shadow-control);
+}
+
+.sc-price-chip span {
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.72;
+}
+
+.sc-price-chip strong {
+  color: #4f3f0d;
+  font-weight: 900;
 }
 
 .sc-gym-card-facts p {

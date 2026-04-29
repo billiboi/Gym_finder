@@ -68,12 +68,16 @@
   }
 
   function priceForCard(gym) {
-    return (
+    const price = (
       displayName(gym?.price) ||
       displayName(gym?.monthly_price) ||
       displayName(gym?.monthlyPrice) ||
       displayName(officialGymOverride(gym)?.monthlyPrice)
     );
+
+    if (!price) return '';
+    const hasSpecificAmount = /(\d|€|chf|eur|gratis|gratuit)/i.test(price);
+    return hasSpecificAmount ? price : '';
   }
 
   function formatAddressForDisplay(gym) {
@@ -859,7 +863,10 @@
                     <span class="rounded-full bg-slate-100 px-2.5 py-1">{displayName(gym.city)}</span>
                   {/if}
                   {#if priceLabel}
-                    <span class="rounded-full px-2.5 py-1 sc-price-chip">Prezzo: {priceLabel}</span>
+                    <span class="rounded-full px-2.5 py-1 sc-price-chip">
+                      <span>Prezzo</span>
+                      <strong>{priceLabel}</strong>
+                    </span>
                   {/if}
                 </div>
                 <div class="flex flex-wrap gap-2 sc-discipline-list">
