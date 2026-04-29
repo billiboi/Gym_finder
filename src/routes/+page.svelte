@@ -781,7 +781,7 @@
     <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
       <div class="min-w-0">
         <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-emerald-800">Elenco palestre</p>
-        <h2 class="mt-1 text-2xl font-bold text-slate-900 sm:text-3xl">Risultati ordinati per confronto rapido</h2>
+        <h2 class="mt-1 text-2xl font-bold text-slate-900 sm:text-3xl">Palestre trovate</h2>
         <p class="mt-2 text-sm font-semibold text-slate-600" aria-live="polite">
           {filteredGyms.length} palestre trovate{hasActiveFilters ? ` con ${activeFilterCount} ${activeFilterCount === 1 ? 'filtro attivo' : 'filtri attivi'}` : ''}
         </p>
