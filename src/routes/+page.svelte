@@ -722,13 +722,13 @@
             <div class="grid grid-cols-2 gap-2 sm:flex sm:justify-end">
               <a
                 href="/zone"
-                class="inline-flex min-h-[2.75rem] items-center justify-center rounded-xl border border-emerald-800/25 bg-emerald-50 px-4 text-center text-sm font-bold text-emerald-900 shadow-sm transition hover:border-emerald-800/50 hover:bg-emerald-100 focus:outline-none focus:ring-2 focus:ring-emerald-900/30"
+                class="sc-secondary-cta sc-secondary-cta--zone"
               >
                 Sfoglia zone
               </a>
               <a
                 href="/discipline"
-                class="inline-flex min-h-[2.75rem] items-center justify-center rounded-xl border border-amber-800/25 bg-amber-50 px-4 text-center text-sm font-bold text-amber-950 shadow-sm transition hover:border-amber-800/50 hover:bg-amber-100 focus:outline-none focus:ring-2 focus:ring-amber-900/30"
+                class="sc-secondary-cta sc-secondary-cta--discipline"
               >
                 Sfoglia discipline
               </a>
