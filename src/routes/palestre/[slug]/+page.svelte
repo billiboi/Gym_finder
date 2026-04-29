@@ -19,32 +19,37 @@
 
   export let data;
 
-  const { gym, relatedGyms = [], relatedLocation, relatedDiscipline } = data;
-  const officialOverride = officialGymOverride(gym);
-  const disciplines = disciplineListForGym(gym);
-  const primaryDiscipline = primaryDisciplineForGym(gym);
-  const presentation = officialOverride?.presentation || buildGymPresentation(gym);
-  const seoHighlights = officialOverride?.highlights || buildGymSeoHighlights(gym);
-  const faqItems = officialOverride?.faqItems || buildGymFaqItems(gym);
-  const cityLabel = cityLabelForGym(gym);
-  const imageAsset = imageForGym(gym);
-  const imageMeta =
+  let gym;
+  let relatedGyms = [];
+  let relatedLocation;
+  let relatedDiscipline;
+
+  $: ({ gym, relatedGyms = [], relatedLocation, relatedDiscipline } = data);
+  $: officialOverride = officialGymOverride(gym);
+  $: disciplines = disciplineListForGym(gym);
+  $: primaryDiscipline = primaryDisciplineForGym(gym);
+  $: presentation = officialOverride?.presentation || buildGymPresentation(gym);
+  $: seoHighlights = officialOverride?.highlights || buildGymSeoHighlights(gym);
+  $: faqItems = officialOverride?.faqItems || buildGymFaqItems(gym);
+  $: cityLabel = cityLabelForGym(gym);
+  $: imageAsset = imageForGym(gym);
+  $: imageMeta =
     typeof imageAsset === 'string'
       ? { src: imageAsset, candidates: [imageAsset], fallback: imageAsset }
       : imageAsset;
-  const imageSrc = imageMeta.src;
-  const hoursInfo = fixGymText(gym?.hours_info) || 'Orari da verificare';
-  const hoursRows = weeklyHoursRows(hoursInfo);
-  const alwaysOpen = isAlwaysOpen(hoursInfo);
-  const address = formatAddressForDisplay(gym);
-  const structuredAddress = structuredAddressForGym(gym);
-  const isIndexable = isIndexableGym(gym);
-  const officialSourceUrl = officialOverride?.sourceUrl || '';
-  const officialEmail = officialOverride?.email || '';
-  const officialMonthlyPrice = officialOverride?.monthlyPrice || '';
-  const officialSocialLinks = officialOverride?.socialLinks || [];
-  const officialInfoCards = officialOverride?.infoCards || [];
-  const officialCards = (() => {
+  $: imageSrc = imageMeta.src;
+  $: hoursInfo = fixGymText(gym?.hours_info) || 'Orari da verificare';
+  $: hoursRows = weeklyHoursRows(hoursInfo);
+  $: alwaysOpen = isAlwaysOpen(hoursInfo);
+  $: address = formatAddressForDisplay(gym);
+  $: structuredAddress = structuredAddressForGym(gym);
+  $: isIndexable = isIndexableGym(gym);
+  $: officialSourceUrl = officialOverride?.sourceUrl || '';
+  $: officialEmail = officialOverride?.email || '';
+  $: officialMonthlyPrice = officialOverride?.monthlyPrice || '';
+  $: officialSocialLinks = officialOverride?.socialLinks || [];
+  $: officialInfoCards = officialOverride?.infoCards || [];
+  $: officialCards = (() => {
     const cards = officialInfoCards.map((card) => ({ ...card }));
     const hasFormulaCard = cards.some((card) => String(card.label || '').trim().toLowerCase() === 'formula');
 
@@ -60,30 +65,30 @@
       featured: index === 0 && String(card.label || '').trim().toLowerCase() === 'formula'
     }));
   })();
-  const hasFeaturedOfficialCard = officialCards.some((card) => card.featured);
-  const officialCardsGridClass = hasFeaturedOfficialCard
+  $: hasFeaturedOfficialCard = officialCards.some((card) => card.featured);
+  $: officialCardsGridClass = hasFeaturedOfficialCard
     ? 'md:grid-cols-2 xl:grid-cols-3'
     : officialCards.length === 4
       ? 'md:grid-cols-2 xl:grid-cols-2'
       : 'md:grid-cols-2 xl:grid-cols-3';
-  const phone = fixGymText(gym?.phone) || 'Non disponibile';
-  const website = fixGymText(gym?.website) || officialOverride?.website || officialSourceUrl;
-  const hasPhone = phone && phone !== 'Non disponibile';
-  const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
-  const hasCoordinates = Number.isFinite(Number(gym?.latitude)) && Number.isFinite(Number(gym?.longitude));
-  const osmEmbedHref = hasCoordinates
+  $: phone = fixGymText(gym?.phone) || 'Non disponibile';
+  $: website = fixGymText(gym?.website) || officialOverride?.website || officialSourceUrl;
+  $: hasPhone = phone && phone !== 'Non disponibile';
+  $: mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+  $: hasCoordinates = Number.isFinite(Number(gym?.latitude)) && Number.isFinite(Number(gym?.longitude));
+  $: osmEmbedHref = hasCoordinates
     ? `https://www.openstreetmap.org/export/embed.html?bbox=${Number(gym.longitude) - 0.01}%2C${Number(gym.latitude) - 0.008}%2C${Number(gym.longitude) + 0.01}%2C${Number(gym.latitude) + 0.008}&layer=mapnik&marker=${Number(gym.latitude)}%2C${Number(gym.longitude)}`
     : '';
-  const pageUrl = absoluteUrl(`/palestre/${data.gymSlug}`);
-  const seoTitle = officialOverride?.seoTitle
+  $: pageUrl = absoluteUrl(`/palestre/${data.gymSlug}`);
+  $: seoTitle = officialOverride?.seoTitle
     ? `${officialOverride.seoTitle} | ${SITE_NAME}`
     : `${fixGymText(gym?.name)} | ${SITE_NAME}`;
-  const seoDescription =
+  $: seoDescription =
     officialOverride?.seoDescription ||
     `${fixGymText(gym?.name)}: ${primaryDiscipline} a ${address}. ${presentation}`;
-  const claimHref = `/rivendica-scheda?gym=${encodeURIComponent(fixGymText(gym?.name))}&url=${encodeURIComponent(pageUrl)}&reason=${encodeURIComponent('Aggiornamento o rivendicazione scheda')}`;
+  $: claimHref = `/rivendica-scheda?gym=${encodeURIComponent(fixGymText(gym?.name))}&url=${encodeURIComponent(pageUrl)}&reason=${encodeURIComponent('Aggiornamento o rivendicazione scheda')}`;
 
-  const detailStructuredData = [
+  $: detailStructuredData = [
     {
       '@context': 'https://schema.org',
       '@type': 'BreadcrumbList',
@@ -135,7 +140,7 @@
       }))
     }
   ];
-  const detailStructuredDataScript = jsonLdScript(detailStructuredData);
+  $: detailStructuredDataScript = jsonLdScript(detailStructuredData);
 
   function handleImageError(event) {
     const img = event.currentTarget;
