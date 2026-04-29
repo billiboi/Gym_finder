@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build",
+    "build": "svelte-kit sync && vite build",
+    "prepare": "svelte-kit sync",
     "preview": "vite preview",
     "check": "bun run scripts/check-stock-assets.mjs && bun run scripts/check-copy-slop.mjs && bun run scripts/check-visible-mojibake.mjs && bun run scripts/check-data-quality.mjs && bun ./node_modules/@sveltejs/kit/svelte-kit.js sync && bun ./node_modules/svelte-check/bin/svelte-check --tsconfig ./jsconfig.json",
     "check:stock": "bun run scripts/check-stock-assets.mjs",

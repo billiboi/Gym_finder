@@ -30,6 +30,12 @@ Current priority order:
 
 - Preserve existing SvelteKit and Tailwind-style patterns unless there is a clear reason to change them.
 - Keep edits scoped to the requested priority.
+- UI work must never touch production data, Supabase tables, dataset files, import/export scripts, sync scripts, or admin data flows unless the user explicitly asks for a data change in that same request.
+- Treat the manually reviewed Supabase gym catalog as production data and as the source of truth. Never overwrite it from local JSON/CSV files as part of UI, UX, SEO, accessibility, or performance work.
+- Before any data-changing operation against Supabase or production-like data, create a local export first, verify the export record count, state the before/after counts, and get explicit confirmation for the exact destructive action.
+- Never run a `DELETE` + bulk `INSERT` replacement on production data as a convenience path. If a full replacement is truly required, it needs a named local backup, a reviewed source file, a dry run, explicit confirmation, and a post-restore verification.
+- Keep local backups of production data out of git, but do create them before touching data. Backup filenames must include the data source and timestamp.
+- If the task is UI-only and a data issue appears, stop and report it instead of trying to "fix" data opportunistically.
 - Avoid landing-page fluff. Build usable product UI first.
 - Avoid redundant UI sections. If a control appears in the hero, later sections should add new capability or context rather than repeat the same task.
 - Apply Stop Slop criteria to all UI copy and explanations: cut filler, avoid formulaic three-card sections, use direct active language, remove vague claims, and keep only text that helps the user act.
