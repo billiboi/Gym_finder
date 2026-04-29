@@ -181,6 +181,11 @@ body {
   flex: 0 0 auto;
 }
 
+.sc-header-return {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
 .sc-brand-mark {
   box-shadow:
     0 14px 28px rgba(31, 92, 74, 0.2),
@@ -217,10 +222,20 @@ body {
     padding-bottom: 0.1rem;
   }
 
+  .sc-header-top {
+    width: 100%;
+  }
+
+  .sc-header-return {
+    min-height: 2.35rem;
+    padding-inline: 0.85rem !important;
+    font-size: 0.78rem;
+  }
+
   .sc-header-nav {
     display: grid !important;
     width: 100%;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     overflow: visible !important;
   }
 
@@ -234,10 +249,6 @@ body {
     padding-inline: 0.9rem;
     text-align: center;
     white-space: normal;
-  }
-
-  .sc-header-nav .sc-ui-pill--primary {
-    grid-column: 1 / -1;
   }
 }
 
