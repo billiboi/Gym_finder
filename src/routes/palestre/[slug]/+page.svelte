@@ -258,21 +258,6 @@
                 </a>
               {/if}
             </div>
-
-            <div class="grid gap-2 sm:grid-cols-3">
-              <div class="rounded-2xl border border-slate-200 bg-white/90 p-3 sc-detail-trust">
-                <p class="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Contatti</p>
-                <p class="mt-1 text-sm font-bold text-slate-900">{hasPhone || website ? 'Disponibili' : 'Da integrare'}</p>
-              </div>
-              <div class="rounded-2xl border border-slate-200 bg-white/90 p-3 sc-detail-trust">
-                <p class="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Orari</p>
-                <p class="mt-1 text-sm font-bold text-slate-900">{hoursRows.length ? 'Strutturati' : 'Da verificare'}</p>
-              </div>
-              <div class="rounded-2xl border border-slate-200 bg-white/90 p-3 sc-detail-trust">
-                <p class="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Scheda</p>
-                <p class="mt-1 text-sm font-bold text-slate-900">{officialOverride ? 'Curata' : 'Catalogo'}</p>
-              </div>
-            </div>
           </div>
         </div>
       </div>
