@@ -786,16 +786,6 @@
           {filteredGyms.length} palestre trovate{hasActiveFilters ? ` con ${activeFilterCount} ${activeFilterCount === 1 ? 'filtro attivo' : 'filtri attivi'}` : ''}
         </p>
       </div>
-      <div class="flex flex-wrap gap-2">
-        {#if hasActiveFilters}
-          <button type="button" class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button-ghost" on:click={resetFilters}>
-            Reset
-          </button>
-        {/if}
-        <a href="#top" class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button-ghost">
-          Torna alla ricerca
-        </a>
-      </div>
     </div>
   </div>
 
