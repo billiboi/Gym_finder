@@ -186,10 +186,6 @@ body {
   white-space: nowrap;
 }
 
-.sc-header-return-mobile {
-  display: none !important;
-}
-
 .sc-brand-mark {
   box-shadow:
     0 14px 28px rgba(31, 92, 74, 0.2),
@@ -235,14 +231,6 @@ body {
     padding-inline: 0.95rem !important;
     font-size: 0.78rem;
     box-shadow: 0 10px 22px rgba(31, 92, 74, 0.18);
-  }
-
-  .sc-header-return--desktop {
-    display: none !important;
-  }
-
-  .sc-header-return-mobile {
-    display: inline-flex !important;
   }
 
   .sc-header-nav {

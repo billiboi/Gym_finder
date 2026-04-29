@@ -20,16 +20,11 @@
           <span class="block text-[10px] font-bold uppercase tracking-[0.28em] text-emerald-800 sm:text-xs">Palestre in Zona</span>
         </span>
       </a>
-      {#if showReturnToList}
-        <a href={returnHref} class="sc-header-return sc-header-return--desktop sc-ui-pill sc-ui-pill--primary px-3 py-2 text-sm">
-          Torna all'elenco
-        </a>
-      {/if}
       </div>
 
       <nav class={`sc-header-nav flex gap-2 overflow-x-auto sm:flex-wrap sm:overflow-visible md:justify-end ${showReturnToList ? 'sc-header-nav--with-return' : ''}`} aria-label="Navigazione pubblica">
         {#if showReturnToList}
-          <a href={returnHref} class="sc-header-link sc-header-return-mobile sc-ui-pill sc-ui-pill--primary px-3.5 py-2 text-sm">
+          <a href={returnHref} class="sc-header-link sc-header-return sc-ui-pill sc-ui-pill--primary px-3.5 py-2 text-sm">
             Torna all'elenco
           </a>
         {/if}
