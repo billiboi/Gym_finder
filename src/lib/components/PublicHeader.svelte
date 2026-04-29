@@ -5,6 +5,7 @@
   $: isHome = path === '/';
   $: showReturnToList = !isHome;
   $: returnHref = path.startsWith('/palestre/') ? '/#elenco-palestre' : '/';
+  $: listHref = isHome ? '#elenco-palestre' : returnHref;
   function navClass() {
     return 'sc-header-link sc-ui-pill px-3.5 py-2 text-sm';
   }
@@ -22,14 +23,14 @@
       </a>
       </div>
 
-      <nav class={`sc-header-nav flex gap-2 overflow-x-auto sm:flex-wrap sm:overflow-visible md:justify-end ${showReturnToList ? 'sc-header-nav--with-return' : ''}`} aria-label="Navigazione pubblica">
-        {#if showReturnToList}
-          <a href={returnHref} class="sc-header-link sc-header-return sc-ui-pill sc-ui-pill--primary px-3.5 py-2 text-sm">
+      <nav class={`sc-header-nav flex gap-2 overflow-x-auto sm:flex-wrap sm:overflow-visible md:justify-end ${showReturnToList || isHome ? 'sc-header-nav--with-return' : ''}`} aria-label="Navigazione pubblica">
+        {#if showReturnToList || isHome}
+          <a href={listHref} class={`sc-header-link sc-header-return sc-ui-pill sc-ui-pill--primary px-3.5 py-2 text-sm ${isHome ? 'sc-header-return--home' : ''}`}>
             Torna all'elenco
           </a>
         {/if}
         {#if isHome}
-          <a href="/" class={navClass()}>
+          <a href="/" class={`${navClass()} sc-header-home-link`}>
             Home
           </a>
         {/if}
@@ -39,7 +40,7 @@
         <a href="/discipline" class={navClass()}>
           Discipline
         </a>
-        <a href="/per-le-palestre" class={`sc-header-link sc-header-business-link sc-ui-pill sc-ui-pill--primary px-3.5 py-2 text-sm ${showReturnToList ? 'sc-header-business-link--secondary' : ''}`}>
+        <a href="/per-le-palestre" class={`sc-header-link sc-header-business-link sc-ui-pill sc-ui-pill--primary px-3.5 py-2 text-sm ${showReturnToList || isHome ? 'sc-header-business-link--secondary' : ''}`}>
           Per le palestre
         </a>
       </nav>
