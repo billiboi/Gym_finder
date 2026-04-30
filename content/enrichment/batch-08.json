@@ -1,0 +1,322 @@
+{
+  "batch": "batch-08-editorial-and-prices-crossfit-training",
+  "reviewed_at": "2026-04-30",
+  "entries": [
+    {
+      "id": "csv-156",
+      "official_source_url": "https://crossfitiltempio.altervista.org/",
+      "editorial_summary": "CrossFit il Tempio e' un box di Busto Arsizio che comunica lo sport come palestra di vita. Il sito ufficiale presenta discipline, box, affiliazioni, trainers, orari, prezzi, safeguarding e store ufficiale, con una forte impronta di community, eventi e attivita' CrossFit.",
+      "editorial_highlights": [
+        "Il sito ufficiale organizza la proposta in aree dedicate a discipline, box, affiliazioni, trainers, orari, prezzi e contatti.",
+        "La comunicazione mette in evidenza una community molto attiva, con gare, eventi, raccolte solidali e contenuti aggiornati.",
+        "Dal profilo ufficiale CrossFit emergono classi di CrossFit, Calisthenics, Power Lifting, Pankration, MMA, Tai Chi, Difesa Personale Femminile, CrossFit Kids e CrossFit Adaptive.",
+        "La sede collegata al profilo ufficiale CrossFit e' Via Cassano Magnago 6 a Busto Arsizio."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Quali discipline propone CrossFit il Tempio?",
+          "answer": "Le fonti ufficiali citano CrossFit, Calisthenics, Power Lifting, Pankration, MMA, Tai Chi, Difesa Personale Femminile, CrossFit Kids e CrossFit Adaptive."
+        },
+        {
+          "question": "Dove si trova CrossFit il Tempio?",
+          "answer": "Il profilo ufficiale CrossFit indica Via Cassano Magnago 6, 21052 Busto Arsizio."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Si. Il sito rimanda allo store ufficiale, dove compaiono ticket singoli e formule annuali."
+        },
+        {
+          "question": "Che tipo di ambiente comunica il box?",
+          "answer": "La comunicazione ufficiale insiste su community, eventi, gare, iniziative solidali e sport come percorso di crescita."
+        }
+      ],
+      "price_info": "Store ufficiale: 1 Ticket Classe 15,45 EUR; 1 Ticket Open Gym 10,30 EUR; annuale classi da 460,50 EUR per 1 ingresso fino a 1.207,20 EUR per 5 ingressi.",
+      "price_source_url": "https://crossfitiltempio.sumupstore.com/prodotti",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official CrossFit il Tempio website, CrossFit affiliate profile and linked official SumUp store."
+    },
+    {
+      "id": "csv-157",
+      "official_source_url": "https://crossfitlocarno.com/",
+      "editorial_summary": "CrossFit Locarno e' un box a Locarno-Muralto con certificato QualiCert, ospitato presso BodyClub vicino all'ex cinema Rialto. Il sito ufficiale descrive classi da massimo 10 persone, lezioni da 60 minuti e allenamento basato su movimenti funzionali, variati e ad alta intensita'.",
+      "editorial_highlights": [
+        "Il sito ufficiale presenta CrossFit Locarno come box con certificato QualiCert.",
+        "Le classi sono descritte come gruppi di massimo 10 persone.",
+        "La struttura della lezione indicata e' warm-up, tecnica/forza, WOD, defaticamento e stretching.",
+        "La pagina classi e prezzi pubblica abbonamenti annuali, semestrali, trimestrali, carnet da 10 entrate e ingresso singolo."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova CrossFit Locarno?",
+          "answer": "Le fonti ufficiali indicano Via San Gottardo 1, Locarno-Muralto, presso la palestra BodyClub."
+        },
+        {
+          "question": "Quanto durano le lezioni?",
+          "answer": "Il sito ufficiale descrive lezioni da 60 minuti con riscaldamento, tecnica/forza, WOD, defaticamento e stretching."
+        },
+        {
+          "question": "CrossFit Locarno pubblica prezzi?",
+          "answer": "Si. La pagina classi e prezzi riporta abbonamenti e ingressi in franchi svizzeri."
+        },
+        {
+          "question": "Le classi sono numerose?",
+          "answer": "No. La pagina ufficiale parla di classi di massimo 10 persone."
+        }
+      ],
+      "price_info": "1 anno CHF 1300.-; 6 mesi CHF 750.-; 3 mesi CHF 450.-; 10 entrate CHF 230.-; entrata singola CHF 30.-.",
+      "price_source_url": "https://crossfitlocarno.com/classi-e-prezzi/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official CrossFit Locarno site and official classi-e-prezzi page."
+    },
+    {
+      "id": "csv-158",
+      "official_source_url": "https://www.crossfitlugano.com/",
+      "editorial_summary": "CrossFit Lugano e' un box in Via Fola 11 a Lugano. Il sito ufficiale presenta classi da 1 ora sempre seguite da un coach, percorso On-Ramp di 4 allenamenti per principianti, weightlifting, yoga, open gym e personal training su richiesta.",
+      "editorial_highlights": [
+        "La home ufficiale descrive il CrossFit come movimenti funzionali, costantemente variati, ad alta intensita' e adattabili a diversi livelli.",
+        "Le classi durano 1 ora e sono sempre seguite da un coach.",
+        "Il percorso On-Ramp prevede 4 allenamenti per imparare i fondamentali della disciplina.",
+        "Gli abbonamenti trimestrale, semestrale e annuale includono classi CrossFit illimitate, weightlifting, yoga, open gym 7 giorni su 7 e Wodify."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova CrossFit Lugano?",
+          "answer": "Il sito ufficiale indica Via Fola 11, 6900 Lugano."
+        },
+        {
+          "question": "CrossFit Lugano e' adatto ai principianti?",
+          "answer": "Si. Il sito presenta un percorso On-Ramp di 4 allenamenti per imparare i fondamentali."
+        },
+        {
+          "question": "Cosa includono gli abbonamenti principali?",
+          "answer": "La pagina abbonamenti cita classi CrossFit illimitate, weightlifting e yoga incluse, open gym 7 giorni su 7 e Wodify."
+        },
+        {
+          "question": "Quanto costa il drop-in?",
+          "answer": "La pagina ufficiale indica drop-in a CHF 25 per 1 ingresso, CHF 20 per minori di 18 anni."
+        }
+      ],
+      "price_info": "Drop-in CHF 25 per 1 ingresso; CHF 20 per minori di 18 anni. Personal training: 10 sessioni individuali su richiesta.",
+      "price_source_url": "https://www.crossfitlugano.com/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official CrossFit Lugano website."
+    },
+    {
+      "id": "csv-160",
+      "official_source_url": "https://www.crossfitsaronno.it/",
+      "editorial_summary": "CrossFit Saronno e' un box che comunica allenamento funzionale, forza e community. Il sito ufficiale distingue tra CrossFit e GRIT, con una filosofia orientata a metodo, testa, costanza, progressione intelligente e ambiente capace di accogliere principianti e persone gia' allenate.",
+      "editorial_highlights": [
+        "La home ufficiale presenta il box come luogo dove allenarsi con metodo, testa e costanza.",
+        "CrossFit viene descritto come allenamento completo, funzionale e ad alta intensita', scalabile in base al livello.",
+        "GRIT e' presentato come alternativa piu' progressiva e adatta anche a chi non ha mai fatto CrossFit.",
+        "Il sito invita a fare una prova gratuita tramite modulo dedicato."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "CrossFit Saronno propone solo CrossFit?",
+          "answer": "No. Il sito ufficiale presenta sia CrossFit sia GRIT."
+        },
+        {
+          "question": "GRIT e' adatto ai principianti?",
+          "answer": "Si. La pagina ufficiale dice che GRIT e' stato creato per prendere confidenza con allenamento e carichi."
+        },
+        {
+          "question": "E' possibile fare una prova?",
+          "answer": "Si. Il sito contiene un invito esplicito a fare una prova gratuita."
+        },
+        {
+          "question": "Che tipo di ambiente comunica il box?",
+          "answer": "La comunicazione parla di community, disciplina, resilienza, progressione e allenamento senza scorciatoie."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official CrossFit Saronno website. Public prices not found on the reviewed page."
+    },
+    {
+      "id": "csv-162",
+      "official_source_url": "https://www.crossfitthreefingers.com/",
+      "editorial_summary": "CrossFit Three Fingers e' un box a Lozza che propone CrossFit, Calisthenics, Engine, CrossFit Kids, Mobility, Open Box, workshops, Hyrox e servizi plus. Il sito ufficiale invita a prenotare una prova gratuita e presenta una community con coach qualificati e percorsi personalizzati.",
+      "editorial_highlights": [
+        "La home ufficiale presenta corsi di CrossFit, Calisthenics, Engine, CrossFit Kids, Mobility, Open Box, workshops e Hyrox.",
+        "La prova gratuita e' messa in evidenza come primo passo per conoscere programmi, coach e ambiente.",
+        "Sono presenti servizi plus come FisioFit e supporto nutrizionale.",
+        "La sede indicata e' Via Alessandro Volta 26 a Lozza, con telefono e email pubblicati."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova CrossFit Three Fingers?",
+          "answer": "Il sito ufficiale indica Via Alessandro Volta 26, Lozza, Varese."
+        },
+        {
+          "question": "Quali corsi propone?",
+          "answer": "Il sito cita CrossFit, Calisthenics, Engine, CrossFit Kids, Mobility, Open Box, workshops e Hyrox."
+        },
+        {
+          "question": "E' prevista una prova gratuita?",
+          "answer": "Si. La home invita a prenotare una prova gratuita."
+        },
+        {
+          "question": "Ci sono servizi oltre ai corsi?",
+          "answer": "Si. Il sito cita FisioFit e supporto nutrizionale."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official CrossFit Three Fingers website. Public prices not found on the reviewed page."
+    },
+    {
+      "id": "csv-163",
+      "official_source_url": "https://www.crossfitvarese.com/",
+      "editorial_summary": "CrossFit Varese comunica un percorso per diventare la versione migliore di se stessi. Il sito ufficiale presenta prova gratuita con personal trainer, programmi, orari e tariffe, promozioni, calendario e contatti, spiegando il CrossFit come metodo che unisce ginnastica, pesistica e atletica.",
+      "editorial_highlights": [
+        "Il sito ufficiale offre una lezione individuale con personal trainer per provare un allenamento CrossFit.",
+        "Il CrossFit viene descritto come metodo che combina diverse discipline sportive per migliorare prestazioni fisiche, forma e salute.",
+        "L'allenamento e' presentato come naturale e sicuro, basato su ginnastica, pesistica e atletica.",
+        "La pagina sottolinea che il programma si adatta a qualsiasi esigenza e puo' essere praticato a diverse eta'."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "CrossFit Varese offre una prova?",
+          "answer": "Si. Il sito ufficiale parla di una lezione individuale con personal trainer per provare un allenamento CrossFit."
+        },
+        {
+          "question": "Come viene descritto il metodo?",
+          "answer": "La pagina parla di combinazione di ginnastica, pesistica e atletica per migliorare prestazioni, forma e salute."
+        },
+        {
+          "question": "E' adatto a chi parte da zero?",
+          "answer": "Si. Il sito dice che non bisogna essere gia' allenati e che il programma si adatta a qualsiasi esigenza."
+        },
+        {
+          "question": "Il sito cita tariffe?",
+          "answer": "La navigazione contiene una sezione Orari e Tariffe, ma nella pagina verificata non sono stati rilevati importi testuali affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official CrossFit Varese website. Public price amounts not captured from the reviewed page."
+    },
+    {
+      "id": "csv-169",
+      "official_source_url": "https://www.curtitraining.it/it/",
+      "editorial_summary": "Curti Training Room e' uno spazio a Varese dedicato a Pilates, danza e fitness. La pagina ufficiale presenta un ambiente moderno e accogliente con istruttori esperti, attrezzature all'avanguardia e una proposta orientata a qualita', stile, energia e benessere.",
+      "editorial_highlights": [
+        "La pagina ufficiale descrive Curti Training Room come spazio per Pilates, danza e fitness di alta qualita'.",
+        "La comunicazione mette in evidenza ambiente moderno, istruttori esperti e attrezzature all'avanguardia.",
+        "La sede indicata e' Via Giulio Bizzozero 7 a Varese.",
+        "Gli orari pubblicati sono lunedi'-venerdi' 09:00-20:00 e sabato 09:00-14:00."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova Curti Training Room?",
+          "answer": "La pagina ufficiale indica Via Giulio Bizzozero 7, 21100 Varese."
+        },
+        {
+          "question": "Quali attivita' comunica il sito?",
+          "answer": "Il sito parla di Pilates, danza e fitness."
+        },
+        {
+          "question": "Quali sono gli orari pubblicati?",
+          "answer": "Lunedi'-venerdi' 09:00-20:00 e sabato 09:00-14:00."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nella pagina ufficiale verificata non sono stati trovati importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Curti Training Room website. Public prices not found on the reviewed page."
+    },
+    {
+      "id": "csv-170",
+      "official_source_url": "https://danielepinco.it/",
+      "editorial_summary": "Daniele Pinco e' un fitness trainer a Varese che lavora su potenziale fisico, salute, estetica e performance. Il sito ufficiale presenta percorsi di fitness e ricomposizione corporea, performance sportiva, dimagrimento e perdita di peso, con possibilita' di allenarsi in palestra o da casa.",
+      "editorial_highlights": [
+        "La home ufficiale parla di miglioramento sostenibile, in palestra o da casa.",
+        "I servizi principali indicati sono fitness e ricomposizione corporea, performance sportiva e allenamento, dimagrimento e perdita di peso.",
+        "La missione dichiarata e' migliorare qualita' di vita, salute, efficienza fisica ed estetica attraverso conoscenze ed esperienza pratica.",
+        "Il sito include testimonianze clienti e invito a contattarlo per costruire un percorso."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di servizio offre Daniele Pinco?",
+          "answer": "Il sito ufficiale presenta un servizio di fitness trainer per ricomposizione corporea, performance sportiva e dimagrimento."
+        },
+        {
+          "question": "Si puo' lavorare anche da casa?",
+          "answer": "Si. La pagina ufficiale parla di allenarsi in palestra o da casa."
+        },
+        {
+          "question": "Quali obiettivi sono citati?",
+          "answer": "Potenziale fisico, benessere, estetica, salute, performance, perdita di peso e ricomposizione corporea."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non sono stati trovati importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Daniele Pinco website. Public prices not found on the reviewed pages."
+    },
+    {
+      "id": "csv-172",
+      "official_source_url": "https://www.pilatesboutique.it/",
+      "editorial_summary": "DD Fitness Pilates Boutique e' uno studio Pilates a Varese, in Via Piave 12. Il sito ufficiale presenta allenamenti su misura, classi in piccoli gruppi, Pilates Reformer e Matwork, lezioni individuali, Pilates Cadillac, tonificazione muscolare e personal trainer.",
+      "editorial_highlights": [
+        "La home ufficiale definisce DD Fitness una Pilates Boutique in centro a Varese.",
+        "La proposta include Pilates Reformer, Matwork, Pilates Cadillac, tonificazione muscolare, personal trainer e nutrizionista sportivo.",
+        "Le classi sono descritte come piccoli gruppi per dare maggiore attenzione ai partecipanti.",
+        "La sede indicata e' Via Piave 12, angolo Via Magenta, Varese."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova DD Fitness Pilates Boutique?",
+          "answer": "Il sito ufficiale indica Via Piave 12, angolo Via Magenta, 21100 Varese."
+        },
+        {
+          "question": "Quali corsi propone?",
+          "answer": "La pagina cita Pilates Reformer, Pilates Cadillac, Pilates Matwork, tonificazione, personal trainer e nutrizionista sportivo."
+        },
+        {
+          "question": "Le classi sono numerose?",
+          "answer": "No. Il sito parla di classi in piccoli gruppi per dedicare maggiore attenzione a ogni partecipante."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nella pagina ufficiale verificata non sono stati trovati importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official DD Fitness Pilates Boutique website. Public prices not found on the reviewed page."
+    },
+    {
+      "id": "csv-178",
+      "official_source_url": "https://www.dharmayoga.ch/",
+      "editorial_summary": "Dharma Yoga e' uno studio yoga a Chiasso che propone una pratica per corpo, mente e benessere. Il sito ufficiale presenta lezioni di Hatha Yoga e Acqua Yoga, individuali e di gruppo, oltre a contenuti su meditazione, Reiki, Ayurveda, galleria, classes, eventi e contatti.",
+      "editorial_highlights": [
+        "La home ufficiale presenta una lezione yoga per ogni corpo, stile e giorno.",
+        "Le classi citate includono Hatha Yoga e Acqua Yoga, individuali e di gruppo.",
+        "Il sito descrive anche meditazione, Reiki e Ayurveda come aree di benessere collegate.",
+        "La pagina contatti pubblica email info@dharmayoga.ch e riferimenti telefonici per Mariangela e Gaia."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Quali pratiche propone Dharma Yoga?",
+          "answer": "Il sito ufficiale cita Hatha Yoga, Acqua Yoga, meditazione, Reiki e Ayurveda."
+        },
+        {
+          "question": "Le lezioni sono individuali o di gruppo?",
+          "answer": "La pagina ufficiale parla di lezioni individuali e di gruppo."
+        },
+        {
+          "question": "Come si contatta Dharma Yoga?",
+          "answer": "Il sito pubblica info@dharmayoga.ch e numeri di telefono per Mariangela e Gaia."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nella pagina ufficiale verificata non sono stati trovati importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Dharma Yoga website. Public prices not found on the reviewed page."
+    }
+  ]
+}
