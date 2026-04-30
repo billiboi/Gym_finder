@@ -1,0 +1,347 @@
+{
+  "batch": "batch-03-official-sites-round-1",
+  "reviewed_at": "2026-04-30",
+  "entries": [
+    {
+      "id": "csv-25",
+      "official_source_url": "https://a-club.ch/contatti/",
+      "editorial_summary": "A-CLUB e' un centro sportivo a Savosa con una proposta ampia: fitness, piscina, corsi in acqua, nuoto, area junior, padel arena, beauty e spa. La pagina ufficiale dei contatti indica la sede in Via Centro Sportivo 5 e orari molto estesi, utili per chi cerca un club completo nel Luganese.",
+      "editorial_highlights": [
+        "Il sito ufficiale presenta A-CLUB come un centro con area fitness, piscine, corsi fitness, personal trainer, corsi acqua fitness, corsi nuoto e attivita' junior.",
+        "La sede indicata dal sito e' Via Centro Sportivo 5 a Savosa, con telefono ed email pubblicati nella pagina contatti.",
+        "Gli orari ufficiali indicano apertura dal lunedi' al venerdi' dalle 6:00 alle 22:00 e nel weekend dalle 7:00 alle 19:00, con orari separati per piscina e padel arena.",
+        "E' una scheda utile per chi vuole confrontare un club multiservizio, non solo una sala pesi: fitness, acqua, junior, padel e servizi benessere convivono nello stesso centro."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova A-CLUB?",
+          "answer": "La pagina ufficiale dei contatti indica A-CLUB in Via Centro Sportivo 5 a Savosa."
+        },
+        {
+          "question": "Quali servizi compaiono sul sito ufficiale di A-CLUB?",
+          "answer": "Il menu ufficiale cita area fitness, piscine, corsi fitness, personal trainer, corsi acqua fitness, nuoto, junior, beauty e spa, lounge bar e A-CLUB Padel Arena."
+        },
+        {
+          "question": "A-CLUB ha orari ampi?",
+          "answer": "Si. Il sito indica apertura lunedi'-venerdi' 6:00-22:00 e sabato-domenica 7:00-19:00, con chiusura piscina leggermente anticipata."
+        },
+        {
+          "question": "A-CLUB e' adatto solo al fitness tradizionale?",
+          "answer": "No. Dalla struttura del sito emerge un club multiservizio con fitness, acqua, junior, padel e servizi benessere."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official A-CLUB contact page and site navigation."
+    },
+    {
+      "id": "csv-9",
+      "official_source_url": "https://www.ildojo.it/",
+      "editorial_summary": "Il Dojo Nippon Kempo Club e' una scuola di arti marziali a Cassano Magnago. Il sito ufficiale presenta corsi di Nippon Kempo, Judo e Difesa Personale, con lezioni rivolte ad adulti e bambini e un'impostazione centrata su rispetto, disciplina, responsabilita' e ambiente inclusivo.",
+      "editorial_highlights": [
+        "Il sito ufficiale elenca tre aree principali di corso: Nippon Kempo, Judo e Difesa Personale.",
+        "La scuola si presenta come un dojo in cui arte marziale, autodifesa e crescita personale vengono trattate insieme.",
+        "La pagina parla esplicitamente di corsi per adulti e bambini e di istruttori qualificati.",
+        "La sede indicata nel footer ufficiale e' in Via A. De Gasperi 26 a Cassano Magnago."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Quali discipline propone Il Dojo?",
+          "answer": "Il sito ufficiale mette in evidenza Nippon Kempo, Judo e Difesa Personale."
+        },
+        {
+          "question": "Il Dojo lavora anche con bambini?",
+          "answer": "Si. La pagina ufficiale parla di corsi per adulti e bambini."
+        },
+        {
+          "question": "Dove si trova Il Dojo Nippon Kempo Club?",
+          "answer": "Il footer del sito indica Via A. De Gasperi 26 a Cassano Magnago."
+        },
+        {
+          "question": "Che tipo di ambiente comunica il sito ufficiale?",
+          "answer": "Il sito parla di un ambiente sicuro, accogliente e inclusivo, con attenzione a rispetto, umilta', disciplina e responsabilita'."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Il Dojo homepage."
+    },
+    {
+      "id": "csv-13",
+      "official_source_url": "https://www.asdfink.it/",
+      "editorial_summary": "A.S.D. FINK e' una scuola di Nippon Kempo a Varese. Il sito ufficiale la presenta come associazione italiana riconosciuta a livello internazionale dalla Federazione Giapponese e struttura la scheda attorno a palestre, maestri, istruttori, arbitri, regolamenti ed eventi.",
+      "editorial_highlights": [
+        "La home ufficiale definisce A.S.D. FINK come scuola di arti marziali dedicata al Nippon Kempo.",
+        "Il sito dichiara il riconoscimento internazionale da parte della Federazione Giapponese.",
+        "Sono presenti aree informative per palestre, maestri, istruttori, arbitri, eventi, gare e regolamenti.",
+        "La sede indicata dal sito e' Via Donatello 1 a Varese, con recapito telefonico e disponibilita' Lun-Ven 09:30-11:30."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che disciplina pratica A.S.D. FINK?",
+          "answer": "Il sito ufficiale e' centrato sul Nippon Kempo."
+        },
+        {
+          "question": "A.S.D. FINK e' una singola palestra o una struttura associativa?",
+          "answer": "Dal sito emerge una struttura associativa con sezioni dedicate a palestre, maestri, istruttori, arbitri, eventi e regolamenti."
+        },
+        {
+          "question": "Dove si trova A.S.D. FINK?",
+          "answer": "Il sito indica Via Donatello 1 a Varese."
+        },
+        {
+          "question": "Ci sono informazioni di safeguarding sul sito?",
+          "answer": "Si. La home include una sezione Safeguarding con materiali su prevenzione e contrasto ad abusi, violenze e discriminazioni."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official A.S.D. FINK website."
+    },
+    {
+      "id": "csv-14",
+      "official_source_url": "https://www.jujitsuclubvarese.it/",
+      "editorial_summary": "A.S.D. Ju-Jitsu Club Varese e' una realta' dedicata al Ju-Jitsu Metodo Bianchi Moderno. Il sito ufficiale organizza i contenuti in pagine su chi sono, cosa fanno, contatti, sede, iscrizioni, calendario, etica del Ju-Jitsu, foto e video, oltre a tutorial tecnici per settori e fondamentali.",
+      "editorial_highlights": [
+        "La home ufficiale mette al centro il Ju-Jitsu Metodo Bianchi Moderno.",
+        "Il sito ha sezioni dedicate a chi siamo, cosa facciamo, info e iscrizioni, calendario e dove trovarci.",
+        "Sono presenti archivi di foto e video e una sezione tutorial per il Metodo Bianchi Moderno.",
+        "La struttura del sito fa pensare a una scuola tradizionale con attenzione sia alla pratica sia alla documentazione tecnica."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Quale stile di ju-jitsu viene indicato dal sito?",
+          "answer": "La home ufficiale indica Ju-Jitsu Metodo Bianchi Moderno."
+        },
+        {
+          "question": "Il sito include informazioni per iscriversi?",
+          "answer": "Si. Nel menu ufficiale e' presente la voce Info ed iscrizioni."
+        },
+        {
+          "question": "Ci sono materiali tecnici sul sito?",
+          "answer": "Si. Il menu contiene tutorial del Metodo Bianchi Moderno, con settori, cadute e fondamentali."
+        },
+        {
+          "question": "Che tipo di scheda e' utile aspettarsi?",
+          "answer": "Una scheda focalizzata su arti marziali e percorso tecnico, piu' che su fitness generalista."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official A.S.D. Ju-Jitsu Club Varese website."
+    },
+    {
+      "id": "csv-16",
+      "official_source_url": "https://mcubesmartfitness.webnode.it/",
+      "editorial_summary": "M-Cube Smart Fitness e' una palestra a Gallarate che comunica un approccio basato su motivazione, movimento e miglioramento. Il sito ufficiale cita attivita' come Animal Flow, allenamento di forza, Tacfit/StrongFirst e Krav Maga IKMF, con contenuti su eventi, corsi e orari.",
+      "editorial_highlights": [
+        "Il sito riassume il metodo con tre parole chiave: motivazione, movimento e miglioramento.",
+        "Tra le attivita' citate compaiono Animal Flow, allenamento di forza, Tacfit e StrongFirst.",
+        "La navigazione ufficiale include anche Krav Maga IKMF, galleria fotografica, attivita' ed eventi e orari dei corsi.",
+        "La scheda e' utile per chi cerca allenamento funzionale, forza e discipline pratiche in un contesto piu' tecnico rispetto alla palestra generalista."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Qual e' il messaggio principale di M-Cube Smart Fitness?",
+          "answer": "Il sito ufficiale punta su motivazione, movimento e miglioramento."
+        },
+        {
+          "question": "Quali attivita' emergono dal sito?",
+          "answer": "Sono citati Animal Flow, allenamento di forza, Tacfit, StrongFirst e Krav Maga IKMF."
+        },
+        {
+          "question": "M-Cube pubblica gli orari dei corsi?",
+          "answer": "Si. Nel menu ufficiale e' presente una sezione Orari dei corsi."
+        },
+        {
+          "question": "A chi puo' interessare questa palestra?",
+          "answer": "A chi cerca allenamento funzionale, forza, movimento a corpo libero e discipline pratiche in un ambiente mirato."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official M-Cube Smart Fitness website."
+    },
+    {
+      "id": "csv-18",
+      "official_source_url": "https://www.asdvalceresio.it/",
+      "editorial_summary": "A.S.D. Valceresio A. Audax e' una societa' sportiva di calcio ad Arcisate. Il sito ufficiale e' strutturato intorno a societa', squadre, campionati, orari allenamenti, partite del weekend, scuola calcio, progetto bimbo, abbigliamento, media e contatti.",
+      "editorial_highlights": [
+        "La navigazione ufficiale separa societa', squadre, stagione, campionati, abbigliamento, media e contatti.",
+        "Sono presenti categorie giovanili come Juniores, Under 18, Allievi, Giovanissimi, Esordienti, Pulcini, Scuola Calcio e Progetto Bimbo.",
+        "Il sito pubblica anche campionati, classifiche, partite del weekend e prossimi incontri.",
+        "Il footer ufficiale indica A.S.D. Valceresio A. Audax in Via Giacomini 14 ad Arcisate."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che sport pratica A.S.D. Valceresio A. Audax?",
+          "answer": "Dal sito ufficiale emerge una societa' calcistica con prima squadra, settore giovanile, scuola calcio e progetto bimbo."
+        },
+        {
+          "question": "Il sito pubblica orari o partite?",
+          "answer": "Si. Nel menu sono presenti orari allenamenti, partite del weekend e prossimi incontri."
+        },
+        {
+          "question": "Dove si trova A.S.D. Valceresio A. Audax?",
+          "answer": "Il footer ufficiale indica Via Giacomini 14 ad Arcisate, in provincia di Varese."
+        },
+        {
+          "question": "E' una scheda fitness generalista?",
+          "answer": "No. La fonte ufficiale descrive una societa' sportiva calcistica, con attenzione a squadre e campionati."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official A.S.D. Valceresio website."
+    },
+    {
+      "id": "csv-19",
+      "official_source_url": "https://www.yogamore.it/",
+      "editorial_summary": "Yogamore e' un centro di Ananda Yoga a Busto Arsizio. Il sito ufficiale presenta un percorso orientato a serenita', consapevolezza e crescita personale, con riferimenti agli insegnamenti di Yogananda e una sede in Viale Sicilia 6.",
+      "editorial_highlights": [
+        "Il sito ufficiale definisce Yogamore come Centro di Ananda Yoga di Busto Arsizio.",
+        "La comunicazione punta su serenita', consapevolezza, crescita personale e pratica spirituale ispirata a Yogananda.",
+        "La pagina ufficiale indica una sede a Busto Arsizio in Viale Sicilia 6 e una seconda sede a Pregnana Milanese.",
+        "Tra i contenuti del sito compaiono corsi e appuntamenti legati a meditazione, restorative yoga e lezioni di yoga."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di yoga propone Yogamore?",
+          "answer": "Il sito ufficiale presenta Yogamore come centro di Ananda Yoga."
+        },
+        {
+          "question": "Dove si trova la sede di Busto Arsizio?",
+          "answer": "Il sito indica Sede1 in Viale Sicilia 6 a Busto Arsizio."
+        },
+        {
+          "question": "Yogamore e' solo pratica fisica?",
+          "answer": "No. La comunicazione ufficiale lega yoga, meditazione, serenita', consapevolezza e crescita personale."
+        },
+        {
+          "question": "Il sito pubblica eventi o corsi specifici?",
+          "answer": "Si. Sono presenti pagine dedicate a meditazione, Ananda Yoga Restorative e lezioni di yoga."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Yogamore website and official indexed course/location pages."
+    },
+    {
+      "id": "csv-23",
+      "official_source_url": "https://www.propatriascherma.it/",
+      "editorial_summary": "Accademia della scherma Andrea Felli fa parte della Pro Patria et Libertate Scherma di Busto Arsizio. Il sito ufficiale racconta una scuola attiva dal 1881, con corsi di fioretto, spada e sciabola, percorsi per principianti ed esperti e una proposta che include anche scherma paralimpica, storica e preparazione atletica.",
+      "editorial_highlights": [
+        "Il sito ufficiale presenta Pro Patria et Libertate Scherma come la scherma a Busto dal 1881.",
+        "I corsi principali indicati sono fioretto, spada e sciabola, strutturati per eta' e livelli di competenza.",
+        "La pagina cita l'Accademia della scherma Andrea Felli come punto di riferimento per appassionati e atleti.",
+        "Oltre alla scherma olimpica, il sito elenca scherma paralimpica, scherma storica, team building, ginnastica dolce, preparazione atletica e camp estivi."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Quali armi si praticano alla Pro Patria Scherma?",
+          "answer": "Il sito ufficiale evidenzia corsi di fioretto, spada e sciabola."
+        },
+        {
+          "question": "La scuola e' adatta anche ai principianti?",
+          "answer": "Si. Il sito parla di corsi per principianti e schermidori esperti, con percorsi per eta' e livelli."
+        },
+        {
+          "question": "Dove si trova Pro Patria Scherma?",
+          "answer": "La pagina ufficiale indica Via Galvani, 21052 Busto Arsizio."
+        },
+        {
+          "question": "La proposta comprende solo scherma olimpica?",
+          "answer": "No. Il sito cita anche scherma paralimpica, scherma storica, preparazione atletica, ginnastica dolce, team building e camp estivi."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Pro Patria et Libertate Scherma website."
+    },
+    {
+      "id": "csv-27",
+      "official_source_url": "https://www.acquaebenessere.it/",
+      "editorial_summary": "Acqua e Benessere e' un centro polifunzionale a Gallarate dedicato al wellness in acqua e a terra. Il sito ufficiale descrive una vasca riscaldata, palestra attrezzata, corsi fitness e posturali, personal training, recupero funzionale, percorso nascita e area benessere con idromassaggio, sauna e bagno turco.",
+      "editorial_highlights": [
+        "Il sito ufficiale definisce la struttura un centro di eccellenza per il wellness in acqua e a terra.",
+        "La proposta comprende attivita' in acqua, vasca 13x5 m riscaldata a 32 gradi, corsi fitness e posturali, palestra attrezzi e personal training.",
+        "Sono presenti servizi orientati a salute e recupero: recupero funzionale, percorso nascita e servizi specialistici.",
+        "Il percorso benessere include idromassaggio, sauna, bagno turco, talassoterapia, vasca di reazione e percorso Kneipp."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di centro e' Acqua e Benessere?",
+          "answer": "Il sito lo descrive come centro polifunzionale per fitness e wellness in acqua e in palestra."
+        },
+        {
+          "question": "Quali attivita' in acqua sono citate?",
+          "answer": "La pagina parla di vasca riscaldata 13x5 m a 32 gradi, utile per attivita' in acqua, fitness, recupero funzionale e percorso nascita."
+        },
+        {
+          "question": "Acqua e Benessere offre anche palestra a terra?",
+          "answer": "Si. Il sito cita corsi fitness e posturali, palestra attrezzi, personal training e recupero funzionale."
+        },
+        {
+          "question": "Dove si trova Acqua e Benessere?",
+          "answer": "Il sito ufficiale indica Via Magenta 3 a Gallarate, presso Il Melo."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Acqua e Benessere website."
+    },
+    {
+      "id": "csv-37",
+      "official_source_url": "https://palestracardano.it/",
+      "editorial_summary": "Ad Oriente e' un centro a Cardano al Campo dedicato a yoga, arti marziali e trattamenti benessere. Il sito ufficiale lo descrive come un dojo tradizionale e una shala per lo yoga, con corsi per adulti e bambini, proposte in presenza e online, e un'impostazione centrata sul benessere della persona.",
+      "editorial_highlights": [
+        "La home ufficiale presenta Ad Oriente come corsi di yoga e arti marziali a Cardano al Campo.",
+        "Il centro unisce dojo, shala, yoga, aikido, judo, trattamenti benessere e corsi per bambini.",
+        "Il sito sottolinea che il fine delle attivita' e' aiutare la persona a ritrovare e mantenere il proprio benessere.",
+        "La pagina indica anche formule di abbonamento flessibili: ingresso singolo, tessera ingressi e mensile/trimestrale."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Quali attivita' propone Ad Oriente?",
+          "answer": "Il sito ufficiale cita yoga, arti marziali, trattamenti benessere, corsi per bambini e percorsi in gravidanza o mamma-figlio."
+        },
+        {
+          "question": "Ad Oriente e' una palestra fitness classica?",
+          "answer": "No. Il sito la descrive come dojo, shala e centro per il benessere, piu' che come palestra generalista."
+        },
+        {
+          "question": "Dove si trova Ad Oriente?",
+          "answer": "La pagina contatti ufficiale indica Via Campo dei Fiori 1 a Cardano al Campo."
+        },
+        {
+          "question": "Sono disponibili lezioni online?",
+          "answer": "Si. La home ufficiale dice che quasi tutte le lezioni e i corsi ordinari e straordinari sono fruibili anche online per i soci."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Ad Oriente website."
+    },
+    {
+      "id": "csv-40",
+      "official_source_url": "https://www.fitnesswithvera.ch/",
+      "editorial_summary": "AliZeStudio di Vera Viligiardi - Fitness with Vera e' una proposta di personal training e corsi a Mendrisio. Il sito ufficiale parla di percorsi su misura, allenamento sostenibile, ambiente accogliente e non competitivo, con lezioni one-to-one, Zumba, G.A.G. e programmi adatti a eta' e condizioni diverse.",
+      "editorial_highlights": [
+        "Il sito ufficiale presenta un approccio personalizzato che unisce allenamento e consigli realistici.",
+        "Vera Viligiardi si presenta come personal trainer diplomata e istruttrice Zumba certificata.",
+        "I servizi citati includono Zumba Live, Zumba per adulti e bambini, G.A.G. Live e lezioni di personal training one-to-one.",
+        "La pagina contatti indica Via Giuseppe Buffi 6 a Mendrisio e recapiti telefonici ed email."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di allenamento propone Fitness with Vera?",
+          "answer": "Il sito ufficiale parla di programmi personalizzati, allenamento sostenibile, corsi di gruppo e personal training."
+        },
+        {
+          "question": "Quali corsi sono indicati sul sito?",
+          "answer": "Sono citati Zumba Live, Zumba per adulti e bambini, G.A.G. Live e lezioni di personal training."
+        },
+        {
+          "question": "A chi si rivolge Fitness with Vera?",
+          "answer": "La comunicazione ufficiale parla di percorsi adatti a tutte le eta' e condizioni, con attenzione a postura, mobilita', forza e benessere."
+        },
+        {
+          "question": "Dove si trova Fitness with Vera?",
+          "answer": "Il sito indica Via Giuseppe Buffi 6 a Mendrisio."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Fitness with Vera website."
+    }
+  ]
+}
