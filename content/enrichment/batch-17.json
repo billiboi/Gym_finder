@@ -1,0 +1,320 @@
+{
+  "batch": "batch-17-editorial-and-prices-karate-kickboxing-kma-yoga-ems",
+  "reviewed_at": "2026-04-30",
+  "entries": [
+    {
+      "id": "csv-312",
+      "official_source_url": "https://karatebzona.ch/iscrizioni/",
+      "editorial_summary": "Karate Club Bellinzona e' uno storico club di Karate Shotokan attivo dal 1975. Il sito ufficiale pubblica corsi per bambini, ragazzi, juniori, elite e senior, con allenamenti in palestre scolastiche di Bellinzona e affiliazioni SKIF, SKISF e FTK.",
+      "editorial_highlights": [
+        "Il club dichiara mezzo secolo di attivita' nel karate a Bellinzona.",
+        "I bambini dai 6 ai 13 anni si allenano lunedi' e mercoledi' per 1 ora e 30 minuti.",
+        "Ragazzi, adulti, juniori, elite e senior si allenano martedi' e venerdi' dalle 19:30 alle 21:30.",
+        "La pagina iscrizioni indica due allenamenti di prova gratuiti."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che stile pratica Karate Club Bellinzona?",
+          "answer": "Il sito collega il club al Karate Shotokan e alle affiliazioni SKIF, SKISF e Federazione Ticinese Karate-Do."
+        },
+        {
+          "question": "Ci sono corsi per bambini?",
+          "answer": "Si'. Il sito indica allenamenti per bambini dai 6 ai 13 anni, due volte a settimana."
+        },
+        {
+          "question": "Dove si svolgono gli allenamenti?",
+          "answer": "Il sito cita Palestra CPC in Via Vallone 29 e Palestra Semine in Via Maestri Comacini 2, entrambe a Bellinzona."
+        },
+        {
+          "question": "Il club pubblica le quote?",
+          "answer": "Si'. La pagina iscrizioni pubblica quote annuali e costi federativi."
+        }
+      ],
+      "price_info": "Quote sociali annuali pubblicate: adulti CHF 500; studenti / apprendisti CHF 250; ragazzi fino a 13 anni CHF 250. Tessera SKISF una tantum CHF 15. Tessera federazione svizzera SKISF: adulti CHF 70, giovani fino a 20 anni CHF 50.",
+      "price_source_url": "https://karatebzona.ch/iscrizioni/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Karate Club Bellinzona corsi and iscrizioni pages. Prices copied only from public fee table."
+    },
+    {
+      "id": "csv-313",
+      "official_source_url": "https://www.ticinoshotokan.com/dojo-gordola-locarno/",
+      "editorial_summary": "Karate Club Locarno rimanda al dojo Gordola-Locarno di Ticino Shotokan Karate. La pagina ufficiale descrive allenamenti a Riazzino, Gordola e Locarno, con corsi adulti e ragazzi e avvio dei principianti nel mese di settembre.",
+      "editorial_highlights": [
+        "Il dojo pratica in piu' sedi: Riazzino, Gordola e Locarno.",
+        "Il corso ragazzi indicato copre la fascia 8-12 anni il mercoledi' dalle 17:00 alle 18:30.",
+        "Gli adulti si allenano lunedi', mercoledi' e venerdi' dalle 18:30 alle 20:00.",
+        "La pagina pubblica contatti diretti per Alex Guillen e Mirko Togni."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si allena il dojo Gordola-Locarno?",
+          "answer": "La pagina cita Riazzino, Gordola e Locarno, con la sede di Locarno presso la Palestra Scuola Professionale."
+        },
+        {
+          "question": "Quando iniziano i corsi per principianti?",
+          "answer": "La pagina indica l'avvio dei corsi principianti ogni anno nel mese di settembre."
+        },
+        {
+          "question": "Ci sono corsi per ragazzi?",
+          "answer": "Si'. Il sito indica un corso ragazzi 8-12 anni il mercoledi' dalle 17:00 alle 18:30."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici direttamente leggibili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Original catalog website redirects; reviewed current Ticino Shotokan dojo Gordola-Locarno and training schedule pages. Public prices not found."
+    },
+    {
+      "id": "csv-316",
+      "official_source_url": "https://kenzandojo.it/kendo/informazioni-0002389.html",
+      "editorial_summary": "Kenzan Dojo a Gallarate pratica Kendo, Iaido e Jodo. Il sito ufficiale presenta un percorso di ingresso con mini corso di quattro lezioni, sede presso Urban Arena e allenamenti da circa un'ora e mezza.",
+      "editorial_highlights": [
+        "Le discipline indicate sono Kendo, Iaido e Jodo.",
+        "Il sito suggerisce ai nuovi interessati di iniziare dal Kendo.",
+        "La sede di Gallarate indicata e' presso Urban Arena, Via Tiro a Segno 5A.",
+        "Il dojo fornisce lo shinai per le prime lezioni e richiede abbigliamento semplice da palestra."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che arti marziali si praticano al Kenzan Dojo?",
+          "answer": "Il sito indica Kendo, Iaido e Jodo."
+        },
+        {
+          "question": "Come si inizia?",
+          "answer": "La pagina propone un mini corso di Kendo di quattro lezioni, dopo contatto via email e conferma della sede."
+        },
+        {
+          "question": "Dove si trova la sede di Gallarate?",
+          "answer": "Il sito indica Urban Arena, Via Tiro a Segno 5A, 21013 Gallarate."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Si'. La pagina informazioni pubblica la quota del mini corso di Kendo."
+        }
+      ],
+      "price_info": "Mini corso di Kendo di 4 lezioni: EUR 40 secondo la pagina ufficiale informazioni.",
+      "price_source_url": "https://kenzandojo.it/kendo/informazioni-0002389.html",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Kenzan Dojo home and information pages. Price limited to the public mini course fee."
+    },
+    {
+      "id": "csv-318",
+      "official_source_url": "https://www.kickboxingandrea.it/contatti/",
+      "editorial_summary": "Kickboxing Andrea / KBA a Varese propone kickboxing, Cross Kick, self defence, agonismo e corsi junior. Il sito ufficiale presenta la scuola fondata nel 1993 da Andrea Ongaro e la sede varesina presso Palestra Sporting.",
+      "editorial_highlights": [
+        "La scuola KBA dichiara attivita' dal 1993.",
+        "La sede di Varese indicata e' Palestra Sporting, Via Cesare Correnti 2.",
+        "Il corso adulti Kickboxing Training, Cross Kick e Self Defence e' indicato dai 13 anni.",
+        "La pagina contatti indica prova gratuita e informazioni sui costi fornite in sede."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che corsi propone Kickboxing Andrea a Varese?",
+          "answer": "Il sito cita Kickboxing Training, Cross Kick, Self Defence, agonisti e Karate Contact / Kickboxing Junior."
+        },
+        {
+          "question": "Dove si svolgono i corsi a Varese?",
+          "answer": "La pagina contatti indica Palestra Sporting, Via Cesare Correnti 2, Varese."
+        },
+        {
+          "question": "Ci sono corsi per bambini?",
+          "answer": "Si'. Il sito indica Karate Contact e Kickboxing Junior dai 6 ai 12 anni per la sede di Varese."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "No. La pagina invita alla prova gratuita, durante la quale vengono date informazioni su costi e materiale necessario."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Kickboxing Andrea home, corsi and contatti pages. Public numeric prices not found."
+    },
+    {
+      "id": "csv-319",
+      "official_source_url": "https://www.kickboxingandrea.it/contatti/",
+      "editorial_summary": "Kickboxing Andrea indica anche Pazzallo tra le sedi nella pagina contatti, ma il corso risulta non iniziato nelle informazioni pubblicate. La scuola KBA resta centrata su kickboxing, Cross Kick, self defence, corsi junior e personal training.",
+      "editorial_highlights": [
+        "La pagina contatti elenca Pazzallo nella sezione orari.",
+        "Per Pazzallo il sito indica corso non iniziato.",
+        "Le discipline KBA pubblicate includono kickboxing, Cross Kick, difesa personale e Karate Contact Junior.",
+        "La scuola fa riferimento al maestro Andrea Ongaro e alla societa' sportiva KBA."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Il corso di Pazzallo risulta attivo?",
+          "answer": "Nella pagina contatti verificata il corso di Pazzallo risulta indicato come non iniziato."
+        },
+        {
+          "question": "Che discipline propone KBA?",
+          "answer": "Il sito cita Kickboxing, Cross Kick, Kickboxing Training e difesa personale, personal training e Karate Contact Junior."
+        },
+        {
+          "question": "Dove sono attive le sedi principali pubblicate?",
+          "answer": "La pagina contatti pubblica sedi operative a Legnano e Varese."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "No. Per i costi il sito rimanda alle informazioni date durante la prova gratuita."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Kickboxing Andrea contatti page. Pazzallo is listed but marked as not started; no numeric public prices."
+    },
+    {
+      "id": "csv-321",
+      "official_source_url": "https://kma.it/istruttore/davide-pisoni/",
+      "editorial_summary": "KMA Krav Maga Academy a Busto Arsizio e' collegata agli istruttori Davide Pisoni e Micol Del Vecchio. Il sito ufficiale presenta un corso KMA/ASI/CONI presso la palestra delle scuole medie E. De Amicis, con prova gratuita.",
+      "editorial_highlights": [
+        "Davide Pisoni e' indicato come istruttore Krav Maga Level 3 Expert.",
+        "Micol Del Vecchio e' indicata come istruttrice KMA certificata KMA/ASI/CONI.",
+        "Il corso di Busto Arsizio e' indicato il martedi' dalle 20:30 alle 22:00.",
+        "La sede pubblicata e' Via Pastrengo 3, presso le scuole medie E. De Amicis."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si tiene il corso KMA a Busto Arsizio?",
+          "answer": "Il sito indica la palestra delle scuole medie E. De Amicis, Via Pastrengo 3, Busto Arsizio."
+        },
+        {
+          "question": "Quando si allena il corso di Busto Arsizio?",
+          "answer": "La pagina ufficiale indica tutti i martedi' dalle 20:30 alle 22:00."
+        },
+        {
+          "question": "Chi segue il corso?",
+          "answer": "Il sito cita Davide Pisoni e Micol Del Vecchio tra gli istruttori collegati al centro di Busto Arsizio."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi per i corsi locali."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official KMA instructor pages for Davide Pisoni and Micol Del Vecchio plus KMA contact/team pages. Local course prices not found."
+    },
+    {
+      "id": "csv-322",
+      "official_source_url": "https://kma.it/istruttore/alessio-lorusso/",
+      "editorial_summary": "KMA Krav Maga Academy a Gallarate e' collegata all'istruttore Alessio Lorusso. Il sito ufficiale lo indica come istruttore Level 3 Expert, certificato KMA/ASI/CONI, con corso presso PlayFitness in Via Adelaide Ristori 17.",
+      "editorial_highlights": [
+        "Alessio Lorusso e' indicato come istruttore Krav Maga Level 3 Expert.",
+        "Le specializzazioni pubblicate includono antiaggressione femminile, Baby Tonfa e Military Operational System.",
+        "Il centro di Gallarate e' indicato presso PlayFitness, Via Adelaide Ristori 17.",
+        "La pagina ufficiale invita a provare gratuitamente."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Chi gestisce il corso KMA di Gallarate?",
+          "answer": "Il sito indica Alessio Lorusso come istruttore collegato ai centri di Gallarate e Varese."
+        },
+        {
+          "question": "Dove si tiene il corso di Gallarate?",
+          "answer": "La pagina ufficiale indica PlayFitness, Via Adelaide Ristori 17, Gallarate."
+        },
+        {
+          "question": "Che qualifica viene indicata?",
+          "answer": "La pagina indica istruttore Krav Maga Level 3 Expert, certificato KMA/ASI/CONI."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nella pagina verificata non compaiono importi per il corso locale."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official KMA Alessio Lorusso instructor page. Public local course prices not found."
+    },
+    {
+      "id": "csv-324",
+      "official_source_url": "https://kma.it/istruttore/alessio-lorusso/",
+      "editorial_summary": "KMA Krav Maga Academy a Varese e' collegata all'istruttore Alessio Lorusso. Il sito ufficiale indica il corso presso la palestra della scuola Sacco in Via Brunico 57, con allenamento il mercoledi' sera e prova gratuita.",
+      "editorial_highlights": [
+        "Il corso di Varese e' indicato tutti i mercoledi' dalle 20:30 alle 22:00.",
+        "La sede pubblicata e' palestra della scuola Sacco, Via Brunico 57, Varese.",
+        "Alessio Lorusso e' indicato come istruttore KMA Level 3 Expert.",
+        "La pagina cita specializzazioni in antiaggressione femminile, Baby Tonfa e tecniche operative di difesa professionale."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si tiene il corso KMA a Varese?",
+          "answer": "Il sito indica la palestra della scuola Sacco, Via Brunico 57, Varese."
+        },
+        {
+          "question": "Quando si allena il corso di Varese?",
+          "answer": "La pagina ufficiale indica tutti i mercoledi' dalle 20:30 alle 22:00."
+        },
+        {
+          "question": "Che tipo di corso e'?",
+          "answer": "Il sito KMA lo presenta come corso di difesa personale professionale / Krav Maga."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nella pagina verificata non compaiono importi per il corso locale."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official KMA Alessio Lorusso instructor page. Public local course prices not found."
+    },
+    {
+      "id": "csv-327",
+      "official_source_url": "https://kriyayogaevolution.com/corsi-yoga/",
+      "editorial_summary": "Kriya Yoga Evolution a Busto Arsizio e' un centro yoga guidato da Mina Formisano e Fulvio Falsanito. Il sito ufficiale presenta insegnanti Yoga Alliance RYT 500 e corsi di Hatha, Vinyasa, Kriya Kundalini, Ashtanga Vinyasa, yoga in gravidanza, meditazione e lezioni personal.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Varese 53, 21052 Busto Arsizio.",
+        "Gli insegnanti Mina e Fulvio sono indicati come certificati Yoga Alliance RYT 500.",
+        "L'offerta corsi include Hatha Yoga, Vinyasa, Kriya Kundalini, Ashtanga Vinyasa, yoga in gravidanza, meditazione e yoga personal.",
+        "Le classi vengono descritte come percorsi di circa 1 ora e 30 minuti."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che corsi offre Kriya Yoga Evolution?",
+          "answer": "Il sito cita Hatha, Vinyasa, Kriya Kundalini, Ashtanga Vinyasa, yoga in gravidanza, meditazione, pranayama e yoga personal."
+        },
+        {
+          "question": "Dove si trova il centro?",
+          "answer": "Il sito indica Via Varese 53, 21052 Busto Arsizio."
+        },
+        {
+          "question": "Chi insegna?",
+          "answer": "La pagina ufficiale cita Mina Formisano e Fulvio Falsanito, insegnanti certificati Yoga Alliance RYT 500."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici per abbonamenti o singole lezioni."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Kriya Yoga Evolution home, corsi, insegnanti and calendario pages. Public prices not found."
+    },
+    {
+      "id": "csv-309",
+      "official_source_url": "https://www.koerperformenticino.com/",
+      "editorial_summary": "Körperformen Ticino a Locarno propone EMS training con sedute brevi e personal trainer presente durante tutto l'allenamento. Il sito ufficiale indica centri a Locarno, Manno e Giubiasco e invita a prenotare una prova gratuita.",
+      "editorial_highlights": [
+        "Il sito descrive allenamenti EMS di 20 minuti a settimana.",
+        "La sede Locarno pubblicata e' Via Vincenzo Vela 8A, 6600 Locarno.",
+        "I centri sono descritti come spazi salute e benessere riservati, per 1 o massimo 2 persone alla volta.",
+        "La prova gratuita serve anche a definire il percorso piu' adatto con il trainer."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che cos'e' l'EMS training secondo Körperformen?",
+          "answer": "Il sito lo descrive come elettrostimolazione muscolare con impulsi sicuri e indolori durante un allenamento completo."
+        },
+        {
+          "question": "Quanto dura una seduta?",
+          "answer": "Il sito indica sedute di 20 minuti e una frequenza di una volta a settimana."
+        },
+        {
+          "question": "Dove si trova la sede Locarno?",
+          "answer": "Il sito indica Via Vincenzo Vela 8A, 6600 Locarno."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "No. La pagina spiega che il prezzo dipende da durata e tipologia del percorso e viene definito dopo la prova gratuita."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Koerperformen Ticino page. The page discusses cost logic but does not publish numeric prices."
+    }
+  ]
+}
