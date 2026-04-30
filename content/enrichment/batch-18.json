@@ -1,0 +1,324 @@
+{
+  "batch": "batch-18-editorial-and-prices-fitness-pilates-lidi-scherma",
+  "reviewed_at": "2026-04-30",
+  "entries": [
+    {
+      "id": "csv-334",
+      "official_source_url": "https://www.portaverde.com/",
+      "editorial_summary": "La Porta Verde a Morbio Inferiore e' un centro benessere e fitness con sala cardio Technogym, corsi di gruppo, terme, spa, fisioterapia, personal training e pacchetti su misura. Il sito ufficiale indica riconoscimento da parte delle casse malati e orari estesi dal lunedi' al venerdi'.",
+      "editorial_highlights": [
+        "Il sito presenta attrezzature Technogym e sistema operativo mywellness.",
+        "La sala fitness prevede test cardiovascolare, flessibilita', valutazione funzionale e posturale.",
+        "Gli abbonamenti possono combinare fitness, terme, corsi di gruppo, card ingressi e personal training.",
+        "I contatti pubblicati sono +41 91 682 21 98, WhatsApp +41 79 281 49 06 e info@portaverde.com."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che servizi offre La Porta Verde?",
+          "answer": "Il sito cita sala fitness, corsi, terme, spa, fisioterapia, personal training e pacchetti su misura."
+        },
+        {
+          "question": "La struttura e' riconosciuta dalle casse malati?",
+          "answer": "Si'. Il sito indica contributi di prevenzione dalle principali casse malati, da CHF 200 a CHF 1000 per abbonamento."
+        },
+        {
+          "question": "Che orari pubblica il sito?",
+          "answer": "La home indica apertura lunedi'-venerdi' 8:00-21:00, sabato 9:00-14:00, domenica e festivi chiuso."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "La pagina abbonamenti elenca formule e durate, ma nelle pagine verificate non mostra importi numerici per gli abbonamenti."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official La Porta Verde home, fitness and abbonamenti pages. No numeric subscription prices found."
+    },
+    {
+      "id": "csv-338",
+      "official_source_url": "https://www.latizyoga.com/",
+      "editorial_summary": "Latizyoga a Cassano Magnago propone yoga e pilates con approccio personal trainer. Il sito ufficiale presenta corsi di Vinyasa Chromatic Yoga e Pilates Integrato al Dancing Salone, con prova gratuita prenotabile.",
+      "editorial_highlights": [
+        "La sede indicata e' Dancing Salone, Via Bruno Buozzi 5, Cassano Magnago.",
+        "Il sito presenta Vinyasa Chromatic Yoga il lunedi' e mercoledi' alle 18:00.",
+        "Il Pilates Integrato e' indicato lunedi', mercoledi' e giovedi' con livelli base/intermedio e intermedio/avanzato.",
+        "La pagina invita a prenotare una prova gratuita per ogni corso."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che corsi propone Latizyoga?",
+          "answer": "Il sito cita Vinyasa Chromatic Yoga e Pilates Integrato."
+        },
+        {
+          "question": "Dove si svolgono i corsi?",
+          "answer": "La pagina indica Dancing Salone, Via Bruno Buozzi 5, Cassano Magnago."
+        },
+        {
+          "question": "E' prevista una prova gratuita?",
+          "answer": "Si'. Il sito indica la possibilita' di prenotare una lezione di prova gratuita per ogni corso."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Latizyoga home and course sections. Public prices not found."
+    },
+    {
+      "id": "csv-340",
+      "official_source_url": "https://lelab.fit/le-lab-locarno/",
+      "editorial_summary": "Le Lab Locarno / Muralto e' il centro one-to-one coaching del network Le Lab Training & Performance. Il sito ufficiale descrive personal training, valutazione della composizione corporea, FMS e percorsi privati orientati a salute, performance e ritorno allo sport.",
+      "editorial_highlights": [
+        "La pagina Locarno indica contatto +41 76 360 54 25 e info@lelab.fit.",
+        "La sede pubblicata per Locarno e' Via San Gottardo, 6648 Minusio.",
+        "Il network Le Lab lavora su fitness, prevenzione, return-to-sport e performance.",
+        "Le tariffe pubblicate includono pacchetti da 10 e 20 sessioni."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di centro e' Le Lab Locarno?",
+          "answer": "Il sito lo presenta come centro di one-to-one personal training e coaching."
+        },
+        {
+          "question": "Che valutazioni include il percorso?",
+          "answer": "La pagina Locarno cita analisi della composizione corporea e FMS."
+        },
+        {
+          "question": "Dove si trova la sede Locarno?",
+          "answer": "La pagina indica Via San Gottardo, 6648 Minusio."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Si'. La pagina Locarno pubblica pacchetti personal training da 10 e 20 sessioni."
+        }
+      ],
+      "price_info": "Personal training Locarno: pacchetto 10 sessioni CHF 990 normale o CHF 890 studente; pacchetto 20 sessioni CHF 1790 normale o CHF 1590 studente.",
+      "price_source_url": "https://lelab.fit/le-lab-locarno/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Le Lab Locarno, tariffs, services and home pages. Prices limited to public Locarno package table."
+    },
+    {
+      "id": "csv-346",
+      "official_source_url": "https://www.ticino.ch/it/commons/details/Lido-pubblico-Caslano/14672.html",
+      "editorial_summary": "Lido pubblico Caslano e' un lido sul Lago di Lugano aperto da maggio a settembre. La scheda Ticino Turismo descrive una struttura familiare con spiaggia, beach volley, stand up paddle, zattera, trampolino, buvette e snack bar.",
+      "editorial_highlights": [
+        "L'indirizzo indicato e' Piazza Lago 52, 6987 Caslano.",
+        "La struttura pubblicata include spiaggia, beachvolley, stand up paddle, zattera, trampolino e buvette.",
+        "La scheda indica apertura stagionale da maggio a settembre.",
+        "Il bagno e' vietato dopo le ore 20:00."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che servizi ha il Lido di Caslano?",
+          "answer": "La scheda cita spiaggia, zattera, trampolino, beach volley, stand up paddle, buvette, spogliatoio e snack bar."
+        },
+        {
+          "question": "Quando apre il Lido di Caslano?",
+          "answer": "La scheda indica apertura da maggio a settembre."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Ticino Turismo indica Piazza Lago 52, 6987 Caslano."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Si'. La scheda pubblica i prezzi d'entrata per adulti e bambini."
+        }
+      ],
+      "price_info": "Entrata Lido pubblico Caslano: adulti CHF 4; bambini fino a 13 anni CHF 2.",
+      "price_source_url": "https://www.ticino.ch/it/commons/details/Lido-pubblico-Caslano/14672.html",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from Ticino Turismo official listing for Lido pubblico Caslano. Prices copied from the public entry price section."
+    },
+    {
+      "id": "csv-349",
+      "official_source_url": "https://www.lidolocarno.ch/it",
+      "editorial_summary": "Lido Locarno e' un centro balneare e fitness a Locarno con piscine, centro fitness, corsi fitness, corsi in acqua, corsi nuoto, spiaggia, lago e prenotazioni online. Il sito ufficiale pubblica quick info, agenda corsi, tariffe giornaliere e contatti.",
+      "editorial_highlights": [
+        "La sede indicata e' Via Respini 11, 6601 Locarno.",
+        "Il sito divide l'offerta tra centro balneare, centro fitness, corsi, spiaggia e lago.",
+        "La home mostra agenda corsi con Zumba, ginnastica per gestanti, acquabike e altre attivita'.",
+        "Il sito pubblica ticket shop online, gift card e prenotazione corsi."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che servizi offre Lido Locarno?",
+          "answer": "Il sito cita centro balneare, centro fitness, corsi fitness, corsi in acqua, corsi nuoto, spiaggia e lago."
+        },
+        {
+          "question": "Dove si trova Lido Locarno?",
+          "answer": "Il footer ufficiale indica Via Respini 11, 6601 Locarno."
+        },
+        {
+          "question": "Si possono prenotare corsi online?",
+          "answer": "Si'. La home pubblica un link di prenotazione corsi."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Si'. La home pubblica tariffe giornaliere per centro balneare, scivoli e centro fitness."
+        }
+      ],
+      "price_info": "Tariffa giornaliera pubblicata: centro balneare adulti CHF 13, ragazzi 3-15 anni CHF 7, bambini sotto 3 anni gratis; centro balneare e scivoli adulti CHF 18, ragazzi 6-15 anni CHF 11; centro fitness adulti CHF 23.",
+      "price_source_url": "https://www.lidolocarno.ch/it",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Lido Locarno home. Prices copied from Quick Info tariffa giornaliero."
+    },
+    {
+      "id": "csv-350",
+      "official_source_url": "https://www.lifechanger-jt.ch/",
+      "editorial_summary": "Life Changer Just Training a Chiasso e' uno studio di personal training e palestra privata. Il sito ufficiale presenta un lavoro integrato tra trainer, nutrizionista e life coach, con allenamenti one-to-one, in coppia, mini gruppi, home training e corporate wellness.",
+      "editorial_highlights": [
+        "L'indirizzo pubblicato e' Via Vincenzo d'Alberti 1, 6830 Chiasso.",
+        "Il sito indica prima lezione gratuita.",
+        "Gli allenamenti descritti includono one to one, PT groups, one to two, home training e corporate wellness.",
+        "Il team dichiara un approccio con test, allenamento personalizzato e supporto su movimento, nutrizione e benessere."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di struttura e' Life Changer Just Training?",
+          "answer": "Il sito la presenta come personal trainer studio e palestra privata a Chiasso."
+        },
+        {
+          "question": "Che formule di allenamento propone?",
+          "answer": "Il sito cita one-to-one, allenamento in coppia, mini gruppi fino a 5 persone, home training e corporate wellness."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il sito indica Via Vincenzo d'Alberti 1, 6830 Chiasso."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Life Changer Just Training home and contacts sections. Public prices not found."
+    },
+    {
+      "id": "csv-353",
+      "official_source_url": "https://lifearea.ch/corsi/fitness/",
+      "editorial_summary": "LifeArea Concept a Sorengo propone corsi di fitness, yoga, pilates, danza e servizi benessere. Il sito ufficiale presenta corsi 2025/2026, piccoli percorsi personalizzati, personal training, certificazione Qualitop by Qualicert e riconoscimento da parte delle casse malati.",
+      "editorial_highlights": [
+        "L'offerta fitness cita Body Tone, GAG, Abs & Stretch e personal training.",
+        "L'area yoga e pilates include Yoga Hatha, Hatha Vinyasa, Vinyasa Flow, Yoga Nidra, Pilates Matwork e Pilates con macchine.",
+        "Il calendario corsi 2025/2026 copre il periodo dall'8 settembre 2025 al 12 giugno 2026.",
+        "Il sito indica certificazione Qualitop by Qualicert e Associazione Svizzera di Danza."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che corsi propone LifeArea Concept?",
+          "answer": "Il sito cita corsi fitness, yoga, pilates, danza, personal training e servizi benessere."
+        },
+        {
+          "question": "Ci sono corsi con macchine Pilates?",
+          "answer": "Si'. La pagina yoga e pilates cita Reformer, Cadillac, Barrel e Chair, anche in modalita' individuale, semi-private o piccoli gruppi."
+        },
+        {
+          "question": "I corsi sono riconosciuti dalle casse malati?",
+          "answer": "Il sito indica certificazione Qualitop by Qualicert e riconoscimento dei corsi dalle casse malati."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Le pagine verificate invitano a richiedere informazioni su prezzi e offerte, ma non mostrano importi numerici pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official LifeArea concept home, fitness, yoga-pilates and chi-siamo pages. Public numeric prices not found."
+    },
+    {
+      "id": "csv-354",
+      "official_source_url": "https://www.lifevillage.eu/",
+      "editorial_summary": "LIFEvillage a Gallarate e' un club fitness e wellness con palestra, piscina, terme, spa, medical, yoga, aerial, pole dance ed EMS training. Il sito ufficiale descrive una struttura di 2500 mq, aperta 7 giorni su 7, con app per corsi, abbonamenti e percorsi.",
+      "editorial_highlights": [
+        "L'offerta pubblicata include EMS training, piscina, terme e spa, area medical, yoga, aerial yoga e pole dance.",
+        "Il sito indica una struttura da 2500 mq.",
+        "La home comunica apertura 7 giorni su 7.",
+        "L'app WellTeam permette di prenotare corsi, verificare abbonamenti e acquistare percorsi, ingressi e massaggi."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di struttura e' LIFEvillage?",
+          "answer": "Il sito la presenta come club fitness e wellness con palestra, piscina, spa, medical e corsi."
+        },
+        {
+          "question": "Che attivita' sono citate?",
+          "answer": "La home cita EMS, nuoto, acquafitness, idrokinesiterapia, yoga, aerial yoga, pole dance, cerchi aerei e hammock."
+        },
+        {
+          "question": "Si possono prenotare corsi via app?",
+          "answer": "Si'. Il sito indica l'app WellTeam per prenotazioni e gestione abbonamenti."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "La home mostra una formula a partire da 59 euro al mese."
+        }
+      ],
+      "price_info": "Abbonamento indicato in home: a partire da EUR 59/mese.",
+      "price_source_url": "https://www.lifevillage.eu/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official LIFEvillage home. Price limited to the public 'a partire da 59 euro/mese' claim."
+    },
+    {
+      "id": "csv-359",
+      "official_source_url": "https://luganopilates.com/",
+      "editorial_summary": "Lugano Pilates e' uno studio a Pregassona guidato da Maria, centrato su Pilates Reformer, attrezzi professionali, lezioni individuali, duetti e piccoli gruppi. Il sito ufficiale presenta un metodo progressivo per postura, mobilita', core e forza funzionale.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Ceresio 42, 6963 Lugano.",
+        "Lo studio usa 9 Reformer professionali e lavora anche con attrezzi.",
+        "I percorsi disponibili includono lezioni individuali, duetti e piccoli gruppi su Reformer.",
+        "Il sito indica riconoscimento dalle assicurazioni complementari per programmi di prevenzione salute."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di Pilates propone Lugano Pilates?",
+          "answer": "Il sito descrive un metodo su Reformer e attrezzi, con lavoro su mobilita', postura, core e forza funzionale."
+        },
+        {
+          "question": "Dove si trova lo studio?",
+          "answer": "Il sito indica Via Ceresio 42, 6963 Lugano."
+        },
+        {
+          "question": "Che formati di lezione sono disponibili?",
+          "answer": "Il sito cita lezioni individuali, duetti e piccoli gruppi su Reformer."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Lugano Pilates home, courses and studio sections. Public prices not found."
+    },
+    {
+      "id": "csv-360",
+      "official_source_url": "https://luganoscherma.ch/",
+      "editorial_summary": "Lugano Scherma e' un club di scherma con scuola per bambini, ragazzi, giovani, adulti, scherma paralimpica e percorsi dedicati. Il sito ufficiale presenta la disciplina della spada, attrezzatura fornita ai principianti e lezione di prova gratuita.",
+      "editorial_highlights": [
+        "La scuola copre pulcini, ragazzi, giovani, adulti, scherma paralimpica e Nastro Rosa.",
+        "La lezione di prova gratuita prevede tre sessioni di allenamento.",
+        "Il club fornisce spada e maschera ai principianti.",
+        "Il sito cita partner istituzionali come Swiss Olympic, Swiss Fencing e Sport USI."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che arma pratica Lugano Scherma?",
+          "answer": "La pagina lezione di prova indica che il club e' specializzato nella disciplina della spada."
+        },
+        {
+          "question": "La prova e' gratuita?",
+          "answer": "Si'. Il sito indica una lezione di prova gratuita e senza impegno, strutturata in tre sessioni."
+        },
+        {
+          "question": "Serve attrezzatura propria per iniziare?",
+          "answer": "No. Il sito indica che spada e maschera vengono prestati dal club."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Lugano Scherma home and lezione di prova pages. Public prices not found."
+    }
+  ]
+}
