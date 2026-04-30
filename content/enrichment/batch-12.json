@@ -1,0 +1,322 @@
+{
+  "batch": "batch-12-editorial-and-prices-fitness-martial-ems",
+  "reviewed_at": "2026-04-30",
+  "entries": [
+    {
+      "id": "csv-193",
+      "official_source_url": "https://www.elettrofitness.com/",
+      "editorial_summary": "Elettrofitness Saronno propone allenamenti EMS e Rollshape in Via Caduti della Liberazione 24. Il sito ufficiale descrive sedute EMS da 20 minuti, prova gratuita, allenamenti individuali o in piccolo gruppo e shop online con punti, iscrizione annuale e starter pack.",
+      "editorial_highlights": [
+        "La sede indicata e' Via Caduti della Liberazione 24, 21047 Saronno.",
+        "La pagina EMS descrive allenamenti da 20 minuti con personal trainer.",
+        "Il sito presenta Rollshape per massaggio, circolazione, drenaggio e recupero.",
+        "Lo shop ufficiale pubblica iscrizione annuale, punti prepagati, starter pack e abbonamento app."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova Elettrofitness Saronno?",
+          "answer": "Il sito ufficiale indica Via Caduti della Liberazione 24, 21047 Saronno."
+        },
+        {
+          "question": "Quanto dura una seduta EMS?",
+          "answer": "La pagina ufficiale indica 20 minuti di allenamento."
+        },
+        {
+          "question": "Come funziona il credito per le sedute?",
+          "answer": "I termini del sito descrivono un sistema a punti acquistabili online o in sede."
+        },
+        {
+          "question": "Quali prezzi pubblica lo shop?",
+          "answer": "Lo shop indica iscrizione annuale 50 EUR, tuta 25 EUR, starter pack 279 EUR e pacchetti punti da 50 a 500 EUR."
+        }
+      ],
+      "price_info": "Shop ufficiale: iscrizione annuale 50 EUR; tuta 25 EUR; starter pack 279 EUR; punti prepagati da 50 EUR per 50 punti fino a 500 EUR per 600 punti; VIP Harmony 800 EUR.",
+      "price_source_url": "https://www.go.elettrofitness.com/shop-elettrofitness636084",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Elettrofitness website, EMS page, terms and shop."
+    },
+    {
+      "id": "csv-199",
+      "official_source_url": "https://www.equalarmor.ch/",
+      "editorial_summary": "EqualArmor a Lugano si presenta come accademia internazionale di arti marziali. Il sito ufficiale cita MMA, boxe, kickboxing, Muay Thai, Wushu, grappling, self-defense, yoga, meditazione, programmi youth, corsi donne e lezioni private.",
+      "editorial_highlights": [
+        "La sede indicata e' Viale dei Faggi 9, 6900 Lugano.",
+        "I programmi coprono bambini, adulti, difesa personale femminile, Little Warriors e competition team.",
+        "Il programma youth indica fascia 6-14 anni e orari lunedi'-giovedi' 16:00-18:00.",
+        "Il portale ufficiale Gymdesk pubblica prova gratuita, ingresso singolo e private session."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova EqualArmor?",
+          "answer": "Il sito ufficiale indica Viale dei Faggi 9, 6900 Lugano."
+        },
+        {
+          "question": "Quali discipline cita EqualArmor?",
+          "answer": "Il sito cita MMA, self-defense, kickboxing, BJJ, Muay Thai, Wushu, boxe, wrestling, grappling, yoga e meditazione."
+        },
+        {
+          "question": "EqualArmor ha programmi per bambini?",
+          "answer": "Si. Il sito cita Youth Martial Arts 6-14 anni e Little Warriors 4-6 anni."
+        },
+        {
+          "question": "Quali prezzi pubblica il portale ufficiale?",
+          "answer": "Il portale Gymdesk indica free trial gratuito, ingresso singolo CHF 40/giorno e private session CHF 189."
+        }
+      ],
+      "price_info": "Portale ufficiale Gymdesk: free trial gratuito; single attendance CHF 40.00/giorno; private session CHF 189.00; competition team add-on CHF 50/mese indicato nella pagina programmi.",
+      "price_source_url": "https://equalarmor-academy.gymdesk.com/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official EqualArmor website, programs page and EqualArmor Gymdesk portal."
+    },
+    {
+      "id": "csv-200",
+      "official_source_url": "https://www.essenzapilates.com/",
+      "editorial_summary": "Essenza Pilates Gallarate e' uno studio Pilates in Via Palestro 10. Il sito ufficiale presenta mini classi, lezioni individuali e lavoro con Mat, Reformer, Cadillac e Chair.",
+      "editorial_highlights": [
+        "La sede indicata e' Via Palestro 10, Gallarate.",
+        "Il sito comunica mini classi e lezioni individuali.",
+        "Gli attrezzi citati sono Mat, Reformer, Cadillac e Chair.",
+        "Il contatto ufficiale pubblicato e' info@essenzapilates.com."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova Essenza Pilates?",
+          "answer": "Il sito ufficiale indica Via Palestro 10, Gallarate."
+        },
+        {
+          "question": "Che tipo di lezioni propone?",
+          "answer": "La home cita mini classi e lezioni individuali."
+        },
+        {
+          "question": "Quali attrezzi usa lo studio?",
+          "answer": "Il sito cita Mat, Reformer, Cadillac e Chair."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Essenza Pilates website. Public prices not found on the reviewed pages."
+    },
+    {
+      "id": "csv-204",
+      "official_source_url": "https://evolutioncenter.ch/",
+      "editorial_summary": "Evolution Center Ticino a Torricella-Taverne e' collegato a percorsi indoor e gestione regolamento per minorenni. Le pagine ufficiali pubbliche mostrano aree corsi, modulo per minorenni e una sezione offerte speciali abbonamenti.",
+      "editorial_highlights": [
+        "Il dominio ufficiale pubblica una sezione offerte speciali abbonamenti.",
+        "La pagina regolamento minorenni gestisce dati del genitore o rappresentante legale.",
+        "La struttura risulta legata a corsi indoor e percorsi per minorenni.",
+        "Alcune pagine risultano bloccate geograficamente dal sito."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Evolution Center pubblica offerte abbonamenti?",
+          "answer": "Il sito ufficiale ha una pagina offerte speciali abbonamenti, ma nelle pagine verificate non emergono importi leggibili."
+        },
+        {
+          "question": "Sono previste procedure per minorenni?",
+          "answer": "Si. Il sito pubblica una pagina di accettazione regolamento per minorenni."
+        },
+        {
+          "question": "Le pagine corsi sono sempre accessibili?",
+          "answer": "Durante la verifica alcune pagine risultavano bloccate geograficamente dal sito."
+        },
+        {
+          "question": "Il sito pubblica prezzi chiari?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici utilizzabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Evolution Center pages. Public price amounts not found on accessible reviewed pages."
+    },
+    {
+      "id": "csv-215",
+      "official_source_url": "https://fisio4wellness.it/",
+      "editorial_summary": "Fisio4Wellness integra attivita' fisica e collaborazione con Fisioterapia Varese. Il sito ufficiale presenta servizi personalizzati, metodo scientifico, professionisti qualificati, tecnologia innovativa, parcheggio e accesso con ascensore.",
+      "editorial_highlights": [
+        "La home parla di benessere a 360 gradi.",
+        "Il sito cita collaborazione con lo studio Fisioterapia Varese.",
+        "I punti dichiarati sono personalizzazione, metodo scientifico, professionalita', innovazione, accessibilita' ed esclusivita'.",
+        "La pagina comunica parcheggio comodo e ascensore interno."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che impostazione comunica Fisio4Wellness?",
+          "answer": "Il sito parla di servizi su misura e personalizzati in base al corpo e alle esigenze."
+        },
+        {
+          "question": "Con chi collabora Fisio4Wellness?",
+          "answer": "La home cita collaborazione con lo studio Fisioterapia Varese."
+        },
+        {
+          "question": "La struttura segnala accessibilita'?",
+          "answer": "Si. Il sito cita parcheggio e ascensore interno."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Fisio4Wellness website. Public prices not found on the reviewed pages."
+    },
+    {
+      "id": "csv-233",
+      "official_source_url": "https://fitnesshublugano.ch/",
+      "editorial_summary": "Fitness Hub Lugano si trova in Corso Elvezia 10. Il sito ufficiale presenta allenamento funzionale, Pilates, rieducazione posturale, sedute con personal trainer e iscrizioni limitate.",
+      "editorial_highlights": [
+        "La sede indicata e' Corso Elvezia 10, Lugano.",
+        "La home pubblica telefono +41 78 726 82 37.",
+        "I servizi citati includono allenamento funzionale, Pilates e personal trainer.",
+        "Gli orari pubblicati sono lunedi'-venerdi' 6:30-19:00 e sabato 8:00-12:00."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova Fitness Hub Lugano?",
+          "answer": "Il sito ufficiale indica Corso Elvezia 10, Lugano."
+        },
+        {
+          "question": "Quali servizi pubblica Fitness Hub?",
+          "answer": "Il sito cita allenamento funzionale, Pilates, rieducazione posturale e sedute personal trainer."
+        },
+        {
+          "question": "Quali orari pubblica il sito?",
+          "answer": "La home indica lunedi'-venerdi' 6:30-19:00 e sabato 8:00-12:00."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Fitness Hub Lugano website. Public prices not found on the reviewed pages."
+    },
+    {
+      "id": "csv-235",
+      "official_source_url": "https://www.fitprojectlugano.com/",
+      "editorial_summary": "FitProject Lugano propone fitness training in presenza e online. Il sito ufficiale presenta personal training, coaching online, mini class training, allenamento outdoor, PT a domicilio e corsi online con dirette social.",
+      "editorial_highlights": [
+        "La home collega il lavoro in presenza a First Studio Personal Training e online senza limiti geografici.",
+        "La pagina chi siamo cita personal training e mini class in presenza.",
+        "I servizi includono PT online, coaching online, programmi mensili e dirette online gratuite sui social.",
+        "Il contatto pubblicato e' fitprojectstudio@gmail.com con telefono svizzero."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che servizi propone FitProject?",
+          "answer": "Il sito cita personal training, coaching online, mini class training, outdoor, PT a domicilio e corsi online."
+        },
+        {
+          "question": "FitProject lavora anche online?",
+          "answer": "Si. La home descrive allenamento online con collegamento live tramite Google Meet."
+        },
+        {
+          "question": "Dove si svolge il lavoro in presenza?",
+          "answer": "Il sito cita presenza presso First Studio Personal Training a Lugano."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official FitProject Lugano home and chi siamo pages. Public prices not found on the reviewed pages."
+    },
+    {
+      "id": "csv-243",
+      "official_source_url": "https://www.freetimeclub.ch/",
+      "editorial_summary": "Free Time Club Lugano si trova in Via delle Scuole 34 ed e' attivo dal 1980. Il sito ufficiale presenta sala pesi, area relax con sauna e bagno turco, sala corsi da 150 mq, Queenax, beauty center, small class, personal training e coaching fitness.",
+      "editorial_highlights": [
+        "Il sito indica Free Time Club come primo centro fitness aperto a Lugano nel 1980.",
+        "La struttura comprende sala pesi, area relax, sala corsi, Queenax, istituto di bellezza e fisioterapia.",
+        "La home cita attrezzature Technogym, Precor, Matrix, Lifefitness Queenax, Spinning e Peak Pilates.",
+        "Gli orari fitness pubblicati sono lunedi'-venerdi' 7:00-22:00, sabato/domenica/festivi 9:00-16:00."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova Free Time Club?",
+          "answer": "Il sito ufficiale indica Via delle Scuole 34, 6900 Lugano."
+        },
+        {
+          "question": "Da quando e' attivo Free Time Club?",
+          "answer": "La pagina chi siamo indica apertura nel 1980."
+        },
+        {
+          "question": "Quali aree include la struttura?",
+          "answer": "Il sito cita sala pesi, area relax, sala corsi, Queenax, istituto di bellezza e fisioterapia."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine ufficiali verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Free Time Club home and chi siamo pages. Public prices not found on official reviewed pages."
+    },
+    {
+      "id": "csv-245",
+      "official_source_url": "https://gemstraining.ch/",
+      "editorial_summary": "GEMS Training a Lugano propone elettrofitness con personal trainer dedicato. Il sito ufficiale parla di sedute EMS da 25 minuti, allenamenti individuali, tecnologia wireless i-motion, palestra attrezzata e prenotazioni via app.",
+      "editorial_highlights": [
+        "La sede indicata e' Via Cantonale 3, 6900 Lugano.",
+        "Il sito presenta Giovanni Colombo come personal trainer specializzato in EMS.",
+        "La pagina comunica 25 minuti a seduta e 40 minuti complessivi.",
+        "Tra i punti citati: allenamenti individuali, personal trainer dedicato, tecnologia wireless i-motion e rimborsi da cassa malati."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova GEMS Training?",
+          "answer": "Il sito ufficiale indica Via Cantonale 3, 6900 Lugano."
+        },
+        {
+          "question": "Quanto dura la seduta EMS?",
+          "answer": "La home indica 25 minuti a seduta e 40 minuti complessivi."
+        },
+        {
+          "question": "Chi segue gli allenamenti?",
+          "answer": "Il sito indica Giovanni Colombo, personal trainer specializzato in allenamento EMS."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official GEMS Training website. Public prices not found on the reviewed pages."
+    },
+    {
+      "id": "csv-257",
+      "official_source_url": "https://www.goldenglovesgym.ch/",
+      "editorial_summary": "Golden Gloves Gym a Lugano e' la palestra di Ruby Belge. Il sito ufficiale pubblica orari, team, corsi, boxe junior, attivita' sociale e tabelle abbonamenti per adulti e Boxe JR.",
+      "editorial_highlights": [
+        "La sede indicata e' Corso Elvezia 37, 6900 Lugano.",
+        "Gli orari pubblicati sono lunedi'-venerdi' 6:00-21:00 e sabato/domenica/festivi 8:00-18:00.",
+        "Il calendario cita Sport Conditioning, Stretching, Pilates, Timeout, Sparring e Boxe JR U16.",
+        "La pagina ufficiale pubblica prezzi per abbonamenti adulti e Boxe JR."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova Golden Gloves Gym?",
+          "answer": "Il sito ufficiale indica Corso Elvezia 37, 6900 Lugano."
+        },
+        {
+          "question": "Quali orari pubblica la palestra?",
+          "answer": "Il sito indica lunedi'-venerdi' 6:00-21:00 e sabato, domenica e festivi 8:00-18:00."
+        },
+        {
+          "question": "Quanto costa un abbonamento adulti?",
+          "answer": "La tabella adulti indica da CHF 110 per 1 entrata settimanale/1 mese fino a CHF 1500 per 4 entrate settimanali/1 anno."
+        },
+        {
+          "question": "Quanto costa Boxe JR?",
+          "answer": "La tabella Boxe JR indica da CHF 100 per 1 entrata/ottavo di anno scolastico fino a CHF 1100 per 3 entrate/anno scolastico."
+        }
+      ],
+      "price_info": "Adulti: 1 mese CHF 110-230 secondo numero entrate; 3 mesi CHF 310-520; 6 mesi CHF 510-860; 1 anno CHF 900-1500. Boxe JR: anno scolastico CHF 700-1100.",
+      "price_source_url": "https://www.goldenglovesgym.ch/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Golden Gloves Gym website, schedules and subscription tables."
+    }
+  ]
+}

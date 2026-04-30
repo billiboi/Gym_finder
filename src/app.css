@@ -700,7 +700,7 @@ main article.rounded-2xl.border.bg-white:hover {
   font-weight: 650;
 }
 
-.sc-gym-card-facts p:not(.sc-gym-card-hours) strong {
+.sc-gym-card-facts p:not(.sc-gym-card-hours):not(.sc-gym-card-price) strong {
   display: -webkit-box;
   overflow: hidden;
   -webkit-box-orient: vertical;
@@ -718,6 +718,25 @@ main article.rounded-2xl.border.bg-white:hover {
   background: rgba(255, 255, 255, 0.72);
   padding: 0.18rem 0.45rem;
   font-style: normal;
+  line-height: 1.35;
+}
+
+.sc-gym-card-facts .sc-gym-card-price {
+  border: 1px solid rgba(47, 111, 91, 0.2);
+  background:
+    linear-gradient(135deg, rgba(231, 241, 237, 0.96), rgba(255, 255, 255, 0.88)),
+    rgba(231, 241, 237, 0.78);
+  box-shadow: var(--shadow-control);
+}
+
+.sc-gym-card-facts .sc-gym-card-price span {
+  color: #235644;
+}
+
+.sc-gym-card-facts .sc-gym-card-price strong {
+  color: #173129;
+  font-size: 0.98rem;
+  font-weight: 900;
   line-height: 1.35;
 }
 

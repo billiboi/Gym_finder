@@ -81,7 +81,11 @@
     if (!hasSpecificAmount) return '';
 
     const firstPart = price.split(/[.;|]/).map((part) => part.trim()).find(Boolean) || price;
-    return firstPart.length > 72 ? `${firstPart.slice(0, 69).trim()}...` : firstPart;
+    return firstPart.length > 96 ? `${firstPart.slice(0, 93).trim()}...` : firstPart;
+  }
+
+  function hasCardPrice(gym) {
+    return Boolean(priceForCard(gym));
   }
 
   function formatAddressForDisplay(gym) {
@@ -353,6 +357,8 @@
       return a.name.localeCompare(b.name, 'it');
     }
 
+    const priceDiff = Number(hasCardPrice(b)) - Number(hasCardPrice(a));
+    if (priceDiff !== 0) return priceDiff;
     return a.name.localeCompare(b.name, 'it');
   }
 
@@ -900,12 +906,6 @@
                   {#if displayName(gym.city)}
                     <span class="rounded-full bg-slate-100 px-2.5 py-1">{displayName(gym.city)}</span>
                   {/if}
-                  {#if priceLabel}
-                    <span class="rounded-full px-2.5 py-1 sc-price-chip">
-                      <span>Prezzo</span>
-                      <strong>{priceLabel}</strong>
-                    </span>
-                  {/if}
                 </div>
                 <div class="flex flex-wrap gap-2 sc-discipline-list">
                   <span class="rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.14em] sc-discipline-chip sc-discipline-chip--primary">
@@ -935,6 +935,12 @@
                     {/each}
                   </strong>
                 </p>
+                {#if priceLabel}
+                  <p class="sc-gym-card-price">
+                    <span>Prezzo verificato</span>
+                    <strong>{priceLabel}</strong>
+                  </p>
+                {/if}
               </div>
 
               <div class="flex flex-wrap gap-2 text-xs font-bold sc-card-signal-list">
