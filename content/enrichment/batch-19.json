@@ -1,0 +1,324 @@
+{
+  "batch": "batch-19-editorial-and-prices-fitness-cycling-pilates-boxing",
+  "reviewed_at": "2026-04-30",
+  "entries": [
+    {
+      "id": "csv-372",
+      "official_source_url": "https://ma-zone.it/",
+      "editorial_summary": "MA-ZONE a Gazzada Schianno e' uno studio fitness orientato al cambiamento fisico guidato e misurabile. Il sito ufficiale parla di percorsi per chi vuole affidarsi a professionisti, investire sulla qualita' dell'allenamento e prenotare un tour gratuito in sede.",
+      "editorial_highlights": [
+        "La sede indicata e' Via Morazzone 19, Gazzada Schianno.",
+        "Il sito invita a prenotare un tour gratuito in MA-ZONE.",
+        "La comunicazione e' centrata su trasformazione fisica, costanza e guida professionale.",
+        "Il contatto pubblicato e' info@ma-zone.it."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di percorso propone MA-ZONE?",
+          "answer": "Il sito parla di percorsi per persone che vogliono cambiare la propria forma fisica affidandosi a professionisti."
+        },
+        {
+          "question": "Dove si trova MA-ZONE?",
+          "answer": "Il sito indica Via Morazzone 19, Gazzada Schianno."
+        },
+        {
+          "question": "Si puo' visitare la struttura prima di iscriversi?",
+          "answer": "Si'. Il sito invita a prenotare un tour gratuito."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official MA-ZONE indexed page. Public prices not found."
+    },
+    {
+      "id": "csv-362",
+      "official_source_url": "https://www.mabacyclingcenter.com/",
+      "editorial_summary": "MABA Cycling Center a Gallarate e' una community di indoor cycling con corsi online MABA TV e contenuti ride. Il sito ufficiale presenta Cyclex, aerobic training, theme ride, endurance, race event, high performance training, special events, Cycling 4 Cyclists e Fartlek.",
+      "editorial_highlights": [
+        "La sede indicata e' Via C. Cattaneo 17, Gallarate.",
+        "MABA TV viene descritta come piattaforma con contenuti e ride made in MABA.",
+        "I corsi pubblicati includono Cyclex, Endurance, Fartlek e High Performance Training.",
+        "Il sito indica accesso a tutti i contenuti con un unico abbonamento."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di centro e' MABA Cycling Center?",
+          "answer": "Il sito lo presenta come centro indoor cycling e community, con piattaforma MABA TV."
+        },
+        {
+          "question": "Che corsi sono pubblicati?",
+          "answer": "Il sito cita Cyclex, aerobic training, theme ride, endurance, race event, high performance training, special events, Cycling 4 Cyclists e Fartlek."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il footer ufficiale indica Via C. Cattaneo 17, Gallarate."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Si'. La pagina abbonamento pubblica piani mensili, trimestrali, semestrali e annuali."
+        }
+      ],
+      "price_info": "Abbonamento MABA TV: mensile EUR 25,90; 3 mesi EUR 75,90; 6 mesi EUR 150,90; annuale EUR 300,90.",
+      "price_source_url": "https://www.mabacyclingcenter.com/abbonamento/piani-di-abbonamento/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official MABA home and subscription plan pages."
+    },
+    {
+      "id": "csv-363",
+      "official_source_url": "https://madsaronno.com/",
+      "editorial_summary": "MAD Studio Health & Fitness a Saronno e' uno studio nato nel 2021 per percorsi di benessere psico-fisico. Il sito ufficiale presenta osteopatia, personal trainer, consulenza nutrizionale, riflessologia plantare, coppettazione, osteopatia pediatrica e corsi di yoga, pilates, ginnastica posturale e difesa personale.",
+      "editorial_highlights": [
+        "La sede indicata e' Via Avogadro 28, Saronno.",
+        "Gli orari pubblicati sono lunedi'-venerdi' 7:00-21:00, sabato 7:00-18:00, domenica chiuso.",
+        "Il sito presenta corsi di yoga, pilates, ginnastica posturale e difesa personale.",
+        "La ginnastica posturale viene descritta con valutazione posturale, piccoli gruppi e lezioni da 50 minuti."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che servizi offre MAD Studio?",
+          "answer": "Il sito cita osteopatia, personal training, consulenza nutrizionale, riflessologia, coppettazione, osteopatia pediatrica e corsi."
+        },
+        {
+          "question": "Che corsi propone?",
+          "answer": "Le pagine corsi citano yoga, pilates, ginnastica posturale e difesa personale."
+        },
+        {
+          "question": "Dove si trova MAD Studio?",
+          "answer": "Il sito indica Via Avogadro 28, 21047 Saronno."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official MAD Studio home, corsi and contatti pages. Public prices not found."
+    },
+    {
+      "id": "csv-366",
+      "official_source_url": "https://www.mangroveacademy.ch/",
+      "editorial_summary": "Mangrove Academy a Lugano e' una boutique academy di Jiu-Jitsu nel quartiere Besso. Il sito ufficiale presenta classi piccole, pratica consapevole, percorso tecnico, movimento, sparring controllato e una membership con prova, percorso introduttivo e abbonamento annuale.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Besso 42, 6900 Lugano.",
+        "L'accademia lavora con classi piccole e attenzione individuale.",
+        "La formazione include tecnica, studio del movimento, sparring controllato e approfondimenti.",
+        "La membership prevede settimana di prova, percorso introduttivo di 5 settimane e abbonamento annuale."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che disciplina propone Mangrove Academy?",
+          "answer": "Il sito presenta l'accademia come palestra boutique di Jiu-Jitsu."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il sito indica Via Besso 42, 6900 Lugano."
+        },
+        {
+          "question": "Sono previste formule per principianti?",
+          "answer": "Si'. La pagina membership cita settimana di prova e percorso introduttivo di cinque settimane."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "La pagina membership descrive le formule, ma nelle pagine verificate non mostra importi numerici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Mangrove Academy concept, formazione, membership and contact sections. Public numeric prices not found."
+    },
+    {
+      "id": "csv-368",
+      "official_source_url": "https://www.masterboxe.com/",
+      "editorial_summary": "Master Boxe a Busto Arsizio e' una palestra di boxe con sede in Via Contardo Ferrini 44. Il sito ufficiale presenta programmi settimanali personalizzati, personale esperto e contatti diretti per informazioni e domande di ammissione.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Contardo Ferrini 44, 21052 Busto Arsizio.",
+        "Il sito presenta Master Boxe come struttura per restare attivi con supporto di personale esperto.",
+        "La pagina contatti cita programmi settimanali personalizzati.",
+        "I contatti pubblicati sono +39 338 7516 577, +39 340 1068 439 e master.boxe@libero.it."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova Master Boxe?",
+          "answer": "Il sito indica Via Contardo Ferrini 44, 21052 Busto Arsizio."
+        },
+        {
+          "question": "Che tipo di supporto offre?",
+          "answer": "Il sito parla di programmi settimanali personalizzati e personale esperto."
+        },
+        {
+          "question": "Come si contatta la palestra?",
+          "answer": "La pagina contatti pubblica telefono, email e modulo di richiesta informazioni."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Catalog website points to masterboxe.it, but official indexed pages are on masterboxe.com. Public prices not found."
+    },
+    {
+      "id": "csv-370",
+      "official_source_url": "https://matteocastellifitlab.it/",
+      "editorial_summary": "Matteo Castelli Fit Lab a Saronno e' uno studio di personal training one-to-one. Il sito ufficiale descrive un laboratorio del benessere con allenamento funzionale, percorso personalizzato, struttura attrezzata, consulenza e lavoro su obiettivi realistici.",
+      "editorial_highlights": [
+        "Il Fit Lab riceve solo su appuntamento in Via Visconti 25a, Saronno.",
+        "Ogni lezione viene descritta come rapporto uno-a-uno con il personal trainer.",
+        "La struttura include bilancieri, manubri, kettlebell, specchi, macchine cardio, docce, spogliatoio, acqua e caffe'.",
+        "Gli orari pubblicati sono lunedi' 7:00-21:00, martedi'-venerdi' 6:00-21:00, sabato 8:00-19:00, domenica chiuso."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di studio e' Matteo Castelli Fit Lab?",
+          "answer": "Il sito lo presenta come studio one-to-one di personal training e allenamento funzionale."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il sito indica Via Visconti 25a, 21047 Saronno."
+        },
+        {
+          "question": "Come si svolgono le lezioni?",
+          "answer": "Il sito descrive lezioni individuali o in coppia, con programma e correzione tecnica costante."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Si'. La pagina lezioni e pacchetti pubblica prezzi per lezione singola, pacchetto 10 lezioni e lezioni in coppia."
+        }
+      ],
+      "price_info": "Lezione singola EUR 45/ora; pacchetto 10 lezioni EUR 400; lezione in coppia EUR 70/ora; pacchetto di coppia 10 lezioni EUR 600.",
+      "price_source_url": "https://matteocastellifitlab.it/prezzi-pacchetti-e-lezioni-fitlab-saronno/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official MC FitLab home and prices/packages page."
+    },
+    {
+      "id": "csv-371",
+      "official_source_url": "https://maurapilates.ch/",
+      "editorial_summary": "Maura Pilates a Losone propone Pilates in piccoli gruppi, lezioni private, lezioni duetto e corsi online. Il sito ufficiale presenta Maura Pironi come istruttrice Pilates diplomata, fisioterapista diplomata e docente di sport diplomata.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via dei Pioppi 10, 6616 Losone.",
+        "Le lezioni di gruppo hanno massimo 7 partecipanti.",
+        "L'offerta include Mat Class, Pilates Over 55, Pilates in gravidanza e Pilates post parto.",
+        "Le lezioni private possono svolgersi in studio, a domicilio o online via Skype o Zoom."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che corsi propone Maura Pilates?",
+          "answer": "Il sito cita Pilates Mat Class, Over 55, Pilates in gravidanza, post parto, lezioni private, duetto e online."
+        },
+        {
+          "question": "Quante persone partecipano ai gruppi?",
+          "answer": "Il sito indica gruppi con massimo 7 partecipanti."
+        },
+        {
+          "question": "Dove si trova lo studio?",
+          "answer": "Il sito indica Via dei Pioppi 10, 6616 Losone."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Si'. La pagina prezzi pubblica tariffe per lezioni di gruppo, private, duetto e corsi gravidanza/post parto."
+        }
+      ],
+      "price_info": "Pilates Mat Class e Over 55: prova CHF 15, singola CHF 24, 5 lezioni CHF 115, 10 lezioni CHF 210. Lezione privata: prova CHF 85, singola CHF 110, 5 lezioni CHF 495, 10 lezioni CHF 960. Gravidanza/post parto gruppo: singola CHF 26, 10 lezioni CHF 240.",
+      "price_source_url": "https://maurapilates.ch/prezzi/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Maura Pilates home, offerta, online and prezzi pages."
+    },
+    {
+      "id": "csv-373",
+      "official_source_url": "https://www.mendrisiottonuoto.ch/",
+      "editorial_summary": "Mendrisiotto Nuoto e' una societa' sportiva di nuoto con squadre, convocazioni, calendario gare, risultati, record e rassegna stampa. Il sito ufficiale pubblica attivita' agonistica, allenatori e contatti societari.",
+      "editorial_highlights": [
+        "Il sito pubblica casella postale CH-6850 Mendrisio e info@nuotomendrisiotto.ch.",
+        "Le sezioni principali includono societa', squadre, convocazioni, calendario gare, risultati e record.",
+        "Il calendario mostra competizioni come Campionati svizzeri assoluti, finali CS a squadre e Coupe Espoire Suisse.",
+        "Tra gli allenatori pubblicati compaiono Roberto Bernardi, Martina Dal Corso, Anna Burei e Marco Roncoroni."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di societa' e' Mendrisiotto Nuoto?",
+          "answer": "Il sito la presenta come societa' di nuoto con squadre, gare, risultati e attivita' agonistica."
+        },
+        {
+          "question": "Il sito pubblica convocazioni e calendario?",
+          "answer": "Si'. Le sezioni ufficiali includono convocazioni, calendario gare, risultati e record."
+        },
+        {
+          "question": "Come si contatta la societa'?",
+          "answer": "Il sito pubblica info@nuotomendrisiotto.ch e casella postale CH-6850 Mendrisio."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono quote o importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Mendrisiotto Nuoto home, team/news/calendar content. Public prices not found."
+    },
+    {
+      "id": "csv-376",
+      "official_source_url": "https://www.millenniumgallarate.it/",
+      "editorial_summary": "Millennium Wellness Gallarate e' una palestra wellness da 1500 mq con sala attrezzi, corsi, servizi e area benessere. Il sito ufficiale cita struttura rinnovata, nuovi spogliatoi, estetista, nutrizionista, massaggiatore, sauna, trainer inclusi e programmi personalizzati.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Madonna in Campagna 10, Gallarate.",
+        "I corsi citati includono Cosmo Yoga, Pilates, Zumba, Functional Training, Posturale, Tacfit, HIIT, GAG e Total Body & Stretching.",
+        "Il sito indica trainer qualificati inclusi nell'abbonamento e programmi personalizzati.",
+        "Gli orari pubblicati sono lunedi'-venerdi' 7:00-22:00, sabato 9:00-18:00, domenica 9:00-14:00."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che servizi offre Millennium Wellness?",
+          "answer": "Il sito cita palestra, corsi, personal trainer, estetista, nutrizionista, massaggiatore e sauna."
+        },
+        {
+          "question": "Quanto e' grande la struttura?",
+          "answer": "La home indica 1500 mq e struttura rinnovata."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il sito indica Via Madonna in Campagna 10, 21013 Gallarate."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Si'. La pagina prezzi pubblica importi di partenza per Basic, Gold e pacchetti ingressi."
+        }
+      ],
+      "price_info": "Abbonamento Basic da EUR 299; Abbonamento Gold da EUR 329; pacchetto ingressi da EUR 199.",
+      "price_source_url": "https://www.millenniumgallarate.it/prezzi/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Millennium Wellness home and prezzi page."
+    },
+    {
+      "id": "csv-378",
+      "official_source_url": "https://pilates-fitness-lugano.ch/",
+      "editorial_summary": "Mindful Movement - Pilates Fitness Massagno e' uno studio di pilates, fitness e massaggi a Massagno. Il sito ufficiale presenta lezioni personalizzate, piccoli gruppi, Reformer STOTT Pilates, functional training, personal training, bootcamp e massaggi.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Guisan 33, 6900 Massagno.",
+        "Lo studio dichiara oltre 200 mq, spazi luminosi e corsi da 4 a 6 persone.",
+        "Il Pilates usa macchine STOTT Pilates originali, Reformer, Stability Chair e Rotational Disks.",
+        "Il sito indica certificazione QualiCert e riconoscimenti EMR/RME."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che corsi propone Mindful Movement?",
+          "answer": "Il sito cita Pilates, piccoli gruppi, functional training, personal training, bootcamp e massaggi."
+        },
+        {
+          "question": "Dove si trova lo studio?",
+          "answer": "Il sito indica Via Guisan 33, 6900 Massagno."
+        },
+        {
+          "question": "Che attrezzatura Pilates usa?",
+          "answer": "La pagina cita macchine STOTT Pilates originali, Reformer, Stability Chair e Rotational Disks."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "La pagina prezzi non e' risultata leggibile nella verifica; non inseriamo importi non controllati."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Mindful Movement home and service sections. Price page was blocked by bot verification, so no price was added."
+    }
+  ]
+}
