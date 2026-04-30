@@ -16,6 +16,9 @@ These scripts support data import, normalization, inspection, and cleanup workfl
 - `sync-official-overrides-enrichment.mjs`
   Dry-runs or applies the reviewed official-source overrides into additive Supabase editorial fields. Requires `--apply` to write.
 
+- `sync-reviewed-enrichment-batch.mjs`
+  Dry-runs or applies a reviewed JSON batch by immutable gym `id`. Use `--batch=content/enrichment/<file>.json`; requires `--apply` to write.
+
 - `clean-palestre-dataset.cjs`
   Cleans the main CSV dataset, removes noisy records, and restores discipline labels.
 

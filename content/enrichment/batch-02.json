@@ -1,0 +1,347 @@
+{
+  "batch": "batch-02-chains-and-multi-location",
+  "reviewed_at": "2026-04-30",
+  "entries": [
+    {
+      "id": "csv-28",
+      "official_source_url": "https://www.activfitness.ch/it/studios/activ-fitness-bellinzona/",
+      "editorial_summary": "Activ Fitness Bellinzona è una palestra nel centro di Bellinzona, al primo piano dell'edificio della Posta e a pochi passi dalla stazione. La pagina ufficiale la presenta come una sede ampia da 1300 m2, con oltre 70 postazioni, corsi in sala dedicata e possibilità di relax dopo l'allenamento.",
+      "editorial_highlights": [
+        "La sede viene descritta come centrale e comoda per chi si muove in treno: si trova vicino alla stazione ferroviaria e dentro l'edificio della Posta.",
+        "La pagina ufficiale indica una superficie di 1300 m2 e oltre 70 postazioni di allenamento, quindi la scheda riguarda una struttura completa e non un piccolo studio.",
+        "Tra gli elementi utili compaiono corsi in una grande sala dedicata, area sauna/bagno di vapore, spazio bambini e parcheggi gratuiti per le prime due ore.",
+        "La sede è adatta a chi cerca una palestra fitness generalista a Bellinzona con forza, resistenza, corsi e servizi di recupero nello stesso luogo."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova Activ Fitness Bellinzona secondo il sito ufficiale?",
+          "answer": "La pagina ufficiale indica la sede al primo piano dell'edificio della Posta, in Viale Stazione 18, nel centro di Bellinzona e vicino alla stazione ferroviaria."
+        },
+        {
+          "question": "Quanto è grande Activ Fitness Bellinzona?",
+          "answer": "Il sito ufficiale parla di una superficie di 1300 m2 con oltre 70 postazioni di allenamento."
+        },
+        {
+          "question": "Activ Fitness Bellinzona offre corsi e area wellness?",
+          "answer": "Sì. La sede mette in evidenza una sala corsi dedicata e servizi come sauna e bagno di vapore."
+        },
+        {
+          "question": "Ci sono parcheggi per Activ Fitness Bellinzona?",
+          "answer": "Secondo la pagina ufficiale, nei pressi della palestra ci sono parcheggi gratuiti per le prime due ore."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Activ Fitness Bellinzona page."
+    },
+    {
+      "id": "csv-30",
+      "official_source_url": "https://www.activfitness.ch/it/studios/activ-fitness-losone/",
+      "editorial_summary": "Activ Fitness Losone è la sede Activ Fitness al primo piano del Migros Do It & Garden Center. Il sito ufficiale la presenta come una palestra orientata a forza, resistenza e corsi, con 1300 m2, 80 postazioni e orari ampi durante la settimana.",
+      "editorial_highlights": [
+        "La pagina ufficiale colloca la palestra al primo piano del Migros Do It & Garden Center, quindi è pensata per essere raggiungibile sia in auto sia con i mezzi pubblici.",
+        "Activ Fitness Losone viene descritta come sede per forza, resistenza e corsi, utile per chi vuole una palestra generalista nel Locarnese.",
+        "I dati ufficiali indicano 1300 m2, 80 postazioni, più di 33 corsi a settimana e 5 aree di allenamento.",
+        "La sede segnala parcheggio esterno per i soci gratuito per le prime due ore, oltre a sauna/bagno di vapore e spazio bambini."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova Activ Fitness Losone?",
+          "answer": "Il sito ufficiale indica la sede in Via dei Pioppi 2A a Losone, al primo piano del Migros Do It & Garden Center."
+        },
+        {
+          "question": "Quali numeri caratterizzano Activ Fitness Losone?",
+          "answer": "La pagina ufficiale riporta 1300 m2, 80 postazioni di allenamento, più di 33 corsi a settimana e 5 aree di allenamento."
+        },
+        {
+          "question": "Activ Fitness Losone ha servizi wellness?",
+          "answer": "Sì. La pagina della sede include sauna e bagno di vapore, oltre allo spazio bambini in fasce orarie dedicate."
+        },
+        {
+          "question": "Activ Fitness Losone è comoda in auto?",
+          "answer": "Sì. Il sito ufficiale segnala un parcheggio esterno disponibile per i soci, gratuito per le prime due ore."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Activ Fitness Losone page."
+    },
+    {
+      "id": "csv-31",
+      "official_source_url": "https://www.activfitness.ch/it/studios/activ-fitness-lugano/",
+      "editorial_summary": "Activ Fitness Lugano è una palestra al quinto piano del centro commerciale Migros. La pagina ufficiale la presenta come una sede da 1300 m2 con attrezzature moderne, ampia offerta corsi, area benessere funzionale e massaggi con partner a pagamento.",
+      "editorial_highlights": [
+        "Il sito ufficiale punta sul concetto shopping e fitness: la palestra si trova nel centro commerciale Migros e permette di allenarsi nello stesso luogo in cui si fanno commissioni.",
+        "La sede di Lugano viene indicata con 1300 m2, 90 postazioni, più di 35 corsi a settimana e 5 aree di allenamento.",
+        "La pagina ufficiale mette in evidenza attrezzature moderne, ampia offerta corsi, area benessere e massaggi con professionisti partner a pagamento.",
+        "Per chi arriva in auto, la sede segnala parcheggio a pagamento nel seminterrato del centro commerciale con riduzione CHF 2 presentando il ticket in palestra."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova Activ Fitness Lugano?",
+          "answer": "La pagina ufficiale indica la palestra al quinto piano del centro commerciale Migros, in Via Pretorio 15 a Lugano."
+        },
+        {
+          "question": "Quanto è grande Activ Fitness Lugano?",
+          "answer": "Il sito ufficiale indica una superficie di 1300 m2, 90 postazioni di allenamento, più di 35 corsi a settimana e 5 aree di allenamento."
+        },
+        {
+          "question": "Activ Fitness Lugano ha area wellness?",
+          "answer": "Sì. La pagina ufficiale cita una zona benessere funzionale e orari dedicati per sauna e bagno di vapore."
+        },
+        {
+          "question": "Ci sono parcheggi per Activ Fitness Lugano?",
+          "answer": "Sì. Il sito segnala parcheggi a pagamento nel seminterrato del centro commerciale, con riduzione CHF 2 presentando il ticket in palestra."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Activ Fitness Lugano page."
+    },
+    {
+      "id": "csv-32",
+      "official_source_url": "https://www.activfitness.ch/it/studios/activ-fitness-mendrisio/",
+      "editorial_summary": "Activ Fitness Mendrisio è una sede centrale su Piazzale alla Valla, nello stesso edificio della Migros. Il sito ufficiale la descrive su due piani luminosi con grandi vetrate, una gamma completa di servizi, sauna/bagno di vapore, spazio bambini e massaggiatori partner.",
+      "editorial_highlights": [
+        "La pagina ufficiale posiziona la palestra direttamente sulla piazza principale di Mendrisio, a 18 km da Lugano e a 5 km dal confine italiano.",
+        "La sede si sviluppa su due piani luminosi con grandi vetrate ed è pensata anche per chi vuole allenarsi prima o dopo la spesa da Migros.",
+        "Il sito segnala bus stop accanto alla palestra e parcheggi a pagamento nello stesso edificio o nel parcheggio comunale a circa 100 metri.",
+        "Tra le prestazioni compaiono allenamento forza/resistenza, corsi, sauna, bagno turco, spazio bambini, parcheggi e massaggiatori professionisti partner."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova Activ Fitness Mendrisio?",
+          "answer": "La pagina ufficiale indica la sede in Via Luigi Lavizzari 2, su Piazzale alla Valla, in posizione centrale a Mendrisio."
+        },
+        {
+          "question": "Che tipo di struttura è Activ Fitness Mendrisio?",
+          "answer": "Il sito ufficiale descrive una palestra su due piani luminosi con grandi vetrate e una gamma completa di servizi."
+        },
+        {
+          "question": "Activ Fitness Mendrisio è comoda con i mezzi?",
+          "answer": "Sì. La pagina ufficiale segnala una fermata dell'autobus proprio accanto alla palestra."
+        },
+        {
+          "question": "Quali servizi extra sono indicati per Activ Fitness Mendrisio?",
+          "answer": "La pagina della sede cita sauna e bagno di vapore, spazio bambini, parcheggi e massaggiatori professionisti partner a pagamento."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Activ Fitness Mendrisio page."
+    },
+    {
+      "id": "csv-33",
+      "official_source_url": "https://www.activfitness.ch/it/studios/activ-fitness-riazzino/",
+      "editorial_summary": "Activ Fitness Riazzino è la sede Activ Fitness nel Centro Triangolo. La pagina ufficiale parla di una superficie di 1200 m2, attrezzature moderne, corsi, aree wellness e un team a supporto degli obiettivi di allenamento.",
+      "editorial_highlights": [
+        "Il sito ufficiale presenta Riazzino come centro fitness nel cuore del Centro Triangolo, raggiungibile in auto e con i mezzi pubblici.",
+        "La sede viene descritta come una palestra da 1200 m2 orientata a esperienza completa di allenamento e benessere.",
+        "I dati ufficiali indicano 80 postazioni, più di 20 corsi a settimana e 5 aree di allenamento.",
+        "La pagina segnala anche area benessere con sauna, bio-sauna e sauna a infrarossi, oltre a parcheggi e functional training."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova Activ Fitness Riazzino?",
+          "answer": "Il sito ufficiale indica la sede nel Centro Triangolo, in Via al Pizzante 12 a Riazzino."
+        },
+        {
+          "question": "Quanto è grande Activ Fitness Riazzino?",
+          "answer": "La pagina ufficiale parla di 1200 m2, 80 postazioni di allenamento, più di 20 corsi a settimana e 5 aree di allenamento."
+        },
+        {
+          "question": "Che area benessere offre Activ Fitness Riazzino?",
+          "answer": "Il sito segnala sauna, bio-sauna e sauna a infrarossi come parte dell'area benessere."
+        },
+        {
+          "question": "Activ Fitness Riazzino è facile da raggiungere?",
+          "answer": "Sì. La pagina ufficiale indica che la sede è raggiungibile sia in auto sia con i mezzi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Activ Fitness Riazzino page."
+    },
+    {
+      "id": "csv-34",
+      "official_source_url": "https://www.activfitness.ch/it/studios/activ-fitness-serfontana/",
+      "editorial_summary": "Activ Fitness Serfontana è la sede al secondo piano del centro commerciale Serfontana di Morbio Inferiore. Il sito ufficiale la presenta come uno studio da circa 1100 m2 con opzioni per allenamento e benessere, accessibile in autobus o in auto dalla vicina uscita di Chiasso.",
+      "editorial_highlights": [
+        "La pagina ufficiale colloca la palestra al secondo piano del centro commerciale Serfontana, con accesso specifico dal posteggio sulla terrazza fuori dagli orari del centro commerciale.",
+        "La sede viene descritta come circa 1100 m2 dedicati ad allenamento e benessere, con 80 postazioni, più di 22 corsi a settimana e 5 aree di allenamento.",
+        "Tra i servizi indicati compaiono sauna e bio-sauna, spazio bambini, parcheggi e functional training.",
+        "La posizione è pensata per essere raggiunta sia con l'autobus, con fermata davanti al centro, sia in auto dalla vicina uscita autostradale di Chiasso."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova Activ Fitness Serfontana?",
+          "answer": "Il sito ufficiale indica la palestra nel centro commerciale Serfontana, in Viale Serfontana 20 a Morbio Inferiore."
+        },
+        {
+          "question": "Quanto è grande Activ Fitness Serfontana?",
+          "answer": "La pagina ufficiale parla di circa 1100 m2, 80 postazioni di allenamento, più di 22 corsi a settimana e 5 aree di allenamento."
+        },
+        {
+          "question": "Come si accede ad Activ Fitness Serfontana fuori dagli orari del centro commerciale?",
+          "answer": "La pagina ufficiale specifica che fuori dagli orari del Centro Shopping Serfontana si accede dal posteggio sulla terrazza al terzo piano, usando gli ascensori per raggiungere la palestra al secondo piano."
+        },
+        {
+          "question": "Activ Fitness Serfontana ha servizi wellness?",
+          "answer": "Sì. La sede indica sauna e bio-sauna, oltre a spazio bambini e servizi di allenamento funzionale."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Activ Fitness Serfontana page."
+    },
+    {
+      "id": "csv-36",
+      "official_source_url": "https://www.activfitness.ch/it/studios/activ-fitness-vezia/",
+      "editorial_summary": "Activ Fitness Vezia è una palestra con ampie vetrate e vista sul verde. Il sito ufficiale descrive 1200 m2 con area forza/resistenza, grande sala corsi, wellness con sauna e bagno turco e parcheggio gratuito.",
+      "editorial_highlights": [
+        "Il tratto distintivo della sede di Vezia è la vista sul verde: la pagina ufficiale parla di ampie vetrate e allenamento con vista.",
+        "La struttura viene indicata con 1200 m2, 75 postazioni, più di 30 corsi a settimana e 5 aree di allenamento.",
+        "La sede include area forza/resistenza, sala corsi ampia e area benessere funzionale con sauna e bagno turco.",
+        "Per chi arriva in auto, il sito ufficiale segnala parcheggio gratuito presso la palestra."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova Activ Fitness Vezia?",
+          "answer": "La pagina ufficiale indica la sede in Via San Gottardo 5 a Vezia."
+        },
+        {
+          "question": "Quanto è grande Activ Fitness Vezia?",
+          "answer": "Il sito ufficiale parla di 1200 m2, 75 postazioni di allenamento, più di 30 corsi a settimana e 5 aree di allenamento."
+        },
+        {
+          "question": "Activ Fitness Vezia ha area wellness?",
+          "answer": "Sì. La pagina ufficiale cita una zona benessere funzionale con sauna e bagno turco."
+        },
+        {
+          "question": "Ci sono parcheggi ad Activ Fitness Vezia?",
+          "answer": "Sì. Il sito ufficiale segnala parcheggio gratuito presso la palestra."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Activ Fitness Vezia page."
+    },
+    {
+      "id": "csv-22",
+      "official_source_url": "https://aaspecialtraining.ch/",
+      "editorial_summary": "AA Special Training è una realtà di Lugano/Pregassona orientata a programmi personalizzati per sicurezza, salute e benessere. Il sito ufficiale mette in evidenza allenamento funzionale, difesa personale e arti marziali, con corsi per bambini, adolescenti e adulti.",
+      "editorial_highlights": [
+        "Il sito ufficiale presenta AA Special Training con il messaggio sicurezza e salute, puntando su programmi personalizzati per obiettivi di benessere.",
+        "Le aree principali citate sono allenamento funzionale, difesa personale e arti marziali.",
+        "Tra le discipline indicate compaiono difesa personale, kick boxing, Systema Russo, Muay Thai, Krav Maga, MMA, Boxe, Wrestling e Jiu Jitsu Brasiliano.",
+        "La pagina ufficiale segnala corsi per adolescenti, bambini e adulti, oltre a istruttori Andrea Abbiendi e Marco Abbiendi e nuova palestra in Via Giovanni Maraini 15/a a Pregassona."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di attività propone AA Special Training?",
+          "answer": "Il sito ufficiale mette in evidenza programmi personalizzati, allenamento funzionale, difesa personale e arti marziali."
+        },
+        {
+          "question": "Quali discipline sono citate da AA Special Training?",
+          "answer": "La pagina ufficiale elenca difesa personale, kick boxing, Systema Russo, Muay Thai, Krav Maga, MMA, Boxe, Wrestling e Jiu Jitsu Brasiliano."
+        },
+        {
+          "question": "AA Special Training ha corsi per diverse età?",
+          "answer": "Sì. Il sito cita corsi di difesa personale per bambini, adolescenti e adulti."
+        },
+        {
+          "question": "Dove si trova la palestra AA Special Training?",
+          "answer": "La pagina ufficiale segnala la nuova palestra in Via Giovanni Maraini 15/a, 6900 Pregassona."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official AA Special Training website."
+    },
+    {
+      "id": "csv-21",
+      "official_source_url": "https://aaspecialtraining.ch/",
+      "editorial_summary": "AA Special Training Pregassona è la sede indicata dal sito ufficiale in Via Giovanni Maraini 15/a. La proposta ruota attorno a programmi personalizzati per sicurezza e salute, con difesa personale, kick boxing, Systema Russo e altre discipline combat.",
+      "editorial_highlights": [
+        "La pagina ufficiale segnala la nuova palestra in Via Giovanni Maraini 15/a a Pregassona, dato importante per distinguere questa scheda dalla voce generica Lugano.",
+        "Il posizionamento del club è costruito su sicurezza, salute e programmi personalizzati.",
+        "Il sito mette in evidenza corsi per bambini, adolescenti e adulti, soprattutto nell'area difesa personale e antibullismo.",
+        "Le discipline ufficialmente elencate includono difesa personale, kick boxing, Systema Russo, Muay Thai, Krav Maga, MMA, Boxe, Wrestling e Jiu Jitsu Brasiliano."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova AA Special Training Pregassona?",
+          "answer": "Il sito ufficiale indica la palestra in Via Giovanni Maraini 15/a, 6900 Pregassona."
+        },
+        {
+          "question": "Che corsi propone AA Special Training Pregassona?",
+          "answer": "La pagina ufficiale cita corsi di difesa personale per bambini, adolescenti e adulti, oltre ad attività legate ad arti marziali e allenamento funzionale."
+        },
+        {
+          "question": "Quali discipline combat sono citate sul sito AA Special Training?",
+          "answer": "Il sito elenca difesa personale, kick boxing, Systema Russo, Muay Thai, Krav Maga, MMA, Boxe, Wrestling e Jiu Jitsu Brasiliano."
+        },
+        {
+          "question": "Chi sono gli istruttori indicati dal sito?",
+          "answer": "La pagina ufficiale cita Andrea Abbiendi e Marco Abbiendi tra gli istruttori."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official AA Special Training website."
+    },
+    {
+      "id": "csv-87",
+      "official_source_url": "https://bodyclub.ch/",
+      "editorial_summary": "BodyClub Fitness è una palestra esclusiva a Muralto aperta 365 giorni all'anno dalle 06:00 alle 24:00. Il sito ufficiale la descrive come palestra completa accessibile con tessera personale, con istruttori presenti in fascia diurna o su appuntamento.",
+      "editorial_highlights": [
+        "Il sito ufficiale presenta Body Club come palestra esclusiva a Muralto, accessibile con tessera personale.",
+        "La palestra è indicata come aperta 365 giorni all'anno dalle 06:00 alle 24:00, un dato distintivo per chi cerca flessibilità oraria.",
+        "Gli istruttori sono segnalati presenti dalle 08:00 alle 19:00 o su appuntamento.",
+        "La proposta del club include anche personal training con Simona Napoleoni ed elettrostimolazione EMS Wiemspro."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Quali sono gli orari di BodyClub Fitness?",
+          "answer": "Il sito ufficiale indica apertura da lunedì a domenica, dalle 06:00 alle 24:00, per 365 giorni all'anno."
+        },
+        {
+          "question": "Come si accede a BodyClub Fitness?",
+          "answer": "La pagina ufficiale descrive una palestra accessibile con tessera personale."
+        },
+        {
+          "question": "Quando sono presenti gli istruttori BodyClub?",
+          "answer": "Il sito indica istruttori presenti dalle 08:00 alle 19:00 o su appuntamento."
+        },
+        {
+          "question": "BodyClub offre anche servizi oltre alla palestra?",
+          "answer": "Sì. Il sito ufficiale presenta personal training con Simona Napoleoni ed elettrostimolazione EMS Wiemspro."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official BodyClub website."
+    },
+    {
+      "id": "csv-88",
+      "official_source_url": "https://bodyclub.ch/",
+      "editorial_summary": "BodyClub Personal Training è il percorso individuale collegato a BodyClub Muralto. Il sito ufficiale presenta analisi, allenamenti, preparazioni fisiche e alimentazione su misura con Simona Napoleoni, tramite programmi e appuntamenti personali.",
+      "editorial_highlights": [
+        "Il sito ufficiale distingue il servizio Personal Trainer dalla palestra libera, mettendo al centro Simona Napoleoni.",
+        "La proposta citata comprende analisi, allenamenti, preparazioni fisiche e alimentazione su misura.",
+        "Il servizio viene presentato come lavoro individuale con programmi e appuntamenti personali.",
+        "Nella stessa struttura il sito segnala anche palestra accessibile con tessera personale ed EMS Wiemspro con sessioni da 20 minuti."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che cosa offre BodyClub Personal Training?",
+          "answer": "Il sito ufficiale parla di analisi, allenamenti, preparazioni fisiche e alimentazione su misura con Simona Napoleoni."
+        },
+        {
+          "question": "BodyClub Personal Training funziona su appuntamento?",
+          "answer": "Sì. La pagina ufficiale indica che il personal trainer lavora tramite appuntamento."
+        },
+        {
+          "question": "Chi segue il personal training BodyClub?",
+          "answer": "Il sito ufficiale mette in evidenza Simona Napoleoni come personal trainer."
+        },
+        {
+          "question": "BodyClub offre anche EMS?",
+          "answer": "Sì. Il sito presenta il sistema Wiemspro EMS come elettrostimolazione 2.0 per allenarsi efficacemente in 20 minuti."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official BodyClub website."
+    }
+  ]
+}
