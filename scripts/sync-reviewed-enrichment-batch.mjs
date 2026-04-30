@@ -64,17 +64,37 @@ function normalizeFaqItems(items) {
 }
 
 function normalizePatch(entry) {
-  return {
-    official_source_url: clean(entry.official_source_url),
-    editorial_summary: clean(entry.editorial_summary),
-    editorial_highlights: Array.isArray(entry.editorial_highlights)
-      ? entry.editorial_highlights.map(clean).filter(Boolean)
-      : [],
-    editorial_faq_items: normalizeFaqItems(entry.editorial_faq_items),
+  const patch = {
     enrichment_status: clean(entry.enrichment_status) || 'published',
     enrichment_notes: clean(entry.enrichment_notes),
     enrichment_updated_at: new Date().toISOString()
   };
+
+  if (Object.hasOwn(entry, 'official_source_url')) {
+    patch.official_source_url = clean(entry.official_source_url);
+  }
+
+  if (Object.hasOwn(entry, 'editorial_summary')) {
+    patch.editorial_summary = clean(entry.editorial_summary);
+  }
+
+  if (Object.hasOwn(entry, 'editorial_highlights')) {
+    patch.editorial_highlights = Array.isArray(entry.editorial_highlights)
+      ? entry.editorial_highlights.map(clean).filter(Boolean)
+      : [];
+  }
+
+  if (Object.hasOwn(entry, 'editorial_faq_items')) {
+    patch.editorial_faq_items = normalizeFaqItems(entry.editorial_faq_items);
+  }
+
+  if (Object.hasOwn(entry, 'price_info')) {
+    patch.price_info = clean(entry.price_info);
+    patch.price_source_url = clean(entry.price_source_url) || clean(entry.official_source_url);
+    patch.price_updated_at = new Date().toISOString();
+  }
+
+  return patch;
 }
 
 await loadEnvFile(path.resolve(envFile));
@@ -95,7 +115,7 @@ if (ids.length !== entries.length) {
   throw new Error('Every batch entry must include an id.');
 }
 
-const selectUrl = `${supabaseUrl}/rest/v1/${encodeURIComponent(table)}?select=${encodeURIComponent('id,name,city,editorial_summary,enrichment_status')}&id=in.(${ids.map(encodeURIComponent).join(',')})&order=name.asc`;
+const selectUrl = `${supabaseUrl}/rest/v1/${encodeURIComponent(table)}?select=${encodeURIComponent('id,name,city,editorial_summary,price_info,enrichment_status')}&id=in.(${ids.map(encodeURIComponent).join(',')})&order=name.asc`;
 const readResponse = await fetch(selectUrl, {
   headers: headers(serviceKey, { Prefer: 'count=exact' })
 });
@@ -121,19 +141,22 @@ const updates = entries.map((entry) => {
     name: row.name,
     city: row.city,
     had_editorial: Boolean(clean(row.editorial_summary)),
+    had_price: Boolean(clean(row.price_info)),
     patch: normalizePatch(entry)
   };
 });
 
 const beforeWithEditorial = rows.filter((row) => clean(row.editorial_summary)).length;
 const newlyEnriched = updates.filter((item) => !item.had_editorial).length;
+const entriesWithPrice = updates.filter((item) => Object.hasOwn(item.patch, 'price_info')).length;
+const newlyPriced = updates.filter((item) => Object.hasOwn(item.patch, 'price_info') && !item.had_price).length;
 
 console.log(
-  `[sync-reviewed-enrichment-batch] mode=${apply ? 'apply' : 'dry-run'} batch=${clean(batch.batch) || path.basename(batchFile)} entries=${entries.length} matched_rows=${updates.length} selected_before_with_editorial=${beforeWithEditorial} newly_enriched=${newlyEnriched}`
+  `[sync-reviewed-enrichment-batch] mode=${apply ? 'apply' : 'dry-run'} batch=${clean(batch.batch) || path.basename(batchFile)} entries=${entries.length} matched_rows=${updates.length} selected_before_with_editorial=${beforeWithEditorial} newly_enriched=${newlyEnriched} entries_with_price=${entriesWithPrice} newly_priced=${newlyPriced}`
 );
 
 for (const item of updates) {
-  console.log(`- ${item.id} | ${item.name}${item.city ? ` | ${item.city}` : ''}${item.had_editorial ? ' | already had editorial' : ''}`);
+  console.log(`- ${item.id} | ${item.name}${item.city ? ` | ${item.city}` : ''}${item.had_editorial ? ' | already had editorial' : ''}${item.had_price ? ' | already had price' : ''}`);
 }
 
 if (!apply) {

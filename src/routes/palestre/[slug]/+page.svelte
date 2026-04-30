@@ -65,7 +65,8 @@
   $: isIndexable = isIndexableGym(gym);
   $: officialSourceUrl = officialOverride?.sourceUrl || fixGymText(gym?.official_source_url) || '';
   $: officialEmail = officialOverride?.email || '';
-  $: officialMonthlyPrice = officialOverride?.monthlyPrice || '';
+  $: officialMonthlyPrice = fixGymText(gym?.price_info) || officialOverride?.monthlyPrice || '';
+  $: priceSourceUrl = fixGymText(gym?.price_source_url) || officialSourceUrl;
   $: officialSocialLinks = officialOverride?.socialLinks || [];
   $: officialInfoCards = officialOverride?.infoCards || [];
   $: editorialInfoCards = !officialOverride && editorialHighlights.length
@@ -81,14 +82,15 @@
 
     if (officialMonthlyPrice && !hasFormulaCard) {
       cards.unshift({
-        label: 'Formula',
-        value: officialMonthlyPrice
+        label: 'Prezzo',
+        value: officialMonthlyPrice,
+        body: priceSourceUrl ? 'Importo verificato da fonte ufficiale o pagina tariffaria collegata.' : ''
       });
     }
 
     return cards.map((card, index) => ({
       ...card,
-      featured: index === 0 && String(card.label || '').trim().toLowerCase() === 'formula'
+      featured: index === 0 && ['formula', 'prezzo'].includes(String(card.label || '').trim().toLowerCase())
     }));
   })();
   $: hasFeaturedOfficialCard = officialCards.some((card) => card.featured);

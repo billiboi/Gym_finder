@@ -69,6 +69,7 @@
 
   function priceForCard(gym) {
     const price = (
+      displayName(gym?.price_info) ||
       displayName(gym?.price) ||
       displayName(gym?.monthly_price) ||
       displayName(gym?.monthlyPrice) ||
@@ -77,7 +78,10 @@
 
     if (!price) return '';
     const hasSpecificAmount = /(\d|€|chf|eur|gratis|gratuit)/i.test(price);
-    return hasSpecificAmount ? price : '';
+    if (!hasSpecificAmount) return '';
+
+    const firstPart = price.split(/[.;|]/).map((part) => part.trim()).find(Boolean) || price;
+    return firstPart.length > 72 ? `${firstPart.slice(0, 69).trim()}...` : firstPart;
   }
 
   function formatAddressForDisplay(gym) {

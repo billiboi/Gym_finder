@@ -1,0 +1,86 @@
+{
+  "batch": "price-batch-01-official-published-prices",
+  "reviewed_at": "2026-04-30",
+  "entries": [
+    {
+      "id": "csv-223",
+      "official_source_url": "https://www.fitactive.it/",
+      "price_info": "Da 19,90 EUR/mese secondo la pagina ufficiale FitActive; formula fitness 24h/24 con condizioni del brand.",
+      "price_source_url": "https://www.fitactive.it/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Price reviewed from official FitActive homepage."
+    },
+    {
+      "id": "csv-225",
+      "official_source_url": "https://www.fitactive.it/i-club/busto-arsizio.php",
+      "price_info": "Da 19,90 EUR/mese secondo la pagina ufficiale FitActive; formula fitness 24h/24 con condizioni del brand.",
+      "price_source_url": "https://www.fitactive.it/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Price reviewed from official FitActive homepage."
+    },
+    {
+      "id": "csv-226",
+      "official_source_url": "https://fitactive.it/i-club/FitActive%20Castellanza.php",
+      "price_info": "Da 19,90 EUR/mese secondo la pagina ufficiale FitActive; formula fitness 24h/24 con condizioni del brand.",
+      "price_source_url": "https://www.fitactive.it/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Price reviewed from official FitActive homepage."
+    },
+    {
+      "id": "csv-229",
+      "official_source_url": "https://www.fitactive.it/i-club/saronno.php",
+      "price_info": "Da 19,90 EUR/mese secondo la pagina ufficiale FitActive; formula fitness 24h/24 con condizioni del brand.",
+      "price_source_url": "https://www.fitactive.it/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Price reviewed from official FitActive homepage."
+    },
+    {
+      "id": "csv-230",
+      "official_source_url": "https://www.fitactive.it/i-club/varese.php",
+      "price_info": "Da 19,90 EUR/mese secondo la pagina ufficiale FitActive; formula fitness 24h/24 con condizioni del brand.",
+      "price_source_url": "https://www.fitactive.it/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Price reviewed from official FitActive homepage."
+    },
+    {
+      "id": "csv-231",
+      "official_source_url": "https://www.fitactive.it/",
+      "price_info": "Da 19,90 EUR/mese secondo la pagina ufficiale FitActive; formula fitness 24h/24 con condizioni del brand.",
+      "price_source_url": "https://www.fitactive.it/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Price reviewed from official FitActive homepage."
+    },
+    {
+      "id": "csv-53",
+      "official_source_url": "https://www.ascofit.ch/",
+      "price_info": "12 mesi da CHF 490.- senza service o CHF 590.- con service; 6 mesi da CHF 390.-; 3 mesi CHF 270.-; 1 mese CHF 100.-; 1 settimana CHF 45.-; 1 giorno CHF 18.-.",
+      "price_source_url": "https://www.ascofit.ch/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Price reviewed from official Ascofit pricing section."
+    },
+    {
+      "id": "csv-71",
+      "official_source_url": "https://b-arena.ch/",
+      "price_info": "Padel interno da CHF 60.-/1h; padel esterno doppio da CHF 54.-/h; padel esterno singolo da CHF 30.-/h; badminton CHF 20.-/45 min; squash CHF 24.-/h o CHF 28.-/h in fascia serale.",
+      "price_source_url": "https://b-arena.ch/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Price reviewed from official B-Arena tariff section."
+    },
+    {
+      "id": "csv-82",
+      "official_source_url": "https://www.bodhireformer.ch/",
+      "price_info": "Pacchetto nuovi allievi: 10 lezioni a 295 CHF secondo la pagina ufficiale BODHI Reformer.",
+      "price_source_url": "https://www.bodhireformer.ch/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Price reviewed from official BODHI Reformer homepage."
+    },
+    {
+      "id": "csv-550",
+      "official_source_url": "https://spartangymbustoarsizio.it/",
+      "price_info": "Abbonamenti base: annuale 37 EUR/mese, semestrale 48 EUR/mese, trimestrale 53 EUR/mese, mensile 59 EUR; ingresso singolo 12 EUR; personal training 25 EUR/h.",
+      "price_source_url": "https://spartangymbustoarsizio.it/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Price reviewed from official Spartan Gym pricing page."
+    }
+  ]
+}
