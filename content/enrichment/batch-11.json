@@ -1,0 +1,332 @@
+{
+  "batch": "batch-11-editorial-and-prices-fitactive-fitup-yoga",
+  "reviewed_at": "2026-04-30",
+  "entries": [
+    {
+      "id": "csv-223",
+      "official_source_url": "https://www.fitactive.it/i-club/CasorateSempione.php",
+      "editorial_summary": "FitActive Casorate Sempione si trova in Via Sempione 27. La pagina ufficiale descrive uno spazio di 1600 mq con sala pesi, sale corsi, aree relax, parcheggio gratuito e accesso automatizzato 24 ore su 24.",
+      "editorial_highlights": [
+        "La sede e' in Via Sempione 27, 21011 Casorate Sempione.",
+        "Il club dichiara 1600 mq di superficie.",
+        "La palestra e' aperta 24h/24, 7 giorni su 7.",
+        "La reception e' indicata lunedi'-venerdi' 9:00-21:00, sabato 9:00-17:00, domenica 9:00-13:00."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova FitActive Casorate Sempione?",
+          "answer": "La pagina ufficiale indica Via Sempione 27, 21011 Casorate Sempione."
+        },
+        {
+          "question": "Quali spazi cita la sede?",
+          "answer": "Il sito cita sala pesi, sale corsi, aree relax e parcheggio gratuito."
+        },
+        {
+          "question": "La palestra e' aperta tutto il giorno?",
+          "answer": "Si. La pagina sede indica accesso automatizzato 24h/24, 7 giorni su 7."
+        },
+        {
+          "question": "Quanto costa l'abbonamento online FitActive?",
+          "answer": "La pagina iscrizione indica abbonamento annuale online a 19,90 EUR/mese piu' 79,00 EUR di quota iscrizione vitalizia."
+        }
+      ],
+      "price_info": "Abbonamento online annuale: 19,90 EUR/mese + 79,00 EUR quota iscrizione vitalizia. Abbonamento online biennale: 19,90 EUR/mese con quota iscrizione vitalizia inclusa.",
+      "price_source_url": "https://www.fitactive.it/Home/Iscriviti",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official FitActive Casorate Sempione and Iscriviti pages."
+    },
+    {
+      "id": "csv-224",
+      "official_source_url": "https://www.fitactive.it/i-club/Bellinzona.php",
+      "editorial_summary": "FitActive Bellinzona si trova in Via Industrie 8, Sant'Antonino. La pagina ufficiale indica fitness illimitato in prevendita, accesso 24h/24, corsi di gruppo, lampade abbronzanti, bevande energetiche, pedane vibranti e poltrone relax.",
+      "editorial_highlights": [
+        "La sede indicata e' Via Industrie 8, 6592 Sant'Antonino - Bellinzona.",
+        "La palestra e' automatizzata e aperta 24h/24, 7 giorni su 7.",
+        "La reception e' indicata lunedi'-venerdi' 09:00-21:00 e sabato 09:00-18:00.",
+        "Il contatto pubblicato e' bellinzona@fitactive.ch con telefono svizzero."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova FitActive Bellinzona?",
+          "answer": "La pagina ufficiale indica Via Industrie 8, 6592 Sant'Antonino - Bellinzona."
+        },
+        {
+          "question": "Che servizi cita la sede?",
+          "answer": "Il sito cita corsi di gruppo, lampade abbronzanti, bevande energetiche, pedane vibranti e poltrone relax."
+        },
+        {
+          "question": "Quali orari di accesso pubblica FitActive Bellinzona?",
+          "answer": "La pagina indica accesso automatizzato 24h/24, 7 giorni su 7."
+        },
+        {
+          "question": "Quanto costa la prevendita FitActive Bellinzona?",
+          "answer": "La pagina sede indica fitness illimitato in prevendita a 49,90 CHF al mese."
+        }
+      ],
+      "price_info": "Prevendita FitActive Bellinzona: 49,90 CHF/mese per fitness illimitato secondo la pagina sede.",
+      "price_source_url": "https://www.fitactive.it/i-club/Bellinzona.php",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official FitActive Bellinzona page."
+    },
+    {
+      "id": "csv-225",
+      "official_source_url": "https://www.fitactive.it/i-club/busto-arsizio.php",
+      "editorial_summary": "FitActive Busto Arsizio si trova in Via Fagnano Olona 29. La pagina ufficiale descrive 1500 mq, attrezzi Technogym, sale corsi, aree relax, parcheggio privato e accesso automatizzato 24h/24.",
+      "editorial_highlights": [
+        "La sede e' in Via Fagnano Olona 29, 21052 Busto Arsizio.",
+        "Il club dichiara 1500 mq di superficie.",
+        "La palestra pubblica accesso 24h/24, 7 giorni su 7.",
+        "La reception e' indicata lunedi'-venerdi' 9:00-21:00, sabato 9:00-18:00, domenica 9:00-16:00."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova FitActive Busto Arsizio?",
+          "answer": "La pagina ufficiale indica Via Fagnano Olona 29, 21052 Busto Arsizio."
+        },
+        {
+          "question": "Quali spazi cita la sede?",
+          "answer": "Il sito cita attrezzi Technogym, sale corsi, aree relax e parcheggio privato."
+        },
+        {
+          "question": "La sede e' aperta 24 ore?",
+          "answer": "Si. La pagina sede indica struttura automatizzata aperta 24h/24, 7 giorni su 7."
+        },
+        {
+          "question": "Quanto costa l'abbonamento online FitActive?",
+          "answer": "La pagina iscrizione indica abbonamento annuale online a 19,90 EUR/mese piu' 79,00 EUR di quota iscrizione vitalizia."
+        }
+      ],
+      "price_info": "Abbonamento online annuale: 19,90 EUR/mese + 79,00 EUR quota iscrizione vitalizia. Abbonamento online biennale: 19,90 EUR/mese con quota iscrizione vitalizia inclusa.",
+      "price_source_url": "https://www.fitactive.it/Home/Iscriviti",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official FitActive Busto Arsizio and Iscriviti pages."
+    },
+    {
+      "id": "csv-226",
+      "official_source_url": "https://www.fitactive.it/i-club/Castellanza.php",
+      "editorial_summary": "FitActive Castellanza si trova in Via Asti 5. La pagina ufficiale indica fitness illimitato, attrezzature cardio e isotoniche, corsi di gruppo, lampade abbronzanti, bevande energetiche, pedane vibranti e poltrone relax.",
+      "editorial_highlights": [
+        "La sede indicata e' Via Asti 5, 21053 Castellanza.",
+        "La palestra e' automatizzata e aperta 24h/24, 7 giorni su 7.",
+        "La reception e' indicata lunedi'-venerdi' 9:00-21:00, sabato 9:00-17:00, domenica 9:00-13:00.",
+        "Il contatto pubblicato e' castellanza@fitactive.it."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova FitActive Castellanza?",
+          "answer": "La pagina ufficiale indica Via Asti 5, 21053 Castellanza."
+        },
+        {
+          "question": "Quali servizi cita la sede?",
+          "answer": "Il sito cita corsi di gruppo, lampade abbronzanti, bevande energetiche, pedane vibranti e poltrone relax."
+        },
+        {
+          "question": "Quali orari pubblica la reception?",
+          "answer": "La pagina indica lunedi'-venerdi' 9:00-21:00, sabato 9:00-17:00, domenica 9:00-13:00."
+        },
+        {
+          "question": "Quanto costa l'abbonamento online FitActive?",
+          "answer": "La pagina iscrizione indica abbonamento annuale online a 19,90 EUR/mese piu' 79,00 EUR di quota iscrizione vitalizia."
+        }
+      ],
+      "price_info": "Abbonamento online annuale: 19,90 EUR/mese + 79,00 EUR quota iscrizione vitalizia. Abbonamento online biennale: 19,90 EUR/mese con quota iscrizione vitalizia inclusa.",
+      "price_source_url": "https://www.fitactive.it/Home/Iscriviti",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official FitActive Castellanza and Iscriviti pages."
+    },
+    {
+      "id": "csv-227",
+      "official_source_url": "https://www.fitactive.it/i-club/Lugano.php",
+      "editorial_summary": "FitActive Lugano si trova in Via Riva Caccia Antonio 1/A. La pagina ufficiale indica fitness illimitato in prevendita, accesso 24h/24, corsi di gruppo, lampade abbronzanti, bevande energetiche, pedane vibranti e poltrone relax.",
+      "editorial_highlights": [
+        "La sede e' in Via Riva Caccia Antonio 1/A, 6900 Lugano.",
+        "La palestra e' automatizzata e aperta 24h/24, 7 giorni su 7.",
+        "La reception e' indicata lunedi'-venerdi' 09:00-21:00 e sabato 09:00-17:00.",
+        "Il contatto pubblicato e' lugano@fitactive.ch con telefono svizzero."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova FitActive Lugano?",
+          "answer": "La pagina ufficiale indica Via Riva Caccia Antonio 1/A, 6900 Lugano."
+        },
+        {
+          "question": "Che servizi cita la sede?",
+          "answer": "Il sito cita corsi di gruppo, lampade abbronzanti, bevande energetiche, pedane vibranti e poltrone relax."
+        },
+        {
+          "question": "FitActive Lugano e' aperta 24 ore?",
+          "answer": "Si. La pagina sede indica accesso automatizzato 24h/24, 7 giorni su 7."
+        },
+        {
+          "question": "Quanto costa la prevendita FitActive Lugano?",
+          "answer": "La pagina sede indica fitness illimitato in prevendita a 49,90 CHF al mese."
+        }
+      ],
+      "price_info": "Prevendita FitActive Lugano: 49,90 CHF/mese per fitness illimitato secondo la pagina sede.",
+      "price_source_url": "https://www.fitactive.it/i-club/Lugano.php",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official FitActive Lugano page."
+    },
+    {
+      "id": "csv-229",
+      "official_source_url": "https://www.fitactive.it/i-club/saronno.php",
+      "editorial_summary": "FitActive Saronno si trova in Via Giuseppe Ungaretti 34. La pagina ufficiale descrive oltre 1000 mq con sala attrezzi, sala corsi, aree relax, parcheggio e accesso automatizzato 24h/24.",
+      "editorial_highlights": [
+        "La sede indicata e' Via Giuseppe Ungaretti 34, 21047 Saronno.",
+        "Il club dichiara oltre 1000 mq.",
+        "La palestra e' aperta 24h/24, 7 giorni su 7.",
+        "La reception e' indicata lunedi'-venerdi' 9:00-21:00, sabato 9:00-17:00, domenica 9:00-13:00."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova FitActive Saronno?",
+          "answer": "La pagina ufficiale indica Via Giuseppe Ungaretti 34, 21047 Saronno."
+        },
+        {
+          "question": "Quali spazi cita la sede?",
+          "answer": "Il sito cita sala attrezzi, sala corsi, aree relax e parcheggio."
+        },
+        {
+          "question": "FitActive Saronno e' aperta 24 ore?",
+          "answer": "Si. La pagina sede indica struttura automatizzata aperta 24h/24, 7 giorni su 7."
+        },
+        {
+          "question": "Quanto costa l'abbonamento online FitActive?",
+          "answer": "La pagina iscrizione indica abbonamento annuale online a 19,90 EUR/mese piu' 79,00 EUR di quota iscrizione vitalizia."
+        }
+      ],
+      "price_info": "Abbonamento online annuale: 19,90 EUR/mese + 79,00 EUR quota iscrizione vitalizia. Abbonamento online biennale: 19,90 EUR/mese con quota iscrizione vitalizia inclusa.",
+      "price_source_url": "https://www.fitactive.it/Home/Iscriviti",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official FitActive Saronno and Iscriviti pages."
+    },
+    {
+      "id": "csv-230",
+      "official_source_url": "https://www.fitactive.it/i-club/varese.php",
+      "editorial_summary": "FitActive Varese si trova in Viale Belforte 5H, nel polo commerciale di Viale Belforte. La pagina ufficiale descrive 1000 mq su due piani, sala attrezzi, sala corsi, aree relax, parcheggio e accesso 24h/24.",
+      "editorial_highlights": [
+        "La sede e' in Viale Belforte 5H, 21100 Varese.",
+        "Il club dichiara 1000 mq su due piani.",
+        "La palestra e' automatizzata e aperta 24h/24, 7 giorni su 7.",
+        "La reception e' indicata lunedi'-venerdi' 9:00-21:00, sabato 9:00-18:00, domenica 9:00-16:00."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova FitActive Varese?",
+          "answer": "La pagina ufficiale indica Viale Belforte 5H, 21100 Varese."
+        },
+        {
+          "question": "Quali spazi cita la sede?",
+          "answer": "Il sito cita sala attrezzi, ampia sala corsi, aree relax e parcheggio."
+        },
+        {
+          "question": "FitActive Varese e' aperta 24 ore?",
+          "answer": "Si. La pagina sede indica struttura automatizzata aperta 24h/24, 7 giorni su 7."
+        },
+        {
+          "question": "Quanto costa l'abbonamento online FitActive?",
+          "answer": "La pagina iscrizione indica abbonamento annuale online a 19,90 EUR/mese piu' 79,00 EUR di quota iscrizione vitalizia."
+        }
+      ],
+      "price_info": "Abbonamento online annuale: 19,90 EUR/mese + 79,00 EUR quota iscrizione vitalizia. Abbonamento online biennale: 19,90 EUR/mese con quota iscrizione vitalizia inclusa.",
+      "price_source_url": "https://www.fitactive.it/Home/Iscriviti",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official FitActive Varese and Iscriviti pages."
+    },
+    {
+      "id": "csv-231",
+      "official_source_url": "https://www.fitactive.it/i-club/FitActive%20Varese%20Saffi.php",
+      "editorial_summary": "FitActive Varese Saffi si trova in Via Aurelio Saffi 88. La pagina ufficiale presenta una sede in prevendita con fitness illimitato, attrezzature cardio e isotoniche, corsi di gruppo, lampade abbronzanti, bevande energetiche, pedane vibranti e poltrone relax.",
+      "editorial_highlights": [
+        "La sede indicata e' Via Aurelio Saffi 88, 21100 Varese.",
+        "La pagina parla di sede in prevendita.",
+        "Gli orari prevendita pubblicati sono lunedi'-venerdi' 10:00-20:00 e sabato 10:00-18:00.",
+        "Il contatto pubblicato e' varese.via.saffi@fitactive.it."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova FitActive Varese Saffi?",
+          "answer": "La pagina ufficiale indica Via Aurelio Saffi 88, 21100 Varese."
+        },
+        {
+          "question": "La sede risulta aperta o in prevendita?",
+          "answer": "La pagina ufficiale la presenta come club in prevendita."
+        },
+        {
+          "question": "Quali orari di prevendita pubblica il sito?",
+          "answer": "La pagina indica lunedi'-venerdi' 10:00-20:00 e sabato 10:00-18:00."
+        },
+        {
+          "question": "Quanto costa l'abbonamento online FitActive?",
+          "answer": "La pagina iscrizione indica abbonamento annuale online a 19,90 EUR/mese piu' 79,00 EUR di quota iscrizione vitalizia."
+        }
+      ],
+      "price_info": "Abbonamento online annuale: 19,90 EUR/mese + 79,00 EUR quota iscrizione vitalizia. Abbonamento online biennale: 19,90 EUR/mese con quota iscrizione vitalizia inclusa.",
+      "price_source_url": "https://www.fitactive.it/Home/Iscriviti",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official FitActive Varese Saffi and Iscriviti pages."
+    },
+    {
+      "id": "csv-236",
+      "official_source_url": "https://fitup.it/busto-arsizio/",
+      "editorial_summary": "FitUP Busto Arsizio si trova in Corso Sempione 194. La pagina ufficiale presenta una palestra aperta 24/7 con sala pesi Technogym, corsi inclusi, coach in sala e corsi come Pilates, GAG e Total Body.",
+      "editorial_highlights": [
+        "La sede indicata e' Corso Sempione 194, Busto Arsizio.",
+        "Il sito comunica apertura 24 ore su 24, 7 giorni su 7.",
+        "I corsi citati nella pagina sono Pilates, GAG e Total Body.",
+        "La reception e' indicata lunedi'-venerdi' 9:00-21:00, sabato 9:00-17:00, domenica 9:00-13:00."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova FitUP Busto Arsizio?",
+          "answer": "La pagina ufficiale indica Corso Sempione 194, Busto Arsizio."
+        },
+        {
+          "question": "FitUP Busto Arsizio e' aperta 24 ore?",
+          "answer": "Si. La pagina sede indica apertura 24 ore su 24, 7 giorni su 7."
+        },
+        {
+          "question": "Quali corsi cita la pagina?",
+          "answer": "La pagina cita Pilates, GAG e Total Body tra i corsi richiesti."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici per l'abbonamento."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official FitUP Busto Arsizio and prova gratuita pages. Public membership prices not found on the reviewed pages."
+    },
+    {
+      "id": "csv-253",
+      "official_source_url": "https://www.ginkgoyoga.it/",
+      "editorial_summary": "Ginkgo Yoga a Varese nasce dall'attivita' di Caterina Fidanza e Chiara Puricelli. Il sito ufficiale presenta Viniyoga, Yoga Nidra, Yoga in gravidanza, Yoga per bambini, meditazione con campane tibetane, costellazioni familiari e incontri legati al benessere.",
+      "editorial_highlights": [
+        "L'associazione dichiara nascita nel dicembre 2014.",
+        "Le discipline pubblicate includono Viniyoga, Yoga Nidra, Yoga in gravidanza e Yoga per bambini.",
+        "Il sito cita anche meditazione con campane tibetane, costellazioni familiari e sciamanesimo.",
+        "La sede pubblicata e' a Varese, con form contatti sul sito ufficiale."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Quali pratiche propone Ginkgo Yoga?",
+          "answer": "Il sito ufficiale cita Viniyoga, Yoga Nidra, Yoga in gravidanza e Yoga per bambini."
+        },
+        {
+          "question": "Quando nasce Ginkgo Yoga?",
+          "answer": "La pagina chi siamo indica dicembre 2014."
+        },
+        {
+          "question": "Chi sono le insegnanti citate dal sito?",
+          "answer": "Il sito presenta Caterina Fidanza e Chiara Puricelli."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Ginkgo Yoga home and courses pages. Public prices not found on the reviewed pages."
+    }
+  ]
+}
