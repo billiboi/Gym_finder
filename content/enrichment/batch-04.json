@@ -1,0 +1,347 @@
+{
+  "batch": "batch-04-official-sites-round-2",
+  "reviewed_at": "2026-04-30",
+  "entries": [
+    {
+      "id": "csv-38",
+      "official_source_url": "https://www.alessandroavettipilates.com/",
+      "editorial_summary": "Alessandro Avetti Pilates e' uno studio Pilates a Casciago con una comunicazione essenziale e centrata sul metodo. Il sito ufficiale organizza le informazioni in sezioni dedicate a studio, lezioni, yoga, recensioni, FAQ, orari e contatti.",
+      "editorial_highlights": [
+        "Il sito ufficiale presenta Alessandro Avetti Pilates come studio specializzato, non come palestra generalista.",
+        "La navigazione include pagine su info, chi e' Alessandro, lo studio, storia del Pilates, lezioni, yoga, recensioni, FAQ, orari e contatti.",
+        "La presenza di sezioni FAQ e orari e' utile per chi vuole capire prima come funziona il percorso.",
+        "La scheda e' adatta a chi cerca Pilates e lavoro posturale in un contesto piu' raccolto rispetto a un fitness club."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di struttura e' Alessandro Avetti Pilates?",
+          "answer": "Dal sito ufficiale emerge uno studio specializzato in Pilates, con sezioni dedicate a lezioni, studio, yoga, FAQ e orari."
+        },
+        {
+          "question": "Il sito pubblica informazioni pratiche?",
+          "answer": "Si. La navigazione ufficiale include Orari, Contatti, FAQ e Recensioni."
+        },
+        {
+          "question": "E' una palestra fitness tradizionale?",
+          "answer": "No. La fonte ufficiale comunica uno studio Pilates con proposta mirata."
+        },
+        {
+          "question": "Come si puo' contattare lo studio?",
+          "answer": "Il sito ufficiale pubblica l'email alessandro.avetti@gmail.com e rimanda anche al profilo Instagram."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Alessandro Avetti Pilates website."
+    },
+    {
+      "id": "csv-44",
+      "official_source_url": "https://www.anantayoga.yoga/",
+      "editorial_summary": "Anantayoga e' un atelier yoga a Lugano, in Via Pico 28. Il sito ufficiale presenta lo yoga come pratica per corpo, mente e consapevolezza, con pagine dedicate a metodo, insegnanti, orari, prezzi, eventi, gallery e contatti.",
+      "editorial_highlights": [
+        "Il sito definisce Anantayoga un atelier per lo yoga a Lugano.",
+        "La pagina principale presenta lo yoga come disciplina che lavora su corpo, mente, equilibrio e armonia.",
+        "La navigazione ufficiale include metodo, insegnanti, orari e prezzi, eventi, gallery e contatti.",
+        "Il footer indica la sede in Via Pico 28 a Lugano e l'email info@anantayoga.yoga."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova Anantayoga?",
+          "answer": "Il footer del sito ufficiale indica Via Pico 28, 6900 Lugano."
+        },
+        {
+          "question": "Il sito pubblica orari e prezzi?",
+          "answer": "Si. Nel menu ufficiale e' presente la sezione Orari e Prezzi."
+        },
+        {
+          "question": "Che approccio allo yoga comunica Anantayoga?",
+          "answer": "Il sito parla di una pratica per coltivare corpo, sensi, mente, equilibrio, armonia e consapevolezza."
+        },
+        {
+          "question": "Anantayoga e' una palestra generalista?",
+          "answer": "No. La fonte ufficiale la presenta come atelier dedicato allo yoga."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Anantayoga website."
+    },
+    {
+      "id": "csv-47",
+      "official_source_url": "https://www.anytimefitness.it/palestra/it-0053/saronno-va-21047/",
+      "editorial_summary": "Anytime Fitness Saronno e' la sede di Saronno della catena Anytime Fitness, in Via Valletta 1. La pagina ufficiale mette in evidenza piano personalizzato, coaching, personal trainer, assistenti di sala, accesso alla rete globale delle palestre e club aperto 24 ore su 24.",
+      "editorial_highlights": [
+        "La pagina ufficiale indica la sede in Via Valletta 1 a Saronno e pubblica il contatto telefonico 3513088497.",
+        "Il club comunica un percorso basato su piano personalizzato, coaching e supporto dello staff.",
+        "La pagina cita accesso a piu' di 4900 palestre nel mondo, aperte 24/7.",
+        "Gli orari staff indicati sono lunedi'-venerdi' 10:00-20:00, sabato 10:00-15:00, domenica senza staff."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova Anytime Fitness Saronno?",
+          "answer": "La pagina ufficiale indica Via Valletta 1, Saronno VA 21047."
+        },
+        {
+          "question": "Anytime Fitness Saronno offre coaching?",
+          "answer": "Si. La pagina parla di coach e piano personalizzato costruito sulle esigenze della persona."
+        },
+        {
+          "question": "La palestra e' aperta 24/7?",
+          "answer": "La pagina ufficiale dice che l'iscrizione comprende accesso a palestre Anytime Fitness aperte 24 ore al giorno, 365 giorni l'anno."
+        },
+        {
+          "question": "Quando e' presente lo staff?",
+          "answer": "Gli orari staff pubblicati sono lunedi'-venerdi' 10:00-20:00, sabato 10:00-15:00 e domenica No Staff."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Anytime Fitness Saronno page."
+    },
+    {
+      "id": "csv-49",
+      "official_source_url": "https://www.arstudiopersonal.ch/",
+      "editorial_summary": "AR Studio Personal e' uno studio di personal training a Lugano guidato da Andrea Raffa. Il sito ufficiale parla di allenamenti in studio e a domicilio, consulenza personalizzata, corsi di gruppo, lezioni individuali e servizi come Pilates, stretching, allenamento funzionale, posturale e riatletizzazione post riabilitazione.",
+      "editorial_highlights": [
+        "Il sito ufficiale presenta Andrea Raffa come diplomato in Scienze motorie dello sport e Kinesiologia.",
+        "I servizi citati includono personal trainer, allenamento a domicilio, consulenza personalizzata, corsi di gruppo e lezioni individuali.",
+        "Tra le lezioni compaiono Pilates AR Wall System, Flexible Stretch, allenamento funzionale, Pilates, ginnastica posturale e riatletizzazione post riabilitazione.",
+        "La pagina contatti indica Via Cantonale 19, c/o Fisioterapia Artemisia, 6900 Lugano."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di studio e' AR Studio Personal?",
+          "answer": "E' uno studio orientato a personal training, allenamento in studio o a domicilio, corsi di gruppo e lezioni individuali."
+        },
+        {
+          "question": "Quali lezioni sono indicate sul sito?",
+          "answer": "Il sito cita Pilates, Flexible Stretch, allenamento funzionale, ginnastica posturale, riatletizzazione post riabilitazione e preparazione atletica."
+        },
+        {
+          "question": "Dove si trova AR Studio Personal?",
+          "answer": "La pagina ufficiale indica Via Cantonale 19, c/o Fisioterapia Artemisia, 6900 Lugano."
+        },
+        {
+          "question": "Il sito offre una consulenza iniziale?",
+          "answer": "Si. La pagina parla di una consulenza gratuita di 30 minuti."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official AR Studio Personal website."
+    },
+    {
+      "id": "csv-50",
+      "official_source_url": "https://www.area51wellnessclub.com/",
+      "editorial_summary": "Area 51 Wellness Club e' una palestra a Saronno in Via Busnelli 44. Il sito ufficiale punta su coach presenti, programmi costruiti sul cliente e percorsi orientati ai risultati, con sezioni dedicate a club, corsi, holistic, cycling, team e fit labs.",
+      "editorial_highlights": [
+        "La home ufficiale descrive Area 51 come wellness club con coach dedicati ad ogni sessione.",
+        "Il sito parla di programmi costruiti sul cliente e di un percorso pensato per amplificare i risultati.",
+        "La navigazione include corsi, holistic, cycling e cyclex, A51-Team e Fit Labs.",
+        "Gli orari pubblicati sono lunedi'-venerdi' 6:30-22:00, sabato e domenica 9:00-19:00."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova Area 51 Wellness Club?",
+          "answer": "Il sito ufficiale indica Via Busnelli 44 a Saronno."
+        },
+        {
+          "question": "Che tipo di approccio comunica Area 51?",
+          "answer": "La pagina parla di coach dedicati, programmi costruiti sul cliente e percorso orientato ai risultati."
+        },
+        {
+          "question": "Quali aree di attivita' compaiono sul sito?",
+          "answer": "Nel menu ufficiale compaiono corsi, holistic, cycling e cyclex, A51-Team e Fit Labs."
+        },
+        {
+          "question": "Quali sono gli orari pubblicati?",
+          "answer": "Lunedi'-venerdi' 6:30-22:00, sabato e domenica 9:00-19:00."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Area 51 Wellness Club website."
+    },
+    {
+      "id": "csv-51",
+      "official_source_url": "https://www.armgympalestre.com/",
+      "editorial_summary": "ArmGym Palestre e' una palestra a Olgiate Olona, in Via San Giorgio. Il sito ufficiale la descrive come centro moderno e spazioso da 1200 mq, con attrezzature Hammer Strength, linee MTS e Select made in USA, e un servizio di massoterapia affiancato all'allenamento.",
+      "editorial_highlights": [
+        "La home ufficiale indica Via San Giorgio a Olgiate Olona, email e telefono della palestra.",
+        "Il sito parla di 1200 mq dedicati a benessere e miglioramento fisico.",
+        "ArmGym si presenta come Centro Ufficiale Hammer Strength con attrezzature delle linee MTS e Select.",
+        "La pagina promuove anche un servizio di massoterapia per tensioni, dolori, rigidita', circolazione e prevenzione infortuni."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova ArmGym Palestre?",
+          "answer": "Il sito ufficiale indica Via San Giorgio a Olgiate Olona."
+        },
+        {
+          "question": "Quanto e' grande ArmGym?",
+          "answer": "La pagina ufficiale parla di 1200 mq dedicati al benessere e al miglioramento fisico."
+        },
+        {
+          "question": "Che attrezzature usa ArmGym?",
+          "answer": "Il sito dichiara attrezzature Hammer Strength, con linee MTS e Select made in USA."
+        },
+        {
+          "question": "ArmGym offre servizi oltre alla sala pesi?",
+          "answer": "Si. Il sito presenta anche un servizio di massoterapia."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official ArmGym Palestre website."
+    },
+    {
+      "id": "csv-53",
+      "official_source_url": "https://www.ascofit.ch/",
+      "editorial_summary": "Ascofit Fitness Losone e' un fitness club a Losone con nuova sede in Via Locarno 25. Il sito ufficiale parla di ambiente famigliare, personal trainer, programmi workout, certificazione Qualitop/QualiCert e abbonamenti flessibili da 1 giorno a 12 mesi.",
+      "editorial_highlights": [
+        "Il sito ufficiale presenta Ascofit come Fitness Club & Body Aesthetics nel cuore di Losone.",
+        "La pagina indica certificazione Qualitop, utile per possibili rimborsi da casse malati.",
+        "Sono pubblicati prezzi e formule: 12 mesi, 6 mesi, 3 mesi, 1 mese, 1 settimana e 1 giorno.",
+        "La sede ufficiale e' Via Locarno 25, 6616 Losone, con parcheggi disponibili."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova Ascofit Fitness Losone?",
+          "answer": "Il sito ufficiale indica Via Locarno 25, 6616 Losone, dietro all'ufficio postale."
+        },
+        {
+          "question": "Ascofit pubblica i prezzi?",
+          "answer": "Si. Il sito riporta diverse formule, tra cui 12 mesi, 6 mesi, 3 mesi, 1 mese, 1 settimana e 1 giorno."
+        },
+        {
+          "question": "Ascofit e' certificata?",
+          "answer": "La pagina ufficiale indica certificazione Qualitop/QualiCert, collegata a possibili contributi da casse malati."
+        },
+        {
+          "question": "Quali sono gli orari palestra con badge?",
+          "answer": "Il sito indica lunedi'-venerdi' 6:00-22:30 e sabato-domenica 7:00-21:00, con tempo di uscita esteso dopo la chiusura."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Ascofit website."
+    },
+    {
+      "id": "csv-55",
+      "official_source_url": "https://www.judobusentradate.it/",
+      "editorial_summary": "Judo Bu-Sen Tradate e' una scuola con proposta centrata sul judo e corsi fitness olistici. Il sito ufficiale indica Judo dai 4 anni e cita anche spinning, GAG, Total Crunch, Body Burn & Tone, difesa personale, Pilates, Tabata, ginnastica posturale, gioco del Go e gruppo escursione.",
+      "editorial_highlights": [
+        "La home ufficiale mette in evidenza Judo dai 4 anni.",
+        "Il menu distingue corsi di Judo e Fitness Olistici.",
+        "Tra le attivita' citate compaiono spinning, GAG, Total Crunch, Body Burn & Tone, difesa personale, Pilates, Tabata e ginnastica posturale.",
+        "Il sito pubblica anche sezioni su chi siamo, dove siamo, contatti e ultime novita'."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Da che eta' si puo' iniziare judo secondo il sito?",
+          "answer": "La home ufficiale indica Judo dai 4 anni."
+        },
+        {
+          "question": "Judo Bu-Sen propone solo judo?",
+          "answer": "No. Il sito cita anche fitness olistici, spinning, GAG, Pilates, Tabata, ginnastica posturale e difesa personale."
+        },
+        {
+          "question": "Il sito pubblica informazioni di contatto?",
+          "answer": "Si. Nel footer ufficiale compare l'email judobusentradate@libero.it."
+        },
+        {
+          "question": "Che tipo di scheda e' utile aspettarsi?",
+          "answer": "Una scheda mista: scuola di judo con corsi complementari fitness e benessere."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Judo Bu-Sen Tradate website."
+    },
+    {
+      "id": "csv-56",
+      "official_source_url": "https://www.kokorodai.it/",
+      "editorial_summary": "Kokoro Dai e' una palestra a Cairate dedicata ad arti marziali, sport da combattimento e fitness. Il sito ufficiale la presenta come punto di riferimento dal 1991, con corsi per uomini, donne e bambini, area combat, sala funzionale, percorsi agonistici e personal training.",
+      "editorial_highlights": [
+        "La home ufficiale parla di arti marziali, sport da combattimento, lotta, difesa e fitness.",
+        "Le discipline citate includono Karate, Judo, Brasilian Jiu Jitsu, Taekwondo, Muay Thai, Pugilato, MMA, Lotta olimpica, Krav Maga, Tai So Do, circuiti funzionali e personal training.",
+        "Il sito indica 330 mq di sala e 50 mq di area funzionale.",
+        "La palestra comunica percorsi amatoriali e agonistici, con partecipazione a competizioni regionali, nazionali e internazionali."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Quali discipline propone Kokoro Dai?",
+          "answer": "Il sito cita karate, judo, BJJ, taekwondo, muay thai, pugilato, MMA, lotta olimpica, krav maga, Tai So Do, circuiti funzionali e personal training."
+        },
+        {
+          "question": "Kokoro Dai lavora anche con bambini?",
+          "answer": "Si. La pagina parla di corsi per uomini, donne e bambini e di settore giovanile."
+        },
+        {
+          "question": "La palestra ha area combat?",
+          "answer": "Si. Il sito indica una zona ring e sei sacchi per l'allenamento."
+        },
+        {
+          "question": "E' possibile fare una lezione di prova?",
+          "answer": "La pagina ufficiale invita a contattare la palestra per una lezione di prova gratuita."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Kokoro Dai website."
+    },
+    {
+      "id": "csv-57",
+      "official_source_url": "https://www.raggioriente.it/",
+      "editorial_summary": "Raggi d'Oriente e' un'associazione sportiva dilettantistica a Busto Arsizio attiva dal 2004. Il sito ufficiale la descrive come centro per sport, benessere, arte e danza, con corsi di yoga, Pilates, ginnastica posturale, postural mobility, danza del ventre e pizzica salentina.",
+      "editorial_highlights": [
+        "Il sito ufficiale definisce Raggi d'Oriente un centro per sport, benessere, arte e danza nel cuore di Busto Arsizio dal 2004.",
+        "Le attivita' citate in home includono yoga, Pilates, ginnastica posturale, mobility, danza del ventre e pizzica salentina.",
+        "La pagina pubblica calendario corsi e indica prova gratuita solo su prenotazione.",
+        "La proposta e' piu' orientata a benessere, movimento consapevole e danza che a sala pesi tradizionale."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Quali corsi propone Raggi d'Oriente?",
+          "answer": "Il sito cita yoga, Pilates, ginnastica posturale, postural mobility, danza del ventre e pizzica salentina."
+        },
+        {
+          "question": "Da quando e' attiva Raggi d'Oriente?",
+          "answer": "La home ufficiale indica attivita' dal 2004 nel cuore di Busto Arsizio."
+        },
+        {
+          "question": "E' prevista una prova gratuita?",
+          "answer": "Il sito indica prova gratuita solo su prenotazione."
+        },
+        {
+          "question": "Che tipo di pubblico puo' interessarsi a questa scheda?",
+          "answer": "Chi cerca yoga, Pilates, posturale, mobility o danza in un centro orientato a benessere e movimento."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Raggi d'Oriente website."
+    },
+    {
+      "id": "csv-58",
+      "official_source_url": "https://www.united-sports-ceresio.it/",
+      "editorial_summary": "United Sports Ceresio e' un'associazione sportiva dedicata a Krav Maga e difesa personale tra Porlezza, Dongo e il Lago di Como. Il sito ufficiale descrive un allenamento pratico per adulti e ragazzi, basato su prevenzione, consapevolezza, gestione della distanza e uscita sicura dalle situazioni di rischio.",
+      "editorial_highlights": [
+        "Il sito ufficiale presenta corsi di Krav Maga e difesa personale reale a Porlezza e Dongo.",
+        "Il metodo viene descritto come preparazione civile, non sport competitivo.",
+        "Sono previsti corsi per adulti e percorsi per ragazzi dedicati anche a prevenzione del bullismo e gestione del conflitto.",
+        "La pagina pubblica sedi e orari: Dongo il venerdi' e Porlezza il lunedi', con fasce ragazzi e adulti."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che cosa insegna United Sports Ceresio?",
+          "answer": "Il sito ufficiale parla di Krav Maga e difesa personale reale, con focus su sicurezza personale nel contesto civile."
+        },
+        {
+          "question": "I corsi sono anche per ragazzi?",
+          "answer": "Si. La pagina cita percorsi per ragazzi, prevenzione del bullismo e gestione del conflitto."
+        },
+        {
+          "question": "Dove opera United Sports Ceresio?",
+          "answer": "Il sito indica Porlezza, Dongo e area Lago di Como."
+        },
+        {
+          "question": "Qual e' l'obiettivo del metodo?",
+          "answer": "La fonte ufficiale parla di riconoscere il pericolo, gestire la distanza e tornare a casa in sicurezza."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official United Sports Ceresio website."
+    }
+  ]
+}
