@@ -1,0 +1,347 @@
+{
+  "batch": "batch-05-official-sites-round-3",
+  "reviewed_at": "2026-04-30",
+  "entries": [
+    {
+      "id": "csv-61",
+      "official_source_url": "https://www.athleticformch.com/",
+      "editorial_summary": "Athletic Form e' una proposta di personal fitness training a Chiasso. Il sito ufficiale comunica un percorso individuale pensato per chi ha poco tempo, poca esperienza sportiva, mal di schiena o bisogno di guida negli esercizi, con possibilita' di prenotare una prova gratuita.",
+      "editorial_highlights": [
+        "La home ufficiale presenta Athletic Form come Personal Fitness Trainer.",
+        "La comunicazione parla a persone con poco tempo, poca esperienza sportiva, difficolta' negli esercizi o mal di schiena.",
+        "Il sito invita a prenotare una prova gratuita.",
+        "La pagina contatti indica Via degli Albrici 7 a Chiasso, telefono svizzero, telefono italiano ed email athleticform.ch@gmail.com."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di servizio offre Athletic Form?",
+          "answer": "Il sito ufficiale presenta Athletic Form come servizio di personal fitness training."
+        },
+        {
+          "question": "Dove si trova Athletic Form?",
+          "answer": "La pagina ufficiale indica Via degli Albrici 7, 6830 Chiasso."
+        },
+        {
+          "question": "E' prevista una prova gratuita?",
+          "answer": "Si. La home contiene un invito a prenotare la prova gratuita."
+        },
+        {
+          "question": "A chi puo' essere utile questa scheda?",
+          "answer": "A chi cerca un percorso guidato e personale, soprattutto se ha poco tempo, poca esperienza o bisogno di imparare gli esercizi in modo corretto."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Athletic Form website."
+    },
+    {
+      "id": "csv-62",
+      "official_source_url": "https://www.athletikclub90.ch/",
+      "editorial_summary": "Athletik Club 90 e' un centro fitness a Sementina con 1000 m2 divisi in tre sezioni: fitness, corsi e relax. Il sito ufficiale lo descrive come ambiente semplice e famigliare, con team qualificato, servizi mirati e riconoscimento dalle casse malati tramite marchio Qualicert.",
+      "editorial_highlights": [
+        "Il sito ufficiale indica una superficie di 1000 m2.",
+        "Il centro e' diviso in tre sezioni: Fitness, Corsi e Relax.",
+        "La pagina parla di team qualificato e professionale, con servizi mirati al raggiungimento degli obiettivi.",
+        "Athletik Club 90 dichiara appartenenza alla Federazione Svizzera dei Centri Fitness e di Salute e riconoscimento casse malati con Qualicert."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova Athletik Club 90?",
+          "answer": "Il sito ufficiale indica Via Pobbia 6, CP 10, 6514 Sementina."
+        },
+        {
+          "question": "Com'e' organizzato il centro?",
+          "answer": "La pagina ufficiale parla di tre sezioni: Fitness, Corsi e Relax."
+        },
+        {
+          "question": "Athletik Club 90 e' riconosciuto dalle casse malati?",
+          "answer": "Il sito indica riconoscimento dalle casse malati, garantito dal marchio Qualicert."
+        },
+        {
+          "question": "Che atmosfera comunica il sito?",
+          "answer": "La fonte ufficiale parla di un ambiente semplice e famigliare, con team qualificato."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Athletik Club 90 website."
+    },
+    {
+      "id": "csv-64",
+      "official_source_url": "https://aurafitnesslounge.ch/",
+      "editorial_summary": "Aura Fitness Lounge & Spa e' una palestra con area spa ad Arbedo-Castione, vicino alla stazione e allo svincolo autostradale di Bellinzona Nord. Il sito ufficiale mette insieme palestra h24 per abbonati, attrezzature moderne, personal training, circuit training, preparazione atletica, spa, massaggi e private spa.",
+      "editorial_highlights": [
+        "La home ufficiale parla di palestra aperta 24 ore su 24 per abbonati con braccialetto.",
+        "Il sito combina fitness e benessere: palestra, personal training, circuit training, preparazione atletica, spa, massaggi e private spa.",
+        "La posizione viene descritta ad Arbedo-Castione, a pochi minuti da stazione ferroviaria e svincolo autostradale Bellinzona Nord.",
+        "La pagina indica orari trainer e spa, indirizzo in Via San Gottardo 24 e contatto info@aurafitnesslounge.ch."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova Aura Fitness Lounge & Spa?",
+          "answer": "Il sito ufficiale indica Via San Gottardo 24, CH-6532 Castione."
+        },
+        {
+          "question": "La palestra e' aperta h24?",
+          "answer": "La pagina ufficiale indica palestra aperta 24 ore su 24 per gli abbonati con braccialetto."
+        },
+        {
+          "question": "Quali servizi offre Aura?",
+          "answer": "Il sito cita allenamenti in palestra, circuit training, personal training, preparazione atletica, spa, massaggi e private spa."
+        },
+        {
+          "question": "Ci sono orari distinti per spa e trainer?",
+          "answer": "Si. Il sito pubblica orari dei personal trainer e orari della spa separati."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Aura Fitness Lounge & Spa website."
+    },
+    {
+      "id": "csv-65",
+      "official_source_url": "https://www.ayahexperience.com/",
+      "editorial_summary": "AYAH Experience e' un progetto yoga e wellness nato dall'incontro fra filosofia tradizionale dello yoga e ospitalita' di fascia alta. Il sito ufficiale parla di esperienze su misura per hotel, gruppi privati, aziende, sessioni individuali, teenager e senior yoga, con focus su mindfulness e meditazione.",
+      "editorial_highlights": [
+        "Il sito ufficiale definisce AYAH come Aisha's Yoga Awareness and Hospitality.",
+        "La proposta unisce yoga, mindfulness e meditazione in contesti curati, anche per hotel di fascia alta.",
+        "Sono citati programmi per luxury hotel, gruppi privati, corporate wellness, sessioni individuali, teen e senior yoga.",
+        "La pagina presenta un approccio inclusivo, aperto a tutti indipendentemente da eta', corpo, cultura, genere o nazionalita'."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che cosa offre AYAH Experience?",
+          "answer": "Il sito ufficiale parla di esperienze yoga, mindfulness e meditazione su misura."
+        },
+        {
+          "question": "AYAH lavora solo con lezioni individuali?",
+          "answer": "No. La pagina cita hotel, gruppi privati, aziende, retreat, team-building e sessioni individuali."
+        },
+        {
+          "question": "L'approccio e' adatto a principianti?",
+          "answer": "Si. Il sito dice che le classi sono adatte a tutti i livelli."
+        },
+        {
+          "question": "Come si contatta AYAH?",
+          "answer": "La pagina ufficiale pubblica telefono +39 375 635 3202 ed email ayahexperience@gmail.com."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official AYAH Experience website."
+    },
+    {
+      "id": "csv-71",
+      "official_source_url": "https://b-arena.ch/",
+      "editorial_summary": "B-Arena e' un centro sportivo a Sementina con padel, squash, badminton e attivita' come hip hop, kung fu, balli caraibici e Pilates. Il sito ufficiale consente la prenotazione online, pubblica tariffe dettagliate dei campi e indica 8 campi da padel, di cui 6 interni e 2 esterni.",
+      "editorial_highlights": [
+        "Il sito ufficiale segnala riservazioni online con tabellone e prenotazione campo.",
+        "La struttura dispone di 8 campi di padel: 6 interni e 2 esterni, di cui uno singolo.",
+        "Sono pubblicate tariffe per padel, squash e badminton, oltre a noleggio racchette e vendita palline.",
+        "La pagina indica anche attivita' come hip hop, kung fu, balli caraibici e Pilates, con contatti dei referenti."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova B-Arena?",
+          "answer": "Il sito ufficiale indica Via al Ticino 44, CH-6514 Sementina."
+        },
+        {
+          "question": "Quanti campi da padel ha B-Arena?",
+          "answer": "La pagina ufficiale parla di 8 campi: 6 interni e 2 esterni, di cui uno singolo."
+        },
+        {
+          "question": "Si puo' prenotare online?",
+          "answer": "Si. Il sito mette in evidenza riservazioni online e tabellone."
+        },
+        {
+          "question": "Quali altre attivita' compaiono sul sito?",
+          "answer": "Oltre a padel, squash e badminton, la pagina cita hip hop, kung fu, balli caraibici e Pilates."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official B-Arena website."
+    },
+    {
+      "id": "csv-74",
+      "official_source_url": "https://belady.ch/",
+      "editorial_summary": "Belady e' un centro fitness per sole donne nel cuore di Lugano. Il sito ufficiale lo descrive come ambiente riservato, non esposto, progettato per privacy e comfort, con metodo che unisce analisi, allenamento mirato e rigenerazione controllata.",
+      "editorial_highlights": [
+        "La home ufficiale presenta Belady come centro fitness per sole donne nel cuore di Lugano.",
+        "La proposta e' costruita su privacy, comfort e ambiente dedicato esclusivamente alla donna.",
+        "I percorsi citati includono One to One, lezioni online one to one, Lady Slim, Lady Power, Lady Pregnant, Pilates Reformer e Open Studio.",
+        "Il sito indica certificazione QualiCert e riconoscimento/convenzione con casse malati."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova Belady?",
+          "answer": "Il sito ufficiale indica Via Serafino Balestra 9, 6900 Lugano."
+        },
+        {
+          "question": "Belady e' aperto anche agli uomini?",
+          "answer": "No. La home ufficiale lo definisce centro fitness per sole donne."
+        },
+        {
+          "question": "Quali percorsi propone Belady?",
+          "answer": "Il sito cita One to One, online one to one, Lady Slim, Lady Power, Lady Pregnant, Pilates Reformer e Open Studio."
+        },
+        {
+          "question": "Belady e' riconosciuto dalle casse malati?",
+          "answer": "Il footer ufficiale indica centro certificato QualiCert e riconosciuto/convenzionato con tutte le casse malati."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Belady website."
+    },
+    {
+      "id": "csv-78",
+      "official_source_url": "https://www.byoga.org/",
+      "editorial_summary": "BhagaYoga e' una scuola yoga a Castellanza che propone Hatha, Ashtanga, Vinyasa, Odaka Yoga e Restorative per tutti i livelli e tutte le eta'. Il sito ufficiale mette l'accento su asana, respiro, allineamenti, meditazione e filosofia adattati alle esigenze di ogni allievo.",
+      "editorial_highlights": [
+        "La scuola propone corsi di Hatha, Ashtanga, Vinyasa, Odaka Yoga e Restorative.",
+        "Il sito ufficiale specifica che i corsi sono per tutti i livelli e tutte le eta'.",
+        "La comunicazione parla di clima conviviale e sereno e insegnanti professionali e dedicati.",
+        "La missione dichiarata e' portare equilibrio e armonia al quotidiano, aumentando consapevolezza di corpo, salute e benessere."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Quali stili yoga propone BhagaYoga?",
+          "answer": "Il sito ufficiale cita Hatha, Ashtanga, Vinyasa, Odaka Yoga, Yin e Restorative."
+        },
+        {
+          "question": "BhagaYoga e' adatta ai principianti?",
+          "answer": "Si. La pagina indica corsi per tutti i livelli e tutte le eta'."
+        },
+        {
+          "question": "Il sito pubblica orari e abbonamenti?",
+          "answer": "Si. Nel menu ufficiale sono presenti Orario e Abbonamenti."
+        },
+        {
+          "question": "Che approccio comunica la scuola?",
+          "answer": "Il sito parla di asana, respiro, allineamenti, meditazione e filosofia adattati alle esigenze dell'allievo."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official BhagaYoga website."
+    },
+    {
+      "id": "csv-79",
+      "official_source_url": "https://www.bienfitstudio.ch/",
+      "editorial_summary": "Bienfitstudio e' uno studio di personal training a Lugano specializzato nell'allenamento individuale. Il sito ufficiale parla di percorsi mirati per dimagrimento, allenamento posturale, allenamento al femminile, allenamento funzionale personalizzato, gambe e glutei, test della composizione corporea e programmazione dell'allenamento.",
+      "editorial_highlights": [
+        "La home ufficiale presenta Bien Fit Studio come personal coach per allenamento mirato.",
+        "Il sito descrive il personal trainer come figura che ascolta, definisce obiettivi, costruisce il percorso e monitora i progressi.",
+        "Le aree indicate includono dimagrimento, posturale, metabolico, femminile, gambe e glutei, test composizione corporea e programmazione.",
+        "La pagina contatti indica Via A. Vanoni 7 a Lugano, orari lunedi'-venerdi' 08:00-19:00 e sabato 08:00-12:00."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di studio e' Bienfitstudio?",
+          "answer": "Il sito ufficiale lo presenta come studio specializzato nell'allenamento individuale e personal training."
+        },
+        {
+          "question": "Quali obiettivi di allenamento sono citati?",
+          "answer": "Dimagrimento, allenamento posturale, metabolico, al femminile, gambe e glutei, test della composizione corporea e programmazione dell'allenamento."
+        },
+        {
+          "question": "Dove si trova Bienfitstudio?",
+          "answer": "Il sito indica Via A. Vanoni 7 a Lugano."
+        },
+        {
+          "question": "Bienfitstudio ha riconoscimenti qualita'?",
+          "answer": "Nel footer del sito compare un riferimento al riconoscimento QualiCert."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Bienfitstudio website."
+    },
+    {
+      "id": "csv-80",
+      "official_source_url": "https://www.biofitclub.ch/",
+      "editorial_summary": "Biofit Club Lugano propone un protocollo integrato chiamato 4 Systems Project, che unisce fitness/EMS, criosauna, camera iperbarica e nutrizione su DNA. Il sito ufficiale parla di percorsi guidati, monitorati e progettati per risultati sostenibili nel tempo.",
+      "editorial_highlights": [
+        "Il sito ufficiale presenta il 4 Systems Project come protocollo strutturato, non come insieme di trattamenti isolati.",
+        "I quattro sistemi sono Fuoco - Fitness/EMS, Acqua - Criosauna, Aria - Camera iperbarica e Terra - nutrizione su DNA.",
+        "La parte Fitness/EMS e' descritta come allenamento mirato per forza, tono, metabolismo e postura.",
+        "La pagina invita a fissare una valutazione gratuita e pubblica il contatto telefonico +41 76 805 08 13."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che cosa distingue Biofit Club?",
+          "answer": "Il sito ufficiale parla di un protocollo 4 Systems che integra fitness/EMS, criosauna, camera iperbarica e nutrizione su DNA."
+        },
+        {
+          "question": "Che cosa comprende il sistema Fitness/EMS?",
+          "answer": "La pagina lo collega a forza, tono, metabolismo, postura e protocolli strength/cardio."
+        },
+        {
+          "question": "Biofit offre solo palestra?",
+          "answer": "No. Il sito combina allenamento EMS, recupero con criosauna, camera iperbarica e nutrizione personalizzata."
+        },
+        {
+          "question": "E' prevista una valutazione iniziale?",
+          "answer": "Si. La home invita a fissare una valutazione gratuita."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Biofit Club website."
+    },
+    {
+      "id": "csv-82",
+      "official_source_url": "https://www.bodhireformer.ch/",
+      "editorial_summary": "BODHI Reformer e' uno studio boutique di Pilates Reformer a Mendrisio, in Corso Bello 2. Il sito ufficiale propone lezioni in piccoli gruppi con insegnanti certificati, prenotazione tramite app e pacchetto nuovi allievi da 10 lezioni.",
+      "editorial_highlights": [
+        "La home ufficiale presenta BODHI come studio boutique di Reformer Pilates nel cuore di Mendrisio.",
+        "Le lezioni si svolgono in piccoli gruppi con insegnanti certificati e attrezzature professionali.",
+        "Il sito cita Reformer, Tower, Circuito, Jumpboard, A.G.A. e Pilates posturale e miofasciale, anche pre e post gravidanza.",
+        "La pagina pubblica pacchetto nuovi allievi 10 lezioni a 295 CHF, app di prenotazione, orari e contatti."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova BODHI Reformer?",
+          "answer": "Il sito ufficiale indica C.so Bello 2 a Mendrisio."
+        },
+        {
+          "question": "Che tipo di lezioni offre BODHI?",
+          "answer": "La pagina parla di Pilates Reformer in piccoli gruppi, con insegnanti certificati e attrezzature professionali."
+        },
+        {
+          "question": "Sono disponibili lezioni per nuovi allievi?",
+          "answer": "Si. Il sito propone un pacchetto nuovi allievi da 10 lezioni a 295 CHF."
+        },
+        {
+          "question": "Quali attrezzature o metodi sono citati?",
+          "answer": "Reformer, Tower, Circuito, Jumpboard, A.G.A. e Pilates posturale e miofasciale."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official BODHI Reformer website."
+    },
+    {
+      "id": "csv-83",
+      "official_source_url": "https://www.bb-bodybalance.it/",
+      "editorial_summary": "Body Balance SSD a Venegono Inferiore e' uno spazio raccolto e riservato dedicato alla ginnastica finalizzata al fitness e alla salute con metodo Pilates Reformer e Matwork. Il sito ufficiale evidenzia Pilates contemporaneo, personalizzazione degli esercizi, sicurezza, prevenzione e miglioramento globale.",
+      "editorial_highlights": [
+        "La pagina ufficiale presenta Body Balance come Pilates Boutique.",
+        "Lo studio lavora con metodo Pilates Reformer e Matwork.",
+        "Il sito descrive il Pilates contemporaneo come approccio flessibile, adattabile e integrato con biomeccanica, fisioterapia e allenamento fisico.",
+        "La sede indicata e' Via Fratelli Kennedy 19, 21040 Venegono Inferiore VA."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova Body Balance SSD?",
+          "answer": "Il sito ufficiale indica Via Fratelli Kennedy 19, 21040 Venegono Inferiore VA."
+        },
+        {
+          "question": "Che metodo usa Body Balance?",
+          "answer": "La pagina parla di Pilates Reformer e Matwork, con approccio di Pilates contemporaneo."
+        },
+        {
+          "question": "Il percorso e' personalizzato?",
+          "answer": "Si. Il sito indica valutazione delle esigenze individuali e programma su misura."
+        },
+        {
+          "question": "E' prevista una lezione di prova?",
+          "answer": "La pagina ufficiale invita a richiedere informazioni e segnala opportunita' di provare una lezione con sconto 40%."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Body Balance SSD website."
+    }
+  ]
+}
