@@ -1,0 +1,322 @@
+{
+  "batch": "batch-24-editorial-and-prices-pilates-piscine",
+  "reviewed_at": "2026-05-02",
+  "entries": [
+    {
+      "id": "csv-475",
+      "official_source_url": "https://www.webpilateslab.com/",
+      "editorial_summary": "Pilates Lab Busto Arsizio e' uno studio di Pilates Classico con sale attrezzate e lezioni anche in inglese. Il sito ufficiale lo presenta come primo centro di Pilates Classico tra Milano e Varese, con attenzione al metodo originale di Joseph Pilates, al controllo del movimento e al lavoro su forza, flessibilita' e postura.",
+      "editorial_highlights": [
+        "Il sito comunica uno studio attrezzato per il Pilates Classico.",
+        "Le lezioni sono proposte anche in inglese.",
+        "La filosofia dichiarata e' legata al metodo originale di Joseph Pilates.",
+        "La comunicazione dello studio insiste su forza, flessibilita', ritmo, respiro e postura."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di Pilates propone Pilates Lab?",
+          "answer": "Il sito presenta Pilates Lab come centro di Pilates Classico, con sale attrezzate e lavoro sul metodo originale."
+        },
+        {
+          "question": "Le lezioni sono disponibili anche in inglese?",
+          "answer": "Si'. La home indica che le lezioni si tengono anche in inglese."
+        },
+        {
+          "question": "Qual e' l'obiettivo del percorso?",
+          "answer": "Il sito parla di forza, flessibilita', postura, controllo del movimento, ritmo e respirazione."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Pilates Lab website. Public prices not found."
+    },
+    {
+      "id": "csv-477",
+      "official_source_url": "https://www.pilatessaronno.com/",
+      "editorial_summary": "Pilates Saronno di Laura Vidali e' uno studio a Saronno con sala Matwork e sala Attrezzi. Il sito ufficiale presenta corsi a corpo libero, macchine Pilates, lezioni individuali, lezioni in coppia o piccoli gruppi, stretching, yoga, posturale, Spinefitter, Slowfit e percorsi per diverse eta' ed esigenze.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Alessandro Volta 116, 21047 Saronno.",
+        "Lo studio e' aperto dal lunedi' al venerdi' dalle 8:00 alle 21:00 e anche il sabato.",
+        "I corsi Matwork sono a numero chiuso, massimo 8-10 persone.",
+        "I corsi in sala attrezzi sono a numero chiuso, massimo 4-5 persone."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che corsi propone Pilates Saronno?",
+          "answer": "Il sito cita corsi a corpo libero, sala attrezzi, lezioni individuali, lezioni in coppia, piccoli gruppi, stretching, yoga e posturale."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il sito indica Via Alessandro Volta 116, 21047 Saronno."
+        },
+        {
+          "question": "I gruppi sono numerosi?",
+          "answer": "No. Il sito indica massimo 8-10 persone per Matwork e massimo 4-5 persone per sala attrezzi."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Pilates Saronno home, studio, corsi and profile pages. Public prices not found."
+    },
+    {
+      "id": "csv-481",
+      "official_source_url": "https://www.acquatic.ch/",
+      "editorial_summary": "Acquatic Club Ticino e' una scuola di nuoto attiva in piu' piscine del Ticino, con corsi per bebe', bambini, ragazzi, adulti e fitness acquatico. Il sito ufficiale la presenta come prima scuola di nuoto in Ticino certificata aQuality da swimsports.ch, attiva dal 1989.",
+      "editorial_highlights": [
+        "Le piscine pubblicate includono Pregassona, Sant'Antonino, Biasca, Sementina, Stabio, Gerra Piano e Airolo.",
+        "I corsi comprendono bebe' 0-3 anni, acquagiocando, nuoto ragazzi, preagonistico, acquagym, Aquafit e acquapilates.",
+        "Il sito indica riconoscimento dalle casse malati e certificazione qualitativa.",
+        "La pagina iscrizioni pubblica corsi adulti con durata e prezzo per ciclo."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che corsi offre Acquatic Club Ticino?",
+          "answer": "Il sito cita corsi per bebe', bambini, ragazzi, adulti, preagonistica, acquagym, Aquafit e acquapilates."
+        },
+        {
+          "question": "Dove si svolgono i corsi?",
+          "answer": "Il sito indica piu' piscine in Ticino, tra cui Pregassona, Sant'Antonino, Biasca, Sementina, Stabio, Gerra Piano e Airolo."
+        },
+        {
+          "question": "La scuola e' certificata?",
+          "answer": "Si'. Il sito comunica certificazione aQuality.ch da swimsports.ch."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Si'. Le pagine di iscrizione pubblicano esempi di corsi adulti con numero lezioni e prezzo."
+        }
+      ],
+      "price_info": "Esempi corsi adulti pubblicati: Aquafit Sementina 11 lezioni CHF 319; Aquafit Biasca 9 lezioni CHF 202.50; Acquagym Stabio 11 lezioni CHF 258.50.",
+      "price_source_url": "https://manager.acquatic.ch/iscrizioni/corsi-per-adulti/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Acquatic Club Ticino home, about, piscine and adult course registration pages."
+    },
+    {
+      "id": "csv-482",
+      "official_source_url": "https://www.lombardianuoto.it/impianti/busto-garolfo/",
+      "editorial_summary": "Piscina Comunale di Busto Garolfo e' gestita da Lombardia Nuoto. Il sito ufficiale presenta piscina coperta da 25 metri con 8 corsie, vasca didattica, piscina scoperta, vasca ludica estiva, corsi nuoto, acquafitness, palestra e lido estivo.",
+      "editorial_highlights": [
+        "La piscina coperta misura 25 metri, con 8 corsie e profondita' 1,50 m.",
+        "La vasca didattica misura 10 x 7 metri.",
+        "La piscina scoperta misura 50 x 21 metri.",
+        "Il sito pubblica sezioni dedicate a nuoto libero, corsi nuoto, acquafitness, palestra e lido estivo."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che vasche ha la Piscina di Busto Garolfo?",
+          "answer": "Il sito Lombardia Nuoto cita piscina coperta 25 m, vasca didattica, piscina scoperta 50 x 21 m e vasca ludica estiva."
+        },
+        {
+          "question": "Che attivita' sono pubblicate?",
+          "answer": "La pagina cita nuoto libero, corsi di nuoto, acquafitness, palestra e lido estivo."
+        },
+        {
+          "question": "Chi gestisce l'impianto?",
+          "answer": "La pagina e' pubblicata da Lombardia Nuoto SSD."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Per il lido estivo sono pubblicate tariffe su sito dedicato collegato alla struttura."
+        }
+      ],
+      "price_info": "Lido estivo Busto Garolfo: lunedi'-venerdi' intero EUR 10, ridotto 3-12 anni EUR 7; sabato e festivi intero EUR 11, ridotto EUR 8; bambini sotto 3 anni gratis; lettino EUR 3, ombrellone EUR 2.",
+      "price_source_url": "https://www.piscine-bustogarolfo.it/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Lombardia Nuoto Busto Garolfo page and dedicated Busto Garolfo pool booking/tariff site."
+    },
+    {
+      "id": "csv-483",
+      "official_source_url": "https://www.comune.varese.it/vivere_il_comune/luoghi/luogo_75.html",
+      "editorial_summary": "Piscina comunale Fausto Fabiano a Varese e' l'impianto comunale situato in centro, alle spalle del Palazzo comunale e vicino ai Giardini Estensi. La scheda ufficiale del Comune indica gestione affidata ad ASD Varese Olona Nuoto, corsi e nuoto libero dal lunedi' alla domenica.",
+      "editorial_highlights": [
+        "L'indirizzo pubblicato e' Via Elvio Copelli 7, 21100 Varese.",
+        "La vasca grande misura 25 x 16,6 metri.",
+        "La vasca piccola misura 12 x 5 metri.",
+        "Il Comune rimanda a Varese Olona Nuoto per orari, prezzi e corsi."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova la Piscina Fausto Fabiano?",
+          "answer": "La scheda del Comune indica Via Elvio Copelli 7, Varese, alle spalle del Palazzo comunale."
+        },
+        {
+          "question": "Chi gestisce l'impianto?",
+          "answer": "La scheda ufficiale indica gestione affidata ad ASD Varese Olona Nuoto."
+        },
+        {
+          "question": "Che vasche sono presenti?",
+          "answer": "La scheda comunale indica vasca grande 25 x 16,6 metri e vasca piccola 12 x 5 metri."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "La pagina comunale rimanda al gestore per orari, prezzi e corsi; nelle pagine verificate non abbiamo inserito importi."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Comune di Varese page and Varese Olona Nuoto pool page. Public prices not inserted from the reviewed pages."
+    },
+    {
+      "id": "csv-484",
+      "official_source_url": "https://mendrisio.ch/en/home/vivere-e-visitare/cultura-e-tempo-libero/sport/piscine-e-lido/piscina-comunale-di-mendrisio.html",
+      "editorial_summary": "Piscina comunale di Mendrisio, nella zona San Martino, e' una piscina estiva comunale. Le pagine ufficiali della Citta' di Mendrisio indicano stagione balneare, Mendrisio Card per riduzioni residenti, lido di Capolago collegato e contatti del servizio sport.",
+      "editorial_highlights": [
+        "La struttura e' indicata in Zona San Martino, 6850 Mendrisio.",
+        "La stagione 2025 era dal 29 maggio al 14 settembre, tutti i giorni 9:30-19:30.",
+        "Mendrisio Card consente riduzioni a persone domiciliate o residenti nella Citta' di Mendrisio.",
+        "Mendrisiotto Turismo descrive vasca olimpionica, vasca non nuotatori, vasca bambini, buvette e campo beach volley."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova la Piscina comunale di Mendrisio?",
+          "answer": "Le pagine ufficiali indicano Zona San Martino, 6850 Mendrisio."
+        },
+        {
+          "question": "Che vasche sono presenti?",
+          "answer": "La scheda turistica ufficiale cita vasca olimpionica, vasca non nuotatori e vasca bambini."
+        },
+        {
+          "question": "I residenti hanno riduzioni?",
+          "answer": "Si'. La pagina comunale cita riduzioni con Mendrisio Card."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "La pagina comunale rimanda alle tariffe allegate, ma nelle pagine verificate non inseriamo importi non direttamente confermati dalla pagina principale."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official City of Mendrisio page and Mendrisiotto Turismo listing. Public numeric prices not inserted."
+    },
+    {
+      "id": "csv-485",
+      "official_source_url": "https://www.lugano.ch/vivere-lugano/cultura-e-tempo-libero/lidi-e-piscine/piscina-coperta/",
+      "editorial_summary": "Piscina coperta di Lugano e' l'impianto comunale in Viale Castagnola, apprezzato durante la stagione invernale. La pagina ufficiale della Citta' di Lugano pubblica orari, tariffe, vasca nuotatori, vasca non nuotatori, sauna finlandese, bagno turco, spogliatoi e lift mobile per persone con disabilita'.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Viale Castagnola 4, 6906 Lugano.",
+        "Gli orari regolari dall'8 settembre 2025 sono lunedi'-venerdi' 8:30-21:30, sabato, domenica e festivi 10:00-19:00.",
+        "I servizi includono vasca 25 x 16 m, vasca non nuotatori, sauna finlandese, bagno turco, 6 spogliatoi e snack bar.",
+        "E' presente un elevatore mobile per persone con disabilita'."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Dove si trova la Piscina coperta di Lugano?",
+          "answer": "Il sito della Citta' di Lugano indica Viale Castagnola 4, 6906 Lugano."
+        },
+        {
+          "question": "Che servizi offre?",
+          "answer": "La pagina cita vasca nuotatori, vasca non nuotatori, sauna finlandese, bagno turco, spogliatoi, snack bar e spazio verde."
+        },
+        {
+          "question": "E' accessibile a persone con disabilita'?",
+          "answer": "Si'. La pagina indica un elevatore mobile offerto dalla Fondazione Cerebral."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Si'. La pagina ufficiale pubblica tariffe singole per adulti, ragazzi/studenti/AVS/AI e giovani fino a 13 anni."
+        }
+      ],
+      "price_info": "Entrata singola Piscina coperta Lugano: adulti CHF 11; ragazzi fino a 20 anni, studenti, AVS e AI CHF 7; giovani fino a 13 anni CHF 3.50.",
+      "price_source_url": "https://www.lugano.ch/vivere-lugano/cultura-e-tempo-libero/lidi-e-piscine/piscina-coperta/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official City of Lugano Piscina coperta page."
+    },
+    {
+      "id": "csv-486",
+      "official_source_url": "https://www.lugano.ch/en/vivere-lugano/cultura-e-tempo-libero/lidi-e-piscine/piscina-carona/",
+      "editorial_summary": "Piscina di Carona e' una piscina comunale di Lugano in fase di rilancio. La pagina ufficiale della Citta' di Lugano comunica che per la stagione 2025 la piscina non e' accessibile al pubblico e che la riapertura e' prevista per la primavera 2027, legata a un progetto con TCS.",
+      "editorial_highlights": [
+        "La piscina e' indicata a Carona, 6914 Lugano.",
+        "Per la stagione 2025 la struttura non era accessibile al pubblico.",
+        "La riapertura e' prevista per la primavera 2027, subordinata all'iter pianificatorio.",
+        "Il progetto citato prevede collaborazione con Touring Club Switzerland, Glamping Village, nuove piscine e scivoli."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "La Piscina di Carona e' aperta al pubblico?",
+          "answer": "La pagina ufficiale indica che per la stagione 2025 non era accessibile al pubblico."
+        },
+        {
+          "question": "Quando e' prevista la riapertura?",
+          "answer": "La pagina ufficiale parla di primavera 2027, subordinata alle decisioni pianificatorie."
+        },
+        {
+          "question": "Che progetto e' previsto?",
+          "answer": "La Citta' cita collaborazione con TCS, Glamping Village, nuove piscine e scivoli."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "No. La pagina aggiornata non pubblica tariffe perche' la struttura non e' accessibile al pubblico."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official City of Lugano Carona Swimming Pool page. No current prices because facility is closed to public."
+    },
+    {
+      "id": "csv-487",
+      "official_source_url": "https://www.piscinadisaronno.it/it-it/piscina",
+      "editorial_summary": "Piscina di Saronno, gestita da Saronno Servizi SSD, offre nuoto libero, corsi nuoto, acquafitness, lezioni private, grandi attrezzi, idrokinesi, area estiva e servizi collegati al PalaEXBO e Palaghiaccio. Il sito ufficiale pubblica strutture, orari reception e schede dei corsi.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Miola 5, 21047 Saronno.",
+        "L'impianto include vasca grande interna 16,80 x 25 m, vasca piccola interna 5 x 10 m e vasca esterna 23 x 25 m.",
+        "Gli orari reception piscina sono lunedi'-venerdi' 7:00-22:00, sabato 7:00-19:30, domenica 8:00-18:30.",
+        "Le categorie pubblicate includono lezioni private, corsi nuoto, acquafitness, grandi attrezzi, nuoto libero, estiva e idrokinesi."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che servizi offre la Piscina di Saronno?",
+          "answer": "Il sito cita lezioni private, corsi nuoto, acquafitness, grandi attrezzi, nuoto libero, estiva, pallanuoto bambini e idrokinesi."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La pagina ufficiale indica Via Miola 5, 21047 Saronno."
+        },
+        {
+          "question": "Che vasche sono presenti?",
+          "answer": "Il sito indica vasca grande interna, vasca piccola interna e vasca esterna."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Le pagine corsi rimandano a PDF allegati per alcune tariffe; non inseriamo importi non letti direttamente nelle pagine verificate."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Piscina di Saronno home, piscina, struttura and corsi pages. Numeric prices not inserted from unread PDF attachments."
+    },
+    {
+      "id": "csv-489",
+      "official_source_url": "https://www.ilsemeonlus.it/piscina/",
+      "editorial_summary": "Piscina Il Seme a Cardano al Campo e' una piscina terapeutica e didattica collegata alla Cooperativa Sociale Il Seme. Il sito ufficiale presenta corsi di acquaticita', acquagym e acquaticita' per donne in gravidanza, in una vasca calda da 30 mq con altezza 132 cm.",
+      "editorial_highlights": [
+        "La piscina si trova in Via delle Alpi 24, Cardano al Campo.",
+        "La vasca indicata ha area 30 mq, altezza 132 cm e temperatura 32 gradi.",
+        "I corsi di acquaticita' si tengono lunedi', mercoledi' e sabato.",
+        "Acquagym e corsi per donne in gravidanza sono pubblicati con giorni e orari."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che corsi propone Piscina Il Seme?",
+          "answer": "Il sito cita acquaticita', acquagym e acquaticita' per donne in gravidanza."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La pagina ufficiale indica Via delle Alpi 24, Cardano al Campo."
+        },
+        {
+          "question": "Che caratteristiche ha la piscina?",
+          "answer": "Il sito indica area 30 mq, altezza 132 cm e temperatura 32 gradi."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "La pagina rimanda a un documento prezzi, ma nelle pagine verificate non inseriamo importi non direttamente leggibili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Il Seme piscina page. Price document referenced but numeric prices not inserted."
+    }
+  ]
+}
