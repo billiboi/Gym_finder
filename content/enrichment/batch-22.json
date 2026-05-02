@@ -1,0 +1,324 @@
+{
+  "batch": "batch-22-editorial-and-prices-olympus-yoga-piscina-mcfit",
+  "reviewed_at": "2026-05-02",
+  "entries": [
+    {
+      "id": "csv-413",
+      "official_source_url": "https://www.goodlifeacademy.ch/",
+      "editorial_summary": "Ohana - GoodLife Academy a Lugano e' collegata al progetto Good Life Academy, con pratiche di Yoga Nidra, teacher training, meditazione, autosviluppo e viaggi esperienziali. Il sito ufficiale presenta la linea 'In viaggio. Ritorno a casa' e sezioni dedicate a pratiche, formazione e percorsi.",
+      "editorial_highlights": [
+        "Il sito ufficiale presenta Good Life Academy come progetto di pratiche, viaggi e autosviluppo.",
+        "Le sezioni pubblicate includono Teacher Training Yoga Nidra e Pratiche Yoga Nidra.",
+        "La scheda pubblica collegata a Find Your Yoga indica Via Canova 18, 6900 Lugano.",
+        "La scheda esterna verificata riporta yoga, meditazione, Yoga Nidra, Pilates e Hatha Yoga tra le attivita' associate."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di centro e' Ohana - GoodLife Academy?",
+          "answer": "Il sito ufficiale presenta GoodLife Academy come progetto legato a pratiche, meditazione, Yoga Nidra, formazione e viaggi esperienziali."
+        },
+        {
+          "question": "Dove viene indicata la sede?",
+          "answer": "La scheda pubblica Find Your Yoga indica Via Canova 18, 6900 Lugano."
+        },
+        {
+          "question": "Che pratiche sono citate?",
+          "answer": "Il sito ufficiale cita Yoga Nidra e teacher training; la scheda esterna verificata cita anche yoga, meditazione, pilates e Hatha Yoga."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici per corsi o abbonamenti."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official GoodLife Academy site plus public Find Your Yoga listing for address and activity context. Public prices not found."
+    },
+    {
+      "id": "csv-417",
+      "official_source_url": "https://www.olympusavant.it/in-palestra-a-busto-arsizio",
+      "editorial_summary": "Olympus Avant Busto Arsizio e' una palestra Avant con sala attrezzi raddoppiata, nuova sala Bootcamp, tecnologie smart e servizi prenotabili da smartphone. Il sito ufficiale descrive macchine intelligenti, classi, appuntamenti one-to-one e trainer disponibili per prova e informazioni.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Osimo 1, Busto Arsizio.",
+        "Gli orari indicati sono lunedi'-venerdi' 7:00-22:00, sabato 9:00-18:00, domenica 9:00-14:00.",
+        "Il sito cita sala attrezzi Technogym, Kinesis, Biocircuit, cardio, macchine isotoniche e pesi liberi.",
+        "La gestione smart permette di prenotare allenamenti, classi e appuntamenti one-to-one."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che servizi offre Olympus Avant Busto Arsizio?",
+          "answer": "Il sito cita sala attrezzi, sala Bootcamp, tecnologie smart, classi e appuntamenti one-to-one con trainer."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il sito indica Via Osimo 1, Busto Arsizio."
+        },
+        {
+          "question": "Che orari pubblica il sito?",
+          "answer": "La pagina indica lunedi'-venerdi' 7:00-22:00, sabato 9:00-18:00, domenica 9:00-14:00."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Il sito pubblica formule GOGYM acquistabili online, tra cui pacchetti a sessioni."
+        }
+      ],
+      "price_info": "Formula GOGYM pubblicata: 5 sessioni EUR 60. Pagina 'soddisfatti o rimborsati' GOGYM: EUR 48 selezionando anche Busto A.",
+      "price_source_url": "https://www.olympusavant.it/palestra-con-frequenza-flessibile",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Olympus Avant Busto Arsizio and GOGYM pages. Price limited to public GOGYM products."
+    },
+    {
+      "id": "csv-418",
+      "official_source_url": "https://www.olympusavant.it/palestra-a-gallarate",
+      "editorial_summary": "Olympus Avant Gallarate e' la sede Multi-Box del network Avant. Il sito ufficiale descrive fino a 10 zone dedicate ad attivita' diverse, programmi specifici, classi, trainer dedicati e strumenti smart per prenotare allenamenti e gestire la scheda.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Toscana 15, Gallarate.",
+        "Gli orari indicati sono lunedi'-venerdi' 7:00-22:00, sabato 9:00-18:00, domenica 9:00-14:00.",
+        "La pagina presenta sale per attrezzi, Bootcamp e Body Mind.",
+        "Il sito comunica prenotazione classi, appuntamenti one-to-one e gestione scheda via smartphone."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di palestra e' Olympus Avant Gallarate?",
+          "answer": "Il sito la presenta come sede Multi-Box, con zone dedicate a diverse tipologie di allenamento."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il sito indica Via Toscana 15, Gallarate."
+        },
+        {
+          "question": "Che orari pubblica il sito?",
+          "answer": "La pagina indica lunedi'-venerdi' 7:00-22:00, sabato 9:00-18:00, domenica 9:00-14:00."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Il sito pubblica formule GOGYM acquistabili online, tra cui pacchetti a sessioni."
+        }
+      ],
+      "price_info": "Formula GOGYM pubblicata: 5 sessioni EUR 60. Pagina 'soddisfatti o rimborsati' GOGYM: EUR 48 selezionando anche Gallarate.",
+      "price_source_url": "https://www.olympusavant.it/palestra-con-frequenza-flessibile",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Olympus Avant Gallarate and GOGYM pages. Price limited to public GOGYM products."
+    },
+    {
+      "id": "csv-421",
+      "official_source_url": "https://omyogacommunity.ch/",
+      "editorial_summary": "OmYoga Community a Muralto e' un'associazione senza scopo di lucro nata nel 2023 per diffondere yoga, meditazione e pratiche di consapevolezza in Ticino. Il sito ufficiale presenta lezioni, laboratori, esperienze, Hatha Yoga, Vinyasa, meditazione, pranayama, mudra e mantra.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via San Gottardo 9, 6600 Muralto.",
+        "Il sito descrive OmYoga Community come rete di maestri ticinesi.",
+        "Le pratiche citate includono Hatha Yoga, Vinyasa, meditazione, asana, pranayama, mudra e mantra.",
+        "Il calendario 2026 include lezioni, percorsi, esperienze e laboratori di consapevolezza corporea."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che cos'e' OmYoga Community?",
+          "answer": "Il sito la presenta come associazione senza scopo di lucro dedicata alla diffusione dello yoga e alla collaborazione tra insegnanti in Ticino."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il sito indica Via San Gottardo 9, Muralto 6600."
+        },
+        {
+          "question": "Che pratiche propone?",
+          "answer": "Il sito cita Hatha Yoga, Vinyasa, meditazione, asana, pranayama, mudra, mantra e laboratori."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Si'. La home pubblica la quota per diventare socio sostenitore."
+        }
+      ],
+      "price_info": "Socio sostenitore OmYoga Community: CHF 50/anno.",
+      "price_source_url": "https://omyogacommunity.ch/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official OmYoga Community home and statute page."
+    },
+    {
+      "id": "csv-424",
+      "official_source_url": "https://www.osteofitcenter.it/",
+      "editorial_summary": "Osteofit Center A.S.D. a Busto Arsizio e' un centro per benessere, movimento e percorsi personalizzati. Il sito ufficiale presenta palestra, Pilates Reformer, Yoga, ginnastica posturale, personal training, osteopatia, pressoterapia, nutrizione e trattamenti.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Corso Italia 64 bis, 21052 Busto Arsizio.",
+        "Il centro comunica oltre 200 clienti e programmi personalizzati.",
+        "I servizi includono palestra, terapie e trattamenti, corsi fitness e nutrizione.",
+        "Il sito descrive un approccio integrato con valutazione, esercizi mirati e professionisti qualificati."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che servizi offre Osteofit Center?",
+          "answer": "Il sito cita palestra, Pilates Reformer, Yoga, ginnastica posturale, personal training, osteopatia, pressoterapia e nutrizione."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il sito indica Corso Italia 64 bis, 21052 Busto Arsizio."
+        },
+        {
+          "question": "Il percorso e' personalizzato?",
+          "answer": "Si'. Il sito descrive programmi su misura e valutazione delle esigenze fisiche e posturali."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Osteofit Center home, chi siamo, corsi fitness and personal training pages. Public prices not found."
+    },
+    {
+      "id": "csv-427",
+      "official_source_url": "https://www.piscinadisaronno.it/it-it/chi-siamo/strutture/palaexbo-e-palaghiaccio-397-1-cc16f76accf631a686e0e72651c68a4f",
+      "editorial_summary": "PalaEXBO / Palaghiaccio di Saronno e' parte delle strutture gestite da Saronno Servizi SSD. Il sito ufficiale descrive una palestra coperta da 440 mq, una saletta attrezzata da 40 persone e una pista di pattinaggio su ghiaccio attiva da novembre a marzo.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Piave 1, 21047 Saronno.",
+        "La palestra coperta misura 440 mq e ha capienza massima di 190 persone.",
+        "E' presente anche una saletta attrezzata con capienza massima di 40 persone.",
+        "La pista di pattinaggio su ghiaccio e' indicata come attiva da novembre a marzo."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che struttura e' PalaEXBO?",
+          "answer": "Il sito lo descrive come impianto con palestra coperta, saletta attrezzata e palaghiaccio."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il sito indica Via Piave 1, 21047 Saronno."
+        },
+        {
+          "question": "Quando e' attiva la pista ghiaccio?",
+          "answer": "La pagina indica che la pista di pattinaggio su ghiaccio e' attiva da novembre a marzo."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici per accesso o noleggio."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Piscina di Saronno PalaEXBO / Palaghiaccio and strutture pages. Public prices not found."
+    },
+    {
+      "id": "csv-436",
+      "official_source_url": "https://www.lifeability.it/palestra/",
+      "editorial_summary": "Palestra A.S.D. LifeAbility a Tradate e' specializzata nell'allenamento di persone con disabilita' motoria, ma aperta anche a persone normodotate nello stesso ambiente. Il sito ufficiale descrive sala attrezzi funzionale e accessibile, tecnici presenti e programmazione adattata.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Carlo Rossini 58, 21019 Tradate.",
+        "La palestra e' progettata per accessibilita', sicurezza e continuita' dell'attivita' motoria.",
+        "I tecnici adattano esercizi, carichi, posizioni e modalita' esecutive alle esigenze della persona.",
+        "Il sito indica prova gratuita prenotabile e convenzioni CIP/Inail per infortunati sul lavoro."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "A chi si rivolge LifeAbility?",
+          "answer": "Il sito indica una palestra specializzata nell'allenamento di persone con disabilita' motoria, aperta anche a persone normodotate."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il sito indica Via Carlo Rossini 58, 21019 Tradate."
+        },
+        {
+          "question": "Gli allenamenti sono seguiti da tecnici?",
+          "answer": "Si'. Il sito specifica che i tecnici seguono direttamente ogni fase dell'attivita'."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono quote pubbliche; il sito cita accesso gratuito ai corsi tramite convenzione CIP/Inail per gli aventi diritto."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official LifeAbility palestra page. Public numeric prices not found."
+    },
+    {
+      "id": "csv-445",
+      "official_source_url": "https://www.fuji-yama.it/palestra/corsi-0000129.html",
+      "editorial_summary": "Palestra Fuji-Yama a Gallarate e' una storica palestra di arti marziali fondata nel 1966. Il sito ufficiale presenta corsi di Judo, Karate, Nippon Kempo, Aikido, Difesa Personale MGA, Iaido, Katori Shinto Ryu, oltre a fitness, danza e discipline olistiche.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Mottarone 3, 21013 Gallarate.",
+        "Il sito racconta oltre 50 anni di attivita' a Gallarate.",
+        "Le arti marziali pubblicate includono Judo, Karate, Nippon Kempo, Aikido, Difesa Personale MGA, Iaido e Katori Shinto Ryu.",
+        "La pagina orari pubblica fasce per bambini, ragazzi e adulti nelle diverse discipline."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che discipline propone Fuji-Yama?",
+          "answer": "Il sito cita Judo, Karate, Nippon Kempo, Aikido, Difesa Personale MGA, Iaido, Katori Shinto Ryu, fitness, danza e discipline olistiche."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il sito indica Via Mottarone 3, 21013 Gallarate."
+        },
+        {
+          "question": "Ci sono corsi per bambini e ragazzi?",
+          "answer": "Si'. La pagina orari distingue corsi per baby, bambini, ragazzi e adulti."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Fuji-Yama chi siamo, corsi, inizio corsi and orari pages. Public prices not found."
+    },
+    {
+      "id": "csv-447",
+      "official_source_url": "https://www.mcfit.com/it/palestra/busto-arsizio/",
+      "editorial_summary": "McFIT Busto Arsizio e' una sede del network McFIT. Le pagine ufficiali McFIT descrivono accesso a sala attrezzi, sala pesi e corsi senza limitazioni orarie, con scelta tra abbonamento Standard annuale e abbonamento Flex mensile.",
+      "editorial_highlights": [
+        "La scheda catalogo rimanda alla sede McFIT di Busto Arsizio.",
+        "Il helpcenter ufficiale McFIT indica accesso a sala attrezzi, sala pesi e corsi senza limitazioni orarie.",
+        "Le formule indicate sono Standard con durata minima annuale e Flex con rinnovo mensile.",
+        "Lo Standard prevede possibilita' di sospensione fino a 6 mesi all'anno, il Flex fino a 2 mesi all'anno."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che formule di abbonamento comunica McFIT?",
+          "answer": "Il helpcenter ufficiale distingue contratto Standard annuale e contratto Flex mensile."
+        },
+        {
+          "question": "Cosa include l'abbonamento?",
+          "answer": "La pagina ufficiale indica accesso a sala attrezzi, sala pesi e corsi senza limitazioni orarie."
+        },
+        {
+          "question": "Il prezzo e' uguale in tutti i club?",
+          "answer": "Il helpcenter invita a verificare la tariffa attiva del centro scelto sul sito McFIT."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Si'. Il helpcenter pubblica prezzi di partenza per Standard e Flex."
+        }
+      ],
+      "price_info": "McFIT Helpcenter: Standard da EUR 34,90/mese; Flex da EUR 49,90/mese. Tariffa effettiva da verificare sulla pagina del club selezionato.",
+      "price_source_url": "https://assistenza.mcfit.com/hc/it/articles/4417182526865-Quale-durata-hanno-i-contratti-McFIT",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official McFIT helpcenter and catalog club website reference. Price stored as official from-price with club-specific caveat."
+    },
+    {
+      "id": "csv-452",
+      "official_source_url": "https://wellnessgymtradate.com/",
+      "editorial_summary": "Palestra WellnessGym - Ranzato a Tradate e' una palestra fitness e benessere con sala pesi, corsi fitness, corsi aerei, ballo e Antigravity Yoga. Il sito ufficiale pubblica planning corsi, sede, Instagram e dati sintetici su utenti, corsi e professionisti.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Monte San Michele 31, 21049 Tradate.",
+        "Il sito comunica oltre 10 corsi di fitness e ballo tra cui scegliere.",
+        "Il planning corsi include Vinyasa Yoga, Fitball Pilates, Yoga Blackroll, Antigravity Kids, Aerial Yoga, Pole Dance, Calisthenics, Postural Training e ballo.",
+        "La home indica piu' di 5 professionisti a disposizione."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che corsi propone WellnessGym Tradate?",
+          "answer": "Il sito cita sala pesi, Antigravity Yoga, fitness, ballo, Pole Dance, Calisthenics, Pilates e corsi aerei."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il sito indica Via Monte San Michele 31, 21049 Tradate."
+        },
+        {
+          "question": "Il sito pubblica un planning corsi?",
+          "answer": "Si'. La pagina planning elenca i corsi settimanali con giorni e orari."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine ufficiali verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official WellnessGym Tradate home and planning corsi pages. Public official prices not found."
+    }
+  ]
+}
