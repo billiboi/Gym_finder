@@ -1,0 +1,318 @@
+{
+  "batch": "batch-30-editorial-and-prices-true-missing-fitness-yoga-martial",
+  "reviewed_at": "2026-05-02",
+  "entries": [
+    {
+      "id": "csv-190",
+      "official_source_url": "https://electrafitness.ch/",
+      "editorial_summary": "Electra Fitness EMS Bellinzona e' indicata come centro di personal training e fitness EMS in Via Codeborgo 1. La scheda pubblica local.ch riporta contatto mobile, email e categorie legate a personal training, fitness center e macchine fitness.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Codeborgo 1, 6500 Bellinzona.",
+        "La categoria pubblica principale e' Personal Training.",
+        "Sono citate anche le categorie fitness center e fitness machines.",
+        "I contatti pubblicati sono +41 76 814 65 71 e info@electrafitness.ch."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di centro e' Electra Fitness?",
+          "answer": "Le fonti pubbliche lo indicano come centro di personal training e fitness EMS."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede indicata e' Via Codeborgo 1, Bellinzona."
+        },
+        {
+          "question": "Quali contatti sono pubblicati?",
+          "answer": "Sono pubblicati il mobile +41 76 814 65 71 e l'email info@electrafitness.ch."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici per questa sede."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official domain attempt and local.ch listing because the direct site returned bot verification. Public price amounts not found."
+    },
+    {
+      "id": "csv-192",
+      "official_source_url": "http://www.elementsfitnessclub.ch/",
+      "editorial_summary": "Elements Fitness Club a Lavertezzo e' una fitness boutique del Locarnese con personal training, corsi di gruppo e programmi fitness. Le fonti pubbliche descrivono spazi luminosi, oltre 25 corsi settimanali, programmi orientati alla tecnica corretta e un ambiente sportivo a misura di persona.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Cantonale 89, 6595 Lavertezzo Piano.",
+        "Il club viene descritto come fitness boutique nel Locarnese.",
+        "Sono citati personal training e oltre 25 corsi di gruppo a settimana.",
+        "I fondatori indicati sono Chris Thomas e Patrick Guardiola."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che cosa offre Elements Fitness Club?",
+          "answer": "Le fonti pubbliche citano personal training, corsi di gruppo e programmi fitness."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede indicata e' Via Cantonale 89, Lavertezzo Piano."
+        },
+        {
+          "question": "Che tipo di ambiente viene descritto?",
+          "answer": "Le fonti parlano di spazi luminosi, programmi tecnici e ambiente sportivo a misura di persona."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici ufficiali."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from public business listings because the direct website did not load through the crawler. Public price amounts not found."
+    },
+    {
+      "id": "csv-209",
+      "official_source_url": "https://fightgymclub.ch/",
+      "editorial_summary": "Fight Gym Club Lugano a Canobbio e' un club per sport da combattimento, autodifesa e fitness. Le fonti pubbliche collegate al sito citano boxing, kick boxing, K1, MMA, Sambo, lotta olimpica, HIIT, ginnastica posturale, personal training e sala pesi.",
+      "editorial_highlights": [
+        "La sede pubblicata e' La Stampa 1A / Al Maglio, 6952 Canobbio.",
+        "Le discipline citate includono Boxing, Kick Boxing, K1, MMA, Sambo e Lotta Olimpica.",
+        "Sono citati programmi personalizzati, sala pesi, kettlebell e TRX.",
+        "Il club risulta riconosciuto dalle casse malati tramite certificazione QualiCert."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che discipline propone Fight Gym Club Lugano?",
+          "answer": "Le fonti pubbliche citano boxing, kick boxing, K1, MMA, Sambo, lotta olimpica, HIIT e ginnastica posturale."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Le fonti indicano la sede a Canobbio, zona La Stampa / Al Maglio."
+        },
+        {
+          "question": "Ci sono programmi personalizzati?",
+          "answer": "Si', le fonti parlano di programmi di allenamento personalizzato e piani alimentari su misura."
+        },
+        {
+          "question": "Sono pubblicati prezzi ufficiali?",
+          "answer": "Nelle fonti verificate non e' stato trovato un listino ufficiale aggiornato."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official domain attempt, Lugano association page, Localcities and LuganeseSport listings. Resale listings were ignored for price_info."
+    },
+    {
+      "id": "csv-232",
+      "official_source_url": "http://www.mariano-villena.ch/",
+      "editorial_summary": "Fitness by Mariano Villena - The Garage of Body Building a Barbengo e' un centro fitness aperto 24/7. Le fonti pubbliche lo descrivono come palestra moderna con macchine all'avanguardia, fitness, bodybuilding, preparazione fisica, tonificazione muscolare e consulenza legata al benessere.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Cantonale 6, 6917 Barbengo.",
+        "Gli orari pubblici indicano apertura 24/7.",
+        "Sono citati fitness, bodybuilding, preparazione fisica e tonificazione muscolare.",
+        "Il contatto pubblico e' +41 76 404 10 10."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di centro e' Fitness by Mariano Villena?",
+          "answer": "Le fonti pubbliche lo descrivono come centro fitness e bodybuilding con attrezzature moderne."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede indicata e' Via Cantonale 6, Barbengo."
+        },
+        {
+          "question": "Quando e' aperto?",
+          "answer": "Le fonti pubbliche indicano apertura 24/7."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from local.ch, search.ch and public rating listings. Public price amounts not found."
+    },
+    {
+      "id": "csv-240",
+      "official_source_url": "https://www.forusitalia.it/viviforus",
+      "editorial_summary": "Forus Luino LE BETULLE e' un centro sportivo in Via Lugano 41 con piscina coperta, palestra, sala corsi e campi sportivi. Le fonti pubbliche descrivono corsi di nuoto, acquafitness, fitness, yoga, pilates, allenamento funzionale, indoor cycling e tennis.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Lugano 41, 21016 Luino.",
+        "Il centro include piscina coperta, palestra, sala fitness, tennis e spazi sportivi.",
+        "Sono citati corsi di nuoto, acquafitness, yoga, pilates, funzionale e indoor cycling.",
+        "Il contatto pubblico e' +39 0332 180 7150."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che servizi offre Forus Luino LE BETULLE?",
+          "answer": "Le fonti pubbliche citano piscina coperta, palestra, fitness, tennis e corsi."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede pubblicata e' Via Lugano 41, Luino."
+        },
+        {
+          "question": "Che corsi sono citati?",
+          "answer": "Sono citati nuoto, acquafitness, yoga, pilates, allenamento funzionale e indoor cycling."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non e' stato trovato un listino prezzi ufficiale aggiornato."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from Forus-linked public listings and Luino Notizie coverage of the centre. Public price amounts not found."
+    },
+    {
+      "id": "csv-242",
+      "official_source_url": "https://sites.google.com/view/f-vega-personal-trainer-varese/home",
+      "editorial_summary": "Francisco Vega Personal Trainer - Studio PT Varese a Bardello propone personal training, fitness e ginnastica. La scheda pubblica del trainer indica esperienza pluriennale, studio attrezzato a Bardello, allenamenti personalizzati individuali o di coppia, disponibilita' a domicilio e consulenza nutrizionale inclusa.",
+      "editorial_highlights": [
+        "La sede indicata e' Bardello, con studio attrezzato.",
+        "Sono citati allenamenti personalizzati per diversi livelli di fitness.",
+        "La proposta include percorsi individuali e di coppia.",
+        "La scheda pubblica indica disponibilita' anche a domicilio nella provincia di Varese."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che servizi propone Francisco Vega?",
+          "answer": "La scheda pubblica indica personal training, fitness, ginnastica e consulenza nutrizionale."
+        },
+        {
+          "question": "Dove si svolgono le lezioni?",
+          "answer": "Sono indicate lezioni nello studio a Bardello, online e a domicilio entro un raggio pubblicato."
+        },
+        {
+          "question": "Sono possibili lezioni di coppia?",
+          "answer": "Si', la scheda cita allenamenti individuali e di coppia."
+        },
+        {
+          "question": "Quanto costa?",
+          "answer": "La scheda pubblica indica tariffa EUR 39 all'ora e prima lezione offerta."
+        }
+      ],
+      "price_info": "Tariffa pubblicata su scheda Superprof: EUR 39 all'ora, con prima lezione offerta.",
+      "price_source_url": "https://www.superprof.it/personal-trainer-certificato-snpt-msp-italia-riconosciuto-coni-specializzato-ampia-gamma-tecniche-dallenamento.html",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from listed Google Sites URL attempt and public Superprof profile. Stored explicit public hourly tariff."
+    },
+    {
+      "id": "csv-270",
+      "official_source_url": "https://hagakurekarate.weebly.com/",
+      "editorial_summary": "Hagakure Karate a Busto Arsizio propone karate tradizionale affiliato A.I.K.T. per bambini, adulti, pre-agonisti e agonisti. Il sito ufficiale pubblica sede, orari 2025/2026, lezioni di prova gratuite e contatti del direttore tecnico.",
+      "editorial_highlights": [
+        "La sede di Busto Arsizio e' presso Scuole Tommaseo, Via Raffaello Sanzio 9.",
+        "Il sito indica lezioni di prova gratuite da settembre.",
+        "Sono pubblicati corsi bambini, adulti, pre-agonisti e agonisti.",
+        "Il riferimento contatti e' 329 5382771 e hagakurekarate@gmail.com."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che disciplina propone Hagakure Karate?",
+          "answer": "Il sito ufficiale presenta karate tradizionale affiliato A.I.K.T."
+        },
+        {
+          "question": "Dove si tengono i corsi a Busto Arsizio?",
+          "answer": "La sede pubblicata e' la palestra delle Scuole Tommaseo in Via Raffaello Sanzio 9."
+        },
+        {
+          "question": "Ci sono lezioni di prova?",
+          "answer": "Si', il sito indica lezioni di prova gratuite all'inizio stagione."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle pagine ufficiali verificate non sono presenti importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Hagakure Karate home, corsi and contatti pages. Public price amounts not found."
+    },
+    {
+      "id": "csv-291",
+      "official_source_url": "https://www.ilcentro.ch/locarno",
+      "editorial_summary": "il Centro, fisioterapia e palestra a Locarno unisce fisioterapia, palestra, nutrizione, massaggi, check-up e health fitness. Il sito ufficiale descrive un team multidisciplinare, palestra con supervisione professionale e percorsi salute costruiti su misura.",
+      "editorial_highlights": [
+        "La sede di Locarno pubblicata e' Via Lavizzari 10a.",
+        "Il sito indica orari lunedi'-giovedi' 7:30-19:30 e venerdi' 7:30-19:00.",
+        "Sono citati fisioterapisti, coach palestra, massaggiatore medicale e consulente nutrizionale.",
+        "La pagina palestra indica abbonamenti su misura e personal training da 30 o 60 minuti."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che servizi offre il Centro a Locarno?",
+          "answer": "Il sito cita fisioterapia, palestra, nutrizione, massaggi, check-up e health fitness."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede pubblicata e' Via Lavizzari 10a, Locarno."
+        },
+        {
+          "question": "Come sono definiti gli abbonamenti palestra?",
+          "answer": "Il sito specifica che gli abbonamenti sono costruiti su misura dopo un primo colloquio."
+        },
+        {
+          "question": "Sono pubblicati prezzi standard?",
+          "answer": "No: la pagina ufficiale dice che non esistono listini standard e che la soluzione viene definita in base alle necessita'."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official il Centro Locarno and palestra pages. No standard price list by explicit site statement."
+    },
+    {
+      "id": "csv-292",
+      "official_source_url": "https://www.melograno-emporionaturale.it/corsi-di-yoga/",
+      "editorial_summary": "Il Melograno a Busto Arsizio e' un emporio naturale che propone anche corsi di Hatha Yoga. Il sito ufficiale descrive una cooperativa nata negli anni Ottanta, con prodotti biologici, consulenze di medicina naturale, naturopatia e corsi yoga con insegnanti esperti.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Roma 5, Busto Arsizio.",
+        "La pagina corsi presenta Hatha Yoga in sala multifunzionale.",
+        "Il sito cita insegnanti qualificati con pratica affinata in India.",
+        "Sono pubblicati telefono 0331 624516 e melogranocooperativa@gmail.com."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di yoga propone Il Melograno?",
+          "answer": "Il sito ufficiale indica corsi di Hatha Yoga."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede pubblicata e' Via Roma 5, Busto Arsizio."
+        },
+        {
+          "question": "Che altre attivita' sono citate?",
+          "answer": "Il sito cita naturopatia, iridologia, psicoterapia, fitoterapia, alimentazione biologica e prodotti naturali."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle pagine verificate non sono presenti importi pubblici per i corsi yoga."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Il Melograno overview and yoga course pages. Public price amounts not found."
+    },
+    {
+      "id": "csv-294",
+      "official_source_url": "https://artimarziali.ch/",
+      "editorial_summary": "Il Tempio delle Arti Marziali a Bellinzona e' una scuola nata nel 2021 per diffondere arti marziali in Ticino. La scheda sportiva della Citta' di Bellinzona indica corsi di Jujitsu Brasiliano, World Jujitsu e Kung Fu, tenuti da insegnanti qualificati.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Giuseppe Motta 1, 6500 Bellinzona.",
+        "La scuola nasce nel 2021.",
+        "I corsi indicati sono Jujitsu Brasiliano, World Jujitsu e Kung Fu.",
+        "Contatti pubblicati: +41 78 913 06 64 e tambellinzona@gmail.com."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che discipline propone Il Tempio delle Arti Marziali?",
+          "answer": "La scheda ufficiale sportiva cita Jujitsu Brasiliano, World Jujitsu e Kung Fu."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede pubblicata e' Via Giuseppe Motta 1, Bellinzona."
+        },
+        {
+          "question": "Quando nasce la scuola?",
+          "answer": "La scheda indica che la scuola nasce nel 2021."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from Bellinzona sport association page and official linked domain. Public price amounts not found."
+    }
+  ]
+}
