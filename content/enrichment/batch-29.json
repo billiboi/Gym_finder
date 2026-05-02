@@ -1,0 +1,318 @@
+{
+  "batch": "batch-29-editorial-and-prices-true-missing-public-sources",
+  "reviewed_at": "2026-05-02",
+  "entries": [
+    {
+      "id": "csv-11",
+      "official_source_url": "https://www.instagram.com/blacktigerasd",
+      "editorial_summary": "A.S.D. Black Tiger a Cassano Magnago e' una palestra di pugilato e kickboxing in Via A. De Gasperi 28. Le fonti pubbliche collegate alla scheda indicano allenamenti dal lunedi' al venerdi' nel tardo pomeriggio e un contatto telefonico diretto.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via A. De Gasperi 28, Cassano Magnago.",
+        "La struttura viene descritta come palestra di pugilato.",
+        "Gli orari pubblici indicano apertura dal lunedi' al venerdi' in fascia serale.",
+        "Il contatto telefonico pubblico e' +39 393 769 7303."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di palestra e' A.S.D. Black Tiger?",
+          "answer": "Le fonti pubbliche la indicano come palestra di pugilato, con riferimenti anche a kickboxing/K1 nelle recensioni."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede pubblicata e' Via A. De Gasperi 28, Cassano Magnago."
+        },
+        {
+          "question": "Quando risultano gli allenamenti?",
+          "answer": "Le fonti pubbliche indicano apertura dal lunedi' al venerdi' in fascia serale."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from public listing data tied to the Instagram website because the social profile is the listed site. Public price amounts not found."
+    },
+    {
+      "id": "csv-15",
+      "official_source_url": "https://m.facebook.com/karatemantuano",
+      "editorial_summary": "A.S.D. Mantuano Karate Team a Tradate e' una scuola di karate con sede in Via Machiavelli. Le fonti pubbliche collegate alla scheda indicano attivita' di karate, fondazione storica dell'associazione e riferimenti FIJLKAM.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Machiavelli, Tradate.",
+        "La disciplina indicata e' karate.",
+        "Le fonti pubbliche indicano fondazione nel 1986.",
+        "Risulta affiliazione alla Federazione Italiana Judo Lotta Karate Arti Marziali."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che disciplina propone Mantuano Karate Team?",
+          "answer": "Le fonti pubbliche indicano karate."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede pubblicata e' Via Machiavelli, Tradate."
+        },
+        {
+          "question": "Che tipo di associazione e'?",
+          "answer": "Le fonti pubbliche la descrivono come associazione sportiva dilettantistica affiliata alla federazione di arti marziali."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from public karate directory and club listing tied to the Facebook website. Public price amounts not found."
+    },
+    {
+      "id": "csv-42",
+      "official_source_url": "http://amafitpilates.it/",
+      "editorial_summary": "AMAFIT Pilates a Busto Arsizio e' uno studio Pilates con focus su Reformer, movimento controllato e postura. La scheda pubblica Wellhub descrive sessioni dinamiche per forza, flessibilita' e riallineamento, con doccia, spogliatoio e accesso su prenotazione tramite piani partner.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via XI Febbraio 2A, Busto Arsizio.",
+        "Le attivita' indicate sono Fit Pilates e Pilates.",
+        "La descrizione pubblica cita tecnologia Reformer, forza, flessibilita' e postura.",
+        "I servizi indicati includono doccia e spogliatoio."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di Pilates propone AMAFIT?",
+          "answer": "La descrizione pubblica parla di Pilates con Reformer e sessioni orientate a forza, flessibilita' e postura."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede pubblicata e' Via XI Febbraio 2A, Busto Arsizio."
+        },
+        {
+          "question": "Sono indicati servizi in sede?",
+          "answer": "La scheda pubblica indica doccia e spogliatoio."
+        },
+        {
+          "question": "Sono pubblicati prezzi diretti dello studio?",
+          "answer": "Sono visibili piani Wellhub, ma non prezzi diretti ufficiali dello studio."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from public Wellhub listing because the listed direct website was not accessible through search. Direct studio price amounts not stored."
+    },
+    {
+      "id": "csv-59",
+      "official_source_url": "https://asdsorepi2023.wordpress.com/",
+      "editorial_summary": "ASDSorepi a Varese e' collegata a progetti yoga per bambini e mindfulness. Fonti pubbliche scolastiche citano l'associazione SOREPI e l'insegnante Sonia Salese per percorsi di yoga rivolti a fasce 3-5 anni e 24-36 mesi, con lavoro su postura, respiro, emozioni e rilassamento.",
+      "editorial_highlights": [
+        "La scheda locale indica sede in Via Leonardo Da Vinci, Varese.",
+        "Le fonti pubbliche citano collaborazione con associazione SOREPI per corsi yoga bambini.",
+        "Il progetto yoga citato lavora su educazione posturale, respiro, emozioni, rilassamento e silenzio.",
+        "Il percorso mindfulness per i piu' piccoli e' indicato in piccoli gruppi."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che attivita' sono associate ad ASDSorepi?",
+          "answer": "Le fonti pubbliche citano yoga per bambini e percorsi mindfulness."
+        },
+        {
+          "question": "A chi sono rivolti i corsi citati?",
+          "answer": "Sono citati bambini 3-5 anni e una sezione 24-36 mesi."
+        },
+        {
+          "question": "Su cosa lavora il progetto yoga?",
+          "answer": "Il progetto cita postura, respiro, emozioni, rilassamento e silenzio."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from public school collaboration page and local listing. Public price amounts not found."
+    },
+    {
+      "id": "csv-69",
+      "official_source_url": "http://www.baliyoga.it/",
+      "editorial_summary": "Bali Yoga Milano in Via Marghera e' uno studio yoga con lezioni in presenza e proposta ampia di stili. Fonti pubbliche descrivono BaliYoga.it come una realta' con piu' sedi milanesi, lezioni 365 giorni l'anno, yoga in azienda, corsi insegnanti, workshop e pratica online.",
+      "editorial_highlights": [
+        "La sede della scheda e' Via Marghera 43, Milano.",
+        "Le fonti pubbliche citano piu' sedi a Milano e pratica online BaliYoga@Home.",
+        "Sono indicati diversi stili, tra cui yoga dinamico, Ashtanga, Dharma, Vinyasa, Rocket, Hatha Flow e Odaka.",
+        "Sono citati workshop, masterclass, vacanze yoga e corsi per insegnanti."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di yoga propone Bali Yoga?",
+          "answer": "Le fonti pubbliche citano molti stili, tra cui yoga dinamico, Ashtanga, Dharma, Vinyasa, Rocket, Hatha Flow e Odaka."
+        },
+        {
+          "question": "Dove si trova la sede Marghera?",
+          "answer": "La sede indicata e' Via Marghera 43, Milano."
+        },
+        {
+          "question": "Ci sono attivita' oltre alle lezioni?",
+          "answer": "Sono citati workshop, masterclass, vacanze yoga, corsi insegnanti e pratica online."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Una fonte pubblica indica esempi di prezzi, ma non sono stati memorizzati come listino ufficiale diretto del sito."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from public listings and search-indexed Bali Yoga information. Price examples were not stored because they were not verified on the official site during this batch."
+    },
+    {
+      "id": "csv-84",
+      "official_source_url": "https://linktr.ee/bodymind_fitnessacademy",
+      "editorial_summary": "Body Mind Arti Marziali & Fitness Academy a Gavirate e' collegata alla ASD Body Mind and Energy Kung Fu Academy. Le fonti ufficiali e pubbliche indicano corsi di arti marziali, Kung Fu, Wing Chun / Wing Flow System e una sede in Via Marconi a Gavirate.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Marconi 13, Gavirate.",
+        "Il sito kungfuvarese.com presenta Accademia Arti Marziali e ASD Body Mind and Energy Kung Fu Academy.",
+        "Le fonti pubbliche collegano la scuola al maestro Fabrizio Bardelli.",
+        "Il link pubblico TorusInternalArts cita arti marziali per tutti con canali Instagram, YouTube, WhatsApp e Facebook."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che discipline sono associate alla scuola?",
+          "answer": "Le fonti indicano arti marziali, Kung Fu e Wing Chun / Wing Flow System."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Le fonti pubbliche indicano Via Marconi 13, Gavirate."
+        },
+        {
+          "question": "Chi e' il riferimento tecnico citato?",
+          "answer": "Le fonti pubbliche citano Fabrizio Bardelli."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from Linktree, kungfuvarese.com and public business listing. Public price amounts not found."
+    },
+    {
+      "id": "csv-91",
+      "official_source_url": "https://www.boxingfighters.it/",
+      "editorial_summary": "Boxing Fighter's Varese e' una palestra di pugilato fondata nel 2018 dal maestro Salvatore Virno, ex pugile professionista. Il sito ufficiale presenta allenamenti di boxe, corso donne, testimonianze, contatti e orari organizzati tra mattina, pomeriggio e sera.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Giuseppe Giusti 7, 21100 Varese.",
+        "Il sito indica fondazione nel 2018 da parte del maestro Salvatore Virno.",
+        "Gli orari pubblicati includono lunedi', mercoledi' e venerdi' 10:30-12:00, 17:30-19:00 e 19:00-20:30.",
+        "Il corso donne e' indicato lunedi', mercoledi' e giovedi' 20:30-22:00."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di palestra e' Boxing Fighter's?",
+          "answer": "Il sito la presenta come palestra di pugilato fondata dal maestro Salvatore Virno."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede pubblicata e' Via Giuseppe Giusti 7, Varese."
+        },
+        {
+          "question": "Ci sono corsi dedicati alle donne?",
+          "answer": "Si', il sito pubblica un corso donne lunedi', mercoledi' e giovedi' dalle 20:30 alle 22:00."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle pagine verificate non sono presenti importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Boxing Fighter's website. Public price amounts not found."
+    },
+    {
+      "id": "csv-165",
+      "official_source_url": "https://www.crossfitvarese.com/tariffe-orari.html",
+      "editorial_summary": "CrossFit V-ONE a Varese e' collegato all'area CrossFit presso Sporting Palestre in Via Cesare Correnti 2. Le pagine ufficiali di CrossFit Varese pubblicano formule di allenamento in classe, on-ramp per principianti, drop-in, personal training e promozioni con prezzi.",
+      "editorial_highlights": [
+        "La sede indicata per CrossFit V-ONE e' Via Cesare Correnti 2, Varese.",
+        "Le formule pubblicate includono Open 3, Open 6, Under 21, On Ramp, Drop-in e Personal.",
+        "Le promozioni indicano opzioni mensili, trimestrali, annuali e carnet.",
+        "Il sito distingue classi di gruppo e lezioni individuali."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che formule pubblica CrossFit Varese?",
+          "answer": "Il sito indica Open 3, Open 6, Under 21, On Ramp, Drop-in e Personal."
+        },
+        {
+          "question": "Ci sono opzioni per principianti?",
+          "answer": "Si', la formula On Ramp e' indicata come corso di inserimento principianti in 6 lezioni small group."
+        },
+        {
+          "question": "Dove si trova CrossFit V-ONE?",
+          "answer": "Le fonti pubbliche indicano Via Cesare Correnti 2, Varese."
+        },
+        {
+          "question": "Quanto costano le formule pubblicate?",
+          "answer": "Le promozioni indicano Open 3 da EUR 90 mensili, Open 6 da EUR 120 mensili, Under 21 da EUR 60 mensili, drop-in da EUR 20 e personal da EUR 45."
+        }
+      ],
+      "price_info": "Promozioni CrossFit Varese: Open 3 EUR 90 al mese o EUR 240 per 3 mesi; Open 6 EUR 120 al mese, EUR 300 per 3 mesi o EUR 1.140 per 1 anno; Under 21 EUR 60 al mese o EUR 160 per 3 mesi; On Ramp 6 crediti EUR 90; Drop-in EUR 20 o 10 crediti EUR 170; Personal EUR 45 o 5 crediti EUR 180.",
+      "price_source_url": "https://www.crossfitvarese.com/promozioni.html",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from CrossFit Varese official tariff and promotions pages plus public CrossFit V-ONE location references. Stored explicit published promotion prices."
+    },
+    {
+      "id": "csv-164",
+      "official_source_url": "https://ilquintoseitu.it/crossfit-landing/",
+      "editorial_summary": "CrossFit Venegono Inferiore e' collegato al club Quinto Elemento in Via Damiano Chiesa 22. La pagina ufficiale CrossFit descrive un box affiliato dal 2014, classi con massimo 12 persone, attenzione ai neofiti e agli atleti piu' esperti, parcheggi e contatti diretti.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Damiano Chiesa 22, Venegono Inferiore.",
+        "La pagina ufficiale indica box affiliato CrossFit dal 2014.",
+        "Le classi sono descritte con massimo 12 persone.",
+        "Gli orari pubblicati sono lunedi'-venerdi' 8:00-22:00, sabato 8:00-18:00, domenica 9:00-12:30."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di box e' CrossFit Venegono Inferiore?",
+          "answer": "La pagina ufficiale lo presenta come box CrossFit affiliato dal 2014."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede pubblicata e' Via Damiano Chiesa 22, Venegono Inferiore."
+        },
+        {
+          "question": "Come sono organizzate le classi?",
+          "answer": "La pagina indica classi con massimo 12 persone."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "La pagina cita una promozione storica, ma nelle pagine verificate non sono presenti importi aggiornati."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Quinto Elemento CrossFit landing page. Public current price amounts not found."
+    },
+    {
+      "id": "csv-167",
+      "official_source_url": "http://www.curlingclubchiasso.ch/",
+      "editorial_summary": "Curling Club Chiasso e' uno storico club di curling collegato alla pista di ghiaccio di Chiasso. Fonti pubbliche indicano fondazione negli anni Sessanta, sede presso la pista di ghiaccio e organizzazione del Torneo Primavera, con contatto info@curlingclubchiasso.ch.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Pista di ghiaccio, 6830 Chiasso.",
+        "Le fonti pubbliche indicano fondazione del club nel 1967 o stagione 1964-65.",
+        "Il club e' citato tra le associazioni sportive del Comune di Chiasso.",
+        "Il Torneo Primavera del club viene indicato come evento a 36 squadre su 3 giorni."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che sport pratica Curling Club Chiasso?",
+          "answer": "Il club e' dedicato al curling."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Le fonti pubbliche indicano la pista di ghiaccio di Chiasso."
+        },
+        {
+          "question": "Il club organizza eventi?",
+          "answer": "Sono pubblicati inviti al Torneo Primavera, con formula a 36 squadre su 3 giorni."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Sono presenti quote storiche per tornei su calendari esterni, ma non un listino corsi ufficiale aggiornato."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from public club listings, Comune di Chiasso association pages and tournament invitations. Current course price amounts not stored."
+    }
+  ]
+}
