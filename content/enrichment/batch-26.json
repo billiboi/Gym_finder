@@ -1,0 +1,322 @@
+{
+  "batch": "batch-26-editorial-and-prices-rb-training-yoga-tennis",
+  "reviewed_at": "2026-05-02",
+  "entries": [
+    {
+      "id": "csv-505",
+      "official_source_url": "https://www.rbtraining.ch/pregassona",
+      "editorial_summary": "RB Training Sport Lugano / Pregassona opera presso TI-Fisio in Via Ceresio 42. Il sito ufficiale presenta allenamenti individualizzati, personal training, preparazione atletica e nutrizione, con luoghi e tempi concordati in base agli obiettivi del cliente.",
+      "editorial_highlights": [
+        "La sede pubblicata e' c/o TI-Fisio, Via Ceresio 42, 6963 Lugano.",
+        "I servizi indicati sono Personal Training, Preparazione atletica e Nutrizione.",
+        "Il team pianifica palestra, spazi outdoor o domicilio in base alle esigenze.",
+        "Il sito indica prima lezione gratuita e contatti +41 91 229 69 80 / +41 78 268 70 73."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che servizi offre RB Training Lugano?",
+          "answer": "La pagina ufficiale cita personal training, preparazione atletica e nutrizione."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il sito indica c/o TI-Fisio, Via Ceresio 42, 6963 Lugano."
+        },
+        {
+          "question": "La prima lezione e' gratuita?",
+          "answer": "Si'. Il sito comunica 'Provaci. La 1^ lezione e' gratuita'."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi numerici pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official RB Training Pregassona, home and service pages. Public numeric prices not found."
+    },
+    {
+      "id": "csv-506",
+      "official_source_url": "https://www.rbtraining.ch/mendrisio",
+      "editorial_summary": "RB Training Sport Mendrisio opera presso TI-Fisio Mendrisio in Via Giuseppe Motta 6/a. Il sito ufficiale presenta personal training, domicilio, 3 FIT, Reformer Pilates, preparazione atletica e nutrizione, con lavoro individualizzato e monitoraggio costante.",
+      "editorial_highlights": [
+        "La sede pubblicata e' c/o TI-Fisio Mendrisio, Via Giuseppe Motta 6/a, 6850 Mendrisio.",
+        "I servizi indicati includono Personal Training, Personal Training a domicilio, 3 FIT, Reformer Pilates, Preparazione atletica e Nutrizione.",
+        "Il 3 FIT lavora su funzionale, posturale, pilates matwork e yoga.",
+        "Il Reformer Pilates a Mendrisio e' indicato per massimo 2 persone."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che servizi offre RB Training Mendrisio?",
+          "answer": "Il sito cita personal training, domicilio, 3 FIT, Reformer Pilates, preparazione atletica e nutrizione."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La pagina ufficiale indica c/o TI-Fisio Mendrisio, Via Giuseppe Motta 6/a, 6850 Mendrisio."
+        },
+        {
+          "question": "Il Reformer Pilates e' in gruppo?",
+          "answer": "La pagina indica Reformer Pilates con massimo 2 persone."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi numerici pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official RB Training Mendrisio, Reformer Pilates and home pages. Public numeric prices not found."
+    },
+    {
+      "id": "csv-508",
+      "official_source_url": "https://www.realbustoasd.it/",
+      "editorial_summary": "Real Busto ASD e' un'associazione sportiva di Busto Arsizio attiva dal 1996, con calcio a 7, volley e basket. Il sito ufficiale presenta campi, PalaReal, squadre giovanili e open, iscrizioni 2025/26, prove gratuite e modalita' di pagamento.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via T. Rodari 25, Busto Arsizio.",
+        "Le attivita' principali sono calcio a 7, pallavolo e basket.",
+        "Per le nuove iscrizioni sono previste 2 prove gratuite nel mese di settembre.",
+        "La struttura include campo calcio a 7, PalaReal, spogliatoi e campo polivalente."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che sport propone Real Busto ASD?",
+          "answer": "Il sito ufficiale cita calcio a 7, volley e basket."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il sito indica Via T. Rodari 25, Busto Arsizio."
+        },
+        {
+          "question": "Sono previste prove gratuite?",
+          "answer": "Si'. La pagina iscrizioni indica 2 prove gratuite per calcio, volley o basket nel mese di settembre."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Si'. La pagina iscrizioni pubblica quota iscrizione e fascia contributi per l'allenamento."
+        }
+      ],
+      "price_info": "Iscrizione EUR 50. Contributi allenamento comunicati in base a disciplina e livello, indicati nella fascia EUR 200-300. Sconto secondo figlio/a: EUR 30 sulla seconda quota.",
+      "price_source_url": "https://www.realbustoasd.it/iscrizioni/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Real Busto home, struttura, calcio, pallavolo and iscrizioni pages."
+    },
+    {
+      "id": "csv-510",
+      "official_source_url": "https://restlessgym.ch/",
+      "editorial_summary": "RESTLESS GYM a Cadempino e' una palestra di kickboxing, K1, boxe, personal training e fitness functional. Il sito ufficiale la presenta come struttura attrezzata dentro il Palamondo, con sala pesi, area functional training e corsi serali di sport da contatto.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Palamondo, Via Industria 4, 6814 Cadempino.",
+        "I corsi indicati includono Kickboxing & K1, Boxe, Personal Training e Fitness Functional Training.",
+        "Il planning include corsi KB beginners, kickboxing, KB avanzati, boxe, functional e sala fitness.",
+        "Gli orari generali pubblicati sono lunedi'-venerdi' 11:00-21:00 e sabato 9:00-12:00."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che corsi propone RESTLESS GYM?",
+          "answer": "Il sito cita kickboxing e K1, boxe, personal training e fitness functional training."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il sito indica Palamondo, Via Industria 4, 6814 Cadempino."
+        },
+        {
+          "question": "C'e' anche sala pesi?",
+          "answer": "Si'. La pagina descrive una sala pesi e una zona functional training."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine ufficiali verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Restless Gym home and course schedule. Public prices not found."
+    },
+    {
+      "id": "csv-513",
+      "official_source_url": "https://rimoldifitness.it/",
+      "editorial_summary": "Rimoldi Fitness Boutique a Busto Arsizio propone percorsi personalizzati one-to-one, piccoli gruppi e classi di allenamento. Il sito ufficiale presenta un lavoro su postura, genetica, performance sportiva, allenamento femminile, motivazione e collaborazione con osteopata e nutrizionista.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Marsala 12, 21052 Busto Arsizio.",
+        "I servizi indicati includono sessioni one-to-one, piccoli gruppi e classi di allenamento.",
+        "Il sito cita analisi della postura e della forma fisica di partenza.",
+        "La boutique collabora con osteopata e nutrizionista sportiva."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di studio e' Rimoldi Fitness Boutique?",
+          "answer": "Il sito lo presenta come fitness boutique con percorsi personalizzati di allenamento."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il sito indica Via Marsala 12, 21052 Busto Arsizio."
+        },
+        {
+          "question": "Che formule di allenamento sono citate?",
+          "answer": "La home cita sessioni one-to-one, piccoli gruppi e classi di allenamento."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Rimoldi Fitness Boutique website. Public prices not found."
+    },
+    {
+      "id": "csv-515",
+      "official_source_url": "https://www.risefit.it/",
+      "editorial_summary": "RiseFit A.S.D. a Rozzano propone corsi fitness e allenamenti individuali in un ambiente dichiaratamente inclusivo. Il sito ufficiale presenta Booty & ABS, Funzionale, Mobility Posturale, Fit-Pilates e percorsi one-to-one, con lezione gratuita prenotabile.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Viale Isonzo 99, Rozzano.",
+        "I corsi indicati includono Booty & ABS, Funzionale, Mobility Posturale e Fit-Pilates.",
+        "La proposta include anche allenamenti individuali one-to-one.",
+        "Gli orari pubblicati sono lunedi'-venerdi' 7:00-21:00, sabato 10:00-13:30, domenica chiuso."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che corsi propone RiseFit?",
+          "answer": "Il sito cita Booty & ABS, Funzionale, Mobility Posturale, Fit-Pilates e allenamenti individuali."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La home indica Viale Isonzo 99, Rozzano."
+        },
+        {
+          "question": "Si puo' prenotare una prova?",
+          "answer": "Si'. Il sito invita a prenotare una lezione gratuita."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official RiseFit website. Public prices not found."
+    },
+    {
+      "id": "csv-521",
+      "official_source_url": "https://valeflow.com/",
+      "editorial_summary": "Sala Flow a Varese e' uno spazio per Yoga, Pilates Reformer e Camminata Metabolica. Il sito ufficiale presenta lezioni di movimento consapevole, Pilates Reformer in piccoli gruppi o private, Yoga e pratiche all'aperto per equilibrio, postura ed energia.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Silvestro Sanvito 40, 21100 Varese.",
+        "Le attivita' principali sono Yoga, Pilates Reformer e Camminata Metabolica.",
+        "Il Pilates Reformer dura 50 minuti ed e' indicato per 1-2 partecipanti.",
+        "La pagina Pilates Reformer pubblica prezzi per lezioni di coppia e private."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che attivita' propone Sala Flow?",
+          "answer": "Il sito cita Yoga, Pilates Reformer e Camminata Metabolica."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La pagina Pilates Reformer indica Via Silvestro Sanvito 40, Varese."
+        },
+        {
+          "question": "Quanto dura il Pilates Reformer?",
+          "answer": "La pagina ufficiale indica durata 50 minuti."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Si'. La pagina Pilates Reformer pubblica lezioni da 1, 5, 10 e 20 ingressi."
+        }
+      ],
+      "price_info": "Pilates Reformer 2 persone: 1 lezione EUR 28, 5 lezioni EUR 120, 10 lezioni EUR 220, 20 lezioni EUR 360. Lezione privata EUR 50.",
+      "price_source_url": "https://valeflow.com/pilates-reformer-varese/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Sala Flow home and Pilates Reformer page."
+    },
+    {
+      "id": "csv-522",
+      "official_source_url": "https://www.sandracamesi.ch/",
+      "editorial_summary": "Sandra Camesi Personal Training a Locarno propone personal training, preparazione fisica, ginnastica posturale, allenamento a domicilio, all'aperto e a distanza, consulenza alimentare e preparazione specifica per atleti. Il sito ufficiale presenta un primo lavoro di analisi con composizione corporea e postura.",
+      "editorial_highlights": [
+        "Lo studio verificato e' Sandra Camesi Personal Training a Locarno.",
+        "I servizi includono personal training 1 to 1, semi privato, domicilio, all'aperto e a distanza.",
+        "La pagina descrive anche ginnastica posturale, preparazione fisica per atleti, OCR e consulenza alimentare.",
+        "Il servizio personal training e' indicato come riconosciuto dalle casse malati complementari tramite Qualicert dal 2023."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che servizi offre Sandra Camesi?",
+          "answer": "Il sito cita personal training, preparazione fisica, ginnastica posturale, allenamento a domicilio, all'aperto, a distanza e consulenza alimentare."
+        },
+        {
+          "question": "Come inizia il percorso?",
+          "answer": "La home indica test sulla composizione corporea, analisi posturale e costruzione di allenamenti personalizzati."
+        },
+        {
+          "question": "Il servizio e' riconosciuto dalle casse malati?",
+          "answer": "Il sito indica riconoscimento Qualicert per il personal training dal 2023."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Sandra Camesi home, chi sono and il mio lavoro pages plus public business listing for address context. Public prices not found."
+    },
+    {
+      "id": "csv-523",
+      "official_source_url": "https://sarapelli-yoga.com/corsi-2/",
+      "editorial_summary": "Sara Pelli Yoga a Bellinzona propone lezioni di yoga, yoga sciamanico, Mantra Madre e corsi privati su domanda. Il sito ufficiale presenta Sara come insegnante di Yoga, Yoga prenatale e Yoga sciamanico, con sala yoga in Via Rompeda 7.",
+      "editorial_highlights": [
+        "La sala yoga pubblicata e' in Via Rompeda 7, Bellinzona.",
+        "Le lezioni yoga sono indicate lunedi' mattina e sera, mercoledi' sera e giovedi' mattina.",
+        "Lo yoga sciamanico e' indicato mercoledi' mattina e una domenica mensile.",
+        "Il sito pubblica telefono 078 738 29 84 e email pelli.sara@gmail.com."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che corsi propone Sara Pelli Yoga?",
+          "answer": "Il sito cita lezioni di yoga, yoga sciamanico, Mantra Madre e corsi privati su domanda."
+        },
+        {
+          "question": "Dove si svolgono le lezioni?",
+          "answer": "La pagina corsi indica sala yoga in Via Rompeda 7, Bellinzona."
+        },
+        {
+          "question": "Ci sono corsi privati?",
+          "answer": "La home indica corsi privati su domanda."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Si'. La pagina corsi pubblica lezione singola e abbonamento da 10 lezioni."
+        }
+      ],
+      "price_info": "Lezione singola CHF 26. Abbonamento 10 lezioni consecutive CHF 250, recuperabile entro scadenza secondo le condizioni pubblicate.",
+      "price_source_url": "https://sarapelli-yoga.com/corsi-2/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Sara Pelli Yoga home and corsi pages."
+    },
+    {
+      "id": "csv-526",
+      "official_source_url": "https://www.schiavoneteamlab.academy/",
+      "editorial_summary": "Schiavone Team Lab a Varese e' una tennis academy fondata da Francesca Schiavone nel 2022. Il sito ufficiale presenta programmi Pro Lab, Young Lab e Adult Lab, con approccio olistico su tecnica, preparazione fisica, mentalita' e valori.",
+      "editorial_highlights": [
+        "La scheda comunale indica sede in Viale Ippodromo 9, 21100 Varese.",
+        "La struttura attuale include 4 campi da tennis: 3 in terra battuta pressostatica e 1 campo Play-it.",
+        "I programmi principali sono Pro Lab, Young Lab e Adult Lab.",
+        "Il progetto e' fondato da Francesca Schiavone, vincitrice del Roland Garros 2010 ed ex numero 4 WTA."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di centro e' Schiavone Team Lab?",
+          "answer": "Il sito lo presenta come tennis academy per giovani, professionisti e adulti appassionati."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La scheda ufficiale del Comune di Varese indica Viale Ippodromo 9, Varese."
+        },
+        {
+          "question": "Che programmi offre?",
+          "answer": "Il sito cita Pro Lab, Young Lab e Adult Lab."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici; la scheda comunale indica quota variabile in base al programma."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Schiavone Team Lab home, Varese, Adult Lab and FAQ pages plus Comune di Varese listing. Public prices not found."
+    }
+  ]
+}
