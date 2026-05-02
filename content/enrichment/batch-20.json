@@ -1,0 +1,324 @@
+{
+  "batch": "batch-20-editorial-and-prices-mio-boxing-yoga-wellness",
+  "reviewed_at": "2026-05-01",
+  "entries": [
+    {
+      "id": "csv-374",
+      "official_source_url": "https://www.mexicanboxingstudio.com/italiano/club-di-boxe-messicano/",
+      "editorial_summary": "Mexican Boxing Club a Vernate propone corsi di boxe in piccoli gruppi, con attenzione a cardio, forza, riflessi, equilibrio, autodifesa e gestione dello stress. Il sito ufficiale descrive lezioni da 60 minuti e una struttura di allenamento in tre parti.",
+      "editorial_highlights": [
+        "Il programma cita Salsa Boxe, Mexican Boxing e lezioni personali.",
+        "Le lezioni sono strutturate con riscaldamento, circuito corpo intero e pratica boxe in coppia.",
+        "Il sito indica massimo 8 persone per corso.",
+        "La versione inglese indica studio a Vernate e parcheggio disponibile davanti alla sede."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di corsi propone Mexican Boxing Club?",
+          "answer": "Il sito cita Salsa Boxe, Mexican Boxing e lezioni personali."
+        },
+        {
+          "question": "Quanto dura una lezione?",
+          "answer": "La pagina prezzi descrive corsi da 60 minuti."
+        },
+        {
+          "question": "Quante persone partecipano ai corsi?",
+          "answer": "Il sito indica massimo 8 persone per corso."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Si'. La pagina italiana pubblica abbonamento annuale, mensile e lezione singola."
+        }
+      ],
+      "price_info": "Abbonamento Club annuale CHF 500; abbonamento Club mensile CHF 60; lezione singola di prova CHF 10.",
+      "price_source_url": "https://www.mexicanboxingstudio.com/italiano/club-di-boxe-messicano/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Mexican Boxing Studio Italian pricing page and English location page."
+    },
+    {
+      "id": "csv-379",
+      "official_source_url": "https://www.mioclub.org/",
+      "editorial_summary": "MioClub Cassano Magnago e' un centro sportivo con piscina, sala attrezzi, corsi fitness, corsi acquafitness, nuoto adulti, scuola nuoto bambini e acquaticita' neonatale. Il sito ufficiale pubblica sede, telefono, corsi e planning per Cassano e Tradate.",
+      "editorial_highlights": [
+        "La sede Cassano e' indicata in Via Pietro Nenni 8, Cassano Magnago.",
+        "Il telefono pubblicato per Cassano e' 0331 281081.",
+        "L'offerta include sala attrezzi, corsi fitness, acquafitness, nuoto adulti, nuoto bambini e acquaticita' neonatale.",
+        "La pagina corsi pubblica planning separati per Fitness Cassano e Nuoto Cassano."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che servizi offre MioClub Cassano?",
+          "answer": "Il sito cita sala attrezzi, corsi fitness, acquafitness, nuoto adulti, scuola nuoto e acquaticita' neonatale."
+        },
+        {
+          "question": "Dove si trova la sede Cassano?",
+          "answer": "Il sito indica Via Pietro Nenni 8, Cassano Magnago."
+        },
+        {
+          "question": "Il sito pubblica planning dei corsi?",
+          "answer": "Si'. La pagina corsi ha link dedicati a Fitness Cassano e Nuoto Cassano."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "La pagina listino e' presente, ma nelle pagine verificate non compaiono importi direttamente leggibili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official MioClub home, corsi and listino pages. Numeric official prices not readable on the checked pages."
+    },
+    {
+      "id": "csv-380",
+      "official_source_url": "https://www.mioclub.org/",
+      "editorial_summary": "MioClub Tradate e' la sede MioClub di Via dei Pradacci, con piscina, sala attrezzi, corsi fitness, acquafitness, nuoto adulti, scuola nuoto bambini e acquaticita' neonatale. Il sito ufficiale pubblica planning separati per la sede Tradate.",
+      "editorial_highlights": [
+        "La sede Tradate e' indicata in Via dei Pradacci s.n.c., Tradate.",
+        "Il telefono pubblicato per Tradate e' 0331 841330.",
+        "La pagina corsi cita planning Nuoto Tradate e Fitness Tradate.",
+        "Le attivita' pubblicate includono sala attrezzi, corsi fitness, acquafitness, nuoto adulti, scuola nuoto e acquaticita' neonatale."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che servizi offre MioClub Tradate?",
+          "answer": "Il sito cita piscina, sala attrezzi, corsi fitness, acquafitness e corsi di nuoto."
+        },
+        {
+          "question": "Dove si trova la sede Tradate?",
+          "answer": "Il sito indica Via dei Pradacci s.n.c., Tradate."
+        },
+        {
+          "question": "Ci sono planning specifici per Tradate?",
+          "answer": "Si'. La pagina corsi pubblica link a Nuoto Tradate e Fitness Tradate."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "La pagina listino e' presente, ma nelle pagine verificate non compaiono importi direttamente leggibili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official MioClub home, corsi and listino pages. Numeric official prices not readable on the checked pages."
+    },
+    {
+      "id": "csv-381",
+      "official_source_url": "https://www.momoboxingclub.ch/",
+      "editorial_summary": "Momò Boxing Club a Mendrisio e' una palestra di pugilato dedicata a fitness, disciplina e competizione. Il sito ufficiale presenta classi Junior, Principianti e amatori, Agonisti, team, etica e corsi con prezzi pubblicati.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via al Gas 10, 6850 Mendrisio.",
+        "Le classi Junior coprono la fascia 5-12 anni con un'ora di allenamento a settimana.",
+        "Principianti e amatori dai 13 anni hanno due allenamenti settimanali da 1,5 ore.",
+        "Gli agonisti aggiungono sessioni specialistiche e sparring dedicato."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che corsi propone Momò Boxing Club?",
+          "answer": "Il sito cita classi Junior, Principianti e amatori, e Agonisti."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il sito indica Via al Gas 10, 6850 Mendrisio."
+        },
+        {
+          "question": "Ci sono corsi per bambini?",
+          "answer": "Si'. La classe Junior e' indicata per bambini da 5 a 12 anni."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Si'. La pagina Plans & Pricing pubblica prova, unlimited mensile e personal sessions."
+        }
+      ],
+      "price_info": "New Member Trial CHF 50 valido 3 mesi per 5 classi; Monthly Unlimited CHF 100/mese valido 12 mesi; 8 Personal Sessions CHF 150/mese.",
+      "price_source_url": "https://www.momoboxingclub.ch/pricing-plans/list",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Momò Boxing Club home and pricing pages."
+    },
+    {
+      "id": "csv-382",
+      "official_source_url": "https://www.momofactorygym.ch/i-nostri-servizi",
+      "editorial_summary": "Momo Factory Gym a Mendrisio e' un fitness club H24 con sala pesi, pesistica, corpo libero, personal training, coaching in app, pilates, pugilato, funzionale e yoga. Il sito ufficiale descrive tre sale, accesso 24/365 e programmi personalizzati caricati su app.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via al Gas 10, Mendrisio.",
+        "La sala pesi dispone di macchinari Matrix e manubri da 2 a 62 kg.",
+        "Il club dichiara accessibilita' 24 ore su 24, 365 giorni l'anno.",
+        "I servizi pubblicati includono sala fitness/pesi, pilates, pugilato, funzionale, yoga e coaching."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che servizi offre Momo Factory Gym?",
+          "answer": "Il sito cita sala pesi, pilates, pugilato, allenamento funzionale, yoga, personal training e coaching in app."
+        },
+        {
+          "question": "La palestra e' accessibile H24?",
+          "answer": "Si'. Il sito indica accesso 24 ore su 24 e 365 giorni l'anno."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La pagina contatti indica Via al Gas 10, 6850 Mendrisio."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Si'. Le pagine servizi e sala pesi pubblicano coaching e abbonamenti di partenza."
+        }
+      ],
+      "price_info": "Abbonamento sala pesi a partire da CHF 59. Coaching: Silver CHF 40, Gold CHF 70, Platinum CHF 250 per pacchetto da 3 mesi.",
+      "price_source_url": "https://www.momofactorygym.ch/i-nostri-servizi",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Momo Factory Gym servizi, sala pesi, about and contatti pages."
+    },
+    {
+      "id": "csv-383",
+      "official_source_url": "https://monoyoga.ch/percorsi-individuali/",
+      "editorial_summary": "Mono Yoga a Mendrisio propone percorsi individuali di yoga costruiti su misura. Il sito ufficiale descrive incontri privati orientati a movimento, rilassamento, meditazione e respirazione, con pratica adattata a salute, costituzione fisica, stile di vita e obiettivi personali.",
+      "editorial_highlights": [
+        "La sede indicata e' Via F. Borella 13, 6850 Mendrisio.",
+        "I percorsi individuali prevedono minimo 4 appuntamenti.",
+        "Gli incontri durano 1 ora e 15 minuti.",
+        "Le lezioni possono svolgersi in studio, a domicilio, in un parco, online o in altri spazi in Ticino e Lombardia."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di percorso propone Mono Yoga?",
+          "answer": "Il sito descrive percorsi individuali di yoga costruiti su misura."
+        },
+        {
+          "question": "Quanto dura un incontro privato?",
+          "answer": "La pagina indica una durata di 1 ora e 15 minuti."
+        },
+        {
+          "question": "Dove si trova Mono Yoga?",
+          "answer": "Il sito indica Via F. Borella 13, 6850 Mendrisio."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "No. La pagina invita a richiedere un'offerta adatta alle proprie necessita'."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Mono Yoga individual path page. Public numeric prices not found."
+    },
+    {
+      "id": "csv-386",
+      "official_source_url": "https://www.movimenti.it/iscrizione-in-palestra",
+      "editorial_summary": "Movimenti S.S.D. a Germignaga e' una palestra con gym floor, corsi, posturali, mini-classi, area relax, sauna e bagno turco. Il sito ufficiale presenta abbonamenti, classi Athletic Reformer e Studio Pilates, orari e contatti della sede operativa.",
+      "editorial_highlights": [
+        "La sede operativa indicata e' Via Verdi 1, 21010 Germignaga.",
+        "Gli orari pubblicati sono lunedi'-venerdi' 7:00-21:30, sabato 9:00-14:00, domenica 9:00-13:00.",
+        "L'offerta cita gym floor, corsi a calendario, posturali e mini-classi.",
+        "L'area relax include sauna finlandese e bagno turco."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che servizi offre Movimenti S.S.D.?",
+          "answer": "Il sito cita gym floor, corsi, posturali, mini-classi, area relax, sauna e bagno turco."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il sito indica Via Verdi 1, 21010 Germignaga."
+        },
+        {
+          "question": "Che orari pubblica il sito?",
+          "answer": "La home indica lunedi'-venerdi' 7:00-21:30, sabato 9:00-14:00, domenica 9:00-13:00."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Si'. La pagina iscrizione pubblica abbonamenti e mini-classi."
+        }
+      ],
+      "price_info": "Infynity & Longevity EUR 85/mese; Start Fitness EUR 240/6 settimane; Power & Group EUR 65/sessione; Athletic Reformer EUR 240 per 10 lezioni; Studio Pilates EUR 348 per 12 lezioni.",
+      "price_source_url": "https://www.movimenti.it/iscrizione-in-palestra",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Movimenti home and iscrizione in palestra pages."
+    },
+    {
+      "id": "csv-387",
+      "official_source_url": "https://abc-yoga.com/de/kontakt.html",
+      "editorial_summary": "ABC Yoga / Jana Bickhard-Bottinelli a Locarno e' una scuola di Hatha Yoga, Hormonyoga e MBSR. Il sito ufficiale presenta Jana come insegnante diplomata di yoga e MBSR, docente presso il Center for Mindfulness di Zurigo e attiva con una propria scuola dal 1999.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Giuseppe Cattori 4, 6600 Locarno.",
+        "Il sito cita Hatha Yoga, Hormonyoga e MBSR per la gestione dello stress.",
+        "Jana Bickhard-Bottinelli dichiara esperienza di insegnamento nella propria scuola dal 1999.",
+        "Le competenze citate includono yoga in gravidanza, yoga per senior, Spiraldynamik, business yoga e Vipassana."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di yoga propone ABC Yoga?",
+          "answer": "Il sito cita Hatha Yoga, Hormonyoga e MBSR."
+        },
+        {
+          "question": "Chi insegna?",
+          "answer": "La pagina contatti presenta Jana Bickhard-Bottinelli, insegnante diplomata di yoga e MBSR."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il sito indica Via Giuseppe Cattori 4, 6600 Locarno."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official ABC Yoga contact/profile page. Public prices not found."
+    },
+    {
+      "id": "csv-388",
+      "official_source_url": "https://mrssporty.it/club-saronno/",
+      "editorial_summary": "Mrs.Sporty Saronno e' una palestra per donne in Via Verdi 2. Il sito ufficiale presenta allenamenti personalizzati da 30 minuti, prova gratuita, assistenza individuale delle trainer, piano nutrizionale, pressoterapia, yoga e pilates.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Verdi 2, 21047 Saronno.",
+        "L'allenamento personalizzato dura 30 minuti.",
+        "Il sito cita analisi corporea iniziale, fitness-check ogni 5-6 settimane e cambio scheda in base all'obiettivo.",
+        "I servizi includono allenamento personalizzato, alimentazione, pressoterapia, osteopata, massoterapia, yoga e pilates."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "A chi si rivolge Mrs.Sporty Saronno?",
+          "answer": "Il sito la presenta come palestra per donne di tutte le eta'."
+        },
+        {
+          "question": "Quanto dura l'allenamento?",
+          "answer": "La pagina indica allenamenti personalizzati di 30 minuti."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il sito indica Via Verdi 2, 21047 Saronno."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "La pagina parla di piani e abbonamenti, ma nelle pagine verificate non mostra importi numerici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Mrs.Sporty Club Saronno page. Public numeric prices not found."
+    },
+    {
+      "id": "csv-390",
+      "official_source_url": "https://www.mumunkwan.org/sedi/ticino/",
+      "editorial_summary": "Mu Mun Kwan Ticino a Lugano e' un dojo di Kendo e Iaido collegato al Mu Mun Kwan. Il sito ufficiale pubblica sede legale, dojo, responsabile tecnico Nicola Casamassima e orari di pratica per Iaido e Kendo.",
+      "editorial_highlights": [
+        "Il dojo indicato e' in Via Serafino Balestra 7, 6900 Lugano.",
+        "La sede legale pubblicata e' Via F. Pelli 9, 6900 Lugano.",
+        "Gli allenamenti indicati sono lunedi' e giovedi': Iaido 18:30-19:30, Kendo 19:30-20:30.",
+        "Venerdi', sabato e domenica sono indicate lezioni private previo appuntamento."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che discipline pratica Mu Mun Kwan Ticino?",
+          "answer": "Il sito indica Iaido e Kendo, e la pagina comunale cita anche Kenjutsu e meditazione Zen Za Zen."
+        },
+        {
+          "question": "Dove si trova il dojo?",
+          "answer": "La pagina Ticino indica Via Serafino Balestra 7, 6900 Lugano."
+        },
+        {
+          "question": "Quando si svolgono gli allenamenti?",
+          "answer": "Il sito indica lunedi' e giovedi': Iaido 18:30-19:30 e Kendo 19:30-20:30."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Mu Mun Kwan Ticino and sedi pages. Public prices not found."
+    }
+  ]
+}
