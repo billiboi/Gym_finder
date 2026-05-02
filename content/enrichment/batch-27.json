@@ -1,0 +1,318 @@
+{
+  "batch": "batch-27-editorial-and-prices-sevenblocks-shaolin-yoga-rehab",
+  "reviewed_at": "2026-05-02",
+  "entries": [
+    {
+      "id": "csv-530",
+      "official_source_url": "https://www.sevenblocks.ch/",
+      "editorial_summary": "SevenBlocks Chiasso e' una sede del metodo SevenBlocks, centrato su circuiti HIIT, functional training, bodybuilding e cardio con assistenza del trainer durante le classi. Le fonti verificate indicano prova gratuita di 7 giorni e riconoscimento dalle casse malati.",
+      "editorial_highlights": [
+        "Il metodo SevenBlocks combina functional training, bodybuilding e attivita' cardio in 7 blocchi di lavoro.",
+        "Il sito comunica trainer presente durante il circuito per correggere postura, peso e intensita'.",
+        "La prova gratuita pubblicata dura 7 giorni tramite app.",
+        "La scheda locale verificata indica SevenBlocks come fitness center a Chiasso."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di allenamento propone SevenBlocks?",
+          "answer": "Il sito descrive un circuito HIIT con functional training, bodybuilding, cardio e assistenza del personal trainer."
+        },
+        {
+          "question": "C'e' una prova gratuita?",
+          "answer": "Si'. Il sito ufficiale comunica 7 giorni di prova omaggio tramite app."
+        },
+        {
+          "question": "Il trainer segue durante la classe?",
+          "answer": "Si'. Il sito indica che il trainer resta al fianco dell'utente durante il circuito."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "No. La pagina prezzi specifica che importi e abbonamenti vengono comunicati in sede dopo o durante la settimana di prova gratuita."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official SevenBlocks home and prezzi pages plus local.ch listing for Chiasso context. Public numeric prices not published."
+    },
+    {
+      "id": "csv-529",
+      "official_source_url": "https://www.sevenblocks.ch/",
+      "editorial_summary": "SevenBlocks Mendrisio e' una sede del circuito SevenBlocks in Via Moree 16. Il sito ufficiale descrive un allenamento assistito, scalabile da livello basic a expert, con functional training, bodybuilding, cardio, coordinazione, equilibrio e flessibilita'.",
+      "editorial_highlights": [
+        "La sede Mendrisio pubblicata dal sito e' Via Moree 16.",
+        "Il circuito dura 42 minuti e combina tonificazione e condizionamento metabolico.",
+        "Il sito comunica 25 anni di esperienza alla base del metodo.",
+        "La pagina prezzi indica riconoscimento da tutte le casse malati e prova gratuita di 7 giorni."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che cos'e' SevenBlocks Mendrisio?",
+          "answer": "Il sito lo presenta come circuito assistito di functional training, bodybuilding e cardio."
+        },
+        {
+          "question": "Dove si trova la sede Mendrisio?",
+          "answer": "Il sito indica Via Moree 16, Mendrisio."
+        },
+        {
+          "question": "Il circuito e' adatto anche a principianti?",
+          "answer": "Il sito specifica che gli esercizi sono scalabili da livello Expert a livello Basic."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "No. La pagina prezzi dice che ingressi e abbonamenti trimestrali o annuali vengono comunicati in sede dopo o durante la prova gratuita."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official SevenBlocks home, corsi and prezzi pages. Public numeric prices not published."
+    },
+    {
+      "id": "csv-531",
+      "official_source_url": "https://shaolinnanyuan.ch/",
+      "editorial_summary": "Shaolin NanYuan KungFu Switzerland a Chiasso fa parte della rete ticinese Shaolin NanYuan. Le fonti pubbliche verificate descrivono una scuola di Kung Fu Shaolin tradizionale, Sanda, QiGong e meditazione Chan, con corsi di gruppo e lezioni private.",
+      "editorial_highlights": [
+        "La scheda catalogo indica sede a Chiasso in Via Emilio Bossi 29.",
+        "Le fonti verificate citano Kung Fu Shaolin tradizionale, Sanda, QiGong e meditazione Chan.",
+        "La scuola viene descritta come riconosciuta dal Tempio Shaolin in Cina e dalla Federazione Svizzera di Kung Fu.",
+        "Il contatto telefonico verificato e' +41 79 919 94 42."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che discipline propone Shaolin NanYuan?",
+          "answer": "Le fonti verificate citano Kung Fu Shaolin tradizionale, Sanda, QiGong e meditazione Chan."
+        },
+        {
+          "question": "La scuola ha piu' sedi?",
+          "answer": "Si'. Le fonti pubbliche citano sedi a Lugano/Porza, Locarno, Chiasso e Ginevra."
+        },
+        {
+          "question": "Dove risulta la sede di Chiasso?",
+          "answer": "La scheda catalogo indica Via Emilio Bossi 29, Chiasso."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle fonti verificate non compaiono importi pubblici specifici per questa sede."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Official site was not directly accessible to crawler due robots; reviewed public indexed snippets and third-party local listings. No price added."
+    },
+    {
+      "id": "csv-533",
+      "official_source_url": "https://shaolinnanyuan.ch/",
+      "editorial_summary": "Shaolin NanYuan KungFu Switzerland a Locarno e' una sede della scuola Shaolin NanYuan. Le fonti pubbliche verificate indicano corsi di Kung Fu Shaolin tradizionale, Sanda, QiGong e meditazione Chan, con attivita' di gruppo e proposte private o workshop.",
+      "editorial_highlights": [
+        "La scheda verificata indica Via Valle Maggia 11 per Locarno.",
+        "L'orario pubblico verificato per Locarno indica mercoledi' 16:00-20:00.",
+        "La scuola comunica corsi di gruppo in piu' sedi ticinesi.",
+        "Il telefono verificato e' +41 79 919 94 42."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che corsi propone la sede Locarno?",
+          "answer": "Le fonti pubbliche descrivono Kung Fu Shaolin tradizionale, Sanda, QiGong e meditazione Chan."
+        },
+        {
+          "question": "Dove si trova la sede Locarno?",
+          "answer": "La scheda verificata indica Via Valle Maggia 11, Locarno."
+        },
+        {
+          "question": "Che orario pubblico risulta per Locarno?",
+          "answer": "La scheda verificata indica mercoledi' 16:00-20:00."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle fonti verificate non compaiono importi pubblici specifici per questa sede."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Official site was not directly accessible to crawler due robots; reviewed public indexed snippets and fitness listing for Locarno. No price added."
+    },
+    {
+      "id": "csv-532",
+      "official_source_url": "https://shaolinnanyuan.ch/",
+      "editorial_summary": "Shaolin NanYuan KungFu Switzerland a Porza / Lugano e' una sede della scuola Shaolin NanYuan. Le fonti pubbliche verificate descrivono una scuola di Kung Fu Shaolin tradizionale, Sanda, QiGong e meditazione Chan, attiva in Ticino con corsi di gruppo e lezioni private.",
+      "editorial_highlights": [
+        "La scheda verificata indica Via Sonvico 9, Porza / Lugano.",
+        "Gli orari pubblici verificati indicano lunedi'-giovedi' 8:00-20:00 e venerdi' 10:00-16:00.",
+        "La scuola comunica riconoscimento dal Tempio Shaolin in Cina.",
+        "Il telefono verificato e' +41 79 919 94 42."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che discipline pratica Shaolin NanYuan a Porza?",
+          "answer": "Le fonti verificate citano Kung Fu Shaolin tradizionale, Sanda, QiGong e meditazione Chan."
+        },
+        {
+          "question": "Dove si trova la sede Porza / Lugano?",
+          "answer": "La scheda verificata indica Via Sonvico 9, Porza / Lugano."
+        },
+        {
+          "question": "Che orari pubblici risultano?",
+          "answer": "La scheda verificata indica lunedi'-giovedi' 8:00-20:00 e venerdi' 10:00-16:00."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle fonti verificate non compaiono importi pubblici specifici per questa sede."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Official site was not directly accessible to crawler due robots; reviewed public indexed snippets and fitness listing for Porza/Lugano. No price added."
+    },
+    {
+      "id": "csv-534",
+      "official_source_url": "https://www.shapewellnessclub.com/",
+      "editorial_summary": "Shape The Next Step Of Wellness a Lugano e' un personal training institute in Via Pioda 4. Il sito ufficiale descrive un centro di training personalizzato, non una palestra tradizionale, con sedute individuali, approccio scientifico, privacy e lavoro su postura, tonificazione e benessere.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Pioda 4, secondo piano, 6900 Lugano.",
+        "Il sito presenta Shape come centro di training personalizzato e benessere olistico.",
+        "I servizi includono allenamento personalizzato, test, anamnesi, monitoraggio e ginnastica posturale/antalgica.",
+        "Gli orari pubblicati sono lunedi', giovedi' e venerdi' 9:00-20:00; mercoledi' 9:00-16:00."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di centro e' Shape Wellness Club?",
+          "answer": "Il sito lo definisce un centro di training personalizzato, non una palestra tradizionale."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il sito indica Via Pioda 4, secondo piano, 6900 Lugano."
+        },
+        {
+          "question": "Che servizi propone?",
+          "answer": "La pagina servizi cita test, anamnesi, allenamento personalizzato, monitoraggio e ginnastica posturale/antalgica."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Shape Wellness Club home, about and servizi pages. Public prices not found."
+    },
+    {
+      "id": "csv-535",
+      "official_source_url": "https://www.itaidoshin.ch/",
+      "editorial_summary": "Shito-Ryu Karate Club Lugano e' un'associazione sportiva per la pratica e diffusione del karate stile Shito-Ryu. Il sito ufficiale presenta corsi per bambini e adulti, prima lezione di prova gratuita, dojo presso le Scuole Elementari di Lugano Loreto e affiliazione alla Federazione Ticinese Karate-do.",
+      "editorial_highlights": [
+        "Il dojo e' presso la palestra delle Scuole Elementari di Lugano Loreto, Via Adamini 25.",
+        "I bambini dai 6 ai 12 anni si allenano mercoledi' e venerdi' 18:30-19:30.",
+        "Gli adulti si allenano mercoledi' 19:30-20:30 e venerdi' 18:30-20:00.",
+        "Il sito comunica prima lezione di prova gratuita e quattro lezioni prova gratuite in home."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che stile pratica Shito-Ryu Karate Club Lugano?",
+          "answer": "Il sito indica karate stile Shito-Ryu."
+        },
+        {
+          "question": "Dove si trova il dojo?",
+          "answer": "Il sito indica palestra delle Scuole Elementari di Lugano Loreto, Via Adamini 25."
+        },
+        {
+          "question": "Ci sono corsi per bambini?",
+          "answer": "Si'. Il sito indica bambini dai 6 ai 12 anni il mercoledi' e venerdi' dalle 18:30 alle 19:30."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Shito-Ryu Karate Club Lugano home and corsi pages. Public prices not found."
+    },
+    {
+      "id": "csv-536",
+      "official_source_url": "https://www.shobukanclub.it/",
+      "editorial_summary": "Sho Bu Kan Club a Gallarate e' una storica scuola di Karate fondata nel 1969 dal Maestro Giuseppe Beghetto. Il sito ufficiale comunica il 57° anno di attivita' nel 2026, corsi tecnici, esami Dan, programmi Kyu e attivita' legate alla scuola di karate.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Casa della Gioventu', Via Novara 49, Gallarate.",
+        "Il sito indica fondazione nel 1969 dal M° Giuseppe Beghetto.",
+        "Le sezioni pubblicate includono corsi tecnici, esami Dan, programma generale Kyu e video lezioni.",
+        "Il contatto pubblicato e' giuseppe.beghetto@gmail.com, telefono 0331-370225."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che disciplina pratica Sho Bu Kan Club?",
+          "answer": "Il sito presenta ShoBuKan Club come scuola di Karate."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La pagina orari e corsi indica Casa della Gioventu', Via Novara 49, Gallarate."
+        },
+        {
+          "question": "Da quando e' attivo il club?",
+          "answer": "Il sito indica fondazione nel 1969 e 57° anno di attivita' nel 2026."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official ShoBuKan Club home and orari-e-corsi pages. Public prices not found."
+    },
+    {
+      "id": "csv-538",
+      "official_source_url": "https://www.sistemha.com/",
+      "editorial_summary": "Sistemha a Saronno e' un centro dedicato a potenziamento fisico, riabilitazione, Pilates e ginnastica posturale. Il sito ufficiale presenta percorsi personalizzati di allenamento, riabilitazione posturale, tecniche avanzate, personal training, corsi di gruppo e progetti per salute e movimento.",
+      "editorial_highlights": [
+        "Le sedi pubblicate sono Via P. Togliatti 27 e Via Guaragna 3, Saronno.",
+        "Le aree principali sono Sistemha Sport, Sistemha Forma e Sistemha Salute.",
+        "I servizi includono personal trainer, corsi di gruppo, lezioni individuali, Pilates Reformer e ginnastica posturale.",
+        "Il centro e' associato alla formazione istruttori MSP Lombardia CONI."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che servizi offre Sistemha?",
+          "answer": "Il sito cita personal training, corsi di gruppo, Pilates, ginnastica posturale, riabilitazione e percorsi personalizzati."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il sito indica Via P. Togliatti 27 e Via Guaragna 3, Saronno."
+        },
+        {
+          "question": "Che aree ha il centro?",
+          "answer": "La home distingue Sistemha Sport, Sistemha Forma e Sistemha Salute."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Sistemha home and activity sections plus public local listings for address/orari context. Public prices not found."
+    },
+    {
+      "id": "csv-541",
+      "official_source_url": "https://slow-move.ch/",
+      "editorial_summary": "Slow Move Yoga & Wellness a Lugano propone yoga in inglese, lezioni quotidiane, trattamenti ayurvedici, massaggi e yoga therapy. Il sito ufficiale presenta classi per diversi livelli, ambiente inclusivo, pratiche per forza, mobilita', benessere mentale e rilassamento profondo.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Pico 29, 6900 Lugano.",
+        "Tutte le classi yoga sono indicate in inglese.",
+        "L'offerta include lezioni per principianti e praticanti avanzati, private class, eventi, yoga therapy e massaggi ayurvedici.",
+        "Il sito pubblica prezzi per singola lezione, pacchetto da 6 lezioni e combinazione yoga + massaggio."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che corsi propone Slow Move?",
+          "answer": "Il sito cita classi yoga in inglese, livelli diversi, lezioni private, eventi, yoga therapy e trattamenti ayurvedici."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La pagina contatti indica Via Pico 29, 6900 Lugano."
+        },
+        {
+          "question": "Le classi sono in italiano?",
+          "answer": "Il sito specifica che tutte le classi yoga sono in inglese."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Si'. La pagina prezzi pubblica lezione singola, pacchetto da 6 lezioni e yoga + massaggio."
+        }
+      ],
+      "price_info": "Yoga: 1 lezione CHF 26; 6 lezioni CHF 145, validita' 3 mesi; 1 yoga + massaggio collo/schiena/spalle 30 minuti CHF 79.",
+      "price_source_url": "https://slow-move.ch/it/yoga-classes/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Slow Move home, contacts and prices pages."
+    }
+  ]
+}
