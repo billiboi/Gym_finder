@@ -1,0 +1,320 @@
+{
+  "batch": "batch-25-editorial-and-prices-fitness-club-ptroom-rb",
+  "reviewed_at": "2026-05-02",
+  "entries": [
+    {
+      "id": "csv-490",
+      "official_source_url": "https://www.wellnessvillage.ch/palestra-lugano/palestra-lugano-planet-wellness-village",
+      "editorial_summary": "Planet Wellness Village Lugano a Pazzallo e' un grande centro fitness e wellness con oltre 11.000 mq dedicati a palestra, piscine, spa, fisioterapia, estetica, ristorazione e servizi per famiglie. Il sito ufficiale presenta quattro aree fitness: Prime, Easy, Studio Pilates e PrimeDonna.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Senago 17A, 6912 Pazzallo - Lugano.",
+        "Il centro include 4 palestre, 2 piscine coperte e una SPA da 600 mq.",
+        "Le aree indicate sono Palestra Prime, Palestra Easy, Studio Pilates e PrimeDonna.",
+        "Il sito cita oltre 120 corsi settimanali, corsi in acqua, personal training, piscina da 25 metri e area relax."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di centro e' Planet Wellness Village?",
+          "answer": "Il sito lo presenta come centro fitness e wellness completo, con palestre, piscine, spa, fisioterapia, estetica e servizi per famiglie."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La pagina ufficiale indica Via Senago 17A, 6912 Pazzallo - Lugano."
+        },
+        {
+          "question": "Che aree fitness offre?",
+          "answer": "Il sito cita Palestra Prime, Palestra Easy, Studio Pilates e PrimeDonna."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Si'. La pagina palestra Lugano pubblica ingresso singolo di partenza e settimana di prova."
+        }
+      ],
+      "price_info": "Ingresso singolo palestra a partire da CHF 25. Settimana di prova: 7 giorni a CHF 39 con accesso completo alle aree del centro. Abbonamenti mensili, trimestrali e annuali con opzioni personalizzabili.",
+      "price_source_url": "https://www.wellnessvillage.ch/palestra-lugano/palestra-lugano-planet-wellness-village",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Planet Wellness Village home, Lugano palestra page and Lugano Region listing."
+    },
+    {
+      "id": "csv-491",
+      "official_source_url": "https://playfitnessgallarate.it/",
+      "editorial_summary": "Play Fitness Gallarate e' un fitness club in Via Ristori 17, operativo 7 giorni su 7. Il sito ufficiale presenta sala attrezzi di oltre 1500 mq con macchinari Precor e Technogym, sala corsi, Pilates Reformer, personal training e servizi WellMed.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Ristori 17, Gallarate.",
+        "La sala attrezzi supera i 1500 mq e usa macchinari Precor e Technogym.",
+        "Il club propone sala corsi, Pilates Reformer, personal training e area servizi salute WellMed.",
+        "Gli orari pubblicati sono lunedi'-venerdi' 06:00-22:00, sabato 08:00-19:00, domenica 09:00-13:00."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che servizi offre Play Fitness Gallarate?",
+          "answer": "Il sito cita palestra, sala corsi, Pilates Reformer, personal training e servizi WellMed."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il sito indica Via Ristori 17, Gallarate."
+        },
+        {
+          "question": "Che attrezzatura usa la sala pesi?",
+          "answer": "La pagina ufficiale cita macchinari Precor e Technogym."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Le pagine verificate invitano a richiedere informazioni e prezzi, ma non mostrano importi numerici pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Play Fitness Gallarate and Play Fitness network pages. Public numeric prices not found."
+    },
+    {
+      "id": "csv-496",
+      "official_source_url": "https://www.ptroom.it/ptroom-busto-arsizio-fitness/",
+      "editorial_summary": "PTROOM Busto Arsizio Fitness e' una sede dedicata al personal training su misura e all'osteopatia. Il sito ufficiale descrive 300 mq attrezzati, allenamento personalizzato con massimo 3 persone per volta e possibilita' di prenotare consulenza o prova gratuita.",
+      "editorial_highlights": [
+        "La sede fitness pubblicata e' Viale G. Borri 78, 21052 Busto Arsizio.",
+        "La struttura e' indicata come 300 mq dedicati a personal training e osteopatia.",
+        "Il sito comunica massimo 3 persone per volta durante l'allenamento.",
+        "Gli orari pubblicati sono lunedi'-venerdi' 07:00-21:00, sabato 08:00-14:00."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di centro e' PTROOM Busto Arsizio Fitness?",
+          "answer": "Il sito lo presenta come centro per personal training su misura e osteopatia."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La pagina ufficiale indica Viale G. Borri 78, Busto Arsizio."
+        },
+        {
+          "question": "Gli allenamenti sono individuali?",
+          "answer": "Il sito indica allenamento personalizzato con massimo 3 persone per volta."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official PTROOM Busto Arsizio Fitness page. Public prices not found."
+    },
+    {
+      "id": "csv-497",
+      "official_source_url": "https://www.ptroom.it/ptroom-busto-arsizio-pilates/",
+      "editorial_summary": "PTROOM Busto Arsizio Pilates e' la sede PTROOM dedicata al Pilates Reformer. Il sito ufficiale descrive 160 mq attrezzati interamente per il Pilates, con allenamento personalizzato e classi da 3 persone.",
+      "editorial_highlights": [
+        "La sede Pilates pubblicata e' Via Torino 48, 21052 Busto Arsizio.",
+        "La struttura e' indicata come 160 mq dedicati al Pilates con Reformer.",
+        "Le classi sono composte da 3 persone.",
+        "Gli orari pubblicati sono lunedi'-venerdi' 07:00-21:00, sabato 08:00-14:00."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di Pilates propone PTROOM Busto Arsizio?",
+          "answer": "La pagina ufficiale indica Pilates con Reformer in una sede dedicata."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il sito indica Via Torino 48, 21052 Busto Arsizio."
+        },
+        {
+          "question": "Quante persone ci sono per classe?",
+          "answer": "Il sito indica classi da 3 persone."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official PTROOM Busto Arsizio Pilates page. Public prices not found."
+    },
+    {
+      "id": "csv-498",
+      "official_source_url": "https://www.ptroom.it/",
+      "editorial_summary": "PTROOM Gallarate e' una sede PTROOM fitness e pilates in Viale dei Tigli. Il sito ufficiale la elenca tra le sedi del network, con servizi fitness e Pilates e orari pubblicati dal lunedi' al sabato.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Viale dei Tigli 28, Gallarate.",
+        "Il sito indica per Gallarate offerta Fitness & Pilates.",
+        "Gli orari pubblicati sono lunedi'-venerdi' 08:30-13:30 e 14:00-21:00.",
+        "Il sabato la sede e' indicata aperta 08:30-13:30."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che servizi offre PTROOM Gallarate?",
+          "answer": "Il sito PTROOM indica la sede di Gallarate come Fitness & Pilates."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La pagina sedi indica Viale dei Tigli 28, Gallarate."
+        },
+        {
+          "question": "Che orari sono pubblicati?",
+          "answer": "Il sito indica lunedi'-venerdi' 08:30-13:30 e 14:00-21:00, sabato 08:30-13:30."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official PTROOM home/sedi section. Public prices not found."
+    },
+    {
+      "id": "csv-499",
+      "official_source_url": "https://www.ptroom.it/",
+      "editorial_summary": "PTROOM Varese e' la sede PTROOM fitness in Via Monsignor Proserpio. Il sito ufficiale la presenta tra le sedi dedicate al personal training e ai percorsi su misura, con orari spezzati durante la settimana e apertura il sabato mattina.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Monsignor Proserpio 13, Varese.",
+        "PTROOM Varese e' indicata nella categoria Fitness.",
+        "Gli orari pubblicati sono lunedi'-venerdi' 06:00-14:00 e 16:00-21:00.",
+        "Il sabato la sede e' indicata aperta 07:00-13:00."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di sede e' PTROOM Varese?",
+          "answer": "Il sito PTROOM la elenca come sede Fitness del network."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La pagina sedi indica Via Monsignor Proserpio 13, Varese."
+        },
+        {
+          "question": "Che orari sono pubblicati?",
+          "answer": "Il sito indica lunedi'-venerdi' 06:00-14:00 e 16:00-21:00, sabato 07:00-13:00."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official PTROOM home/sedi section. Public prices not found."
+    },
+    {
+      "id": "csv-500",
+      "official_source_url": "https://www.puregym.swiss/it/studio/bellinzona",
+      "editorial_summary": "PureGym Bellinzona e' una palestra low-cost e flessibile aperta 24 ore su 24. Il sito ufficiale indica attrezzature moderne, pesi liberi, cardio, allenamento funzionale, group fitness, app gratuita, certificazione Qualitop e riconoscimento dalle casse malati.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Viale Officina 17, 6500 Bellinzona.",
+        "La palestra e' aperta 24 ore su 24, 7 giorni su 7.",
+        "Il sito cita pesi liberi, cardio, allenamento funzionale, corsi di gruppo e personal trainer disponibili.",
+        "PureGym Bellinzona e' indicata come certificata Qualitop e riconosciuta dalle assicurazioni sanitarie."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "PureGym Bellinzona e' aperta H24?",
+          "answer": "Si'. Il sito ufficiale indica accesso 24 ore su 24, 7 giorni su 7."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il sito indica Viale Officina 17, 6500 Bellinzona."
+        },
+        {
+          "question": "Che tipo di allenamento offre?",
+          "answer": "La pagina cita pesi liberi, cardio, allenamento funzionale, group fitness e personal trainer."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Si'. La pagina ufficiale pubblica abbonamento Core e Premium con prezzi mensili di partenza."
+        }
+      ],
+      "price_info": "Abbonamento Core da CHF 39/mese nell'offerta introduttiva italiana; pagina tedesca aggiornata: Core da CHF 49/mese e Premium da CHF 58/mese. Tassa iscrizione Core CHF 30, Premium CHF 0.",
+      "price_source_url": "https://www.puregym.swiss/it/studio/bellinzona",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official PureGym Bellinzona Italian, English and German pages because the localized price changed across crawled pages."
+    },
+    {
+      "id": "csv-501",
+      "official_source_url": "https://oltreilfitness.com/",
+      "editorial_summary": "Quality Centro Fitness a Mendrisio e' un centro fitness nato nel 2001 dall'esperienza di Paolo e Raffaella Medolago. Il sito ufficiale presenta personal training, classi e lezioni, staff esperto, parcheggi gratuiti e un programma di corsi di gruppo.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Borromini 20, CH-6850 Mendrisio.",
+        "Il sito comunica 35 anni di esperienza nel mondo del fitness.",
+        "I corsi citati includono Bodypump, Zumba, Power Step, Body Tone, HIIT, Aeroattack e Interval Training.",
+        "Gli orari pubblicati sono lunedi'/mercoledi'/venerdi' 07:30-22:00, martedi'/giovedi' 08:30-22:00, sabato 09:00-17:00, domenica/festivi 09:00-17:00."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che servizi offre Quality Centro Fitness?",
+          "answer": "Il sito cita personal training, classi e lezioni, sala fitness e programma corsi."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il sito indica Via Borromini 20, CH-6850 Mendrisio."
+        },
+        {
+          "question": "Che corsi sono citati?",
+          "answer": "La pagina cita Bodypump, Zumba, Power Step, Body Tone, HIIT, Aeroattack e Interval Training."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Il sito ufficiale non mostra importi generali; USI pubblica tariffe riservate alla comunita' universitaria, non trattate come prezzo ordinario."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Quality Centro Fitness site and USI sport pages for context. No general public price inserted."
+    },
+    {
+      "id": "csv-502",
+      "official_source_url": "https://ilquintoseitu.it/",
+      "editorial_summary": "Quinto Elemento XXL a Venegono Inferiore e' un club fitness con sala attrezzi, corsi, CrossFit box e attivita' in acqua. Le fonti verificate descrivono un centro attivo dal 2005, con trainer di sala, corsi fitness, pilates, functional training, core, fit boxe, step e GAG.",
+      "editorial_highlights": [
+        "La sede verificata e' Via D. Chiesa 22, 21040 Venegono Inferiore.",
+        "Le fonti pubbliche indicano orari lunedi'-venerdi' 08:00-22:00, sabato 08:00-18:00, domenica 09:00-12:30.",
+        "Le attivita' citate includono sala attrezzi, corsi, wod nel box CrossFit e akuafitness.",
+        "Le schede fitness citano corsi come Pilates, Functional Training, Core, Fit Boxe, Step e GAG."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di palestra e' Quinto Elemento XXL?",
+          "answer": "Le fonti verificate la descrivono come club fitness con sala attrezzi, corsi, CrossFit box e attivita' in acqua."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Le schede pubbliche verificate indicano Via D. Chiesa 22, Venegono Inferiore."
+        },
+        {
+          "question": "Che corsi sono citati?",
+          "answer": "Le fonti citano Pilates, Functional Training, Core, Fit Boxe, Step, GAG e akuafitness."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from catalog official URL plus public gym listings where the site content is sparsely indexed. Public prices not found."
+    },
+    {
+      "id": "csv-504",
+      "official_source_url": "https://www.rbtraining.ch/chiasso",
+      "editorial_summary": "RB Training Sport Chiasso opera presso la palestra del Tennis Club Chiasso a Seseglio. Il sito ufficiale presenta personal training, 3 FIT, Reformer Class, corsi di gruppo, preparazione atletica e nutrizione, con prima lezione gratuita.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Campagna 4, 6832 Seseglio - Chiasso.",
+        "I servizi includono Personal Training, personal training a domicilio, 3 FIT, Reformer Class, corsi e nutrizione.",
+        "I corsi citati includono HIIT Smart 30', Cross Training, Kids Gym, Pancafit Group, Pilates, Hatha Yoga, Power Running, Spinning e Posturale.",
+        "Il sito indica prova gratuita per entrare in contatto con il servizio."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che servizi offre RB Training Chiasso?",
+          "answer": "Il sito cita personal training, 3 FIT, Reformer Class, corsi di gruppo, preparazione atletica e nutrizione."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La pagina ufficiale indica Palestra Tennis Club, Via Campagna 4, 6832 Seseglio - Chiasso."
+        },
+        {
+          "question": "Che corsi sono pubblicati?",
+          "answer": "La pagina cita HIIT, Cross Training, Kids Gym, Pancafit, Pilates, Hatha Yoga, Power Running, Spinning, Posturale e altri corsi."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "La pagina cita orari e tariffe nel menu, ma nelle pagine verificate non compaiono importi numerici pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official RB Training home, Chiasso and course pages. Public numeric prices not found."
+    }
+  ]
+}
