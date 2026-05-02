@@ -1,0 +1,324 @@
+{
+  "batch": "batch-28-editorial-and-prices-yoga-rowing-gymnastics-spaces",
+  "reviewed_at": "2026-05-02",
+  "entries": [
+    {
+      "id": "csv-539",
+      "official_source_url": "https://www.sivasooryayoga.ch/corsi-sivasooryayoga",
+      "editorial_summary": "Sivasoorya Yoga a Bellinzona propone corsi di Hatha Yoga in Via Pierino Tatti 3. Il sito ufficiale pubblica lezioni soft adatte a tutti, pratiche per persone con esperienza, lezioni per mobilita' di articolazioni e colonna, con disponibilita' durante la settimana.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Pierino Tatti 3, 6500 Bellinzona.",
+        "Il sito indica 11 posteggi a disposizione.",
+        "Il programma include pratiche soft, pratiche con esperienza e mobilita' per articolazioni e spina dorsale.",
+        "Le lezioni Zoom risultano sospese, mentre restano disponibili video pre-registrati."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di yoga propone Sivasoorya Yoga?",
+          "answer": "Il sito ufficiale pubblica corsi di Hatha Yoga con pratiche soft, pratiche per persone con esperienza e mobilita'."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il sito indica Via Pierino Tatti 3, 6500 Bellinzona."
+        },
+        {
+          "question": "Ci sono lezioni online?",
+          "answer": "La pagina ufficiale indica che le lezioni Zoom sono sospese, ma restano disponibili lezioni tramite video pre-registrati."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Il sito del centro non mostra importi per i corsi ordinari; una pagina collegata di insegnante ospite pubblica il prezzo per lezioni private."
+        }
+      ],
+      "price_info": "Lezioni private a domicilio con insegnante ospite pubblicata da arimayoga: CHF 80 per 75 minuti; possibili costi di trasporto fuori dal Bellinzonese. Non sono stati trovati prezzi pubblici per gli abbonamenti Sivasoorya ordinari.",
+      "price_source_url": "https://arimayoga.com/corsi-di-yoga/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Sivasoorya Yoga course page and Arima Yoga course page referencing Hatha Flow at Sivasoorya. Only the explicit private-session price was stored."
+    },
+    {
+      "id": "csv-542",
+      "official_source_url": "https://smashx3.com/smash-x3/",
+      "editorial_summary": "SMASH X3 - Bellavista Varese a Gazzada Schianno e' un centro sportivo incentrato sul padel, nato nella cornice del Club Bellavista. Il sito ufficiale presenta campi coperti climatizzati, Academy Spector Padel House, pro-shop, prenotazione campi e un'offerta multisport.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Campagnola, 21045 Gazzada Schianno.",
+        "Il sito comunica 9 campi coperti, incluso 1 singolo, e nella pagina campi 6 campi coperti climatizzati.",
+        "La struttura e' associata al network internazionale Spector Padel dal 1 febbraio 2022.",
+        "Il centro cita anche ciclismo indoor, calcetto, tennis, piscina, beach volley, beach tennis, triathlon e preparazione atletica."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di centro e' SMASH X3?",
+          "answer": "Il sito lo presenta come centro sportivo incentrato sul padel, con Academy e campi coperti."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il sito indica Via Campagnola, 21045 Gazzada Schianno."
+        },
+        {
+          "question": "Che altre attivita' sono citate?",
+          "answer": "La pagina cita ciclismo indoor, calcetto, tennis, piscina, beach volley, beach tennis, triathlon e preparazione atletica."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici per campi o corsi."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official SMASH X3 home, campi and compleanni pages plus public listing for phone/orari context. Public prices not found."
+    },
+    {
+      "id": "csv-543",
+      "official_source_url": "https://www.canottieri.com/ww-it/canottaggio-corsi.aspx",
+      "editorial_summary": "Societa' Canottieri Varese A.S.D. propone corsi di canottaggio con prova gratuita, percorsi agonisti, pre-agonisti e master. La pagina ufficiale pubblica costi annuali, condizioni di accesso, giorni per provare e obbligo di certificato medico.",
+      "editorial_highlights": [
+        "Il corso richiede che i partecipanti sappiano nuotare.",
+        "La societa' fornisce giubbotto salvagente omologato e assistenza in acqua con due motoscafi.",
+        "La prova gratuita e' indicata martedi', giovedi' e venerdi' alle 16:00, sabato alle 15:00.",
+        "I corsi devono essere prenotati al Front-office compilando il modulo di iscrizione."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che corsi propone Canottieri Varese?",
+          "answer": "La pagina ufficiale pubblica corsi di canottaggio per agonisti, pre-agonisti e master."
+        },
+        {
+          "question": "Si puo' provare gratuitamente?",
+          "answer": "Si'. La pagina indica prove gratuite martedi', giovedi' e venerdi' alle 16:00, sabato alle 15:00."
+        },
+        {
+          "question": "Serve saper nuotare?",
+          "answer": "Si'. La pagina specifica che per accedere al corso e' indispensabile saper nuotare."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Si'. La pagina corsi pubblica costi annuali per soci e non soci."
+        }
+      ],
+      "price_info": "Canottaggio frequenza annuale: Agonisti soci EUR 350, non soci EUR 500; Pre agonisti soci EUR 200, non soci EUR 350; Pre agonisti non soci con un allenamento/settimana EUR 200; Master soci EUR 200, non soci EUR 450.",
+      "price_source_url": "https://www.canottieri.com/ww-it/canottaggio-corsi.aspx",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Canottieri Varese canottaggio corsi page."
+    },
+    {
+      "id": "csv-545",
+      "official_source_url": "https://propatriabustese.it/categoria-prodotto/corsi/",
+      "editorial_summary": "Societa' Ginnastica Pro Patria Bustese Sportiva a Busto Arsizio propone ginnastica formativa, ginnastica ritmica, ginnastica artistica maschile e femminile, salute e fitness per adulti. Il sito ufficiale pubblica shop corsi, quota societaria, indirizzo e orari segreteria.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Lodovico Ariosto 1, 21052 Busto Arsizio.",
+        "La segreteria e' indicata aperta lunedi'-venerdi' 14:30-18:30.",
+        "I corsi pubblicati includono ginnastica formativa, ritmica, GAM, artistica femminile e salute/fitness adulti.",
+        "Lo shop pubblica quota associativa annuale e prezzi bimestrali per corsi."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che corsi propone Pro Patria Bustese?",
+          "answer": "Il sito cita ginnastica formativa, ritmica, artistica maschile e femminile, salute e fitness per adulti."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Lo shop ufficiale indica Via Lodovico Ariosto 1, Busto Arsizio."
+        },
+        {
+          "question": "Sono pubblicati corsi per adulti?",
+          "answer": "Si'. Lo shop include corsi ginnastica per adulti mono e bisettimanali e ingressi liberi."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Si'. Lo shop pubblica quota societaria e prezzi dei corsi."
+        }
+      ],
+      "price_info": "Quota societaria annuale 2025-26 EUR 50. Corsi adulti: monosettimanale bimestrale EUR 40-70; bisettimanale bimestrale EUR 60-130; 8 ingressi liberi EUR 60. Ginnastica artistica maschile/femminile bimestrale EUR 110-150; ritmica bimestrale EUR 110-140.",
+      "price_source_url": "https://propatriabustese.it/categoria-prodotto/corsi/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Pro Patria Bustese shop/corsi and quota societaria pages."
+    },
+    {
+      "id": "csv-546",
+      "official_source_url": "https://www.tempiakundalini.com/",
+      "editorial_summary": "Soledad Surace e' indicata come insegnante di Kundalini Yoga a Gallarate. Le fonti verificate collegano la pratica al Kundalini Yoga, alla meditazione e a percorsi di consapevolezza; la scheda catalogo rimanda al sito Tempi A Kundalini.",
+      "editorial_highlights": [
+        "La scheda catalogo associa l'attivita' a Gallarate e al Kundalini Yoga.",
+        "Il sito indicato rimanda al progetto Tempi A Kundalini.",
+        "Le fonti pubbliche indicano un'impostazione legata a yoga, meditazione e consapevolezza.",
+        "Non sono stati trovati importi pubblici verificabili nelle pagine disponibili."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che pratica propone Soledad Surace?",
+          "answer": "La scheda catalogo e le fonti pubbliche la collegano al Kundalini Yoga."
+        },
+        {
+          "question": "Dove risulta l'attivita'?",
+          "answer": "La scheda catalogo indica Gallarate."
+        },
+        {
+          "question": "Che tipo di percorso emerge dalle fonti?",
+          "answer": "Le fonti disponibili parlano di yoga, meditazione e consapevolezza."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from catalog website reference and indexed public context. Official content was sparse; no price added."
+    },
+    {
+      "id": "csv-548",
+      "official_source_url": "https://www.chiaramanzolini.ch/",
+      "editorial_summary": "Soulstudio Sagl a Melano e' collegato al lavoro di Chiara Manzolini su yoga, mindfulness e sound healing. Le fonti verificate indicano pratiche di benessere, meditazione, suono e percorsi individuali o di gruppo.",
+      "editorial_highlights": [
+        "La scheda catalogo indica Melano e descrive yoga, mindfulness e sound healing.",
+        "Il sito collegato e' chiaramanzolini.ch.",
+        "Le fonti verificate associano l'attivita' a percorsi di benessere, consapevolezza e suono.",
+        "Non sono stati trovati importi pubblici verificabili nelle pagine disponibili."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di attivita' propone Soulstudio?",
+          "answer": "La scheda catalogo cita yoga, mindfulness e sound healing."
+        },
+        {
+          "question": "Dove risulta Soulstudio?",
+          "answer": "La scheda catalogo indica Melano."
+        },
+        {
+          "question": "Il lavoro e' solo fisico?",
+          "answer": "Le fonti disponibili collegano l'attivita' a benessere, meditazione, consapevolezza e suono."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from catalog website reference and public indexed context for Chiara Manzolini. Public prices not found."
+    },
+    {
+      "id": "csv-549",
+      "official_source_url": "http://www.space-varese.it/",
+      "editorial_summary": "SPACE - Uno spazio per il corpo e la mente a Varese e' un progetto legato a pratiche corporee e mentali. Le fonti verificate indicano uno spazio dedicato al movimento, alla cura del corpo e alla consapevolezza, con attivita' orientate al benessere.",
+      "editorial_highlights": [
+        "La scheda catalogo indica SPACE a Varese.",
+        "Il sito ufficiale indicato e' space-varese.it.",
+        "Il nome del progetto comunica uno spazio per corpo e mente.",
+        "Non sono stati trovati importi pubblici verificabili nelle pagine disponibili."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di spazio e' SPACE Varese?",
+          "answer": "La scheda e il nome del progetto lo collegano a pratiche per corpo e mente."
+        },
+        {
+          "question": "Dove risulta l'attivita'?",
+          "answer": "La scheda catalogo indica Varese."
+        },
+        {
+          "question": "Che approccio emerge?",
+          "answer": "Le informazioni disponibili puntano a movimento, cura del corpo e consapevolezza."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from catalog website reference and available public context. Official page content was sparse in search results; no price added."
+    },
+    {
+      "id": "csv-551",
+      "official_source_url": "https://www.spazio360.ch/",
+      "editorial_summary": "Spazio 360 a Chiasso propone fitness, Pilates, lezioni private, personal training e corsi per bambini, ragazzi e adulti. Il sito ufficiale presenta un'offerta ampia di movimento sotto lo stesso tetto, con corsi Qualicert e shop online per lezioni di gruppo.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Emilio Bossi 29, 6830 Chiasso.",
+        "Il sito cita fitness, Pilates, lezioni di gruppo e private, personal training e corsi per eta' diverse.",
+        "La pagina orari/prezzi indica corsi riconosciuti Qualicert.",
+        "Lo shop pubblica prova di gruppo, lezioni singole e pacchetti da 5, 10, 20 e 40 lezioni."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che corsi propone Spazio 360?",
+          "answer": "Il sito cita fitness, Pilates, lezioni di gruppo, lezioni private, personal training e corsi per bambini, ragazzi e adulti."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il sito indica Via Emilio Bossi 29, 6830 Chiasso."
+        },
+        {
+          "question": "I corsi sono riconosciuti Qualicert?",
+          "answer": "La pagina orari/prezzi indica corsi riconosciuti Qualicert, con possibile rimborso presso la cassa malati."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Si'. Lo shop pubblica lezione di prova, lezione singola e pacchetti di gruppo."
+        }
+      ],
+      "price_info": "Lezione prova di gruppo CHF 5; lezione singola gruppo CHF 15; 5 lezioni CHF 75; 10 lezioni CHF 140; 20 lezioni CHF 260. Validita' pacchetti indicata dallo shop entro 4 mesi dalla prima data.",
+      "price_source_url": "https://www.spazio360.ch/shop.html",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Spazio 360 home, orario/prezzi and shop pages."
+    },
+    {
+      "id": "csv-552",
+      "official_source_url": "https://spazioconsolida.ch/",
+      "editorial_summary": "Spazio Consolida - Yoga Arte Natura a Contone e' un centro yoga familiare riconosciuto dalle casse malati. Il sito ufficiale presenta Hatha, Vinyasa, Ashtanga e Yin Yoga, con attenzione a ascolto, benessere, presenza e legame con il territorio.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Centrale 26, 6594 Contone.",
+        "Il centro comunica riconoscimento dalle casse malati.",
+        "Gli stili indicati sono Hatha, Vinyasa, Ashtanga e Yin Yoga.",
+        "Il progetto e' guidato da Lia, con un'impostazione familiare e radicata nel territorio."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che stili yoga propone Spazio Consolida?",
+          "answer": "Il sito cita Hatha, Vinyasa, Ashtanga e Yin Yoga."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "Il sito indica Via Centrale 26, 6594 Contone."
+        },
+        {
+          "question": "Il centro e' riconosciuto dalle casse malati?",
+          "answer": "Si'. La home indica centro riconosciuto dalle casse malati."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Spazio Consolida home and chi sono pages plus local.ch listing for schedule context. Public prices not found."
+    },
+    {
+      "id": "csv-553",
+      "official_source_url": "http://www.spaziodessere.ch/",
+      "editorial_summary": "Spazio d'Essere a Locarno propone Kundalini Yoga, counseling e percorsi di riscoperta del maschile. Le fonti verificate descrivono proposte in presenza e online, individuali e di gruppo, con formule settimanali, mensili o annuali.",
+      "editorial_highlights": [
+        "La sede verificata e' Via Bartolomeo Varenna 43, 6600 Locarno.",
+        "Le attivita' indicate includono Kundalini Yoga e counseling.",
+        "La scheda pubblica cita proposte in presenza e online, individuali e di gruppo.",
+        "Il contatto telefonico verificato e' +41 78 705 19 57."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che attivita' propone Spazio d'Essere?",
+          "answer": "Le fonti verificate citano Kundalini Yoga, counseling e percorsi di riscoperta del maschile."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La scheda verificata indica Via Bartolomeo Varenna 43, 6600 Locarno."
+        },
+        {
+          "question": "Le proposte sono solo in presenza?",
+          "answer": "No. La scheda pubblica cita proposte in presenza e online, individuali e di gruppo."
+        },
+        {
+          "question": "Il sito pubblica prezzi?",
+          "answer": "Nelle pagine verificate non compaiono importi pubblici."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from catalog website reference and public fitfit listing. Public prices not found."
+    }
+  ]
+}
