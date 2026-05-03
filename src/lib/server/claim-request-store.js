@@ -11,7 +11,7 @@ const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABA
 const SUPABASE_CLAIMS_TABLE = process.env.SUPABASE_CLAIMS_TABLE || 'claim_requests';
 const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
 const CLAIM_NOTIFICATION_TO =
-  process.env.CLAIM_NOTIFICATION_TO || process.env.SITE_CONTACT_EMAIL || 'vdauria94@gmail.com';
+  process.env.CLAIM_NOTIFICATION_TO || process.env.SITE_CONTACT_EMAIL || 'info@palestreinzona.it';
 const CLAIM_NOTIFICATION_FROM =
   process.env.CLAIM_NOTIFICATION_FROM || 'Palestre in Zona <onboarding@resend.dev>';
 
