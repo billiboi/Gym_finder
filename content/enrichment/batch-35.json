@@ -1,0 +1,411 @@
+{
+  "batch": "batch-35-optimized-editorial-fitness-pilates-lidos",
+  "reviewed_at": "2026-05-03",
+  "entries": [
+    {
+      "id": "csv-394",
+      "official_source_url": "https://www.naturyoga.eu/",
+      "editorial_summary": "Natur Yoga a Varese e' una scheda yoga in Viale Padre G. B. Aguggiari 162. Le fonti pubbliche confermano indirizzo, telefono e collegamento a corsi yoga; non sono emersi prezzi pubblici affidabili per questa specifica scheda.",
+      "editorial_highlights": [
+        "La sede indicata e' Viale Padre G. B. Aguggiari 162, Varese.",
+        "Il telefono pubblico indicato e' +39 340 834 1106.",
+        "La disciplina principale associata e' Yoga.",
+        "Il riferimento online della scheda e' naturyoga.eu."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che disciplina riguarda Natur Yoga?",
+          "answer": "La scheda pubblica la collega alla pratica yoga."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "L'indirizzo indicato e' Viale Padre G. B. Aguggiari 162, Varese."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from listed website reference and public catalog data. Price pages for other Varese yoga studios were not used."
+    },
+    {
+      "id": "csv-399",
+      "official_source_url": "https://www.instagram.com/newwayfitnessvarese/",
+      "editorial_summary": "New Way Fitness a Varese e' un centro sportivo in Via Gerolamo Garoni 7. Le fonti pubbliche citano sala fitness, corsi, Pilates Reformer, area benessere, piscina estiva, tennis, arti marziali e servizi legati al benessere.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Gerolamo Garoni 7, Varese.",
+        "Il telefono pubblico indicato e' +39 0332 281919.",
+        "Le fonti citano fitness, corsi, piscina estiva, area benessere, Pilates Reformer e arti marziali.",
+        "Gli orari pubblici indicano apertura anche nel weekend."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che cosa offre New Way Fitness?",
+          "answer": "Le fonti pubbliche citano sala fitness, corsi, piscina estiva, area benessere, Pilates Reformer, tennis e arti marziali."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede pubblicata e' Via Gerolamo Garoni 7, Varese."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi ufficiali della palestra; i prezzi Wellhub non sono stati trattati come listino New Way."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from Instagram reference, EsteticaUno, Palestre.Fitness and Wellhub listing for services/orari only. Wellhub subscription prices were not stored as gym prices."
+    },
+    {
+      "id": "csv-410",
+      "official_source_url": "http://freeclubgiardino.jimdo.com/",
+      "editorial_summary": "Official Clan Fitness Coldrerio & I-motion Club e' una scheda fitness in Via Mercole 6 a Coldrerio. Le fonti pubbliche confermano telefono e posizione; il sito indicato risulta collegato a una presenza Jimdo storica.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Mercole 6, Coldrerio.",
+        "Il telefono pubblico indicato e' +41 76 222 63 24.",
+        "La categoria principale associata alla scheda e' Fitness.",
+        "La fonte online indicata e' freeclubgiardino.jimdo.com."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di struttura e' questa scheda?",
+          "answer": "La scheda pubblica la classifica come attivita' fitness a Coldrerio."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "L'indirizzo indicato e' Via Mercole 6, Coldrerio."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from listed Jimdo source and public catalog data. Public price amounts not found."
+    },
+    {
+      "id": "csv-414",
+      "official_source_url": "https://m.facebook.com/pages/Old-Iron-Gym/559644637449944",
+      "editorial_summary": "Old Iron Gym a Gallarate e' una palestra in Via Ettore Fieramosca 9. Le fonti pubbliche confermano telefono, categoria palestra/sala pesi e orari distribuiti tra mattina e sera durante la settimana.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Ettore Fieramosca 9, Gallarate.",
+        "Il telefono pubblico indicato e' +39 340 491 1425.",
+        "Le fonti pubbliche la classificano come palestra.",
+        "Gli orari pubblici indicano apertura dal lunedi' al sabato, domenica chiuso."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di palestra e' Old Iron Gym?",
+          "answer": "Le fonti pubbliche la classificano come palestra a Gallarate."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "L'indirizzo indicato e' Via Ettore Fieramosca 9, Gallarate."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from Facebook listing, FitnessFast, LocalShop24, oraridiapertura24 and Palestre.Fitness public data. Public price amounts not found."
+    },
+    {
+      "id": "csv-420",
+      "official_source_url": "https://info565002.wixsite.com/omniagym",
+      "editorial_summary": "Omnia Gym Artistica Varese e' una scheda di ginnastica artistica in Via Dalmazia 55. Le fonti pubbliche confermano indirizzo, telefono e categoria centro ginnastica; non sono emerse tariffe pubbliche affidabili.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Dalmazia 55, Varese.",
+        "Il telefono pubblico indicato e' +39 347 323 9765.",
+        "La categoria principale associata e' ginnastica artistica / centro ginnastica.",
+        "Il riferimento online indicato e' una pagina Wix dedicata."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che disciplina riguarda Omnia Gym Artistica Varese?",
+          "answer": "La scheda riguarda ginnastica artistica e attivita' di centro ginnastica."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "L'indirizzo pubblicato e' Via Dalmazia 55, Varese."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from listed Wix source, local catalog data and Cylex nearby gymnastics context. Public price amounts not found."
+    },
+    {
+      "id": "csv-434",
+      "official_source_url": "https://www.facebook.com/NuovaOlimpiaBoxeMaiDomi",
+      "editorial_summary": "Palestra Nuova Olimpia Boxe a Gallarate e' una scheda boxe collegata alla zona di Via Monte Leone / Via Ettore Fieramosca. Le fonti pubbliche indicano telefono, email e presenza Facebook dedicata.",
+      "editorial_highlights": [
+        "La scheda locale indica Via Monte Leone 97, Gallarate.",
+        "Il telefono pubblico indicato e' +39 348 283 6013.",
+        "La disciplina principale associata e' Boxe.",
+        "Le fonti pubbliche indicano anche maidominuovaolimpiaboxe@gmail.com."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che disciplina riguarda Nuova Olimpia Boxe?",
+          "answer": "La scheda riguarda boxe a Gallarate."
+        },
+        {
+          "question": "Come si puo' contattare?",
+          "answer": "Le fonti pubbliche indicano +39 348 283 6013 e maidominuovaolimpiaboxe@gmail.com."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from Facebook listing, TuttiAffari public data and local catalog data. Public price amounts not found."
+    },
+    {
+      "id": "csv-437",
+      "official_source_url": "https://maurodeantoni.wixsite.com/body-up",
+      "editorial_summary": "Palestra Body Up a Tradate e' una scheda fitness in Via Bruno Passerini 16. Le fonti pubbliche confermano telefono, sito Wix e classificazione come palestra; non sono stati trovati prezzi pubblici affidabili.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Bruno Passerini 16, Tradate.",
+        "Il telefono pubblico indicato e' +39 331 108 5197.",
+        "La categoria principale associata e' Fitness.",
+        "Il riferimento online della scheda e' il sito Body Up su Wix."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di struttura e' Palestra Body Up?",
+          "answer": "La scheda pubblica la classifica come palestra/fitness a Tradate."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "L'indirizzo indicato e' Via Bruno Passerini 16, Tradate."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from listed Wix source and public catalog data. Public price amounts not found."
+    },
+    {
+      "id": "csv-443",
+      "official_source_url": "https://www.facebook.com/IlCinzanino/photos/",
+      "editorial_summary": "Palestra di Roccia Il Cinzanino a Maccagno e' una falesia/palestra di arrampicata sul Lago Maggiore. Il CAI Luino descrive un impianto di libero accesso con oltre novanta lunghezze di corda, settori per bambini, illuminazione e piccolo bar-ristoro.",
+      "editorial_highlights": [
+        "La sede pubblicata e' La Vecchia Strada 1, Maccagno con Pino e Veddasca.",
+        "Il telefono pubblico indicato e' +39 0332 170 0682.",
+        "Il CAI Luino cita oltre novanta lunghezze di corda e falesie alte fino a 50 metri.",
+        "Le fonti pubbliche citano bar-ristoro, area picnic e possibilita' di istruttori su prenotazione."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di struttura e' Il Cinzanino?",
+          "answer": "E' una palestra di roccia/falesia per arrampicata sul Lago Maggiore."
+        },
+        {
+          "question": "E' adatta anche a principianti?",
+          "answer": "Il CAI Luino cita vie di diverse difficolta' e un settore realizzato per bambini."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Il CAI descrive un impianto di libero accesso; non sono stati trovati importi pubblici per corsi o istruttori."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from CAI Luino page, Facebook listing, Wanderlog, RestaurantGuru and VareseNoi coverage. Restaurant/bar prices were not stored as gym prices."
+    },
+    {
+      "id": "csv-451",
+      "official_source_url": "https://palestre.fitness/it/i/14178-palestra-time-out-club/",
+      "editorial_summary": "Palestra Time Out Club a Cardano al Campo e' una palestra in Via Guglielmo Marconi 7. Le fonti pubbliche confermano telefono, categoria palestra e orari estesi dal lunedi' al sabato.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Guglielmo Marconi 7, Cardano al Campo.",
+        "Il telefono pubblico indicato e' +39 0331 730419.",
+        "Le fonti pubbliche classificano la struttura come palestra.",
+        "Gli orari pubblici indicano apertura lunedi'-sabato, domenica chiuso."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di struttura e' Time Out Club?",
+          "answer": "Le fonti pubbliche la classificano come palestra a Cardano al Campo."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "L'indirizzo pubblicato e' Via Guglielmo Marconi 7, Cardano al Campo."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from Palestre.Fitness, AmbitionFitness, TuttiAffari and public catalog data. Public price amounts not found."
+    },
+    {
+      "id": "csv-455",
+      "official_source_url": "https://www.sportlandiatradate.it/",
+      "editorial_summary": "Pallacanestro Sportlandia Tradate e' una societa' sportiva di basket con sede in Via Giosue Carducci 1. Le fonti ufficiali e Golee citano fondazione nel 1995, squadre, allenamenti, iscrizioni 2025-2026 e attivita' giovanili, minibasket e senior.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Giosue Carducci 1, Tradate.",
+        "Golee indica Sportlandia Tradate come societa' fondata nel 1995.",
+        "Le fonti ufficiali pubblicano squadre, roster e orari allenamenti.",
+        "La disciplina principale associata e' Basket."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che sport pratica Sportlandia Tradate?",
+          "answer": "Le fonti pubbliche la collegano alla pallacanestro e al basket."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede indicata e' Via Giosue Carducci 1, Tradate."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Sono presenti moduli di iscrizione, ma nelle fonti verificate non sono stati letti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Sportlandia Tradate site, Golee profile and opening-hours listing. Public price amounts not found."
+    },
+    {
+      "id": "csv-476",
+      "official_source_url": "https://www.pilatesproject.eu/",
+      "editorial_summary": "Pilates Project di Elena Sartori a Busto Arsizio e' uno studio Pilates in Via Venezia 12. Il sito ufficiale pubblica contatti, social e app, mentre fonti pubbliche confermano orari su fasce pranzo e sera nei giorni feriali.",
+      "editorial_highlights": [
+        "La sede ufficiale e' Via Venezia 12, Busto Arsizio.",
+        "Il telefono pubblico indicato e' +39 347 411 4262.",
+        "La disciplina principale associata e' Pilates.",
+        "Le fonti pubbliche indicano apertura nei giorni feriali, con sabato e domenica chiusi."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di studio e' Pilates Project?",
+          "answer": "La scheda e il sito lo collegano alla pratica Pilates."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede ufficiale e' Via Venezia 12, Busto Arsizio."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "La pagina offerta non espone importi leggibili nelle fonti verificate."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Pilates Project contact/offering pages, TuttiAffari, Wellhub and Palestre.Fitness. Wellhub subscription prices were not stored as studio prices."
+    },
+    {
+      "id": "csv-478",
+      "official_source_url": "https://studiopilatestherapy.it/",
+      "editorial_summary": "Pilates Therapy a Varese e' una scheda Pilates in Via Giuseppe Grandi 12. Le fonti pubbliche confermano telefono, categoria Pilates e orari feriali 08:30-20:30.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Giuseppe Grandi 12, Varese.",
+        "Il telefono pubblico indicato e' +39 338 616 9164.",
+        "La disciplina principale associata e' Pilates.",
+        "Gli orari pubblici indicano lunedi'-venerdi' 08:30-20:30, sabato e domenica chiusi."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che disciplina riguarda Pilates Therapy?",
+          "answer": "La scheda pubblica la collega al Pilates."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "L'indirizzo pubblicato e' Via Giuseppe Grandi 12, Varese."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from listed website reference and public catalog data. Public price amounts not found."
+    },
+    {
+      "id": "csv-479",
+      "official_source_url": "https://camillasandonini.com/",
+      "editorial_summary": "Pink Energy di Camilla Sandonini a Pregassona e' una scheda fitness femminile in Via Ceresio 55. Le fonti pubbliche la collegano a personal training, Pilates studio, allenamento femminile e percorsi anche legati alla gravidanza.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Ceresio 55, Pregassona.",
+        "Il telefono pubblico indicato e' +41 76 560 99 61.",
+        "Le fonti pubbliche la classificano come personal trainer, Pilates studio e women personal trainer.",
+        "Le recensioni pubbliche citano allenamento femminile, Pilates e percorsi in gravidanza."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di attivita' e' Pink Energy?",
+          "answer": "Le fonti pubbliche la collegano a personal training, Pilates e allenamento femminile."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede indicata e' Via Ceresio 55, Pregassona."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from listed website reference, Top-Rated public profile and public catalog data. Public price amounts not found."
+    },
+    {
+      "id": "csv-480",
+      "official_source_url": "http://www.pinkandyoupilates.com/",
+      "editorial_summary": "Pink&You Reformer Pilates a Mendrisio e' una scheda Pilates in Via Praella 14. Le fonti pubbliche confermano telefono, sito indicato e disciplina Pilates; non sono emerse tariffe pubbliche affidabili per questa scheda.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Praella 14, Mendrisio.",
+        "Il telefono pubblico indicato e' +41 79 630 55 31.",
+        "La disciplina principale associata e' Pilates.",
+        "Il riferimento online indicato e' pinkandyoupilates.com."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che disciplina riguarda Pink&You?",
+          "answer": "La scheda pubblica la collega al Pilates Reformer."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "L'indirizzo indicato e' Via Praella 14, Mendrisio."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from listed website reference and public catalog data. Prices found for similarly named unrelated Pilates businesses were not used."
+    },
+    {
+      "id": "csv-488",
+      "official_source_url": "https://www.comune.solbiateolona.va.it/it/vivere/piscina-comunale",
+      "editorial_summary": "Piscina di Solbiate Olona e' la piscina comunale in Piazzale dello Sport. Il Comune la descrive come impianto sportivo accessibile, con strutture per nuoto e attivita' acquatiche per diverse eta'; H2O Nuoto e' indicata come gestione della piscina.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Piazzale dello Sport, Solbiate Olona.",
+        "Il telefono pubblico indicato nella scheda e' +39 0331 135 1248.",
+        "Il Comune indica orari pubblici lunedi'-venerdi' con apertura fino alle 22:00 e weekend ridotto.",
+        "Le fonti comunali indicano H2O come gestore della piscina."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di impianto e' la Piscina di Solbiate Olona?",
+          "answer": "Il Comune la descrive come piscina comunale e impianto sportivo per nuoto e attivita' acquatiche."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede pubblicata e' Piazzale dello Sport, Solbiate Olona."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Il Comune invita a contattare la struttura per eventuali costi; non sono presenti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from Comune di Solbiate Olona pages, H2O management news and public catalog data. Public tariff amounts not found for this municipal pool."
+    }
+  ]
+}
