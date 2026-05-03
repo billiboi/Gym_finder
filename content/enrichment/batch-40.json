@@ -1,0 +1,417 @@
+{
+  "batch": "batch-40-optimized-editorial-price-karate-yoga-fitness",
+  "reviewed_at": "2026-05-03",
+  "entries": [
+    {
+      "id": "csv-646",
+      "official_source_url": "https://www.uniaks.it/dojo.htm",
+      "editorial_summary": "Wankan Karate Saronno ASD e' un dojo karate in Via Roma 119 a Saronno. Le fonti pubbliche UN.I.A.K.S. indicano affiliazione CSEN, contatti di segreteria e orari di pratica il martedi', venerdi' e sabato.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Roma 119, Saronno.",
+        "Il telefono pubblico indicato e' +39 328 267 3422.",
+        "La pagina UN.I.A.K.S. indica affiliazione CSEN.",
+        "Gli orari pubblicati sono martedi' 18:30-21:30, venerdi' 18:30-21:30 e sabato 17:00-19:00."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che disciplina si pratica da Wankan Karate Saronno?",
+          "answer": "La scheda riguarda Karate a Saronno."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede pubblicata e' Via Roma 119, Saronno."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from UN.I.A.K.S. dojo page and public catalog data. Public price amounts not found."
+    },
+    {
+      "id": "csv-647",
+      "official_source_url": "https://www.wefit.it/",
+      "editorial_summary": "WeFit SSD a Gavirate e' un centro polifunzionale con piscina, corsi nuoto, palestra, acqua fitness e benessere. Il sito ufficiale descrive una struttura di 3500 mq con sale corsi, sala attrezzi, piscina con idromassaggio, thermarium, area beauty e VIP Center.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Viale Ticino 82, Gavirate.",
+        "Il telefono pubblico indicato e' +39 0332 839511.",
+        "Il sito ufficiale cita piscina, scuola nuoto, fitness, acqua e benessere.",
+        "La struttura viene descritta come centro polifunzionale di 3500 mq."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che cosa offre WeFit Gavirate?",
+          "answer": "Il sito ufficiale cita piscina, corsi nuoto, palestra, acqua fitness, thermarium, area beauty e benessere."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede indicata e' Viale Ticino 82, Gavirate."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili per un listino completo."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official WeFit site and public catalog data. Public tariff amounts not found."
+    },
+    {
+      "id": "csv-649",
+      "official_source_url": "http://www.wikakungfu.com/",
+      "editorial_summary": "WIKA Kung Fu Ticino - Giubiasco - Sementina e' una scheda arti marziali in Via al Ticino 44. Le fonti pubbliche confermano telefono, sito indicato e pratica Kung Fu nel Bellinzonese.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via al Ticino 44, Sementina.",
+        "Il telefono pubblico indicato e' +41 76 812 47 16.",
+        "La disciplina principale associata e' Kung Fu.",
+        "Il riferimento online indicato e' wikakungfu.com."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che disciplina riguarda WIKA Kung Fu Ticino?",
+          "answer": "La scheda pubblica la collega al Kung Fu."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede indicata e' Via al Ticino 44, Sementina."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from listed official site reference and public catalog data. Public price amounts not found."
+    },
+    {
+      "id": "csv-651",
+      "official_source_url": "https://kungfuxuexiao.org/",
+      "editorial_summary": "Wing Chun Xu Xio a Lugano corrisponde alla scuola Kung Fu Xue Xiao in Via Besso 59. Il sito ufficiale presenta Wing Chun Kung Fu, Qi Gong, Tai Chi Chuan, difesa personale e percorsi formativi diretti da Sifu Alberto Marletta.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Besso 59, Lugano.",
+        "Il telefono pubblico indicato e' +41 78 717 29 27.",
+        "Il sito ufficiale cita Wing Chun Kung Fu, Qi Gong, Tai Chi Chuan e difesa personale.",
+        "La pagina tariffe pubblica prezzi per K2, K3, lezioni private, lezioni gruppo e abbonamenti."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che discipline propone Kung Fu Xue Xiao?",
+          "answer": "Il sito ufficiale cita Wing Chun Kung Fu, Qi Gong, Tai Chi Chuan, difesa personale e percorsi formativi."
+        },
+        {
+          "question": "Dove si trova il Kwoon Lugano?",
+          "answer": "La sede ufficiale indicata e' Via Besso 59, Lugano."
+        },
+        {
+          "question": "Quali prezzi sono pubblicati?",
+          "answer": "La pagina tariffe pubblica importi per lezioni private, lezioni gruppo, mensili, trimestrali e stagionali."
+        }
+      ],
+      "price_info": "Tariffe ufficiali Kwoon Lugano: K2 10-12 anni, privata CHF 130 con Sifu o CHF 80 con istruttore, gruppo CHF 30, mese gruppo CHF 110, 3 mesi CHF 310, stagionale CHF 810. K3 >12 anni: privata CHF 130, gruppo CHF 40, mese gruppo CHF 200, 3 mesi CHF 500, stagionale CHF 1'450.",
+      "price_source_url": "https://kungfuxuexiao.org/tariffe/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Kung Fu Xue Xiao home, percorsi formativi and tariffe pages, plus Lugano association listing. Price amounts taken from official tariff page."
+    },
+    {
+      "id": "csv-652",
+      "official_source_url": "http://xxlpalestra.it/",
+      "editorial_summary": "XXL Palestra a Gallarate e' una palestra in Via Varese 70. Le fonti pubbliche confermano telefono, indirizzo e attivita' fitness; non sono emersi importi pubblici affidabili.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Varese 70, Gallarate.",
+        "Il telefono pubblico indicato e' +39 0331 177 1885.",
+        "La categoria principale associata e' Fitness.",
+        "Il riferimento online indicato e' xxlpalestra.it."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di struttura e' XXL Palestra?",
+          "answer": "La scheda pubblica la collega a fitness e palestra a Gallarate."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede pubblicata e' Via Varese 70, Gallarate."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from listed website reference and public catalog data. Public price amounts not found."
+    },
+    {
+      "id": "csv-653",
+      "official_source_url": "https://www.instagram.com/tizi_anantara_yoga/",
+      "editorial_summary": "Yoga Anantara di Tiziana Scilacci a Mendrisio e' una scheda yoga in Via Carlo Pasta 13. Le fonti pubbliche confermano telefono, profilo Instagram e attivita' yoga.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Carlo Pasta 13, Mendrisio.",
+        "Il telefono pubblico indicato e' +41 79 270 08 13.",
+        "La disciplina principale associata e' Yoga.",
+        "Il riferimento online pubblico e' il profilo Instagram Tiziana Anantara Yoga."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che disciplina riguarda Yoga Anantara?",
+          "answer": "La scheda pubblica la collega alla pratica yoga."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede indicata e' Via Carlo Pasta 13, Mendrisio."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from Instagram profile link and public catalog data. Public price amounts not found."
+    },
+    {
+      "id": "csv-655",
+      "official_source_url": "http://yogaconalga.it/",
+      "editorial_summary": "YOGA con ALGA Saronno e' una scheda yoga in Via Giacomo Leopardi 2. Le fonti pubbliche confermano telefono, indirizzo e riferimento web dedicato alla pratica yoga.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Giacomo Leopardi 2, Saronno.",
+        "Il telefono pubblico indicato e' +39 339 386 3186.",
+        "La disciplina principale associata e' Yoga.",
+        "Il riferimento online indicato e' yogaconalga.it."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di attivita' e' YOGA con ALGA?",
+          "answer": "La scheda pubblica la collega alla pratica yoga a Saronno."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede indicata e' Via Giacomo Leopardi 2, Saronno."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from listed website reference and public catalog data. Public price amounts not found."
+    },
+    {
+      "id": "csv-656",
+      "official_source_url": "http://www.yogaconanna.it/",
+      "editorial_summary": "Yoga con Anna a Varese e' una scheda yoga in Via Francesco del Cairo 32. Le fonti pubbliche collegano l'attivita' alla pratica yoga e indicano telefono diretto.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Francesco del Cairo 32, Varese.",
+        "Il telefono pubblico indicato e' +39 351 665 3000.",
+        "La disciplina principale associata e' Yoga.",
+        "Il riferimento online indicato e' yogaconanna.it."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che disciplina riguarda Yoga con Anna?",
+          "answer": "La scheda pubblica la collega alla pratica yoga a Varese."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede indicata e' Via Francesco del Cairo 32, Varese."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from listed website reference and public catalog data. Prices from unrelated Varese yoga studios were not used."
+    },
+    {
+      "id": "csv-657",
+      "official_source_url": "http://www.robertomartinelli.ch/",
+      "editorial_summary": "Yoga da Roberto a Locarno e' una scheda yoga collegata a Roberto Martinelli e alla zona Le Cinque Vie. Le fonti pubbliche confermano telefono e sito indicato.",
+      "editorial_highlights": [
+        "La sede locale indicata e' Le Cinque Vie, Locarno.",
+        "Il telefono pubblico indicato e' +41 77 504 77 90.",
+        "La disciplina principale associata e' Yoga.",
+        "Il riferimento online indicato e' robertomartinelli.ch."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di attivita' e' Yoga da Roberto?",
+          "answer": "La scheda pubblica la collega alla pratica yoga a Locarno."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede locale indicata e' Le Cinque Vie, Locarno."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from listed website reference and public catalog data. Public price amounts not found."
+    },
+    {
+      "id": "csv-658",
+      "official_source_url": "https://www.yogadinamico.ch/",
+      "editorial_summary": "Yoga Dinamico e Natural Wellness a Lugano e' un centro yoga e benessere in Via Luganetto 4, Viganello. Il sito ufficiale e Lugano Region descrivono corsi settimanali, eventi, retreat, formazione insegnanti e area wellness con terapisti.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Luganetto 4, Viganello-Lugano.",
+        "Il telefono pubblico indicato e' +41 76 756 01 74.",
+        "Lugano Region descrive corsi, eventi, retreat, formazione e area wellness.",
+        "La pagina prezzi ufficiale pubblica importi per lezioni speciali, gravidanza e mamma-bebe'."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che cosa offre Yoga Dinamico e Natural Wellness?",
+          "answer": "Le fonti ufficiali citano yoga, eventi, retreat, formazione insegnanti e area wellness con terapisti."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede pubblicata e' Via Luganetto 4, Viganello-Lugano."
+        },
+        {
+          "question": "Quali prezzi sono pubblicati?",
+          "answer": "La pagina prezzi cita schiena sana, restorative, yoga in gravidanza e yoga mamma-bebe'."
+        }
+      ],
+      "price_info": "Prezzi ufficiali pubblicati: Yoga schiena sana CHF 30 a lezione; Restorative Yoga singola CHF 30; Yoga in gravidanza 10 lezioni CHF 250, prova CHF 25; Yoga mamma e bebe' neonato CHF 25 a lezione.",
+      "price_source_url": "https://www.yogadinamico.ch/prezzi.html",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Yoga Dinamico home and prezzi pages, Lugano Region and AllBiz profiles. Price amounts taken from official prezzi page."
+    },
+    {
+      "id": "csv-659",
+      "official_source_url": "http://fabrizioboldrini.com/",
+      "editorial_summary": "Yoga Gallarate - Karma Chakra e' una scheda yoga in Via Giuseppe Verdi 4, collegata a Fabrizio Boldrini. Le fonti pubbliche confermano indirizzo, telefono e pratica yoga.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Giuseppe Verdi 4, Gallarate.",
+        "Il telefono pubblico indicato e' +39 375 608 6546.",
+        "La disciplina principale associata e' Yoga.",
+        "Il riferimento online indicato e' fabrizioboldrini.com."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di attivita' e' Yoga Gallarate - Karma Chakra?",
+          "answer": "La scheda pubblica la collega alla pratica yoga a Gallarate."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede indicata e' Via Giuseppe Verdi 4, Gallarate."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from listed website reference and public catalog data. Public price amounts not found."
+    },
+    {
+      "id": "csv-660",
+      "official_source_url": "https://www.hariom.ch/",
+      "editorial_summary": "Yoga Hari Om Lugano e' collegato alla scuola Hari Om, con sede indicata in Via Generale Henri Guisan 16. Le fonti pubbliche del brand parlano di formazione yoga certificata e percorsi di pratica.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Generale Henri Guisan 16, Lugano.",
+        "Il telefono pubblico indicato e' +41 76 368 56 38.",
+        "La disciplina principale associata e' Yoga.",
+        "Le fonti Hari Om citano formazione yoga certificata e corsi."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di scuola e' Yoga Hari Om?",
+          "answer": "Le fonti pubbliche la collegano a yoga e formazione yoga certificata."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede indicata e' Via Generale Henri Guisan 16, Lugano."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Sono pubblicati prezzi per teacher training, ma non un listino affidabile per lezioni ordinarie della scheda."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from listed Hari Om site and Hari Om Yoga School public pages. Teacher-training fees were not stored as gym card price_info."
+    },
+    {
+      "id": "csv-662",
+      "official_source_url": "https://www.soulsinnature.net/yogaloft",
+      "editorial_summary": "Yoga Loft Cureglia-Ticino e' uno studio yoga in Via Pianello 6B, parte del progetto SoulsinNature. Il sito ufficiale presenta yoga, meditazione, rilassamento profondo, bagni di gong e breathwork, con carnet e ingressi singoli pubblicati.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Pianello 6B, Cureglia.",
+        "Il telefono pubblico indicato e' +41 78 228 76 36.",
+        "Il sito ufficiale cita yoga, meditazione, gong, breathwork e pratiche di rilascio dello stress.",
+        "La pagina prezzi pubblica carnet da 5 a 60 ore e ingressi singoli."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che cosa offre Yoga Loft?",
+          "answer": "Il sito ufficiale cita yoga, meditazione, rilassamento profondo, bagni di gong e breathwork."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede pubblicata e' Via Pianello 6B, Cureglia."
+        },
+        {
+          "question": "Quali prezzi sono pubblicati?",
+          "answer": "La pagina prezzi pubblica carnet da 5, 10, 20, 40 e 60 ore e singole classi."
+        }
+      ],
+      "price_info": "Prezzi ufficiali: 60 ore CHF 595; 40 ore CHF 495; 20 ore CHF 285; 10 ore CHF 165; 5 ore CHF 90; singola 60 minuti CHF 20. Drop-in in presenza: 45 min CHF 15, 75 min CHF 25, 90 min CHF 30, 2 ore CHF 37, 2h15 CHF 42.",
+      "price_source_url": "https://www.soulsinnature.net/plans-pricing",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Yoga Loft and SoulsinNature plans-pricing pages. Price amounts taken from official plans page."
+    },
+    {
+      "id": "csv-663",
+      "official_source_url": "http://www.yogadhyana.org/",
+      "editorial_summary": "Yoga Meditazione Dhyana Varese e' una scheda yoga e meditazione in Viale Padre G. B. Aguggiari 100. Le fonti pubbliche confermano telefono, indirizzo e pratica yoga/meditazione.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Viale Padre G. B. Aguggiari 100, Varese.",
+        "Il telefono pubblico indicato e' +39 333 838 9264.",
+        "Le discipline principali associate sono Yoga e meditazione.",
+        "Il riferimento online indicato e' yogadhyana.org."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che cosa si pratica da Yoga Meditazione Dhyana?",
+          "answer": "La scheda pubblica la collega a yoga e meditazione."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede indicata e' Viale Padre G. B. Aguggiari 100, Varese."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from listed website reference and public catalog data. Public price amounts not found."
+    },
+    {
+      "id": "csv-664",
+      "official_source_url": "https://www.danielafigini.ch/",
+      "editorial_summary": "Yoga per Tutti a Lugano e' la scheda di Daniela Figini in Via Luigi Canonica 4. Le fonti pubbliche search.ch la collegano a yoga, massaggio sportivo e salute, meditazione, preparazione al parto e riabilitazione.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Luigi Canonica 4, Lugano.",
+        "Il telefono pubblico indicato e' +41 79 607 51 68.",
+        "Le fonti pubbliche citano yoga, meditazione, massaggio sportivo, preparazione al parto e riabilitazione.",
+        "La scheda indica anche possibilita' di contatto via WhatsApp."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che cosa offre Yoga per Tutti?",
+          "answer": "Le fonti pubbliche citano yoga, meditazione, massaggio, preparazione al parto e riabilitazione."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede indicata e' Via Luigi Canonica 4, Lugano."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Daniela Figini reference and search.ch public listing. Public price amounts not found."
+    }
+  ]
+}
