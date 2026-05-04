@@ -39,6 +39,22 @@
       .filter((item) => item.question && item.answer);
   }
 
+  function compactMetaDescription(parts) {
+    const text = parts
+      .map((part) => fixGymText(part))
+      .filter(Boolean)
+      .join(' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    return text.length > 158 ? `${text.slice(0, 155).replace(/\s+\S*$/, '')}...` : text;
+  }
+
+  function publicUrl(value) {
+    const url = fixGymText(value);
+    return /^https?:\/\//i.test(url) ? url : '';
+  }
+
   $: ({ gym, relatedGyms = [], relatedLocation, relatedDiscipline } = data);
   $: officialOverride = officialGymOverride(gym);
   $: disciplines = disciplineListForGym(gym);
@@ -102,6 +118,7 @@
   $: phone = fixGymText(gym?.phone) || 'Non disponibile';
   $: website = fixGymText(gym?.website) || officialOverride?.website || officialSourceUrl;
   $: hasPhone = phone && phone !== 'Non disponibile';
+  $: sameAsLinks = [...officialSocialLinks, website].map((url) => publicUrl(url)).filter(Boolean);
   $: mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
   $: hasCoordinates = Number.isFinite(Number(gym?.latitude)) && Number.isFinite(Number(gym?.longitude));
   $: osmEmbedHref = hasCoordinates
@@ -110,10 +127,14 @@
   $: pageUrl = absoluteUrl(`/palestre/${data.gymSlug}`);
   $: seoTitle = officialOverride?.seoTitle
     ? `${officialOverride.seoTitle} | ${SITE_NAME}`
-    : `${fixGymText(gym?.name)} | ${SITE_NAME}`;
+    : `${fixGymText(gym?.name)}: ${primaryDiscipline} a ${cityLabel} | ${SITE_NAME}`;
   $: seoDescription =
     officialOverride?.seoDescription ||
-    `${fixGymText(gym?.name)}: ${primaryDiscipline} a ${address}. ${presentation}`;
+    compactMetaDescription([
+      `${fixGymText(gym?.name)} a ${cityLabel}: ${primaryDiscipline}.`,
+      officialMonthlyPrice ? `Prezzo indicato: ${officialMonthlyPrice}.` : '',
+      `Indirizzo, contatti, orari e scheda completa su ${SITE_NAME}.`
+    ]);
   $: claimHref = `/rivendica-scheda?gym=${encodeURIComponent(fixGymText(gym?.name))}&url=${encodeURIComponent(pageUrl)}&reason=${encodeURIComponent('Aggiornamento o rivendicazione scheda')}`;
 
   $: detailStructuredData = [
@@ -138,13 +159,17 @@
     {
       '@context': 'https://schema.org',
       '@type': 'SportsActivityLocation',
+      '@id': `${pageUrl}#gym`,
       name: fixGymText(gym?.name),
       description: presentation,
       url: pageUrl,
+      mainEntityOfPage: pageUrl,
       image: imageSrc.startsWith('http') ? imageSrc : absoluteUrl(imageSrc),
       telephone: hasPhone ? phone : undefined,
-      sameAs: website || undefined,
+      sameAs: sameAsLinks.length ? sameAsLinks : undefined,
+      priceRange: officialMonthlyPrice || undefined,
       sport: disciplines,
+      hasMap: mapsHref,
       address: structuredAddress,
       geo:
         gym?.latitude !== null && gym?.latitude !== undefined && gym?.longitude !== null && gym?.longitude !== undefined
@@ -153,7 +178,16 @@
               latitude: gym.latitude,
               longitude: gym.longitude
             }
-          : undefined
+          : undefined,
+      offers: officialMonthlyPrice
+        ? {
+            '@type': 'Offer',
+            name: `Prezzi ${fixGymText(gym?.name)}`,
+            description: officialMonthlyPrice,
+            url: priceSourceUrl || website || pageUrl,
+            category: 'Gym membership'
+          }
+        : undefined
     },
     {
       '@context': 'https://schema.org',
