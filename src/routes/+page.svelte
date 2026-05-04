@@ -870,41 +870,50 @@
     </div>
   </section>
 
-  <section class="mt-5 grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.42fr)] lg:items-start">
-    <div class="grid gap-3">
-      <div class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-5">
-        <p class="text-xs font-bold uppercase tracking-[0.22em] text-emerald-800">Ricerche popolari</p>
-        <div class="mt-3 flex flex-wrap gap-2">
+  <section class="mt-5 overflow-hidden rounded-3xl border border-white/70 bg-white/82 shadow-lg backdrop-blur-sm sc-panel">
+    <div class="grid gap-0 lg:grid-cols-[minmax(0,1fr)_minmax(300px,0.38fr)]">
+      <div class="p-4 sm:p-5 lg:p-6">
+        <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div class="max-w-2xl">
+            <p class="text-xs font-bold uppercase tracking-[0.22em] text-emerald-800">Ricerche popolari</p>
+            <h2 class="mt-2 text-xl font-bold leading-tight text-slate-950 sm:text-2xl">Percorsi rapidi per iniziare</h2>
+          </div>
+          <p class="max-w-md text-sm font-semibold leading-6 text-slate-600">
+            Parti da una zona o da una disciplina già cercata e arriva subito alle schede utili.
+          </p>
+        </div>
+
+        <div class="mt-4 flex flex-wrap gap-2">
           {#each popularSearches as item}
-            <a href={item.href} class="inline-flex min-h-[2.6rem] items-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-bold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm" on:click={(event) => applyPopularSearch(event, item)}>
+            <a href={item.href} class="inline-flex min-h-[2.55rem] items-center rounded-xl border border-slate-200 bg-white px-3.5 text-sm font-bold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm" on:click={(event) => applyPopularSearch(event, item)}>
               {item.label}
             </a>
           {/each}
         </div>
-      </div>
 
-      <div class="grid gap-3 md:grid-cols-3">
-        {#each trustBenefits as benefit}
-          <div class="rounded-2xl border border-white/70 bg-white/80 p-4 shadow-sm backdrop-blur-sm sc-panel">
-            <div class="flex items-start gap-3">
-              <span class="mt-1 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-sm font-black text-emerald-800" aria-hidden="true">&check;</span>
-              <p class="text-sm font-bold leading-6 text-slate-800">{benefit}</p>
+        <div class="mt-5 grid gap-2 border-t border-emerald-900/10 pt-4 sm:grid-cols-3">
+          {#each trustBenefits as benefit}
+            <div class="flex min-h-[3.2rem] items-start gap-3 rounded-2xl bg-emerald-50/55 px-3 py-3">
+              <span class="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white text-xs font-black text-emerald-800" aria-hidden="true">&check;</span>
+              <p class="text-sm font-bold leading-5 text-slate-800">{benefit}</p>
             </div>
-          </div>
-        {/each}
+          {/each}
+        </div>
       </div>
-    </div>
 
-    <aside class="rounded-3xl border border-emerald-900/10 bg-emerald-950 p-4 text-white shadow-lg sm:p-5">
-      <p class="text-xs font-bold uppercase tracking-[0.22em] text-emerald-100">Per le palestre</p>
-      <h2 class="mt-2 text-xl font-bold leading-tight">Sei il proprietario di una palestra?</h2>
-      <p class="mt-3 text-sm leading-6 text-emerald-50">
-        Aumenta la visibilità della tua palestra e raggiungi persone che cercano corsi e allenamenti nella tua zona.
-      </p>
-      <a href="/per-le-palestre" class="mt-4 inline-flex min-h-[2.75rem] items-center justify-center rounded-xl bg-white px-4 text-sm font-bold text-emerald-950 transition hover:bg-emerald-50">
-        Scopri le soluzioni per palestre
-      </a>
-    </aside>
+      <aside class="flex flex-col justify-between bg-emerald-950 p-4 text-white sm:p-5 lg:p-6">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-[0.22em] text-emerald-100">Per le palestre</p>
+          <h2 class="mt-2 text-xl font-bold leading-tight">Sei il proprietario di una palestra?</h2>
+          <p class="mt-3 text-sm leading-6 text-emerald-50">
+            Aumenta la visibilità della tua palestra e raggiungi persone che cercano corsi e allenamenti nella tua zona.
+          </p>
+        </div>
+        <a href="/per-le-palestre" class="mt-5 inline-flex min-h-[2.75rem] items-center justify-center rounded-xl bg-white px-4 text-sm font-bold text-emerald-950 transition hover:bg-emerald-50">
+          Scopri le soluzioni
+        </a>
+      </aside>
+    </div>
   </section>
 
   <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
