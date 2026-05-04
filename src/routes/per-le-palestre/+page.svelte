@@ -4,13 +4,52 @@
   const pageUrl = absoluteUrl('/per-le-palestre');
   const title = `Per le palestre | ${SITE_NAME}`;
   const description =
-    'Pagina dedicata alle palestre che vogliono segnalare correzioni, aggiornare la propria scheda o proporre collaborazioni.';
+    'Aggiorna, rivendica o potenzia la scheda della tua palestra su Palestre in Zona con un percorso pensato per contatti locali qualificati.';
+  const premiumPlans = [
+    {
+      name: 'Scheda verificata',
+      tag: 'Base',
+      description: 'Dati corretti, referente riconoscibile e contenuti essenziali ordinati.',
+      items: ['Revisione contatti e orari', 'Descrizione piu chiara', 'Link ufficiali e social'],
+      href: '/rivendica-scheda?reason=Rivendicazione%20scheda'
+    },
+    {
+      name: 'Scheda premium',
+      tag: 'Visibilita',
+      description: 'Scheda piu competitiva per chi confronta palestre nella stessa zona.',
+      items: ['Sezione prezzi quando disponibili', 'Contenuti editoriali migliori', 'Percorsi rapidi verso contatto'],
+      href: '/rivendica-scheda?reason=Collaborazione%20commerciale&plan=premium'
+    },
+    {
+      name: 'Partner locale',
+      tag: 'Crescita',
+      description: 'Percorso commerciale per campagne locali, priorita e miglioramento continuo.',
+      items: ['Analisi della scheda', 'Priorita commerciali', 'Piano di miglioramento mensile'],
+      href: '/rivendica-scheda?reason=Collaborazione%20commerciale&plan=partner'
+    }
+  ];
   const structuredDataScript = jsonLdScript({
     '@context': 'https://schema.org',
-    '@type': 'WebPage',
-    name: title,
-    description,
-    url: pageUrl
+    '@graph': [
+      {
+        '@type': 'WebPage',
+        name: title,
+        description,
+        url: pageUrl
+      },
+      {
+        '@type': 'OfferCatalog',
+        name: 'Soluzioni per palestre',
+        url: pageUrl,
+        itemListElement: premiumPlans.map((plan, index) => ({
+          '@type': 'Offer',
+          position: index + 1,
+          name: plan.name,
+          description: plan.description,
+          url: absoluteUrl(plan.href)
+        }))
+      }
+    ]
   });
 </script>
 
@@ -55,6 +94,36 @@
 
     <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
       <div class="max-w-3xl">
+        <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Sistema premium</p>
+        <h2 class="mt-2 text-2xl font-bold text-slate-900">Tre livelli per trasformare una scheda in un canale commerciale</h2>
+      </div>
+
+      <div class="mt-4 grid gap-4 md:grid-cols-3">
+        {#each premiumPlans as plan}
+          <article class="flex h-full flex-col rounded-2xl border border-slate-200 bg-white/90 p-4">
+            <div>
+              <p class="text-xs font-bold uppercase tracking-[0.18em] text-emerald-800">{plan.tag}</p>
+              <h3 class="mt-2 text-xl font-bold text-slate-900">{plan.name}</h3>
+              <p class="mt-3 text-sm leading-7 text-slate-600">{plan.description}</p>
+            </div>
+            <ul class="mt-4 grid gap-2 text-sm leading-6 text-slate-700">
+              {#each plan.items as item}
+                <li class="flex items-start gap-2">
+                  <span class="mt-2 h-1.5 w-1.5 rounded-full bg-emerald-700"></span>
+                  <span>{item}</span>
+                </li>
+              {/each}
+            </ul>
+            <a href={plan.href} class="mt-5 inline-flex min-h-[2.75rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-bold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50">
+              Richiedi informazioni
+            </a>
+          </article>
+        {/each}
+      </div>
+    </section>
+
+    <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+      <div class="max-w-3xl">
         <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Percorso operativo</p>
         <h2 class="mt-2 text-2xl font-bold text-slate-900">Come iniziare senza attrito</h2>
       </div>
@@ -65,12 +134,12 @@
           <p class="mt-3 text-sm leading-7 text-slate-600">Invia il nome della palestra e, se possibile, il link esatto della pagina pubblica da correggere.</p>
         </div>
         <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
-          <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">2. Spiega la modifica</p>
-          <p class="mt-3 text-sm leading-7 text-slate-600">Indica in modo chiaro cosa va aggiornato: discipline, indirizzo, orari, telefono, sito o descrizione.</p>
+          <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">2. Spiega l'obiettivo</p>
+          <p class="mt-3 text-sm leading-7 text-slate-600">Indica se vuoi correggere dati, rivendicare la scheda o valutare un percorso premium.</p>
         </div>
         <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
           <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">3. Apri il canale giusto</p>
-          <p class="mt-3 text-sm leading-7 text-slate-600">Per aggiornamenti, rivendicazioni o collaborazioni puoi usare il percorso guidato oppure scrivere direttamente all'indirizzo del progetto.</p>
+          <p class="mt-3 text-sm leading-7 text-slate-600">Il form raccoglie le richieste in modo ordinato e lascia traccia del contesto commerciale.</p>
         </div>
       </div>
     </section>
