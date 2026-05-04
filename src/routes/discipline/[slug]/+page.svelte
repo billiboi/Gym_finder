@@ -1,5 +1,6 @@
 <script>
   import { disciplinePreviewForGym, gymHref, imageForGym } from '$lib/gym-detail';
+  import { slugifySeoName } from '$lib/seo-directory';
   import { absoluteUrl, SITE_NAME, jsonLdScript } from '$lib/site';
 
   export let data;
@@ -20,6 +21,11 @@
     .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'it'))
     .slice(0, 6);
   const exampleAreas = cityStats.map(([city]) => city).join(', ');
+  const cityLinks = cityStats.map(([city, count]) => ({
+    city,
+    count,
+    href: `/zone/${slugifySeoName(city)}`
+  }));
   const hasContactSignal = (gym) => Boolean(String(gym.phone || '').trim() || String(gym.website || '').trim());
   const faqItems = [
     {
@@ -45,9 +51,15 @@
           name: title,
           description,
           url: pageUrl,
+          isPartOf: {
+            '@type': 'WebSite',
+            name: SITE_NAME,
+            url: absoluteUrl('/')
+          },
           about: discipline.name,
           mainEntity: {
             '@type': 'ItemList',
+            numberOfItems: gyms.length,
             itemListElement: gyms.slice(0, 12).map((gym, index) => ({
               '@type': 'ListItem',
               position: index + 1,
@@ -141,7 +153,7 @@
         <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">{gyms.length} schede disponibili</span>
         <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">{discipline.name}</span>
         {#each cityStats.slice(0, 3) as [city, count]}
-          <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">{city}: {count}</span>
+          <a href={`/zone/${slugifySeoName(city)}`} class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold transition hover:-translate-y-0.5 hover:shadow-sm">{city}: {count}</a>
         {/each}
       </div>
     </section>
@@ -168,12 +180,29 @@
         </div>
 
         <div class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {#each cityStats as [city, count]}
-            <div class="rounded-2xl border border-slate-200 bg-white/90 p-4 sc-detail-card">
-              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">{city}</p>
-              <p class="mt-2 text-2xl font-bold text-slate-900">{count}</p>
-              <p class="mt-1 text-sm font-semibold text-slate-600">{count === 1 ? 'scheda collegata' : 'schede collegate'}</p>
-            </div>
+          {#each cityLinks as item}
+            <a href={item.href} class="block rounded-2xl border border-slate-200 bg-white/90 p-4 transition hover:-translate-y-0.5 hover:shadow-md sc-detail-card">
+              <span class="sr-only">Apri le palestre a {item.city}</span>
+              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">{item.city}</p>
+              <p class="mt-2 text-2xl font-bold text-slate-900">{item.count}</p>
+              <p class="mt-1 text-sm font-semibold text-slate-600">{item.count === 1 ? 'scheda collegata' : 'schede collegate'}</p>
+            </a>
+          {/each}
+        </div>
+      </section>
+    {/if}
+
+    {#if cityLinks.length}
+      <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+        <div class="max-w-4xl">
+          <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Percorsi locali</p>
+          <h2 class="mt-1 text-2xl font-bold text-slate-900">Zone dove confrontare {discipline.name}</h2>
+        </div>
+        <div class="mt-5 flex flex-wrap gap-2">
+          {#each cityLinks as item}
+            <a href={item.href} class="inline-flex min-h-[2.75rem] items-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-bold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50">
+              {item.city}
+            </a>
           {/each}
         </div>
       </section>
