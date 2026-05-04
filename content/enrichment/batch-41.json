@@ -1,0 +1,502 @@
+{
+  "batch": "batch-41-final-editorial-price-yoga-studios",
+  "reviewed_at": "2026-05-04",
+  "entries": [
+    {
+      "id": "csv-665",
+      "official_source_url": "https://www.yogapilatesgarden.it/",
+      "editorial_summary": "Yoga Pilates Garden a Tradate e' uno spazio dedicato a yoga, Pilates e benessere in Via Vittorio Veneto 14. Il sito ufficiale descrive un progetto nato per coltivare benessere fisico e mentale, con corsi, eventi e collaborazioni olistiche.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Vittorio Veneto 14, Tradate.",
+        "Il telefono pubblico indicato in scheda e' +39 338 919 4120.",
+        "Il sito ufficiale parla di yoga, Pilates, eventi e collaborazioni per il benessere.",
+        "La pagina contatti indica anche info.yogapilatesgarden@gmail.com e riferimenti per Gloria, Alice e Rosy."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che cosa offre Yoga Pilates Garden?",
+          "answer": "Il sito ufficiale presenta corsi di yoga e Pilates, eventi e collaborazioni legate al benessere."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede pubblicata e' Via Vittorio Veneto 14, Tradate."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Yoga Pilates Garden website and public catalog data. Public price amounts not found."
+    },
+    {
+      "id": "csv-666",
+      "official_source_url": "https://www.yogapilateslab.com/",
+      "editorial_summary": "Yoga Pilates Lab a Tradate e' uno studio in Via Gaetano Donizetti 7. Il sito ufficiale presenta un approccio essenziale e personalizzato alla pratica, con corsi, eventi e lezioni online individuali o di gruppo.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Gaetano Donizetti 7, Tradate.",
+        "Il telefono pubblico indicato e' +39 331 292 8395.",
+        "Il sito ufficiale cita corsi, eventi e lezioni online individuali o di gruppo.",
+        "Il contatto ufficiale indicato e' info@yogapilateslab.com."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che cosa offre Yoga Pilates Lab?",
+          "answer": "Il sito ufficiale cita corsi, eventi e lezioni online individuali o di gruppo."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede pubblicata e' Via Gaetano Donizetti 7, Tradate."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Yoga Pilates Lab website and local catalog data. Public price amounts not found."
+    },
+    {
+      "id": "csv-667",
+      "official_source_url": "https://www.yogasaronno.it/",
+      "editorial_summary": "Yoga Saronno e' un centro yoga in Via Genova 11, in zona tranquilla e vicina alla stazione. Il sito ufficiale collega la pratica allo yoga e alla meditazione nel loro contesto filosofico e spirituale.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Genova 11, Saronno.",
+        "Il telefono pubblico indicato e' +39 338 147 3808.",
+        "Il sito ufficiale indica di contattare prima telefonicamente.",
+        "Le fonti pubbliche indicano corsi online, servizi in loco e pratica all'aperto."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di centro e' Yoga Saronno?",
+          "answer": "Il sito ufficiale lo collega a yoga e meditazione nel loro contesto filosofico e spirituale."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede pubblicata e' Via Genova 11, Saronno."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Yoga Saronno website and Kinefit public profile. Public price amounts not found."
+    },
+    {
+      "id": "csv-668",
+      "official_source_url": "https://www.yogaspacelugano.ch/",
+      "editorial_summary": "Yoga Space a Lugano e' uno studio yoga in Via Canova 18. Il sito ufficiale pubblica contatti, prezzi per lezioni live e online, pacchetti, mensile e tariffe ridotte per AVS/studenti.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Canova 18, Lugano.",
+        "Il sito ufficiale indica info@yogaspacelugano.ch e telefono +41 79 675 92 47.",
+        "La pagina prezzi pubblica prova, settimana di prova, singole, pacchetti e mensile.",
+        "Sono presenti anche tariffe ridotte per AVS e studenti."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che cosa offre Yoga Space?",
+          "answer": "Il sito ufficiale presenta lezioni yoga live e online, con pacchetti e formule mensili."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede pubblicata e' Via Canova 18, Lugano."
+        },
+        {
+          "question": "Quali prezzi sono pubblicati?",
+          "answer": "La pagina prezzi indica prova CHF 18, settimana prova CHF 50, singole, pacchetti da 5, 10, 20 lezioni e mensile."
+        }
+      ],
+      "price_info": "Prezzi ufficiali: prova CHF 18; settimana prova CHF 50; singola live CHF 28 / online CHF 22; 5 lezioni live CHF 130 / online CHF 95; 10 live CHF 240 / online CHF 180; 20 live CHF 440 / online CHF 330; mensile live CHF 200. Ridotti AVS/studenti disponibili.",
+      "price_source_url": "https://www.yogaspacelugano.ch/prezzi/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Yoga Space Lugano contatti and prezzi pages, plus Swiss business registry profiles. Price amounts taken from official prices page."
+    },
+    {
+      "id": "csv-669",
+      "official_source_url": "http://www.yogastore.it/",
+      "editorial_summary": "Yoga Store a Varese e' una scheda yoga in Viale Valganna 16. Le fonti pubbliche la collegano ad Ashtanga Yoga Varese, con contatti, email e orari settimanali pubblicati.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Viale Valganna 16, Varese.",
+        "Il telefono pubblico indicato in scheda e' +39 0332 285983.",
+        "Le fonti pubbliche citano anche info@ashtangayogavarese.it.",
+        "La disciplina principale associata e' Yoga."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che disciplina riguarda Yoga Store?",
+          "answer": "Le fonti pubbliche la collegano alla pratica yoga a Varese."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede pubblicata e' Viale Valganna 16, Varese."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili per questa scheda."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from listed website reference, Ashtanga Yoga Varese public directory data and local catalog data. Public price amounts not found."
+    },
+    {
+      "id": "csv-670",
+      "official_source_url": "https://www.yogastudiovarese.com/",
+      "editorial_summary": "Yoga Studio Varese e' uno studio yoga in Via Giuseppe Bolchini 15. Il sito ufficiale presenta corsi di vari stili e livelli e pubblica un listino con lezione singola, settimana di prova, pacchetti e open mensili/trimestrali.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Giuseppe Bolchini 15, Varese.",
+        "Il telefono pubblico indicato e' +39 339 275 6975.",
+        "Il sito ufficiale presenta classi e corsi yoga di vari livelli.",
+        "La pagina abbonamenti pubblica singole, prova, pacchetto 10, open mensile e trimestrale."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che cosa offre Yoga Studio Varese?",
+          "answer": "Il sito ufficiale presenta classi e corsi yoga di diversi stili e livelli."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede pubblicata e' Via Giuseppe Bolchini 15, Varese."
+        },
+        {
+          "question": "Quali prezzi sono pubblicati?",
+          "answer": "Il sito pubblica lezione singola, settimana prova, pacchetto 10 lezioni, open mensile e open trimestrale."
+        }
+      ],
+      "price_info": "Prezzi ufficiali: lezione singola 17 EUR; settimana di prova 30 EUR; pacchetto 10 lezioni 160 EUR; open mensile 140 EUR; open trimestrale 315 EUR.",
+      "price_source_url": "https://www.yogastudiovarese.com/abbonamenti",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Yoga Studio Varese home, classes and abbonamenti pages. Price amounts taken from official abbonamenti page."
+    },
+    {
+      "id": "csv-671",
+      "official_source_url": "https://yoga-ticino.ch/",
+      "editorial_summary": "Yoga Ticino a Vezia e' una scheda yoga in Via San Gottardo 35. Le fonti pubbliche confermano telefono, sito indicato e pratica yoga nel Luganese.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via San Gottardo 35, Vezia.",
+        "Il telefono pubblico indicato e' +41 76 612 56 00.",
+        "La disciplina principale associata e' Yoga.",
+        "Il riferimento online indicato e' yoga-ticino.ch."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che disciplina riguarda Yoga Ticino?",
+          "answer": "La scheda pubblica la collega alla pratica yoga a Vezia."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede pubblicata e' Via San Gottardo 35, Vezia."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from listed website reference and public catalog data. Public price amounts not found."
+    },
+    {
+      "id": "csv-672",
+      "official_source_url": "https://www.yogatreemilano.it/",
+      "editorial_summary": "Yoga Tree Milano e' uno studio yoga in Via Camillo Ugoni 15, zona Bovisa. Il sito ufficiale presenta lezioni, workshop, app dedicata, tesseramento gratuito e accesso a diversi stili.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Camillo Ugoni 15, Milano.",
+        "La pagina tariffe cita tesseramento gratuito e nessun tacito rinnovo.",
+        "Il sito ufficiale indica accesso a tutti gli stili e workshop.",
+        "Il club e' gestito da Youcan Srl Ssd."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che cosa offre Yoga Tree Milano?",
+          "answer": "Il sito ufficiale parla di lezioni yoga, workshop, gift card e app per prenotazioni e abbonamenti."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede pubblicata e' Via Camillo Ugoni 15, Milano."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "La pagina tariffe descrive formule e condizioni, ma non mostra importi leggibili nelle fonti verificate."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Yoga Tree Milano home and tariffe page. Public price amounts not readable in verified source, so no price_info stored."
+    },
+    {
+      "id": "csv-673",
+      "official_source_url": "https://www.yogavidyaswiss.ch/",
+      "editorial_summary": "Yoga Vidya Swiss Locarno a Losone e' collegata ad Anna Comizzoli / TYA, con sede in Via dei Pioppi 10. Le fonti pubbliche RME/EMR riportano metodi riconosciuti, Hatha Yoga, Ayurveda, Metodo Tomatis e prezzi per terapie e lezioni.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via dei Pioppi 10, Losone.",
+        "Il telefono pubblico indicato e' +41 79 778 70 47.",
+        "Le fonti RME/EMR citano Hatha Yoga, Ayurveda terapia, massaggio ayurvedico, Metodo Tomatis e Yoga terapia.",
+        "Sono pubblicati costi per Hatha yoga, yoga terapia e trattamenti."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che cosa offre Yoga Vidya Swiss Locarno?",
+          "answer": "Le fonti pubbliche citano Hatha Yoga, Ayurveda, Metodo Tomatis e Yoga terapia."
+        },
+        {
+          "question": "Dove si trova questa scheda?",
+          "answer": "La sede locale indicata e' Via dei Pioppi 10, Losone."
+        },
+        {
+          "question": "Quali prezzi sono pubblicati?",
+          "answer": "RME/EMR pubblica Hatha yoga CHF 30 per 90 minuti e terapie individuali da CHF 60 a CHF 132."
+        }
+      ],
+      "price_info": "Prezzi pubblici RME/EMR: Hatha Yoga CHF 30/90 min; Yoga terapia in gruppo CHF 30/90 min; Ayurveda terapia CHF 132/60 min; Massaggio ayurvedico CHF 132/60 min; Metodo Tomatis CHF 60/60 min; Yoga terapia individuale CHF 132/60 min.",
+      "price_source_url": "https://emr.ch/terapeuta/anna.comizzoli",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from Yoga Vidya Swiss site reference and RME/EMR public therapist profile for Anna Comizzoli / TYA. Price amounts taken from RME/EMR public profile."
+    },
+    {
+      "id": "csv-674",
+      "official_source_url": "https://www.yogavidyaswiss.ch/Miniera_di_sale",
+      "editorial_summary": "Yoga Vidya Swiss Locarno a Muralto e' la scheda collegata alla sede in Via Stazione 9 / Miniera di sale. Le fonti pubbliche associano Yoga Vidya Swiss a Hatha Yoga, Ayurveda, Metodo Tomatis e Yoga terapia.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Stazione 9, Muralto.",
+        "Il telefono pubblico indicato e' +41 91 225 53 11.",
+        "Il riferimento online e' la pagina Miniera di sale di Yoga Vidya Swiss.",
+        "Le fonti RME/EMR riportano attivita' e costi collegati a TYA / Anna Comizzoli."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che cosa riguarda la scheda Muralto?",
+          "answer": "La scheda e' collegata alla pagina Miniera di sale di Yoga Vidya Swiss."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede locale indicata e' Via Stazione 9, Muralto."
+        },
+        {
+          "question": "Quali prezzi sono pubblicati?",
+          "answer": "RME/EMR pubblica prezzi per Hatha yoga, yoga terapia, Ayurveda, massaggio ayurvedico e Metodo Tomatis."
+        }
+      ],
+      "price_info": "Prezzi pubblici RME/EMR: Hatha Yoga CHF 30/90 min; Yoga terapia in gruppo CHF 30/90 min; Ayurveda terapia CHF 132/60 min; Massaggio ayurvedico CHF 132/60 min; Metodo Tomatis CHF 60/60 min; Yoga terapia individuale CHF 132/60 min.",
+      "price_source_url": "https://emr.ch/terapeuta/anna.comizzoli",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from Yoga Vidya Swiss Miniera di sale page and RME/EMR public therapist profile for Anna Comizzoli / TYA. Price amounts taken from RME/EMR public profile."
+    },
+    {
+      "id": "csv-675",
+      "official_source_url": "https://yoga-a-saronno-fs43u4m.gamma.site/yoga-a-saronno",
+      "editorial_summary": "YOGA_WITHSABRINA a Saronno e' una scheda yoga in Via Maestri del Lavoro 2. Le fonti pubbliche confermano telefono, pagina dedicata e attivita' yoga a Saronno.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Maestri del Lavoro 2, Saronno.",
+        "Il telefono pubblico indicato e' +39 347 013 6390.",
+        "La disciplina principale associata e' Yoga.",
+        "Il riferimento online indicato e' la pagina Yoga a Saronno."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di attivita' e' YOGA_WITHSABRINA?",
+          "answer": "La scheda pubblica la collega alla pratica yoga a Saronno."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede indicata e' Via Maestri del Lavoro 2, Saronno."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from listed Gamma page reference and public catalog data. Public price amounts not found."
+    },
+    {
+      "id": "csv-676",
+      "official_source_url": "https://yogachiasso.ch/",
+      "editorial_summary": "yogachiasso e' una scheda yoga in Via Argentina 4 a Chiasso. Le fonti pubbliche confermano telefono, sito indicato e pratica yoga nel Mendrisiotto.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Argentina 4, Chiasso.",
+        "Il telefono pubblico indicato e' +41 79 506 81 65.",
+        "La disciplina principale associata e' Yoga.",
+        "Il riferimento online indicato e' yogachiasso.ch."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che disciplina riguarda yogachiasso?",
+          "answer": "La scheda pubblica la collega alla pratica yoga a Chiasso."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede pubblicata e' Via Argentina 4, Chiasso."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from listed website reference and public catalog data. Public price amounts not found."
+    },
+    {
+      "id": "csv-677",
+      "official_source_url": "http://yogaholiday.it/",
+      "editorial_summary": "yogaholiday a Varese e' una scheda yoga in Via Giuseppe Garibaldi. Le fonti pubbliche confermano telefono, sito indicato e attivita' legata alla pratica yoga.",
+      "editorial_highlights": [
+        "La sede locale indicata e' Via Giuseppe Garibaldi, Varese.",
+        "Il telefono pubblico indicato e' +39 338 382 4280.",
+        "La disciplina principale associata e' Yoga.",
+        "Il riferimento online indicato e' yogaholiday.it."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che tipo di attivita' e' yogaholiday?",
+          "answer": "La scheda pubblica la collega alla pratica yoga a Varese."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede locale indicata e' Via Giuseppe Garibaldi, Varese."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from listed website reference and public catalog data. Public price amounts not found."
+    },
+    {
+      "id": "csv-679",
+      "official_source_url": "https://www.yogandmore.ch/",
+      "editorial_summary": "Yogandmore Studio Atelier a Lugano e' una scheda yoga e benessere. Le fonti pubbliche indicano telefono, attivita' yoga e trattamenti vibrazionali, con orari dal lunedi' al sabato.",
+      "editorial_highlights": [
+        "La sede locale in scheda e' Viale dei Faggi 7, Lugano.",
+        "Il telefono pubblico indicato e' +41 78 639 80 02.",
+        "Le fonti pubbliche citano yoga e trattamenti vibrazionali.",
+        "La scheda pubblica FitFit indica orari lunedi'-sabato."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che cosa offre Yogandmore?",
+          "answer": "Le fonti pubbliche citano yoga e trattamenti vibrazionali per il benessere psicofisico."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La scheda locale indica Viale dei Faggi 7, Lugano; alcune fonti pubbliche riportano Via Cantonale 1."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from listed website reference, FitFit public profile and local catalog data. Address discrepancy noted for future manual review. Public price amounts not found."
+    },
+    {
+      "id": "csv-680",
+      "official_source_url": "https://yogapradipika.ch/contatti.ow?pageId=15021",
+      "editorial_summary": "Yogapradipika a Lugano-Canobbio e' la scheda di Ferruccio Segolini in Via Sonvico 8. Il sito ufficiale pubblica telefono, email e sede dei corsi presso il Centro della Salute - Viverbene.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Sonvico 8, Lugano-Canobbio.",
+        "Il telefono pubblico indicato e' +41 79 363 06 68.",
+        "Il sito ufficiale indica sri.ferruccio@gmail.com.",
+        "La pagina contatti descrive la sede presso Centro della Salute - Viverbene."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che cosa offre Yogapradipika?",
+          "answer": "La scheda pubblica la collega a corsi yoga a Lugano-Canobbio."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede pubblicata e' Via Sonvico 8, Lugano-Canobbio."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Yogapradipika contact page. Public price amounts not found."
+    },
+    {
+      "id": "csv-681",
+      "official_source_url": "https://yogingiulia.ch/",
+      "editorial_summary": "Yoging Giulia Studio a Lugano e' uno studio yoga in Corso Elvezia 13. Il sito ufficiale presenta lezioni live settimanali, video, abbonamenti e shop; fonti pubbliche citano Vinyasa, Yin e Yoga prenatale.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Corso Elvezia 13, Lugano.",
+        "Il telefono pubblico indicato e' +41 79 609 07 55.",
+        "Il sito ufficiale indica yogingiulia@outlook.com.",
+        "Le fonti pubbliche citano pratica in studio e online, Vinyasa, Yin e Yoga prenatale."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che cosa offre Yoging Giulia?",
+          "answer": "Le fonti pubbliche citano lezioni yoga in studio e online, Vinyasa, Yin e Yoga prenatale."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede pubblicata e' Corso Elvezia 13, Lugano."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Il sito mostra prodotti nello shop, ma non un listino lezioni completo e affidabile nelle fonti verificate."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Yoging Giulia website, AllBiz, FitFit and Hey Honey public profiles. Shop product prices were not stored as class price_info."
+    },
+    {
+      "id": "csv-682",
+      "official_source_url": "https://www.yomatime.ch/",
+      "editorial_summary": "Yomatime - Il tempo per Te a Lumino e' uno studio yoga, Pilates e benessere in Via Bellinzona 61. Il sito ufficiale pubblica prezzi per corsi di gruppo, Pilates Reformer, lezioni private, domicilio e massaggi.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Via Bellinzona 61, Lumino.",
+        "Il telefono pubblico indicato e' +41 78 622 28 15.",
+        "Il sito ufficiale pubblica prezzi per corsi di gruppo e Pilates Reformer.",
+        "Sono indicati anche massaggi e trattamenti riconosciuti da casse malati complementari."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che cosa offre Yomatime?",
+          "answer": "Il sito ufficiale cita yoga, Pilates, Pilates Reformer, lezioni private, domicilio e massaggi."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede pubblicata e' Via Bellinzona 61, Lumino."
+        },
+        {
+          "question": "Quali prezzi sono pubblicati?",
+          "answer": "La pagina prezzi pubblica prova gratuita, singole, pacchetti, semestrale, lezioni private, Reformer e massaggi."
+        }
+      ],
+      "price_info": "Prezzi ufficiali corsi gruppo: prova CHF 0; singola CHF 25; 5 lezioni CHF 105; 10 lezioni CHF 195; 10 Junior CHF 155; semestrale CHF 580/pp; privata studio CHF 60; domicilio CHF 80. Pilates Reformer: prova CHF 35; privata CHF 80; 5 private CHF 380; 10 private CHF 720; duetto CHF 45/pp.",
+      "price_source_url": "https://www.yomatime.ch/prezzi/",
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from official Yomatime prices page. Price amounts taken from official listino prezzi."
+    },
+    {
+      "id": "csv-683",
+      "official_source_url": "http://taichiyuan.it/",
+      "editorial_summary": "YUAN a Gallarate e' una scheda Tai Chi in Viale Milano 177. Le fonti pubbliche confermano telefono, sito indicato e pratica legata a Tai Chi / arti interne.",
+      "editorial_highlights": [
+        "La sede pubblicata e' Viale Milano 177, Gallarate.",
+        "Il telefono pubblico indicato e' +39 340 331 9232.",
+        "La disciplina principale associata e' Tai Chi.",
+        "Il riferimento online indicato e' taichiyuan.it."
+      ],
+      "editorial_faq_items": [
+        {
+          "question": "Che disciplina riguarda YUAN?",
+          "answer": "La scheda pubblica la collega al Tai Chi a Gallarate."
+        },
+        {
+          "question": "Dove si trova?",
+          "answer": "La sede indicata e' Viale Milano 177, Gallarate."
+        },
+        {
+          "question": "Sono pubblicati prezzi?",
+          "answer": "Nelle fonti verificate non sono presenti importi pubblici affidabili."
+        }
+      ],
+      "enrichment_status": "published",
+      "enrichment_notes": "Reviewed from listed website reference and public catalog data. Public price amounts not found."
+    }
+  ]
+}
