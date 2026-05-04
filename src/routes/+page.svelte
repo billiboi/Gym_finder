@@ -871,13 +871,26 @@
   </section>
 
   <section class="mt-5 grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.42fr)] lg:items-start">
-    <div class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-5">
-      <p class="text-xs font-bold uppercase tracking-[0.22em] text-emerald-800">Ricerche popolari</p>
-      <div class="mt-3 flex flex-wrap gap-2">
-        {#each popularSearches as item}
-          <a href={item.href} class="inline-flex min-h-[2.6rem] items-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-bold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm" on:click={(event) => applyPopularSearch(event, item)}>
-            {item.label}
-          </a>
+    <div class="grid gap-3">
+      <div class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-5">
+        <p class="text-xs font-bold uppercase tracking-[0.22em] text-emerald-800">Ricerche popolari</p>
+        <div class="mt-3 flex flex-wrap gap-2">
+          {#each popularSearches as item}
+            <a href={item.href} class="inline-flex min-h-[2.6rem] items-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-bold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm" on:click={(event) => applyPopularSearch(event, item)}>
+              {item.label}
+            </a>
+          {/each}
+        </div>
+      </div>
+
+      <div class="grid gap-3 md:grid-cols-3">
+        {#each trustBenefits as benefit}
+          <div class="rounded-2xl border border-white/70 bg-white/80 p-4 shadow-sm backdrop-blur-sm sc-panel">
+            <div class="flex items-start gap-3">
+              <span class="mt-1 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-sm font-black text-emerald-800" aria-hidden="true">&check;</span>
+              <p class="text-sm font-bold leading-6 text-slate-800">{benefit}</p>
+            </div>
+          </div>
         {/each}
       </div>
     </div>
@@ -892,17 +905,6 @@
         Scopri le soluzioni per palestre
       </a>
     </aside>
-  </section>
-
-  <section class="mt-5 grid gap-3 md:grid-cols-3">
-    {#each trustBenefits as benefit}
-      <div class="rounded-2xl border border-white/70 bg-white/80 p-4 shadow-sm backdrop-blur-sm sc-panel">
-        <div class="flex items-start gap-3">
-          <span class="mt-1 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-sm font-black text-emerald-800" aria-hidden="true">&check;</span>
-          <p class="text-sm font-bold leading-6 text-slate-800">{benefit}</p>
-        </div>
-      </div>
-    {/each}
   </section>
 
   <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
