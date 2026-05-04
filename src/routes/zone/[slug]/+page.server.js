@@ -1,16 +1,8 @@
 import { error } from '@sveltejs/kit';
 import { isIndexableGym } from '$lib/gym-detail';
+import { slugifySeoName } from '$lib/seo-directory';
 import { readGyms } from '$lib/server/gym-store';
 import { getSeoLocation, gymsForSeoLocation, topDisciplinesForGyms } from '$lib/seo-locations';
-
-function slugifyLocationName(name) {
-  return String(name || '')
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-}
 
 export async function load({ params }) {
   const gyms = await readGyms();
@@ -18,7 +10,7 @@ export async function load({ params }) {
 
   if (!location) {
     const allCities = [...new Set(gyms.map((gym) => String(gym?.city || '').trim()).filter(Boolean))];
-    const matchedName = allCities.find((name) => slugifyLocationName(name) === params.slug);
+    const matchedName = allCities.find((name) => slugifySeoName(name) === params.slug);
 
     if (!matchedName) {
       throw error(404, 'Zona non trovata');

@@ -1,17 +1,9 @@
 import { error } from '@sveltejs/kit';
 import { isIndexableGym } from '$lib/gym-detail';
+import { slugifySeoName } from '$lib/seo-directory';
 import { readGyms } from '$lib/server/gym-store';
 import { getSeoDiscipline, gymsForSeoDiscipline } from '$lib/seo-disciplines';
 import { dedupeDisciplines } from '$lib/disciplines';
-
-function slugifyDisciplineName(name) {
-  return String(name || '')
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-}
 
 export async function load({ params }) {
   const gyms = await readGyms();
@@ -29,7 +21,7 @@ export async function load({ params }) {
       )
     );
 
-    const matchedName = allDisciplines.find((name) => slugifyDisciplineName(name) === params.slug);
+    const matchedName = allDisciplines.find((name) => slugifySeoName(name) === params.slug);
 
     if (!matchedName) {
       throw error(404, 'Disciplina non trovata');
