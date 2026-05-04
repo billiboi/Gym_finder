@@ -10,21 +10,21 @@
       name: 'Scheda verificata',
       tag: 'Base',
       description: 'Dati corretti, referente riconoscibile e contenuti essenziali ordinati.',
-      items: ['Revisione contatti e orari', 'Descrizione piu chiara', 'Link ufficiali e social'],
+      items: ['Revisione contatti e orari', 'Descrizione più chiara', 'Link ufficiali e social'],
       href: '/rivendica-scheda?reason=Rivendicazione%20scheda'
     },
     {
       name: 'Scheda premium',
-      tag: 'Visibilita',
-      description: 'Scheda piu competitiva per chi confronta palestre nella stessa zona.',
+      tag: 'Visibilità',
+      description: 'Scheda più competitiva per chi confronta palestre nella stessa zona.',
       items: ['Sezione prezzi quando disponibili', 'Contenuti editoriali migliori', 'Percorsi rapidi verso contatto'],
       href: '/rivendica-scheda?reason=Collaborazione%20commerciale&plan=premium'
     },
     {
       name: 'Partner locale',
       tag: 'Crescita',
-      description: 'Percorso commerciale per campagne locali, priorita e miglioramento continuo.',
-      items: ['Analisi della scheda', 'Priorita commerciali', 'Piano di miglioramento mensile'],
+      description: 'Percorso commerciale per campagne locali, priorità e miglioramento continuo.',
+      items: ['Analisi della scheda', 'Priorità commerciali', 'Piano di miglioramento mensile'],
       href: '/rivendica-scheda?reason=Collaborazione%20commerciale&plan=partner'
     }
   ];

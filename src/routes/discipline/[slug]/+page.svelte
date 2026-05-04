@@ -175,8 +175,8 @@
     {#if cityStats.length}
       <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sc-detail-section sm:p-7">
         <div class="max-w-4xl">
-          <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Zone piu presenti</p>
-          <h2 class="mt-1 text-2xl font-bold text-slate-900">Dove trovi piu schede di {discipline.name}</h2>
+          <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Zone più presenti</p>
+          <h2 class="mt-1 text-2xl font-bold text-slate-900">Dove trovi più schede di {discipline.name}</h2>
         </div>
 
         <div class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">

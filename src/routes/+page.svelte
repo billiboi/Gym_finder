@@ -17,8 +17,8 @@
 
   const trustBenefits = [
     'Oltre 500 palestre registrate',
-    'Ricerca per citta, distanza e disciplina',
-    'Informazioni utili per scegliere piu velocemente'
+    'Ricerca per città, distanza e disciplina',
+    'Informazioni utili per scegliere più velocemente'
   ];
   function disciplineListForGym(gym) {
     if (Array.isArray(gym.disciplines) && gym.disciplines.length) {
@@ -185,7 +185,7 @@
 
   $: homepageTitle = `${SITE_NAME} | Trova palestre vicino a te`;
   $: homepageDescription =
-    'Cerca palestre vicino a te per citta, disciplina e distanza. Scopri orari, contatti e informazioni utili su oltre 530 palestre.';
+    'Cerca palestre vicino a te per città, disciplina e distanza. Scopri orari, contatti e informazioni utili su oltre 530 palestre.';
   $: featuredGyms = filteredGyms.slice(0, 12);
   $: homeStructuredData = [
       {
@@ -637,8 +637,12 @@
           <p class="mt-4 max-w-2xl text-sm leading-7 text-slate-600 sm:text-[1.05rem]">
             Confronta oltre 530 palestre, corsi e discipline nella tua zona. Scopri orari, contatti e dettagli aggiornati.
           </p>
-          <p class="mt-3 text-sm font-bold text-emerald-900">
-            +{catalogGymCount} palestre • {catalogDisciplineCount} discipline • dati aggiornati
+          <p class="mt-3 flex flex-wrap items-center gap-2 text-sm font-bold text-emerald-900">
+            <span>+{catalogGymCount} palestre</span>
+            <span aria-hidden="true">&bull;</span>
+            <span>{catalogDisciplineCount} discipline</span>
+            <span aria-hidden="true">&bull;</span>
+            <span>dati aggiornati</span>
           </p>
           <div class="mt-5 flex flex-wrap gap-3">
             <a
@@ -665,7 +669,7 @@
                 id="hero-gym-search"
                 name="hero-gym-search"
                 class="min-h-[3.35rem] rounded-2xl border border-slate-200 bg-white px-4 text-base font-semibold outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
-                placeholder="Cerca citta, disciplina o palestra"
+                placeholder="Cerca città, disciplina o palestra"
                 bind:value={searchInput}
                 list="quick-search-suggestions"
                 on:keydown={(event) => {
@@ -866,7 +870,7 @@
     </div>
   </section>
 
-  <section class="mt-5 grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.42fr)]">
+  <section class="mt-5 grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.42fr)] lg:items-start">
     <div class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-5">
       <p class="text-xs font-bold uppercase tracking-[0.22em] text-emerald-800">Ricerche popolari</p>
       <div class="mt-3 flex flex-wrap gap-2">
@@ -882,7 +886,7 @@
       <p class="text-xs font-bold uppercase tracking-[0.22em] text-emerald-100">Per le palestre</p>
       <h2 class="mt-2 text-xl font-bold leading-tight">Sei il proprietario di una palestra?</h2>
       <p class="mt-3 text-sm leading-6 text-emerald-50">
-        Aumenta la visibilita della tua palestra e raggiungi persone che cercano corsi e allenamenti nella tua zona.
+        Aumenta la visibilità della tua palestra e raggiungi persone che cercano corsi e allenamenti nella tua zona.
       </p>
       <a href="/per-le-palestre" class="mt-4 inline-flex min-h-[2.75rem] items-center justify-center rounded-xl bg-white px-4 text-sm font-bold text-emerald-950 transition hover:bg-emerald-50">
         Scopri le soluzioni per palestre
@@ -894,7 +898,7 @@
     {#each trustBenefits as benefit}
       <div class="rounded-2xl border border-white/70 bg-white/80 p-4 shadow-sm backdrop-blur-sm sc-panel">
         <div class="flex items-start gap-3">
-          <span class="mt-1 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-sm font-black text-emerald-800">✓</span>
+          <span class="mt-1 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-sm font-black text-emerald-800" aria-hidden="true">&check;</span>
           <p class="text-sm font-bold leading-6 text-slate-800">{benefit}</p>
         </div>
       </div>
@@ -906,7 +910,7 @@
       <p class="text-xs font-bold uppercase tracking-[0.22em] text-emerald-800">Directory locale</p>
       <h2 class="mt-2 text-2xl font-bold leading-tight text-slate-900 sm:text-3xl">Trova palestre, corsi e discipline vicino a te</h2>
       <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
-        Palestre in Zona ti aiuta a cercare palestre nella tua citta, confrontare corsi e discipline disponibili e trovare rapidamente contatti, orari e informazioni utili. Puoi cercare per zona, distanza o tipo di allenamento e scegliere la palestra piu adatta alle tue esigenze.
+        Palestre in Zona ti aiuta a cercare palestre nella tua città, confrontare corsi e discipline disponibili e trovare rapidamente contatti, orari e informazioni utili. Puoi cercare per zona, distanza o tipo di allenamento e scegliere la palestra più adatta alle tue esigenze.
       </p>
     </div>
   </section>
@@ -977,7 +981,7 @@
       <div class="col-span-full rounded-2xl border border-dashed border-slate-300 bg-white/60 p-6 text-center sm:p-8" role="status">
         <h3 class="text-lg font-bold text-slate-900">Nessuna palestra trovata</h3>
         <p class="mx-auto mt-2 max-w-md text-sm font-semibold leading-6 text-slate-600">
-          Allarga la distanza, rimuovi un filtro o prova una citta vicina.
+          Allarga la distanza, rimuovi un filtro o prova una città vicina.
         </p>
         <div class="mt-4 flex flex-col gap-2 sm:flex-row sm:justify-center">
           <button type="button" class="inline-flex min-h-[2.7rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button" on:click={resetFilters}>
