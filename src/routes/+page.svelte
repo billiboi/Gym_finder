@@ -6,6 +6,20 @@
   import { SITE_DESCRIPTION, SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
   import { repairMojibake } from '$lib/text-repair';
   export let data;
+
+  const popularSearches = [
+    { label: 'Palestre a Varese', href: '/zone/varese' },
+    { label: 'Palestre a Lugano', href: '/zone/lugano' },
+    { label: 'Boxe a Varese', href: '/?q=Boxe%20Varese#elenco-palestre' },
+    { label: 'MMA a Lugano', href: '/?q=MMA%20Lugano#elenco-palestre' },
+    { label: 'Palestre aperte ora', href: '/?open=now#elenco-palestre' }
+  ];
+
+  const trustBenefits = [
+    'Oltre 500 palestre registrate',
+    'Ricerca per citta, distanza e disciplina',
+    'Informazioni utili per scegliere piu velocemente'
+  ];
   function disciplineListForGym(gym) {
     if (Array.isArray(gym.disciplines) && gym.disciplines.length) {
       return gym.disciplines.map((d) => normalizeDisciplineLabel(d)).filter(Boolean);
@@ -156,6 +170,8 @@
   $: hasActiveFilters = activeFilterCount > 0;
   $: if (!locationReady && sortMode === 'distance') sortMode = 'recommended';
   $: if (searchInput !== filterText) scheduleSearchApply(searchInput);
+  $: catalogGymCount = Math.max(gyms.length || 0, 530);
+  $: catalogDisciplineCount = Math.max(disciplineCount || 0, 57);
 
   let csvGymsCache = null;
 
@@ -167,9 +183,9 @@
     disciplines = data.initialDisciplines;
   }
 
-  $: homepageTitle = `${SITE_NAME} | Trova palestre vicine, fitness e arti marziali`;
+  $: homepageTitle = `${SITE_NAME} | Trova palestre vicino a te`;
   $: homepageDescription =
-    'Cerca palestre vicine, fitness, Pilates, nuoto e arti marziali in Italia e Svizzera con filtri per disciplina, citta e distanza.';
+    'Cerca palestre vicino a te per citta, disciplina e distanza. Scopri orari, contatti e informazioni utili su oltre 530 palestre.';
   $: featuredGyms = filteredGyms.slice(0, 12);
   $: homeStructuredData = [
       {
@@ -183,6 +199,12 @@
           target: `${absoluteUrl('/')}?q={search_term_string}`,
           'query-input': 'required name=search_term_string'
         }
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        name: SITE_NAME,
+        url: absoluteUrl('/')
       },
       {
         '@context': 'https://schema.org',
@@ -436,6 +458,42 @@
     filterText = searchInput;
   }
 
+  function focusSearchBox() {
+    document.getElementById('hero-gym-search')?.focus();
+  }
+
+  function applyUrlSearchParams() {
+    const params = new URLSearchParams(window.location.search);
+    const query = params.get('q');
+    const open = params.get('open');
+
+    if (query) {
+      searchInput = query;
+      scheduledSearchValue = query;
+      filterText = query;
+    }
+
+    if (open === 'now') {
+      filterOpenState = 'open';
+      filtersExpanded = true;
+    }
+  }
+
+  function applyPopularSearch(event, item) {
+    if (!item.href.startsWith('/?')) return;
+
+    event.preventDefault();
+    const url = new URL(item.href, window.location.origin);
+    window.history.pushState({}, '', `${url.pathname}${url.search}${url.hash}`);
+    searchInput = '';
+    scheduledSearchValue = '';
+    filterText = '';
+    filterOpenState = 'all';
+    applyUrlSearchParams();
+    applySearchNow();
+    document.getElementById('elenco-palestre')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
   function scheduleSearchApply(value) {
     if (value === scheduledSearchValue && searchDebounceTimer) return;
 
@@ -541,6 +599,7 @@
   }
 
   onMount(async () => {
+    applyUrlSearchParams();
     await Promise.all([loadGyms(), loadDisciplines()]);
   });
 
@@ -574,13 +633,31 @@
           <div class="inline-flex items-center rounded-full border border-emerald-900/10 bg-white/65 px-3 py-1 text-[0.7rem] font-bold uppercase tracking-[0.24em] text-emerald-800">
             Palestre in Zona
           </div>
-          <h1 class="mt-4 text-3xl font-bold leading-tight text-slate-900 sm:text-5xl">Trova una palestra vicino a te</h1>
+          <h1 class="mt-4 text-3xl font-bold leading-tight text-slate-900 sm:text-5xl">Trova la palestra perfetta vicino a te</h1>
           <p class="mt-4 max-w-2xl text-sm leading-7 text-slate-600 sm:text-[1.05rem]">
-            Cerca per citta, palestra o disciplina. Apri la scheda per contatti, orari e dettagli utili.
+            Confronta oltre 530 palestre, corsi e discipline nella tua zona. Scopri orari, contatti e dettagli aggiornati.
           </p>
+          <p class="mt-3 text-sm font-bold text-emerald-900">
+            +{catalogGymCount} palestre • {catalogDisciplineCount} discipline • dati aggiornati
+          </p>
+          <div class="mt-5 flex flex-wrap gap-3">
+            <a
+              href="#home-search"
+              class="inline-flex min-h-[3rem] items-center justify-center rounded-2xl px-5 text-sm font-bold text-white transition sc-button"
+              on:click={focusSearchBox}
+            >
+              Trova palestra
+            </a>
+            <a
+              href="/per-le-palestre"
+              class="inline-flex min-h-[3rem] items-center justify-center rounded-2xl border border-slate-200 bg-white px-5 text-sm font-bold text-slate-900 transition hover:bg-slate-50"
+            >
+              Per proprietari
+            </a>
+          </div>
         </div>
 
-        <div class="rounded-[1.5rem] p-3 sm:p-4 sc-hero-search">
+        <div id="home-search" class="scroll-mt-24 rounded-[1.5rem] p-3 sm:p-4 sc-hero-search">
           <div class="grid gap-3 lg:grid-cols-[minmax(0,1.45fr)_minmax(190px,0.65fr)_auto] lg:items-end">
             <label class="grid gap-2">
               <span class="text-[0.72rem] font-bold uppercase tracking-[0.2em] text-slate-500">Cerca</span>
@@ -588,7 +665,7 @@
                 id="hero-gym-search"
                 name="hero-gym-search"
                 class="min-h-[3.35rem] rounded-2xl border border-slate-200 bg-white px-4 text-base font-semibold outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
-                placeholder="Citta, palestra o disciplina"
+                placeholder="Cerca citta, disciplina o palestra"
                 bind:value={searchInput}
                 list="quick-search-suggestions"
                 on:keydown={(event) => {
@@ -612,9 +689,12 @@
               </select>
             </label>
             <a href="#elenco-palestre" class="inline-flex min-h-[3.35rem] items-center justify-center rounded-2xl px-5 text-center text-sm font-bold text-white transition sc-button" on:click={applySearchNow}>
-              Cerca
+              Trova palestra
             </a>
           </div>
+          <p class="mt-2 text-sm font-semibold leading-6 text-slate-600">
+            Esempi: Palestre a Varese, Boxe a Lugano, MMA vicino a me
+          </p>
           <datalist id="quick-search-suggestions">
             {#each quickSearchSuggestions as suggestion}
               <option value={suggestion}></option>
@@ -783,6 +863,51 @@
           {/if}
         </div>
 
+    </div>
+  </section>
+
+  <section class="mt-5 grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.42fr)]">
+    <div class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-5">
+      <p class="text-xs font-bold uppercase tracking-[0.22em] text-emerald-800">Ricerche popolari</p>
+      <div class="mt-3 flex flex-wrap gap-2">
+        {#each popularSearches as item}
+          <a href={item.href} class="inline-flex min-h-[2.6rem] items-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-bold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm" on:click={(event) => applyPopularSearch(event, item)}>
+            {item.label}
+          </a>
+        {/each}
+      </div>
+    </div>
+
+    <aside class="rounded-3xl border border-emerald-900/10 bg-emerald-950 p-4 text-white shadow-lg sm:p-5">
+      <p class="text-xs font-bold uppercase tracking-[0.22em] text-emerald-100">Per le palestre</p>
+      <h2 class="mt-2 text-xl font-bold leading-tight">Sei il proprietario di una palestra?</h2>
+      <p class="mt-3 text-sm leading-6 text-emerald-50">
+        Aumenta la visibilita della tua palestra e raggiungi persone che cercano corsi e allenamenti nella tua zona.
+      </p>
+      <a href="/per-le-palestre" class="mt-4 inline-flex min-h-[2.75rem] items-center justify-center rounded-xl bg-white px-4 text-sm font-bold text-emerald-950 transition hover:bg-emerald-50">
+        Scopri le soluzioni per palestre
+      </a>
+    </aside>
+  </section>
+
+  <section class="mt-5 grid gap-3 md:grid-cols-3">
+    {#each trustBenefits as benefit}
+      <div class="rounded-2xl border border-white/70 bg-white/80 p-4 shadow-sm backdrop-blur-sm sc-panel">
+        <div class="flex items-start gap-3">
+          <span class="mt-1 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-sm font-black text-emerald-800">✓</span>
+          <p class="text-sm font-bold leading-6 text-slate-800">{benefit}</p>
+        </div>
+      </div>
+    {/each}
+  </section>
+
+  <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+    <div class="max-w-4xl">
+      <p class="text-xs font-bold uppercase tracking-[0.22em] text-emerald-800">Directory locale</p>
+      <h2 class="mt-2 text-2xl font-bold leading-tight text-slate-900 sm:text-3xl">Trova palestre, corsi e discipline vicino a te</h2>
+      <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
+        Palestre in Zona ti aiuta a cercare palestre nella tua citta, confrontare corsi e discipline disponibili e trovare rapidamente contatti, orari e informazioni utili. Puoi cercare per zona, distanza o tipo di allenamento e scegliere la palestra piu adatta alle tue esigenze.
+      </p>
     </div>
   </section>
 

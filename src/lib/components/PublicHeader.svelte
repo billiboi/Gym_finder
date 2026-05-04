@@ -5,7 +5,7 @@
   $: isHome = path === '/';
   $: showReturnToList = !isHome;
   $: returnHref = path.startsWith('/palestre/') ? '/#elenco-palestre' : '/';
-  $: listHref = isHome ? '#elenco-palestre' : returnHref;
+  $: listHref = isHome ? '#home-search' : returnHref;
   function navClass() {
     return 'sc-header-link sc-ui-pill px-3.5 py-2 text-sm';
   }
@@ -26,7 +26,7 @@
       <nav class={`sc-header-nav flex gap-2 overflow-x-auto sm:flex-wrap sm:overflow-visible md:justify-end ${showReturnToList || isHome ? 'sc-header-nav--with-return' : ''}`} aria-label="Navigazione pubblica">
         {#if showReturnToList || isHome}
           <a href={listHref} class={`sc-header-link sc-header-return sc-ui-pill sc-ui-pill--primary px-3.5 py-2 text-sm ${isHome ? 'sc-header-return--home' : ''}`}>
-            Torna all'elenco
+            {isHome ? 'Cerca' : "Torna all'elenco"}
           </a>
         {/if}
         {#if isHome}
