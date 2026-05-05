@@ -187,7 +187,7 @@
 
   $: homepageTitle = `${SITE_NAME} | Trova palestre vicino a te`;
   $: homepageDescription =
-    'Cerca palestre vicino a te per città, disciplina e distanza. Scopri orari, contatti e informazioni utili su oltre 530 palestre.';
+    'Cerca palestre vicino a te per città, disciplina e distanza. Scopri orari, contatti e informazioni utili su oltre 680 palestre.';
   $: featuredGyms = filteredGyms.slice(0, 12);
   $: homeStructuredData = [
       {
