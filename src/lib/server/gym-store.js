@@ -491,20 +491,11 @@ async function readGymsFromSupabase() {
   return data.map((row, index) => normalizeGymRecord(row, `db-${index + 1}`));
 }
 
-async function replaceGymsInSupabase(gyms) {
+async function upsertGymsInSupabase(gyms) {
   if (!hasSupabaseWrite) return;
   await ensureSupabaseSchemaCompatible();
 
   const base = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}`;
-
-  const delResponse = await fetch(`${base}?id=not.is.null`, {
-    method: 'DELETE',
-    headers: supabaseHeaders(SUPABASE_WRITE_KEY, { Prefer: 'return=minimal' })
-  });
-
-  if (!delResponse.ok) {
-    throw new Error(`Supabase delete failed (${delResponse.status})`);
-  }
 
   const records = gyms.map((gym) => {
     const normalized = normalizeGymRecord(gym, gym?.id || '');
@@ -524,7 +515,7 @@ async function replaceGymsInSupabase(gyms) {
       method: 'POST',
       headers: supabaseHeaders(SUPABASE_WRITE_KEY, {
         'Content-Type': 'application/json',
-        Prefer: 'return=minimal'
+        Prefer: 'resolution=merge-duplicates,return=minimal'
       }),
       body: JSON.stringify(chunk)
     });
@@ -587,7 +578,9 @@ export async function writeGyms(gyms) {
   );
 
   if (hasSupabaseWrite) {
-    await replaceGymsInSupabase(normalized);
+    // Guardrail anti-disastro: non sostituire mai la tabella gyms con DELETE + INSERT.
+    // Le modifiche admin devono aggiornare o inserire record, mentre le rimozioni passano da soft-delete.
+    await upsertGymsInSupabase(normalized);
   }
 
   if (isReadOnlyRuntime && !hasSupabaseWrite) {

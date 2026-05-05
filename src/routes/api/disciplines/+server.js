@@ -1,5 +1,6 @@
 import { json } from '@sveltejs/kit';
 import { dedupeDisciplines, normalizeDisciplineLabel } from '$lib/disciplines';
+import { isArchivedGym } from '$lib/admin/gyms';
 import { readGyms } from '$lib/server/gym-store';
 
 function splitCsvLine(line, delimiter = ',') {
@@ -95,7 +96,7 @@ export async function GET({ fetch }) {
   try {
     const gyms = await readGyms();
     if (Array.isArray(gyms) && gyms.length > 0) {
-      return json(disciplinesFromGyms(gyms));
+      return json(disciplinesFromGyms(gyms.filter((gym) => !isArchivedGym(gym))));
     }
 
     const csvResponse = await fetch('/palestre.csv');

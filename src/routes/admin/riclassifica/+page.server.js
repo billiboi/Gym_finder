@@ -1,5 +1,6 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { canPersistWrites, readGyms, writeGyms } from '$lib/server/gym-store';
+import { adminErrorMessage, archiveGym, isArchivedGym } from '$lib/admin/gyms';
 
 function clean(value) {
   return String(value ?? '').trim();
@@ -84,6 +85,7 @@ export async function load({ url, fetch }) {
       address: [gym.address, gym.city].filter(Boolean).join(', '),
       website: gym.website || '',
       verified: Boolean(gym.verified),
+      archived: isArchivedGym(gym),
       suspiciousScore: suspiciousScore(gym)
     }))
     .sort((a, b) => {
@@ -95,7 +97,7 @@ export async function load({ url, fetch }) {
     gyms: mapped,
     persistentWrites,
     saved: url.searchParams.get('saved') === '1',
-    deleted: url.searchParams.get('deleted') === '1'
+    archived: url.searchParams.get('archived') === '1'
   };
 }
 
@@ -135,12 +137,14 @@ export const actions = {
     try {
       await writeGyms(gyms);
     } catch (err) {
-      return fail(500, { error: err?.message || 'Errore durante il salvataggio.' });
+      return fail(500, { error: adminErrorMessage(err, 'Salvataggio non riuscito.') });
     }
 
     throw redirect(303, '/admin/riclassifica?saved=1');
   },
   delete: async ({ request, fetch }) => {
+    // Guardrail anti-disastro: l'action resta "delete" solo per compatibilità.
+    // Non usare delete reale su gyms; archiviare con archiveGym().
     if (!canPersistWrites()) {
       return fail(503, {
         error: 'Nel deploy pubblico le modifiche non sono persistenti. Usa l\'ambiente locale oppure collega un database.'
@@ -155,19 +159,21 @@ export const actions = {
     }
 
     const gyms = await getGymsWithFallback(fetch);
-    const next = gyms.filter((gym) => gym.id !== id);
+    const index = gyms.findIndex((gym) => gym.id === id);
 
-    if (next.length === gyms.length) {
+    if (index < 0) {
       return fail(404, { error: 'Palestra non trovata.' });
     }
 
+    gyms[index] = archiveGym(gyms[index]);
+
     try {
-      await writeGyms(next);
+      await writeGyms(gyms);
     } catch (err) {
-      return fail(500, { error: err?.message || 'Errore durante eliminazione.' });
+      return fail(500, { error: adminErrorMessage(err, 'Archiviazione non riuscita.') });
     }
 
-    throw redirect(303, '/admin/riclassifica?deleted=1');
+    throw redirect(303, '/admin/riclassifica?archived=1');
   },
   toggleVerified: async ({ request, fetch }) => {
     if (!canPersistWrites()) {
@@ -198,12 +204,14 @@ export const actions = {
     try {
       await writeGyms(gyms);
     } catch (err) {
-      return fail(500, { error: err?.message || 'Errore durante il salvataggio.' });
+      return fail(500, { error: adminErrorMessage(err, 'Salvataggio non riuscito.') });
     }
 
     throw redirect(303, '/admin/riclassifica?saved=1');
   },
   bulkUpdate: async ({ request, fetch }) => {
+    // Le azioni bulk richiedono selezione esplicita lato UI e conferma per archiviazione.
+    // Nessuna operazione bulk esegue cancellazioni fisiche.
     if (!canPersistWrites()) {
       return fail(503, {
         error: 'Nel deploy pubblico le modifiche non sono persistenti. Usa l\'ambiente locale oppure collega un database.'
@@ -213,39 +221,47 @@ export const actions = {
     const form = await request.formData();
     const ids = parseIds(form);
     const operation = clean(form.get('operation'));
+    const bulkDisciplines = clean(form.get('bulk_disciplines'));
 
     if (ids.length === 0) {
       return fail(400, { error: 'Seleziona almeno un record.' });
     }
 
-    if (!['verify', 'unverify', 'delete'].includes(operation)) {
+    if (!['verify', 'unverify', 'archive', 'apply-discipline'].includes(operation)) {
       return fail(400, { error: 'Operazione bulk non valida.' });
+    }
+
+    if (operation === 'apply-discipline' && !bulkDisciplines) {
+      return fail(400, { error: 'Inserisci la disciplina da applicare alle schede selezionate.' });
     }
 
     const gyms = await getGymsWithFallback(fetch);
     const selected = new Set(ids);
 
-    let next = gyms;
-    if (operation === 'delete') {
-      next = gyms.filter((gym) => !selected.has(clean(gym.id)));
+    let touched = 0;
+    const next = gyms.map((gym) => {
+      if (!selected.has(clean(gym.id))) return gym;
+      touched += 1;
 
-      if (next.length === gyms.length) {
-        return fail(404, { error: 'Nessun record selezionato trovato.' });
-      }
-    } else {
-      let touched = 0;
-      next = gyms.map((gym) => {
-        if (!selected.has(clean(gym.id))) return gym;
-        touched += 1;
+      if (operation === 'archive') return archiveGym(gym);
+
+      if (operation === 'apply-discipline') {
+        const disciplines = toDisciplines(bulkDisciplines, disciplineTextForGym(gym));
         return {
           ...gym,
-          verified: operation === 'verify'
+          discipline: disciplines[0],
+          disciplines
         };
-      });
-
-      if (touched === 0) {
-        return fail(404, { error: 'Nessun record selezionato trovato.' });
       }
+
+      return {
+        ...gym,
+        verified: operation === 'verify'
+      };
+    });
+
+    if (touched === 0) {
+      return fail(404, { error: 'Nessun record selezionato trovato.' });
     }
 
     try {
@@ -253,13 +269,15 @@ export const actions = {
     } catch (err) {
       return fail(500, {
         error:
-          err?.message ||
-          (operation === 'delete' ? 'Errore durante eliminazione bulk.' : 'Errore durante il salvataggio bulk.')
+          adminErrorMessage(
+            err,
+            operation === 'archive' ? 'Archiviazione bulk non riuscita.' : 'Salvataggio bulk non riuscito.'
+          )
       });
     }
 
-    if (operation === 'delete') {
-      throw redirect(303, '/admin/riclassifica?deleted=1');
+    if (operation === 'archive') {
+      throw redirect(303, '/admin/riclassifica?archived=1');
     }
 
     throw redirect(303, '/admin/riclassifica?saved=1');

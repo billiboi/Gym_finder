@@ -17,7 +17,7 @@ export async function load({ params }) {
   const gyms = await readGyms();
   const gym = gyms.find((item) => slugifyGym(item) === params.slug);
 
-  if (!gym) {
+  if (!gym || !isIndexableGym(gym)) {
     throw error(404, 'Palestra non trovata');
   }
 

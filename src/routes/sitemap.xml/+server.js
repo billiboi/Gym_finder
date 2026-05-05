@@ -13,7 +13,7 @@ function escapeXml(value) {
 }
 
 export async function GET() {
-  const gyms = await readGyms();
+  const gyms = (await readGyms()).filter((gym) => isIndexableGym(gym));
   const indexableGyms = gyms.filter((gym) => isIndexableGym(gym));
   const staticEntries = [
     { loc: `${SITE_URL}/`, changefreq: 'daily', priority: '1.0' },

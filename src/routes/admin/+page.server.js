@@ -1,5 +1,6 @@
 import { readGyms } from '$lib/server/gym-store';
 import { readClaimRequests } from '$lib/server/claim-request-store';
+import { isArchivedGym } from '$lib/admin/gyms';
 
 async function getGymsWithFallback(fetchFn) {
   const gyms = await readGyms();
@@ -17,12 +18,13 @@ async function getGymsWithFallback(fetchFn) {
 
 export async function load({ fetch }) {
   const gyms = await getGymsWithFallback(fetch);
+  const activeGyms = gyms.filter((gym) => !isArchivedGym(gym));
   const requests = await readClaimRequests();
   const qualityStats = {
-    noPhone: gyms.filter((gym) => !String(gym.phone || '').trim()).length,
-    noWebsite: gyms.filter((gym) => !String(gym.website || '').trim()).length,
-    noContact: gyms.filter((gym) => !String(gym.phone || '').trim() && !String(gym.website || '').trim()).length,
-    hoursToVerify: gyms.filter(
+    noPhone: activeGyms.filter((gym) => !String(gym.phone || '').trim()).length,
+    noWebsite: activeGyms.filter((gym) => !String(gym.website || '').trim()).length,
+    noContact: activeGyms.filter((gym) => !String(gym.phone || '').trim() && !String(gym.website || '').trim()).length,
+    hoursToVerify: activeGyms.filter(
       (gym) => !String(gym.hours_info || '').trim() || /orari da verificare/i.test(String(gym.hours_info || ''))
     ).length
   };
@@ -36,7 +38,7 @@ export async function load({ fetch }) {
   return {
     qualityStats,
     requestStats,
-    gyms: gyms
+    gyms: activeGyms
       .map((gym) => ({
         id: gym.id,
         name: gym.name || 'Senza nome',

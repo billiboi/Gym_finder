@@ -1,4 +1,5 @@
 import { json } from '@sveltejs/kit';
+import { isArchivedGym } from '$lib/admin/gyms';
 import { isGymOpenNow } from '$lib/hours';
 import { readGyms } from '$lib/server/gym-store';
 
@@ -258,7 +259,7 @@ export async function GET({ url, fetch }) {
       }
     }
 
-    return json(filterGyms(gyms, { q, discipline, openState, userLat, userLng, radiusKm }));
+    return json(filterGyms(gyms.filter((gym) => !isArchivedGym(gym)), { q, discipline, openState, userLat, userLng, radiusKm }));
   } catch {
     return json([]);
   }

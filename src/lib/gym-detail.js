@@ -1210,6 +1210,8 @@ export function officialGymOverride(gym) {
 }
 
 export function isIndexableGym(gym) {
+  if (gym?.deleted_at || gym?.weekly_hours?._deleted_at) return false;
+
   const name = fixGymText(gym?.name || '');
   const address = fixGymText(gym?.address || '');
   const phone = fixGymText(gym?.phone || '');

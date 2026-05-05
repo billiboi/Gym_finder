@@ -70,9 +70,9 @@
       </p>
     {/if}
 
-    {#if data.deleted}
+    {#if data.archived}
       <p class="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-700">
-        Record eliminato con successo.
+        Scheda archiviata con successo. Il record non è stato cancellato.
       </p>
     {/if}
 
@@ -121,6 +121,20 @@
 
       <form method="POST" action="?/bulkUpdate" class="flex flex-wrap gap-2" on:submit={(event) => submitBulkAction(event)}>
         <input type="hidden" name="ids" value={JSON.stringify(selectedIds)} />
+        <input
+          name="bulk_disciplines"
+          class="min-w-[240px] rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm"
+          placeholder="Disciplina per selezionate"
+        />
+        <button
+          type="submit"
+          name="operation"
+          value="apply-discipline"
+          class="rounded-xl bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800"
+          disabled={!data.persistentWrites || selectedIds.length === 0}
+        >
+          Applica disciplina
+        </button>
         <button
           type="submit"
           name="operation"
@@ -142,12 +156,12 @@
         <button
           type="submit"
           name="operation"
-          value="delete"
+          value="archive"
           class="rounded-xl bg-rose-700 px-4 py-2 text-sm font-semibold text-white hover:bg-rose-800"
           disabled={!data.persistentWrites || selectedIds.length === 0}
-          on:click={(event) => submitBulkAction(event, `Eliminare definitivamente ${selectedIds.length} record selezionati?`)}
+          on:click={(event) => submitBulkAction(event, `Archiviare ${selectedIds.length} schede selezionate? Potrai ripristinarle da Gestione schede.`)}
         >
-          Elimina selezionate
+          Archivia selezionate
         </button>
       </form>
     </div>
@@ -181,6 +195,11 @@
                 {#if gym.suspiciousScore > 0}
                   <span class="rounded-full bg-amber-100 px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-amber-800">
                     Da verificare
+                  </span>
+                {/if}
+                {#if gym.archived}
+                  <span class="rounded-full bg-slate-200 px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-700">
+                    Archiviata
                   </span>
                 {/if}
               </div>
@@ -243,7 +262,7 @@
                 method="POST"
                 action="?/delete"
                 on:submit={(e) => {
-                  if (!confirm(`Eliminare definitivamente il record \"${gym.name}\"?`)) {
+                  if (!confirm(`Archiviare la scheda "${gym.name}"? Il record non verrà cancellato.`)) {
                     e.preventDefault();
                   }
                 }}
@@ -254,7 +273,7 @@
                   class="rounded-xl bg-rose-700 px-4 py-2 text-sm font-semibold text-white hover:bg-rose-800"
                   disabled={!data.persistentWrites}
                 >
-                  Elimina record
+                  Archivia scheda
                 </button>
               </form>
             </div>
