@@ -7,6 +7,9 @@ These scripts support data import, normalization, inspection, and cleanup workfl
 - `export-supabase-gyms.mjs`
   Exports the live Supabase `gyms` table to a timestamped local JSON backup. Use before any production data change.
 
+- `build-recovery-gyms-from-csv.mjs`
+  Builds a local JSON recovery file from a CSV source. It never writes to Supabase and defaults to a timestamped output file; use `--source=...`, optional `--out=...`, and optional `--limit=...`.
+
 - `check-supabase-enrichment-schema.mjs`
   Verifies that enrichment columns exist on the production `gyms` table.
 
