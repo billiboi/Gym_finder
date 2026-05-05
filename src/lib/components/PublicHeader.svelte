@@ -23,10 +23,10 @@
       </a>
       </div>
 
-      <nav class={`sc-header-nav flex gap-2 overflow-x-auto sm:flex-wrap sm:overflow-visible md:justify-end ${showReturnToList || isHome ? 'sc-header-nav--with-return' : ''}`} aria-label="Navigazione pubblica">
-        {#if showReturnToList || isHome}
+      <nav class={`sc-header-nav flex gap-2 overflow-x-auto sm:flex-wrap sm:overflow-visible md:justify-end ${showReturnToList ? 'sc-header-nav--with-return' : ''}`} aria-label="Navigazione pubblica">
+        {#if showReturnToList}
           <a href={listHref} class={`sc-header-link sc-header-return sc-ui-pill sc-ui-pill--primary px-3.5 py-2 text-sm ${isHome ? 'sc-header-return--home' : ''}`}>
-            {isHome ? 'Cerca' : "Torna all'elenco"}
+            Torna all'elenco
           </a>
         {/if}
         {#if isHome}
@@ -40,7 +40,7 @@
         <a href="/discipline" class={navClass()}>
           Discipline
         </a>
-        <a href="/per-le-palestre" class={`sc-header-link sc-header-business-link sc-ui-pill sc-ui-pill--primary px-3.5 py-2 text-sm ${showReturnToList || isHome ? 'sc-header-business-link--secondary' : ''}`}>
+        <a href="/per-le-palestre" class={`sc-header-link sc-header-business-link sc-ui-pill sc-ui-pill--primary px-3.5 py-2 text-sm ${showReturnToList ? 'sc-header-business-link--secondary' : ''}`}>
           Per le palestre
         </a>
       </nav>

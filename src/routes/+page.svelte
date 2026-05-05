@@ -15,11 +15,12 @@
     { label: 'Palestre aperte ora', href: '/?open=now#elenco-palestre' }
   ];
 
-  const trustBenefits = [
-    'Oltre 500 palestre registrate',
-    'Ricerca per città, distanza e disciplina',
-    'Informazioni utili per scegliere più velocemente'
+  const trustBenefitCards = [
+    { value: 'Zona', label: 'cerca per città, distanza e disciplina' },
+    { value: 'Schede', label: 'contatti, orari, sito e dettagli utili' },
+    { value: 'Scelta', label: 'confronto rapido senza aprire mille tab' }
   ];
+
   function disciplineListForGym(gym) {
     if (Array.isArray(gym.disciplines) && gym.disciplines.length) {
       return gym.disciplines.map((d) => normalizeDisciplineLabel(d)).filter(Boolean);
@@ -170,7 +171,8 @@
   $: hasActiveFilters = activeFilterCount > 0;
   $: if (!locationReady && sortMode === 'distance') sortMode = 'recommended';
   $: if (searchInput !== filterText) scheduleSearchApply(searchInput);
-  $: catalogGymCount = Math.max(gyms.length || 0, 530);
+  $: catalogGymCount = gyms.length || totalGyms || 0;
+  $: catalogGymLabel = catalogGymCount ? `${catalogGymCount}` : '500+';
   $: catalogDisciplineCount = Math.max(disciplineCount || 0, 57);
 
   let csvGymsCache = null;
@@ -635,10 +637,10 @@
           </div>
           <h1 class="mt-4 text-3xl font-bold leading-tight text-slate-900 sm:text-5xl">Trova la palestra perfetta vicino a te</h1>
           <p class="mt-4 max-w-2xl text-sm leading-7 text-slate-600 sm:text-[1.05rem]">
-            Confronta oltre 530 palestre, corsi e discipline nella tua zona. Scopri orari, contatti e dettagli aggiornati.
+            Confronta {catalogGymLabel} palestre, corsi e discipline nella tua zona. Scopri orari, contatti e dettagli aggiornati.
           </p>
           <p class="mt-3 flex flex-wrap items-center gap-2 text-sm font-bold text-emerald-900">
-            <span>+{catalogGymCount} palestre</span>
+            <span>{catalogGymLabel} palestre</span>
             <span aria-hidden="true">&bull;</span>
             <span>{catalogDisciplineCount} discipline</span>
             <span aria-hidden="true">&bull;</span>
@@ -870,32 +872,36 @@
     </div>
   </section>
 
-  <section class="mt-5 overflow-hidden rounded-3xl border border-white/70 bg-white/82 shadow-lg backdrop-blur-sm sc-panel">
-    <div class="grid gap-0 lg:grid-cols-[minmax(0,1fr)_minmax(300px,0.38fr)]">
+  <section class="mt-5 overflow-hidden rounded-3xl border border-white/70 bg-white/86 shadow-lg backdrop-blur-sm sc-panel">
+    <div class="grid gap-0 lg:grid-cols-[minmax(0,1fr)_minmax(310px,0.36fr)]">
       <div class="p-4 sm:p-5 lg:p-6">
-        <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
           <div class="max-w-2xl">
-            <p class="text-xs font-bold uppercase tracking-[0.22em] text-emerald-800">Ricerche popolari</p>
-            <h2 class="mt-2 text-xl font-bold leading-tight text-slate-950 sm:text-2xl">Percorsi rapidi per iniziare</h2>
+            <p class="text-xs font-bold uppercase tracking-[0.22em] text-emerald-800">Scorciatoie utili</p>
+            <h2 class="mt-2 text-2xl font-bold leading-tight text-slate-950 sm:text-3xl">Parti da una ricerca già pronta</h2>
           </div>
           <p class="max-w-md text-sm font-semibold leading-6 text-slate-600">
-            Parti da una zona o da una disciplina già cercata e arriva subito alle schede utili.
+            Link interni rapidi verso zone, discipline e schede filtrate. Meno passaggi, più confronto.
           </p>
         </div>
 
-        <div class="mt-4 flex flex-wrap gap-2">
+        <div class="mt-5 grid gap-2 sm:grid-cols-2 xl:grid-cols-5">
           {#each popularSearches as item}
-            <a href={item.href} class="inline-flex min-h-[2.55rem] items-center rounded-xl border border-slate-200 bg-white px-3.5 text-sm font-bold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm" on:click={(event) => applyPopularSearch(event, item)}>
+            <a href={item.href} class="inline-flex min-h-[3rem] items-center justify-center rounded-2xl border border-emerald-900/10 bg-white px-3 text-center text-sm font-bold text-slate-950 shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-800/25 hover:bg-emerald-50/70 hover:shadow-md" on:click={(event) => applyPopularSearch(event, item)}>
               {item.label}
             </a>
           {/each}
         </div>
 
-        <div class="mt-5 grid gap-2 border-t border-emerald-900/10 pt-4 sm:grid-cols-3">
-          {#each trustBenefits as benefit}
-            <div class="flex min-h-[3.2rem] items-start gap-3 rounded-2xl bg-emerald-50/55 px-3 py-3">
-              <span class="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white text-xs font-black text-emerald-800" aria-hidden="true">&check;</span>
-              <p class="text-sm font-bold leading-5 text-slate-800">{benefit}</p>
+        <div class="mt-5 grid gap-3 border-t border-emerald-900/10 pt-4 sm:grid-cols-2 xl:grid-cols-4">
+          <div class="rounded-2xl bg-emerald-950 px-4 py-4 text-white">
+            <p class="text-2xl font-black leading-none">{catalogGymLabel}</p>
+            <p class="mt-2 text-sm font-bold leading-5 text-emerald-50">palestre nel catalogo attivo</p>
+          </div>
+          {#each trustBenefitCards as benefit}
+            <div class="rounded-2xl bg-emerald-50/70 px-4 py-4">
+              <p class="text-sm font-black uppercase tracking-[0.18em] text-emerald-800">{benefit.value}</p>
+              <p class="mt-2 text-sm font-bold leading-5 text-slate-800">{benefit.label}</p>
             </div>
           {/each}
         </div>
@@ -904,9 +910,9 @@
       <aside class="flex flex-col justify-between bg-emerald-950 p-4 text-white sm:p-5 lg:p-6">
         <div>
           <p class="text-xs font-bold uppercase tracking-[0.22em] text-emerald-100">Per le palestre</p>
-          <h2 class="mt-2 text-xl font-bold leading-tight">Sei il proprietario di una palestra?</h2>
+          <h2 class="mt-2 text-2xl font-bold leading-tight">Vuoi più richieste dalla tua zona?</h2>
           <p class="mt-3 text-sm leading-6 text-emerald-50">
-            Aumenta la visibilità della tua palestra e raggiungi persone che cercano corsi e allenamenti nella tua zona.
+            Metti in evidenza corsi, contatti e informazioni aggiornate quando una persona sta scegliendo dove allenarsi.
           </p>
         </div>
         <a href="/per-le-palestre" class="mt-5 inline-flex min-h-[2.75rem] items-center justify-center rounded-xl bg-white px-4 text-sm font-bold text-emerald-950 transition hover:bg-emerald-50">
