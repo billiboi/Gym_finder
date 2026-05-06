@@ -63,14 +63,16 @@ Tabella audit:
 
 1. Creare un progetto Supabase staging separato.
 2. Configurare env staging separati: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_ANON_KEY`, `SUPABASE_GYMS_TABLE`.
-3. Esportare `public.gyms` produzione in locale con timestamp e conteggio.
-4. Ripristinare la copia in staging solo dopo verifica del file sorgente.
-5. Applicare migration in staging.
-6. Verificare conteggio righe, colonne target, audit log e blocco delete.
-7. Eseguire import/modifiche su staging.
-8. Esportare staging e confrontare conteggi/differenze.
-9. Solo dopo conferma esplicita, applicare migration in produzione.
-10. Verificare conteggio produzione invariato e testare admin.
+3. Copiare `.env.staging.example` in `.env.staging.local` e impostare `SUPABASE_ENV=staging`.
+4. Eseguire `bun run db:staging:preflight`.
+5. Esportare `public.gyms` produzione in locale con timestamp e conteggio.
+6. Ripristinare la copia in staging solo dopo verifica del file sorgente.
+7. Applicare migration in staging.
+8. Rieseguire `bun run db:staging:preflight` e verificare conteggio righe, colonne target, audit log e blocco delete.
+9. Eseguire import/modifiche su staging.
+10. Esportare staging e confrontare conteggi/differenze.
+11. Solo dopo conferma esplicita, applicare migration in produzione.
+12. Verificare conteggio produzione invariato e testare admin.
 
 ## Checklist deploy sicuro
 
