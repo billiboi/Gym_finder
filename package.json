@@ -17,6 +17,7 @@
     "db:check:enrichment": "bun scripts/check-supabase-enrichment-schema.mjs --env-file=.env.vercel.production.check",
     "db:staging:preflight": "bun scripts/check-supabase-staging-readiness.mjs --env-file=.env.staging.local",
     "vercel:preview:staging-env": "bun scripts/set-vercel-preview-envs.mjs --staging-env-file=.env.staging.local --token-env-file=.env.vercel.local",
+    "vercel:preview:status": "bun scripts/vercel-preview-status.mjs --token-env-file=.env.vercel.local",
     "enrichment:report": "bun scripts/report-gym-content-enrichment.mjs --env-file=.env.vercel.production.check",
     "enrichment:sync-overrides": "bun scripts/sync-official-overrides-enrichment.mjs --env-file=.env.vercel.production.check",
     "enrichment:sync-batch": "bun scripts/sync-reviewed-enrichment-batch.mjs --env-file=.env.vercel.production.check",

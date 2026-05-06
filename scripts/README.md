@@ -19,6 +19,9 @@ These scripts support data import, normalization, inspection, and cleanup workfl
 - `set-vercel-preview-envs.mjs`
   Sets Vercel Preview environment variables from `.env.staging.local` using a local `VERCEL_TOKEN`. It never targets production.
 
+- `vercel-preview-status.mjs`
+  Lists the latest Vercel Preview deployment URL for the linked project without exposing secrets.
+
 - `report-gym-content-enrichment.mjs`
   Generates a read-only report of gyms with websites and missing editorial, social, or price enrichment.
 
