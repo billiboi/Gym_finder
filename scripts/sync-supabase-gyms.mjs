@@ -5,7 +5,6 @@ const args = new Set(process.argv.slice(2));
 const envFileArg = process.argv.find((arg) => arg.startsWith('--env-file='));
 const envFile = envFileArg ? envFileArg.split('=').slice(1).join('=') : '.env.vercel.production.check';
 const confirmed = args.has('--confirm');
-const replaceReviewedProduction = args.has('--replace-reviewed-production');
 const dryRun = !args.has('--write');
 const sourceArg = process.argv.find((arg) => arg.startsWith('--source='));
 const sourceFile = sourceArg ? sourceArg.split('=').slice(1).join('=') : 'data/gyms.json';
@@ -134,28 +133,23 @@ const existingRecords = await existingResponse.json();
 const backupFile = `data/supabase-gyms-before-sync-${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
 
 console.log(
-  `[sync-supabase-gyms] mode=${dryRun ? 'dry-run' : 'write'} table=${table} before=${beforeCount} source=${gyms.length} source_file=${sourceFile}`
+  `[sync-supabase-gyms] mode=${dryRun ? 'dry-run' : 'safe-upsert'} table=${table} before=${beforeCount} source=${gyms.length} source_file=${sourceFile}`
 );
 
 if (dryRun) {
-  console.log('[sync-supabase-gyms] no changes written. Add --write --confirm --replace-reviewed-production to replace Supabase.');
+  console.log('[sync-supabase-gyms] no changes written. Add --write --confirm to upsert records without deleting existing data.');
   process.exit(0);
 }
 
-if (!confirmed || !replaceReviewedProduction) {
+if (!confirmed) {
   throw new Error(
-    `Refusing to replace Supabase table "${table}" without --write --confirm --replace-reviewed-production. Pending records: ${gyms.length}`
+    `Refusing to write Supabase table "${table}" without --write --confirm. Pending records: ${gyms.length}`
   );
 }
 
 await mkdir(path.dirname(backupFile), { recursive: true });
 await writeFile(backupFile, `${JSON.stringify(existingRecords, null, 2)}\n`);
 console.log(`[sync-supabase-gyms] backup=${backupFile} count=${existingRecords.length}`);
-
-await requestJson(`${baseUrl}?id=not.is.null`, {
-  method: 'DELETE',
-  headers: supabaseHeaders(serviceKey, { Prefer: 'return=minimal' })
-});
 
 const chunkSize = 300;
 for (let index = 0; index < gyms.length; index += chunkSize) {
@@ -164,7 +158,7 @@ for (let index = 0; index < gyms.length; index += chunkSize) {
     method: 'POST',
     headers: supabaseHeaders(serviceKey, {
       'Content-Type': 'application/json',
-      Prefer: 'return=minimal'
+      Prefer: 'resolution=merge-duplicates,return=minimal'
     }),
     body: JSON.stringify(chunk)
   });

@@ -1,5 +1,6 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { GYM_SUPABASE_COLUMN_CANDIDATES, gymToSupabaseRecord, normalizeGym } from '$lib/gym-normalizer';
 import { repairMojibake } from '$lib/text-repair';
 
 const dataDir = path.join(process.cwd(), 'data');
@@ -23,33 +24,7 @@ const SUPABASE_GYMS_TABLE = process.env.SUPABASE_GYMS_TABLE || 'gyms';
 const hasSupabaseRead = Boolean(SUPABASE_URL && SUPABASE_READ_KEY);
 const hasSupabaseWrite = Boolean(SUPABASE_URL && SUPABASE_WRITE_KEY);
 const RUNTIME_CACHE_KEY = '__gymfinder_runtime_gyms__';
-const SUPABASE_SCHEMA_CACHE_KEY = '__gymfinder_supabase_schema_ok__';
-const SUPABASE_EXPECTED_COLUMNS = [
-  'id',
-  'name',
-  'discipline',
-  'disciplines',
-  'address',
-  'city',
-  'phone',
-  'hours_info',
-  'website',
-  'description',
-  'latitude',
-  'longitude',
-  'image_url',
-  'weekly_hours',
-  'official_source_url',
-  'editorial_summary',
-  'editorial_highlights',
-  'editorial_faq_items',
-  'price_info',
-  'price_source_url',
-  'price_updated_at',
-  'enrichment_status',
-  'enrichment_notes',
-  'enrichment_updated_at'
-];
+const SUPABASE_SCHEMA_CACHE_KEY = '__gymfinder_supabase_columns__';
 
 function getRuntimeGyms() {
   const cache = globalThis[RUNTIME_CACHE_KEY];
@@ -255,7 +230,7 @@ function toBoolean(value) {
 }
 
 function normalizeGymRecord(gym, fallbackId) {
-  const { address, city } = normalizeAddressAndCity(gym?.address, gym?.city);
+  const { address, city } = normalizeAddressAndCity(gym?.address || gym?.indirizzo, gym?.city || gym?.citta);
   const disciplines = Array.isArray(gym?.disciplines)
     ? gym.disciplines.map((d) => repairMojibake(d).trim()).filter(Boolean)
     : disciplinesFromField(gym?.discipline);
@@ -265,20 +240,22 @@ function normalizeGymRecord(gym, fallbackId) {
       : {};
   const verified = typeof gym?.verified === 'boolean' ? gym.verified : toBoolean(weeklyHours._verified);
 
-  return {
-    id: String(gym?.id || fallbackId),
-    name: repairMojibake(gym?.name).trim(),
+  return normalizeGym(
+    {
+      ...gym,
+      id: String(gym?.id || fallbackId),
+      name: repairMojibake(gym?.name || gym?.nome).trim(),
     disciplines,
     discipline: repairMojibake(gym?.discipline || primaryDiscipline(disciplines)).trim() || 'Fitness',
     address,
     city,
-    phone: repairMojibake(gym?.phone).trim(),
-    hours_info: repairMojibake(gym?.hours_info).trim() || 'Orari da verificare',
-    website: String(gym?.website || '').trim(),
-    description: repairMojibake(gym?.description || gym?.presentazione).trim(),
+      phone: repairMojibake(gym?.phone || gym?.telefono).trim(),
+      hours_info: repairMojibake(gym?.hours_info || gym?.orari).trim() || 'Orari da verificare',
+      website: String(gym?.website || gym?.sito || '').trim(),
+      description: repairMojibake(gym?.description || gym?.descrizione || gym?.presentazione).trim(),
     verified,
-    latitude: gym?.latitude === null || gym?.latitude === undefined ? null : toNumberOrNull(gym.latitude),
-    longitude: gym?.longitude === null || gym?.longitude === undefined ? null : toNumberOrNull(gym.longitude),
+      latitude: gym?.latitude ?? gym?.lat,
+      longitude: gym?.longitude ?? gym?.lng,
     image_url: String(gym?.image_url || '').trim(),
     official_source_url: String(gym?.official_source_url || '').trim(),
     editorial_summary: repairMojibake(gym?.editorial_summary || '').trim(),
@@ -294,7 +271,9 @@ function normalizeGymRecord(gym, fallbackId) {
       ...weeklyHours,
       _verified: verified
     }
-  };
+    },
+    fallbackId
+  );
 }
 
 function gymsFromCsv(csvText) {
@@ -425,11 +404,12 @@ function supabaseBaseUrl() {
   return SUPABASE_URL.replace(/\/$/, '');
 }
 
-async function ensureSupabaseSchemaCompatible() {
-  if (!hasSupabaseWrite) return;
-  if (globalThis[SUPABASE_SCHEMA_CACHE_KEY] === true) return;
+async function supabaseAvailableColumns() {
+  const cached = globalThis[SUPABASE_SCHEMA_CACHE_KEY];
+  if (Array.isArray(cached) && cached.length) return cached;
 
-  for (const column of SUPABASE_EXPECTED_COLUMNS) {
+  const available = [];
+  for (const column of GYM_SUPABASE_COLUMN_CANDIDATES) {
     const url = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?select=${encodeURIComponent(column)}&limit=1`;
     const response = await fetch(url, {
       method: 'GET',
@@ -437,6 +417,7 @@ async function ensureSupabaseSchemaCompatible() {
     });
 
     if (response.ok) {
+      available.push(column);
       continue;
     }
 
@@ -449,9 +430,7 @@ async function ensureSupabaseSchemaCompatible() {
     }
 
     if (response.status === 400) {
-      throw new Error(
-        `Supabase schema mismatch: manca la colonna "${column}" nella tabella "${SUPABASE_GYMS_TABLE}". ${details}`.trim()
-      );
+      continue;
     }
 
     if (response.status === 404) {
@@ -469,7 +448,16 @@ async function ensureSupabaseSchemaCompatible() {
     throw new Error(`Supabase schema check failed (${response.status}). ${details}`.trim());
   }
 
-  globalThis[SUPABASE_SCHEMA_CACHE_KEY] = true;
+  const hasId = available.includes('id');
+  const hasName = available.includes('nome') || available.includes('name');
+  if (!hasId || !hasName) {
+    throw new Error(
+      `Supabase schema mismatch: la tabella "${SUPABASE_GYMS_TABLE}" deve esporre almeno id e nome/name. Colonne rilevate: ${available.join(', ')}`
+    );
+  }
+
+  globalThis[SUPABASE_SCHEMA_CACHE_KEY] = available;
+  return available;
 }
 
 async function readGymsFromSupabase() {
@@ -493,19 +481,11 @@ async function readGymsFromSupabase() {
 
 async function upsertGymsInSupabase(gyms) {
   if (!hasSupabaseWrite) return;
-  await ensureSupabaseSchemaCompatible();
+  const availableColumns = await supabaseAvailableColumns();
 
   const base = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}`;
 
-  const records = gyms.map((gym) => {
-    const normalized = normalizeGymRecord(gym, gym?.id || '');
-    const { verified, ...record } = normalized;
-    record.weekly_hours = {
-      ...(record.weekly_hours && typeof record.weekly_hours === 'object' ? record.weekly_hours : {}),
-      _verified: verified
-    };
-    return record;
-  });
+  const records = gyms.map((gym) => gymToSupabaseRecord(normalizeGymRecord(gym, gym?.id || ''), availableColumns));
   if (!records.length) return;
 
   const chunkSize = 300;

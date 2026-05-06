@@ -4,11 +4,15 @@
   const requiredFields = ['nome', 'discipline', 'citta'];
   const optionalFields = [
     'id',
+    'slug',
     'indirizzo',
+    'provincia',
+    'regione',
     'telefono',
-    'orari',
+    'email',
     'sito',
     'descrizione',
+    'orari',
     'lat',
     'lng',
     'is_premium',
@@ -62,10 +66,14 @@
   function guessMapping(field) {
     const aliases = {
       nome: ['nome', 'name', 'palestra'],
+      slug: ['slug'],
       discipline: ['discipline', 'disciplina'],
       indirizzo: ['indirizzo', 'address'],
       citta: ['citta', 'città', 'city', 'localita', 'località'],
+      provincia: ['provincia', 'province'],
+      regione: ['regione', 'region'],
       telefono: ['telefono', 'phone'],
+      email: ['email'],
       orari: ['orari', 'hours_info'],
       sito: ['sito', 'website'],
       descrizione: ['descrizione', 'description'],

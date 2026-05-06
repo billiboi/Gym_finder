@@ -119,12 +119,16 @@ function rowToImportGymFixed(row, headers, mapping) {
 
   const gym = {
     id: rowCell(row, headers, mapping, 'id') || `import-${randomUUID()}`,
+    slug: rowCell(row, headers, mapping, 'slug'),
     name: rowCell(row, headers, mapping, 'nome'),
     disciplines,
     discipline: disciplines[0] || 'Fitness',
     address: rowCell(row, headers, mapping, 'indirizzo'),
     city: rowCell(row, headers, mapping, 'citta'),
+    provincia: rowCell(row, headers, mapping, 'provincia'),
+    regione: rowCell(row, headers, mapping, 'regione'),
     phone: rowCell(row, headers, mapping, 'telefono'),
+    email: rowCell(row, headers, mapping, 'email'),
     hours_info: rowCell(row, headers, mapping, 'orari') || 'Orari da verificare',
     website: rowCell(row, headers, mapping, 'sito'),
     description: rowCell(row, headers, mapping, 'descrizione'),
@@ -189,11 +193,15 @@ function mergeGym(existing, incoming, mode) {
 
   const editableFields = [
     'name',
+    'slug',
     'discipline',
     'disciplines',
     'address',
     'city',
+    'provincia',
+    'regione',
     'phone',
+    'email',
     'hours_info',
     'website',
     'description',

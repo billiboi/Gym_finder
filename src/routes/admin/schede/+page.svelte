@@ -49,6 +49,7 @@
     if (filter === 'no-website') return gym.problems?.noWebsite;
     if (filter === 'hours-to-verify') return gym.problems?.hoursToVerify;
     if (filter === 'generic-discipline') return gym.problems?.genericDiscipline;
+    if (filter === 'low-quality') return Number(gym.data_quality_score || 0) < 60;
     if (filter === 'verified') return gym.verified;
     if (filter === 'premium') return gym.premium;
     return true;
@@ -103,6 +104,7 @@
     noWebsite: visibleBaseGyms.filter((gym) => gym.problems?.noWebsite).length,
     hoursToVerify: visibleBaseGyms.filter((gym) => gym.problems?.hoursToVerify).length,
     genericDiscipline: visibleBaseGyms.filter((gym) => gym.problems?.genericDiscipline).length,
+    lowQuality: visibleBaseGyms.filter((gym) => Number(gym.data_quality_score || 0) < 60).length,
     verified: visibleBaseGyms.filter((gym) => gym.verified).length,
     premium: visibleBaseGyms.filter((gym) => gym.premium).length,
     archived: data.gyms.filter((gym) => gym.archived).length
@@ -203,6 +205,7 @@
         <option value="no-website">Senza sito</option>
         <option value="hours-to-verify">Orari da verificare</option>
         <option value="generic-discipline">Disciplina generica</option>
+        <option value="low-quality">Qualità bassa</option>
         <option value="verified">Verificate</option>
         <option value="premium">Premium</option>
         <option value="archived">Archiviate</option>
@@ -232,6 +235,10 @@
       <button type="button" class={filterButtonClass('generic-discipline')} on:click={() => (qualityFilter = 'generic-discipline')}>
         <span class="block text-xl font-bold">{qualityStats.genericDiscipline}</span>
         <span class="font-semibold">disciplina generica</span>
+      </button>
+      <button type="button" class={filterButtonClass('low-quality')} on:click={() => (qualityFilter = 'low-quality')}>
+        <span class="block text-xl font-bold">{qualityStats.lowQuality}</span>
+        <span class="font-semibold">qualità bassa</span>
       </button>
       <button type="button" class={filterButtonClass('verified')} on:click={() => (qualityFilter = 'verified')}>
         <span class="block text-xl font-bold">{qualityStats.verified}</span>
@@ -392,6 +399,7 @@
               {#if gym.archived}
                 <span class="rounded-full bg-slate-200 px-2.5 py-1 text-slate-700">archiviata</span>
               {/if}
+              <span class="rounded-full bg-slate-100 px-2.5 py-1 text-slate-700">qualità {gym.data_quality_score}/100</span>
             </div>
           </div>
 

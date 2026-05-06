@@ -16,6 +16,9 @@ These scripts support data import, normalization, inspection, and cleanup workfl
 - `report-gym-content-enrichment.mjs`
   Generates a read-only report of gyms with websites and missing editorial, social, or price enrichment.
 
+- `sync-supabase-gyms.mjs`
+  Safe-upserts local records into Supabase after a dry run and backup. It must not delete existing records or replace the production catalog.
+
 - `sync-official-overrides-enrichment.mjs`
   Dry-runs or applies the reviewed official-source overrides into additive Supabase editorial fields. Requires `--apply` to write.
 
@@ -58,3 +61,4 @@ These are task-specific import helpers used during dataset building.
 - Script filenames are intentionally preserved to avoid breaking existing local workflows.
 - New reusable scripts should prefer English naming unless there is a strong compatibility reason not to rename or replace an older one.
 - Scripts that mutate production data must create or require a reviewed backup path and should default to dry-run behavior where possible.
+- Scripts must not use physical `DELETE` on `public.gyms`; archive records with `deleted_at` instead.

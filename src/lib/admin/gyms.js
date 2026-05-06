@@ -1,4 +1,5 @@
 import { gymHref, primaryDisciplineForGym } from '$lib/gym-detail';
+import { computeGymQualityScore, normalizeGym } from '$lib/gym-normalizer';
 
 export const DELETED_AT_SQL = 'alter table gyms add column if not exists deleted_at timestamp with time zone null;';
 
@@ -79,6 +80,7 @@ export function gymProblems(gym) {
 }
 
 export function adminGymView(gym) {
+  const qualityScore = computeGymQualityScore(gym);
   return {
     id: gym.id,
     name: gym.name || 'Senza nome',
@@ -101,7 +103,8 @@ export function adminGymView(gym) {
     longitude: gym.longitude ?? '',
     image_url: gym.image_url || '',
     publicHref: gymHref(gym),
-    problems: gymProblems(gym)
+    problems: gymProblems(gym),
+    data_quality_score: qualityScore
   };
 }
 
@@ -126,37 +129,56 @@ function csvEscape(value) {
 export function gymsToAdminCsv(gyms) {
   const headers = [
     'id',
+    'slug',
     'nome',
-    'discipline',
     'indirizzo',
     'citta',
+    'provincia',
+    'regione',
     'telefono',
-    'orari',
+    'email',
     'sito',
     'descrizione',
+    'discipline',
+    'orari',
     'lat',
     'lng',
     'is_premium',
     'is_verified',
-    'priority_score'
+    'priority_score',
+    'deleted_at',
+    'created_at',
+    'updated_at',
+    'data_quality_score'
   ];
 
-  const rows = gyms.map((gym) => [
-    gym.id,
-    gym.name,
-    Array.isArray(gym.disciplines) && gym.disciplines.length ? gym.disciplines.join(' | ') : gym.discipline,
-    gym.address,
-    gym.city,
-    gym.phone,
-    gym.hours_info,
-    gym.website,
-    gym.description,
-    gym.latitude ?? '',
-    gym.longitude ?? '',
-    isPremiumGym(gym) ? '1' : '0',
-    Boolean(gym.verified || gym?.weekly_hours?._verified) ? '1' : '0',
-    priorityScore(gym)
-  ]);
+  const rows = gyms.map((gym) => {
+    const normalized = normalizeGym(gym, gym?.id || '');
+    return [
+      normalized.id,
+      normalized.slug,
+      normalized.nome,
+      normalized.indirizzo,
+      normalized.citta,
+      normalized.provincia,
+      normalized.regione,
+      normalized.telefono,
+      normalized.email,
+      normalized.sito,
+      normalized.descrizione,
+      Array.isArray(normalized.disciplines) ? normalized.disciplines.join(' | ') : '',
+      normalized.orari,
+      normalized.lat ?? '',
+      normalized.lng ?? '',
+      isPremiumGym(normalized) ? '1' : '0',
+      normalized.is_verified ? '1' : '0',
+      priorityScore(normalized),
+      normalized.deleted_at || '',
+      normalized.created_at || '',
+      normalized.updated_at || '',
+      normalized.data_quality_score
+    ];
+  });
 
   return [headers, ...rows].map((row) => row.map(csvEscape).join(',')).join('\n');
 }
