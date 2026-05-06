@@ -12,6 +12,7 @@ Rules:
 
 Current migration order:
 
+1. `20260506_000_create_gyms_baseline.sql` (only needed when a staging project starts empty)
 1. `20260429_001_gyms_public_readonly_rls.sql`
 2. `20260429_002_claim_requests_private_rls.sql`
 3. `20260429_003_add_gym_enrichment_fields.sql`

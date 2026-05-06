@@ -94,6 +94,11 @@ async function countRows(baseUrl, serviceKey, table) {
   });
 
   if (!response.ok) {
+    if (response.status === 404) {
+      throw new Error(
+        `Conteggio ${table} non riuscito (404): la tabella non esiste nello staging o SUPABASE_GYMS_TABLE e' sbagliata. Applica prima supabase/migrations/20260506_000_create_gyms_baseline.sql.`
+      );
+    }
     throw new Error(`Conteggio ${table} non riuscito (${response.status}).`);
   }
 
