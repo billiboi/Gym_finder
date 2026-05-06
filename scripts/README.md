@@ -16,6 +16,9 @@ These scripts support data import, normalization, inspection, and cleanup workfl
 - `check-supabase-staging-readiness.mjs`
   Checks a staging Supabase target before applying migrations. It refuses production-like targets unless explicitly overridden.
 
+- `set-vercel-preview-envs.mjs`
+  Sets Vercel Preview environment variables from `.env.staging.local` using a local `VERCEL_TOKEN`. It never targets production.
+
 - `report-gym-content-enrichment.mjs`
   Generates a read-only report of gyms with websites and missing editorial, social, or price enrichment.
 
