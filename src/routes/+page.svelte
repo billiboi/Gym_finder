@@ -630,7 +630,7 @@
 <div class="min-h-screen w-full sc-page relative">
   <main id="top" class="mx-auto w-full max-w-7xl px-4 pb-8 pt-4 sm:px-6 lg:px-8" aria-busy={isBootstrapping}>
   <section class="reveal rounded-3xl border border-white/80 bg-white/70 p-4 shadow-xl backdrop-blur-sm sm:p-7 sc-panel sc-hero">
-    <div class="mx-auto flex max-w-5xl flex-col gap-6 sc-hero-copy">
+    <div class="mx-auto flex max-w-5xl flex-col gap-3 sc-hero-copy">
         <div class="max-w-3xl">
           <div class="inline-flex items-center rounded-full border border-emerald-900/10 bg-white/65 px-3 py-1 text-[0.7rem] font-bold uppercase tracking-[0.24em] text-emerald-800">
             Palestre in Zona
@@ -663,211 +663,6 @@
           </div>
         </div>
 
-        <div id="home-search" class="scroll-mt-24 rounded-[1.5rem] p-3 sm:p-4 sc-hero-search">
-          <div class="grid gap-3 lg:grid-cols-[minmax(0,1.45fr)_minmax(190px,0.65fr)_auto] lg:items-end">
-            <label class="grid gap-2">
-              <span class="text-[0.72rem] font-bold uppercase tracking-[0.2em] text-slate-500">Cerca</span>
-              <input
-                id="hero-gym-search"
-                name="hero-gym-search"
-                class="min-h-[3.35rem] rounded-2xl border border-slate-200 bg-white px-4 text-base font-semibold outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
-                placeholder="Cerca città, disciplina o palestra"
-                bind:value={searchInput}
-                list="quick-search-suggestions"
-                on:keydown={(event) => {
-                  if (event.key === 'Enter') applySearchNow();
-                }}
-              />
-            </label>
-            <label class="grid gap-2">
-              <span class="text-[0.72rem] font-bold uppercase tracking-[0.2em] text-slate-500">Disciplina</span>
-              <select
-                id="hero-discipline-filter"
-                name="hero-discipline-filter"
-                class="min-h-[3.35rem] rounded-2xl border border-slate-200 bg-white px-4 text-sm font-semibold outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
-                bind:value={filterDiscipline}
-                disabled={loadingDisciplines}
-              >
-                <option value="">Tutte</option>
-                {#each disciplines as discipline}
-                  <option value={discipline}>{discipline}</option>
-                {/each}
-              </select>
-            </label>
-            <a href="#elenco-palestre" class="inline-flex min-h-[3.35rem] items-center justify-center rounded-2xl px-5 text-center text-sm font-bold text-white transition sc-button" on:click={applySearchNow}>
-              Trova palestra
-            </a>
-          </div>
-          <p class="mt-2 text-sm font-semibold leading-6 text-slate-600">
-            Esempi: Palestre a Varese, Boxe a Lugano, MMA vicino a me
-          </p>
-          <datalist id="quick-search-suggestions">
-            {#each quickSearchSuggestions as suggestion}
-              <option value={suggestion}></option>
-            {/each}
-          </datalist>
-
-          <div class="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-slate-200/70 pt-3">
-              <button
-                type="button"
-                class="inline-flex min-h-[2.7rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button-muted lg:hidden"
-                aria-expanded={filtersExpanded}
-                aria-controls="advanced-search-filters"
-                aria-label={`${filtersExpanded ? 'Nascondi' : 'Mostra'} filtri avanzati`}
-                on:click={() => (filtersExpanded = !filtersExpanded)}
-              >
-              Filtri{activeFilterCount ? ` (${activeFilterCount})` : ''}
-            </button>
-            {#if locationReady}
-              <button
-                type="button"
-                class="inline-flex min-h-[2.7rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button-ghost lg:hidden"
-                on:click={clearLocation}
-              >
-                Posizione attiva
-              </button>
-            {:else}
-              <button
-                type="button"
-                class="inline-flex min-h-[2.7rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button lg:hidden"
-                on:click={detectLocation}
-                disabled={locating}
-              >
-                {locating ? 'Rilevamento...' : 'Usa posizione'}
-              </button>
-            {/if}
-            <p class="min-w-0 text-sm font-semibold text-slate-600" aria-live="polite">
-              {filteredGyms.length} palestre trovate
-            </p>
-            {#if hasActiveFilters}
-              <button type="button" class="inline-flex min-h-[2.7rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button-ghost" on:click={resetFilters}>
-                Reset
-              </button>
-            {/if}
-          </div>
-
-          {#if hasActiveFilters}
-            <div class="mt-3 flex flex-wrap gap-2" aria-label="Filtri attivi">
-              {#if searchInput.trim()}
-                <button type="button" class="rounded-full px-3 py-1.5 text-xs font-bold sc-active-filter-chip" aria-label="Rimuovi filtro testo" on:click={() => { searchInput = ''; scheduledSearchValue = ''; filterText = ''; }}>
-                  Testo: {searchInput.trim()} x
-                </button>
-              {/if}
-              {#if filterDiscipline.trim()}
-                <button type="button" class="rounded-full px-3 py-1.5 text-xs font-bold sc-active-filter-chip" aria-label="Rimuovi filtro disciplina" on:click={() => (filterDiscipline = '')}>
-                  {filterDiscipline} x
-                </button>
-              {/if}
-              {#if filterOpenState !== 'all'}
-                <button type="button" class="rounded-full px-3 py-1.5 text-xs font-bold sc-active-filter-chip" aria-label="Rimuovi filtro apertura" on:click={() => (filterOpenState = 'all')}>
-                  {filterOpenState === 'open' ? 'Aperte adesso' : 'Chiuse adesso'} x
-                </button>
-              {/if}
-              {#if locationReady}
-                <button type="button" class="rounded-full px-3 py-1.5 text-xs font-bold sc-active-filter-chip" aria-label="Rimuovi filtro posizione" on:click={clearLocation}>
-                  {nearbyOnly ? `Entro ${locationRadius} km` : 'Posizione attiva'} x
-                </button>
-              {/if}
-              {#if sortMode !== 'recommended'}
-                <button type="button" class="rounded-full px-3 py-1.5 text-xs font-bold sc-active-filter-chip" aria-label="Rimuovi ordinamento" on:click={() => (sortMode = 'recommended')}>
-                  Ordine: {sortMode === 'name' ? 'Nome' : sortMode === 'open' ? 'Apertura' : 'Distanza'} x
-                </button>
-              {/if}
-            </div>
-          {/if}
-
-          <div
-            id="advanced-search-filters"
-            class={`mt-3 gap-3 sm:grid-cols-2 lg:grid lg:grid-cols-[minmax(155px,0.75fr)_minmax(140px,0.6fr)_minmax(135px,0.55fr)_max-content_auto] lg:items-end ${filtersExpanded ? 'grid' : 'hidden'}`}
-          >
-            <label class="grid gap-2">
-              <span class="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-slate-500">Apertura</span>
-              <select
-                id="open-state-filter"
-                name="open-state-filter"
-                class="min-h-[3rem] rounded-2xl border border-slate-200 bg-white px-4 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
-                bind:value={filterOpenState}
-              >
-                <option value="all">Aperte e chiuse</option>
-                <option value="open">Aperte adesso</option>
-                <option value="closed">Chiuse adesso</option>
-              </select>
-            </label>
-
-            <label class="grid gap-2">
-              <span class="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-slate-500">Ordina</span>
-              <select
-                id="sort-filter"
-                name="sort-filter"
-                class="min-h-[3rem] rounded-2xl border border-slate-200 bg-white px-4 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
-                bind:value={sortMode}
-              >
-                <option value="recommended">Consigliato</option>
-                <option value="name">Nome A-Z</option>
-                <option value="open">Aperte prima</option>
-                <option value="distance" disabled={!locationReady}>Distanza</option>
-              </select>
-            </label>
-
-            <label class="grid gap-2">
-              <span class="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-slate-500">Distanza</span>
-              <select
-                id="radius-filter"
-                name="radius-filter"
-                class="min-h-[3rem] rounded-2xl border border-slate-200 bg-white px-4 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
-                bind:value={locationRadius}
-                disabled={!locationReady}
-              >
-                <option value={5}>5 km</option>
-                <option value={10}>10 km</option>
-                <option value={20}>20 km</option>
-                <option value={30}>30 km</option>
-                <option value={50}>50 km</option>
-              </select>
-            </label>
-
-            <label class={`inline-flex min-h-[3rem] items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 sc-pill sc-filter-toggle sc-radius-toggle ${!locationReady ? 'opacity-60' : ''}`}>
-              <input id="nearby-only" name="nearby-only" type="checkbox" bind:checked={nearbyOnly} disabled={!locationReady} />
-              <span>Usa raggio</span>
-            </label>
-
-            {#if locationReady}
-              <button type="button" class="hidden min-h-[3rem] items-center justify-center rounded-xl bg-white px-4 text-sm font-bold text-emerald-800 transition hover:bg-slate-100 sc-button-ghost lg:inline-flex" on:click={clearLocation}>
-                Rimuovi posizione
-              </button>
-            {:else}
-              <button type="button" class="hidden min-h-[3rem] items-center justify-center rounded-xl bg-white px-4 text-sm font-bold text-slate-700 transition hover:bg-slate-100 sc-button-ghost lg:inline-flex" on:click={detectLocation} disabled={locating}>
-                {locating ? 'Rilevamento...' : 'Usa posizione'}
-              </button>
-            {/if}
-          </div>
-
-          <div class="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <p class="text-sm font-semibold text-slate-600">
-              {locationReady ? 'Risultati ordinati dalla tua posizione.' : 'Attiva la posizione per ordinare per distanza.'}
-            </p>
-            <div class="grid grid-cols-2 gap-2 sm:flex sm:justify-end">
-              <a
-                href="/zone"
-                class="sc-secondary-cta sc-secondary-cta--zone"
-              >
-                Sfoglia zone
-              </a>
-              <a
-                href="/discipline"
-                class="sc-secondary-cta sc-secondary-cta--discipline"
-              >
-                Sfoglia discipline
-              </a>
-            </div>
-          </div>
-
-          {#if locationError}
-            <div class="mt-3 rounded-2xl border border-red-200 bg-red-50/85 px-4 py-3 text-sm font-semibold text-red-700">
-              {locationError}
-            </div>
-          {/if}
-        </div>
 
     </div>
   </section>
@@ -929,6 +724,214 @@
       <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
         Palestre in Zona ti aiuta a cercare palestre nella tua città, confrontare corsi e discipline disponibili e trovare rapidamente contatti, orari e informazioni utili. Puoi cercare per zona, distanza o tipo di allenamento e scegliere la palestra più adatta alle tue esigenze.
       </p>
+    </div>
+  </section>
+
+  <section class="mt-5 scroll-mt-16" aria-label="Ricerca e filtri palestre">
+    <div id="home-search" class="scroll-mt-16 rounded-[1.5rem] p-3 sm:p-4 sc-hero-search">
+      <div class="grid gap-3 lg:grid-cols-[minmax(0,1.45fr)_minmax(190px,0.65fr)_auto] lg:items-end">
+        <label class="grid gap-2">
+          <span class="text-[0.72rem] font-bold uppercase tracking-[0.2em] text-slate-500">Cerca</span>
+          <input
+            id="hero-gym-search"
+            name="hero-gym-search"
+            class="min-h-[3.35rem] rounded-2xl border border-slate-200 bg-white px-4 text-base font-semibold outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
+            placeholder="Cerca città, disciplina o palestra"
+            bind:value={searchInput}
+            list="quick-search-suggestions"
+            on:keydown={(event) => {
+              if (event.key === 'Enter') applySearchNow();
+            }}
+          />
+        </label>
+        <label class="grid gap-2">
+          <span class="text-[0.72rem] font-bold uppercase tracking-[0.2em] text-slate-500">Disciplina</span>
+          <select
+            id="hero-discipline-filter"
+            name="hero-discipline-filter"
+            class="min-h-[3.35rem] rounded-2xl border border-slate-200 bg-white px-4 text-sm font-semibold outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
+            bind:value={filterDiscipline}
+            disabled={loadingDisciplines}
+          >
+            <option value="">Tutte</option>
+            {#each disciplines as discipline}
+              <option value={discipline}>{discipline}</option>
+            {/each}
+          </select>
+        </label>
+        <a href="#elenco-palestre" class="inline-flex min-h-[3.35rem] items-center justify-center rounded-2xl px-5 text-center text-sm font-bold text-white transition sc-button" on:click={applySearchNow}>
+          Trova palestra
+        </a>
+      </div>
+      <p class="mt-2 text-sm font-semibold leading-6 text-slate-600">
+        Esempi: Palestre a Varese, Boxe a Lugano, MMA vicino a me
+      </p>
+      <datalist id="quick-search-suggestions">
+        {#each quickSearchSuggestions as suggestion}
+          <option value={suggestion}></option>
+        {/each}
+      </datalist>
+
+      <div class="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-slate-200/70 pt-3">
+          <button
+            type="button"
+            class="inline-flex min-h-[2.7rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button-muted lg:hidden"
+            aria-expanded={filtersExpanded}
+            aria-controls="advanced-search-filters"
+            aria-label={`${filtersExpanded ? 'Nascondi' : 'Mostra'} filtri avanzati`}
+            on:click={() => (filtersExpanded = !filtersExpanded)}
+          >
+          Filtri{activeFilterCount ? ` (${activeFilterCount})` : ''}
+        </button>
+        {#if locationReady}
+          <button
+            type="button"
+            class="inline-flex min-h-[2.7rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button-ghost lg:hidden"
+            on:click={clearLocation}
+          >
+            Posizione attiva
+          </button>
+        {:else}
+          <button
+            type="button"
+            class="inline-flex min-h-[2.7rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button lg:hidden"
+            on:click={detectLocation}
+            disabled={locating}
+          >
+            {locating ? 'Rilevamento...' : 'Usa posizione'}
+          </button>
+        {/if}
+        <p class="min-w-0 text-sm font-semibold text-slate-600" aria-live="polite">
+          {filteredGyms.length} palestre trovate
+        </p>
+        {#if hasActiveFilters}
+          <button type="button" class="inline-flex min-h-[2.7rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button-ghost" on:click={resetFilters}>
+            Reset
+          </button>
+        {/if}
+      </div>
+
+      {#if hasActiveFilters}
+        <div class="mt-3 flex flex-wrap gap-2" aria-label="Filtri attivi">
+          {#if searchInput.trim()}
+            <button type="button" class="rounded-full px-3 py-1.5 text-xs font-bold sc-active-filter-chip" aria-label="Rimuovi filtro testo" on:click={() => { searchInput = ''; scheduledSearchValue = ''; filterText = ''; }}>
+              Testo: {searchInput.trim()} x
+            </button>
+          {/if}
+          {#if filterDiscipline.trim()}
+            <button type="button" class="rounded-full px-3 py-1.5 text-xs font-bold sc-active-filter-chip" aria-label="Rimuovi filtro disciplina" on:click={() => (filterDiscipline = '')}>
+              {filterDiscipline} x
+            </button>
+          {/if}
+          {#if filterOpenState !== 'all'}
+            <button type="button" class="rounded-full px-3 py-1.5 text-xs font-bold sc-active-filter-chip" aria-label="Rimuovi filtro apertura" on:click={() => (filterOpenState = 'all')}>
+              {filterOpenState === 'open' ? 'Aperte adesso' : 'Chiuse adesso'} x
+            </button>
+          {/if}
+          {#if locationReady}
+            <button type="button" class="rounded-full px-3 py-1.5 text-xs font-bold sc-active-filter-chip" aria-label="Rimuovi filtro posizione" on:click={clearLocation}>
+              {nearbyOnly ? `Entro ${locationRadius} km` : 'Posizione attiva'} x
+            </button>
+          {/if}
+          {#if sortMode !== 'recommended'}
+            <button type="button" class="rounded-full px-3 py-1.5 text-xs font-bold sc-active-filter-chip" aria-label="Rimuovi ordinamento" on:click={() => (sortMode = 'recommended')}>
+              Ordine: {sortMode === 'name' ? 'Nome' : sortMode === 'open' ? 'Apertura' : 'Distanza'} x
+            </button>
+          {/if}
+        </div>
+      {/if}
+
+      <div
+        id="advanced-search-filters"
+        class={`mt-3 gap-3 sm:grid-cols-2 lg:grid lg:grid-cols-[minmax(155px,0.75fr)_minmax(140px,0.6fr)_minmax(135px,0.55fr)_max-content_auto] lg:items-end ${filtersExpanded ? 'grid' : 'hidden'}`}
+      >
+        <label class="grid gap-2">
+          <span class="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-slate-500">Apertura</span>
+          <select
+            id="open-state-filter"
+            name="open-state-filter"
+            class="min-h-[3rem] rounded-2xl border border-slate-200 bg-white px-4 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
+            bind:value={filterOpenState}
+          >
+            <option value="all">Aperte e chiuse</option>
+            <option value="open">Aperte adesso</option>
+            <option value="closed">Chiuse adesso</option>
+          </select>
+        </label>
+
+        <label class="grid gap-2">
+          <span class="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-slate-500">Ordina</span>
+          <select
+            id="sort-filter"
+            name="sort-filter"
+            class="min-h-[3rem] rounded-2xl border border-slate-200 bg-white px-4 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
+            bind:value={sortMode}
+          >
+            <option value="recommended">Consigliato</option>
+            <option value="name">Nome A-Z</option>
+            <option value="open">Aperte prima</option>
+            <option value="distance" disabled={!locationReady}>Distanza</option>
+          </select>
+        </label>
+
+        <label class="grid gap-2">
+          <span class="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-slate-500">Distanza</span>
+          <select
+            id="radius-filter"
+            name="radius-filter"
+            class="min-h-[3rem] rounded-2xl border border-slate-200 bg-white px-4 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
+            bind:value={locationRadius}
+            disabled={!locationReady}
+          >
+            <option value={5}>5 km</option>
+            <option value={10}>10 km</option>
+            <option value={20}>20 km</option>
+            <option value={30}>30 km</option>
+            <option value={50}>50 km</option>
+          </select>
+        </label>
+
+        <label class={`inline-flex min-h-[3rem] items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 sc-pill sc-filter-toggle sc-radius-toggle ${!locationReady ? 'opacity-60' : ''}`}>
+          <input id="nearby-only" name="nearby-only" type="checkbox" bind:checked={nearbyOnly} disabled={!locationReady} />
+          <span>Usa raggio</span>
+        </label>
+
+        {#if locationReady}
+          <button type="button" class="hidden min-h-[3rem] items-center justify-center rounded-xl bg-white px-4 text-sm font-bold text-emerald-800 transition hover:bg-slate-100 sc-button-ghost lg:inline-flex" on:click={clearLocation}>
+            Rimuovi posizione
+          </button>
+        {:else}
+          <button type="button" class="hidden min-h-[3rem] items-center justify-center rounded-xl bg-white px-4 text-sm font-bold text-slate-700 transition hover:bg-slate-100 sc-button-ghost lg:inline-flex" on:click={detectLocation} disabled={locating}>
+            {locating ? 'Rilevamento...' : 'Usa posizione'}
+          </button>
+        {/if}
+      </div>
+
+      <div class="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <p class="text-sm font-semibold text-slate-600">
+          {locationReady ? 'Risultati ordinati dalla tua posizione.' : 'Attiva la posizione per ordinare per distanza.'}
+        </p>
+        <div class="grid grid-cols-2 gap-2 sm:flex sm:justify-end">
+          <a
+            href="/zone"
+            class="sc-secondary-cta sc-secondary-cta--zone"
+          >
+            Sfoglia zone
+          </a>
+          <a
+            href="/discipline"
+            class="sc-secondary-cta sc-secondary-cta--discipline"
+          >
+            Sfoglia discipline
+          </a>
+        </div>
+      </div>
+
+      {#if locationError}
+        <div class="mt-3 rounded-2xl border border-red-200 bg-red-50/85 px-4 py-3 text-sm font-semibold text-red-700">
+          {locationError}
+        </div>
+      {/if}
     </div>
   </section>
 
