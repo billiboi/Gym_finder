@@ -133,6 +133,34 @@ const variables = [
   ['CLAIM_NOTIFICATION_TO', stagingEnv.CLAIM_NOTIFICATION_TO || 'info@palestreinzona.it', 'plain']
 ];
 
+async function listPreviewEnvKeys({ token, projectId, teamId }) {
+  const url = new URL(`https://api.vercel.com/v9/projects/${encodeURIComponent(projectId)}/env`);
+  url.searchParams.set('teamId', teamId);
+
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error(`Vercel env list failed (${response.status}).`);
+  }
+
+  const payload = await response.json();
+  const envs = Array.isArray(payload?.envs) ? payload.envs : [];
+  return envs
+    .filter((item) => Array.isArray(item?.target) && item.target.includes('preview'))
+    .map((item) => item.key)
+    .sort();
+}
+
+if (process.argv.includes('--list-preview')) {
+  const keys = await listPreviewEnvKeys({ token, projectId, teamId });
+  console.log(`[vercel-preview-envs] preview_keys=${keys.join(',')}`);
+  process.exit(0);
+}
+
 console.log(`[vercel-preview-envs] project=${project.projectName || projectId} team=${teamId}`);
 for (const [key, value, type] of variables) {
   await vercelRequest({ token, projectId, teamId, key, value, type });
