@@ -435,6 +435,12 @@ export const actions = {
       });
     }
 
+    if (clean(form.get('confirm_text')) !== 'IMPORTA') {
+      return fail(400, {
+        error: 'Import bloccato: scrivi IMPORTA nel campo di conferma dopo aver controllato dry-run e conteggi.'
+      });
+    }
+
     const { next, report } = buildImportPlan(gyms, parsed.imported, parsed.mode);
 
     try {

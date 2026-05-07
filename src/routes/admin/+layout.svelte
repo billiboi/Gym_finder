@@ -14,6 +14,7 @@
       <nav class="flex flex-wrap gap-2" aria-label="Navigazione admin">
         <a href="/" class="sc-ui-pill px-3.5 py-2 text-sm">Home pubblica</a>
         <a href="/admin" class="sc-ui-pill sc-ui-pill--primary px-3.5 py-2 text-sm">Dashboard admin</a>
+        <a href="/admin/audit" class="sc-ui-pill px-3.5 py-2 text-sm">Audit log</a>
         <form method="POST" action="/admin/logout">
           <button type="submit" class="sc-ui-pill sc-ui-pill--danger px-3.5 py-2 text-sm">
             Esci

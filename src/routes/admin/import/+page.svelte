@@ -309,7 +309,11 @@
           <input type="hidden" name="confirmation_token" value={form.confirmationToken} />
           <label class="inline-flex items-start gap-2 text-sm font-semibold text-slate-800">
             <input type="checkbox" required />
-            Confermo import dopo dry-run. Verrà creato un backup locale JSON + CSV prima della scrittura.
+            Confermo import dopo dry-run. Verrà creato un backup automatico prima della scrittura.
+          </label>
+          <label class="grid gap-1 text-sm font-semibold text-slate-800">
+            Scrivi IMPORTA per confermare
+            <input name="confirm_text" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" autocomplete="off" required />
           </label>
           <button type="submit" class="w-fit rounded-xl bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800">
             Conferma import
