@@ -345,38 +345,50 @@
       <div class="flex min-w-0 flex-col gap-3">
         {#if hasOfficialData}
           <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-5">
-            <div class="max-w-4xl">
-              <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Dati ufficiali del club</p>
+            <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+              <div class="min-w-0">
+                <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Dati ufficiali del club</p>
+                <h2 class="mt-2 text-xl font-bold text-slate-900 sm:text-2xl">Informazioni verificate</h2>
+              </div>
+              {#if officialSourceUrl}
+                <a
+                  href={officialSourceUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  class="inline-flex min-h-[2.75rem] shrink-0 items-center justify-center rounded-xl border border-emerald-200 bg-emerald-50 px-4 text-sm font-bold text-emerald-900 transition hover:border-emerald-300 hover:bg-emerald-100"
+                >
+                  Apri fonte ufficiale
+                </a>
+              {/if}
             </div>
 
-            <div class="mt-4 grid gap-2">
+            <div class="mt-4 grid gap-3">
               {#if officialMonthlyPrice}
-                <div class="flex flex-col gap-1 rounded-2xl border border-slate-200 bg-white/90 p-4 sm:flex-row sm:items-center sm:justify-between">
-                  <span class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Prezzo</span>
-                  <span class="text-sm font-bold text-slate-900 sm:text-right">{officialMonthlyPrice}</span>
+                <div class="rounded-2xl border border-emerald-200 bg-emerald-50/75 p-4">
+                  <p class="text-xs font-bold uppercase tracking-[0.18em] text-emerald-900">Prezzi indicati</p>
+                  <p class="mt-2 text-base font-bold leading-7 text-slate-950 sm:text-lg">{officialMonthlyPrice}</p>
                 </div>
               {/if}
-              {#if officialEmail}
-                <div class="flex flex-col gap-1 rounded-2xl border border-slate-200 bg-white/90 p-4 sm:flex-row sm:items-center sm:justify-between">
-                  <span class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Email</span>
-                  <a href={`mailto:${officialEmail}`} class="text-sm font-bold text-emerald-800 underline decoration-2 underline-offset-2 sm:text-right">{officialEmail}</a>
-                </div>
-              {/if}
-              {#if officialSourceUrl}
-                <div class="flex flex-col gap-1 rounded-2xl border border-slate-200 bg-white/90 p-4 sm:flex-row sm:items-center sm:justify-between">
-                  <span class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Fonte</span>
-                  <a href={officialSourceUrl} target="_blank" rel="noreferrer" class="text-sm font-bold text-emerald-800 underline decoration-2 underline-offset-2 sm:text-right">Fonte ufficiale club</a>
-                </div>
-              {/if}
-              {#if officialSocialLinks.length}
-                <div class="flex flex-col gap-2 rounded-2xl border border-slate-200 bg-white/90 p-4 sm:flex-row sm:items-center sm:justify-between">
-                  <span class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Social</span>
-                  <div class="flex flex-wrap gap-2 sm:justify-end">
+
+              {#if officialEmail || officialSocialLinks.length || (!officialMonthlyPrice && officialSourceUrl)}
+                <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
+                  <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Canali ufficiali</p>
+                  <div class="mt-3 flex flex-wrap gap-2">
+                    {#if officialEmail}
+                      <a href={`mailto:${officialEmail}`} class="inline-flex min-h-[2.55rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-3.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50">
+                        Email
+                      </a>
+                    {/if}
                     {#each officialSocialLinks as social}
-                      <a href={social.href} target="_blank" rel="noreferrer" class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-slate-900 transition hover:bg-slate-50">
+                      <a href={social.href} target="_blank" rel="noreferrer" class="inline-flex min-h-[2.55rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-3.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50">
                         {social.label}
                       </a>
                     {/each}
+                    {#if !officialMonthlyPrice && officialSourceUrl}
+                      <a href={officialSourceUrl} target="_blank" rel="noreferrer" class="inline-flex min-h-[2.55rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-3.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50">
+                        Fonte ufficiale
+                      </a>
+                    {/if}
                   </div>
                 </div>
               {/if}
