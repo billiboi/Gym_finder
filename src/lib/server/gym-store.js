@@ -501,7 +501,14 @@ async function upsertGymsInSupabase(gyms) {
     });
 
     if (!insResponse.ok) {
-      throw new Error(`Supabase insert failed (${insResponse.status})`);
+      let details = '';
+      try {
+        const payload = await insResponse.json();
+        details = [payload?.message, payload?.details, payload?.hint].filter(Boolean).join(' ');
+      } catch {
+        details = await insResponse.text().catch(() => '');
+      }
+      throw new Error(`Supabase insert failed (${insResponse.status}). ${details}`.trim());
     }
   }
 }
