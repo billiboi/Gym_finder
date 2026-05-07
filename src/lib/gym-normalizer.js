@@ -217,12 +217,12 @@ export function normalizeGym(gym, fallbackId = '') {
 export function gymToSupabaseRecord(gym, availableColumns = GYM_LEGACY_FIELDS) {
   const normalized = normalizeGym(gym, gym?.id || '');
   const allowed = new Set(availableColumns);
-  const omitWhenNull = new Set(['created_at', 'updated_at']);
+  const omitAlways = new Set(['created_at', 'updated_at']);
   const record = {};
 
   for (const column of GYM_SUPABASE_COLUMN_CANDIDATES) {
+    if (omitAlways.has(column)) continue;
     if (allowed.has(column) && normalized[column] !== undefined) {
-      if (normalized[column] === null && omitWhenNull.has(column)) continue;
       record[column] = normalized[column];
     }
   }
