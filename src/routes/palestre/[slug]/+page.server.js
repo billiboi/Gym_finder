@@ -13,6 +13,11 @@ function slugifyName(name) {
     .replace(/^-+|-+$/g, '');
 }
 
+function publicDetailGym(gym) {
+  const { editorial_faq_items, ...publicGym } = gym || {};
+  return publicGym;
+}
+
 export async function load({ params }) {
   const gyms = await readGyms();
   const gym = gyms.find((item) => slugifyGym(item) === params.slug);
@@ -51,9 +56,9 @@ export async function load({ params }) {
     : null;
 
   return {
-    gym,
+    gym: publicDetailGym(gym),
     gymSlug: params.slug,
-    relatedGyms,
+    relatedGyms: relatedGyms.map(publicDetailGym),
     relatedLocation: seoLocationForGym(gym) || dynamicLocation,
     relatedDiscipline: seoDisciplineForGym(gym) || dynamicDiscipline
   };
