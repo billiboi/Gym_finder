@@ -1,6 +1,5 @@
 <script>
   import {
-    buildGymFaqItems,
     buildGymSeoHighlights,
     buildGymPresentation,
     cityLabelForGym,
@@ -29,16 +28,6 @@
     return value.map((item) => fixGymText(item)).filter(Boolean);
   }
 
-  function faqArray(value) {
-    if (!Array.isArray(value)) return [];
-    return value
-      .map((item) => ({
-        question: fixGymText(item?.question),
-        answer: fixGymText(item?.answer)
-      }))
-      .filter((item) => item.question && item.answer);
-  }
-
   function compactMetaDescription(parts) {
     const text = parts
       .map((part) => fixGymText(part))
@@ -61,11 +50,9 @@
   $: primaryDiscipline = primaryDisciplineForGym(gym);
   $: editorialSummary = fixGymText(gym?.editorial_summary);
   $: editorialHighlights = textArray(gym?.editorial_highlights);
-  $: editorialFaqItems = faqArray(gym?.editorial_faq_items);
-  $: hasEditorialContent = Boolean(editorialSummary || editorialHighlights.length || editorialFaqItems.length);
+  $: hasEditorialContent = Boolean(editorialSummary || editorialHighlights.length);
   $: presentation = officialOverride?.presentation || editorialSummary || buildGymPresentation(gym);
   $: seoHighlights = officialOverride?.highlights || editorialHighlights.length ? (officialOverride?.highlights || editorialHighlights) : buildGymSeoHighlights(gym);
-  $: faqItems = officialOverride?.faqItems || editorialFaqItems.length ? (officialOverride?.faqItems || editorialFaqItems) : buildGymFaqItems(gym);
   $: cityLabel = cityLabelForGym(gym);
   $: imageAsset = imageForGym(gym);
   $: imageMeta =
@@ -84,41 +71,13 @@
   $: officialMonthlyPrice = fixGymText(gym?.price_info) || officialOverride?.monthlyPrice || '';
   $: priceSourceUrl = fixGymText(gym?.price_source_url) || officialSourceUrl;
   $: officialSocialLinks = officialOverride?.socialLinks || [];
-  $: officialInfoCards = officialOverride?.infoCards || [];
-  $: editorialInfoCards = !officialOverride && editorialHighlights.length
-    ? editorialHighlights.slice(0, 3).map((highlight, index) => ({
-        label: index === 0 ? 'Fonte ufficiale' : `Dettaglio ${index + 1}`,
-        value: index === 0 ? 'Informazione verificata' : '',
-        body: highlight
-      }))
-    : [];
-  $: officialCards = (() => {
-    const cards = (officialInfoCards.length ? officialInfoCards : editorialInfoCards).map((card) => ({ ...card }));
-    const hasFormulaCard = cards.some((card) => String(card.label || '').trim().toLowerCase() === 'formula');
-
-    if (officialMonthlyPrice && !hasFormulaCard) {
-      cards.unshift({
-        label: 'Prezzo',
-        value: officialMonthlyPrice,
-        body: priceSourceUrl ? 'Importo verificato da fonte ufficiale o pagina tariffaria collegata.' : ''
-      });
-    }
-
-    return cards.map((card, index) => ({
-      ...card,
-      featured: index === 0 && ['formula', 'prezzo'].includes(String(card.label || '').trim().toLowerCase())
-    }));
-  })();
-  $: hasFeaturedOfficialCard = officialCards.some((card) => card.featured);
-  $: officialCardsGridClass = hasFeaturedOfficialCard
-    ? 'md:grid-cols-2 xl:grid-cols-3'
-    : officialCards.length === 4
-      ? 'md:grid-cols-2 xl:grid-cols-2'
-      : 'md:grid-cols-2 xl:grid-cols-3';
+  $: hasOfficialData = Boolean(officialMonthlyPrice || officialSourceUrl || officialEmail || officialSocialLinks.length);
   $: phone = fixGymText(gym?.phone) || 'Non disponibile';
   $: website = fixGymText(gym?.website) || officialOverride?.website || officialSourceUrl;
   $: hasPhone = phone && phone !== 'Non disponibile';
-  $: sameAsLinks = [...officialSocialLinks, website].map((url) => publicUrl(url)).filter(Boolean);
+  $: sameAsLinks = [...officialSocialLinks.map((link) => link?.href || link), website]
+    .map((url) => publicUrl(url))
+    .filter(Boolean);
   $: mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
   $: hasCoordinates = Number.isFinite(Number(gym?.latitude)) && Number.isFinite(Number(gym?.longitude));
   $: osmEmbedHref = hasCoordinates
@@ -188,18 +147,6 @@
             category: 'Gym membership'
           }
         : undefined
-    },
-    {
-      '@context': 'https://schema.org',
-      '@type': 'FAQPage',
-      mainEntity: faqItems.map((item) => ({
-        '@type': 'Question',
-        name: item.question,
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: item.answer
-        }
-      }))
     }
   ];
   $: detailStructuredDataScript = jsonLdScript(detailStructuredData);
@@ -325,6 +272,17 @@
                 </a>
               {/if}
             </div>
+
+            {#if hasCoordinates}
+              <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white sc-detail-map-preview">
+                <iframe
+                  title={`Mappa ${fixGymText(gym?.name)}`}
+                  src={osmEmbedHref}
+                  class="h-56 w-full"
+                  loading="lazy"
+                ></iframe>
+              </div>
+            {/if}
           </div>
         </div>
       </div>
@@ -385,44 +343,42 @@
 
     <div class="grid gap-3 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
       <div class="flex min-w-0 flex-col gap-3">
-        {#if officialOverride || hasEditorialContent}
+        {#if hasOfficialData}
           <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-5">
             <div class="max-w-4xl">
               <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Dati ufficiali del club</p>
-              <h2 class="mt-2 text-2xl font-bold text-slate-900">Le informazioni pi&ugrave; importanti da vedere subito</h2>
             </div>
 
-            <div class={`mt-4 grid gap-3 ${officialCardsGridClass}`}>
-              {#if officialCards.length}
-                {#each officialCards as card}
-                  <div class={`rounded-2xl border p-4 ${card.featured ? 'border-emerald-300 bg-emerald-50/80 md:col-span-2 xl:col-span-3' : 'border-slate-200 bg-white/90'}`}>
-                    <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">{card.label}</p>
-                    {#if card.value}
-                      <p class={`mt-2 font-bold text-slate-900 ${card.featured ? 'text-2xl leading-tight sm:text-[1.9rem]' : 'text-lg'}`}>{card.value}</p>
-                    {/if}
-                    {#if card.body}
-                      <p class="mt-2 text-sm leading-7 text-slate-700">{card.body}</p>
-                    {/if}
-                  </div>
-                {/each}
+            <div class="mt-4 grid gap-2">
+              {#if officialMonthlyPrice}
+                <div class="flex flex-col gap-1 rounded-2xl border border-slate-200 bg-white/90 p-4 sm:flex-row sm:items-center sm:justify-between">
+                  <span class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Prezzo</span>
+                  <span class="text-sm font-bold text-slate-900 sm:text-right">{officialMonthlyPrice}</span>
+                </div>
               {/if}
-            </div>
-
-            <div class="mt-4 flex flex-wrap gap-3">
               {#if officialEmail}
-                <a href={`mailto:${officialEmail}`} class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50">
-                  Scrivi a {officialEmail}
-                </a>
+                <div class="flex flex-col gap-1 rounded-2xl border border-slate-200 bg-white/90 p-4 sm:flex-row sm:items-center sm:justify-between">
+                  <span class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Email</span>
+                  <a href={`mailto:${officialEmail}`} class="text-sm font-bold text-emerald-800 underline decoration-2 underline-offset-2 sm:text-right">{officialEmail}</a>
+                </div>
               {/if}
-              {#each officialSocialLinks as social}
-                <a href={social.href} target="_blank" rel="noreferrer" class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50">
-                  {social.label}
-                </a>
-              {/each}
               {#if officialSourceUrl}
-                <a href={officialSourceUrl} target="_blank" rel="noreferrer" class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
-                  Fonte ufficiale club
-                </a>
+                <div class="flex flex-col gap-1 rounded-2xl border border-slate-200 bg-white/90 p-4 sm:flex-row sm:items-center sm:justify-between">
+                  <span class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Fonte</span>
+                  <a href={officialSourceUrl} target="_blank" rel="noreferrer" class="text-sm font-bold text-emerald-800 underline decoration-2 underline-offset-2 sm:text-right">Fonte ufficiale club</a>
+                </div>
+              {/if}
+              {#if officialSocialLinks.length}
+                <div class="flex flex-col gap-2 rounded-2xl border border-slate-200 bg-white/90 p-4 sm:flex-row sm:items-center sm:justify-between">
+                  <span class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Social</span>
+                  <div class="flex flex-wrap gap-2 sm:justify-end">
+                    {#each officialSocialLinks as social}
+                      <a href={social.href} target="_blank" rel="noreferrer" class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-slate-900 transition hover:bg-slate-50">
+                        {social.label}
+                      </a>
+                    {/each}
+                  </div>
+                </div>
               {/if}
             </div>
           </section>
@@ -483,103 +439,9 @@
           </section>
         {/if}
 
-        <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sc-detail-section sm:p-5">
-          <div class="max-w-4xl">
-            <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Domande frequenti</p>
-            <h2 class="mt-2 text-2xl font-bold text-slate-900">Informazioni rapide sulla scheda</h2>
-          </div>
-
-          <div class="mt-5 grid gap-3">
-            {#each faqItems as item}
-              <details class="rounded-2xl border border-slate-200 bg-white/90 p-4 sc-detail-card sc-faq-item" open={faqItems.length <= 3}>
-                <summary class="cursor-pointer text-base font-bold text-slate-900">{item.question}</summary>
-                <p class="mt-2 text-sm leading-7 text-slate-600 sm:text-base sc-detail-copy">{item.answer}</p>
-              </details>
-            {/each}
-          </div>
-        </section>
       </div>
 
       <aside class="flex min-w-0 flex-col gap-3 lg:sticky lg:top-24">
-        <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sc-detail-actions sc-detail-section sm:p-5">
-          <div>
-            <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Contatti rapidi</p>
-            <h2 class="mt-2 text-2xl font-bold text-slate-900">Raggiungi la palestra in un attimo</h2>
-            <p class="mt-2 text-sm text-slate-600 sc-detail-copy">Mappa, telefono e sito in un unico punto.</p>
-          </div>
-
-          {#if hasCoordinates}
-            <div class="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-white sc-detail-map-preview">
-              <iframe
-                title={`Mappa ${fixGymText(gym?.name)}`}
-                src={osmEmbedHref}
-                class="h-56 w-full"
-                loading="lazy"
-              ></iframe>
-            </div>
-          {/if}
-
-          <div class="mt-4 grid gap-3">
-            <a
-              href={mapsHref}
-              target="_blank"
-              rel="noreferrer"
-              class="rounded-2xl border border-slate-200 bg-white/90 p-4 transition hover:-translate-y-0.5 hover:shadow-md sc-detail-meta sc-contact-card"
-            >
-              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Percorso</p>
-              <p class="mt-2 text-base font-bold text-slate-900 sc-detail-value">Apri in mappa</p>
-              <p class="mt-2 text-sm text-slate-600 sc-detail-copy">{address}</p>
-            </a>
-
-            <a
-              href={hasPhone ? `tel:${phone.replace(/\s+/g, '')}` : mapsHref}
-              class="rounded-2xl border border-slate-200 bg-white/90 p-4 transition hover:-translate-y-0.5 hover:shadow-md sc-detail-meta sc-contact-card"
-            >
-              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Telefono</p>
-              <p class="mt-2 text-base font-bold text-slate-900 sc-detail-value">{hasPhone ? 'Chiama ora' : 'Contatto non disponibile'}</p>
-              <p class="mt-2 text-sm text-slate-600 sc-detail-copy">{phone}</p>
-            </a>
-
-            <a
-              href={website || mapsHref}
-              target={website ? '_blank' : undefined}
-              rel={website ? 'noreferrer' : undefined}
-              class="rounded-2xl border border-slate-200 bg-white/90 p-4 transition hover:-translate-y-0.5 hover:shadow-md sc-detail-meta sc-contact-card"
-            >
-              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Online</p>
-              <p class="mt-2 text-base font-bold text-slate-900 sc-detail-value">{website ? 'Visita il sito' : 'Nessun sito indicato'}</p>
-              <p class="mt-2 text-sm text-slate-600 sc-detail-copy">{website || 'Puoi comunque aprire la posizione sulla mappa.'}</p>
-            </a>
-          </div>
-
-          <div class="mt-4 flex flex-col gap-2">
-            <a
-              href={mapsHref}
-              target="_blank"
-              rel="noreferrer"
-              class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
-            >
-              Apri in mappa
-            </a>
-            <a
-              href={hasPhone ? `tel:${phone.replace(/\s+/g, '')}` : mapsHref}
-              class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50"
-            >
-              {hasPhone ? 'Chiama la palestra' : 'Contatto non disponibile'}
-            </a>
-            {#if website}
-              <a
-                href={website}
-                target="_blank"
-                rel="noreferrer"
-                class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50"
-              >
-                Visita il sito
-              </a>
-            {/if}
-          </div>
-        </section>
-
         <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sc-detail-section sm:p-5">
           <div>
             <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Gestisci questa scheda</p>
@@ -606,33 +468,4 @@
     </div>
   </main>
 
-  <div class="sc-mobile-actionbar md:hidden" aria-label="Azioni rapide palestra">
-    <div class="grid grid-cols-3 gap-2 rounded-[1.35rem] border border-white/70 bg-white/92 p-3 shadow-2xl backdrop-blur-sm">
-      <a
-        href={mapsHref}
-        target="_blank"
-        rel="noreferrer"
-        class="inline-flex min-h-[44px] items-center justify-center rounded-xl bg-slate-900 px-3 py-2 text-sm font-bold text-white sc-button"
-        aria-label={`Apri la mappa di ${fixGymText(gym?.name)}`}
-      >
-        Mappa
-      </a>
-      <a
-        href={hasPhone ? `tel:${phone.replace(/\s+/g, '')}` : mapsHref}
-        class="inline-flex min-h-[44px] items-center justify-center rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-slate-900"
-        aria-label={hasPhone ? `Chiama ${fixGymText(gym?.name)}` : `Apri i dettagli di ${fixGymText(gym?.name)}`}
-      >
-        {hasPhone ? 'Chiama' : 'Contatto'}
-      </a>
-      <a
-        href={website || mapsHref}
-        target={website ? '_blank' : undefined}
-        rel={website ? 'noreferrer' : undefined}
-        class="inline-flex min-h-[44px] items-center justify-center rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-slate-900"
-        aria-label={website ? `Apri il sito di ${fixGymText(gym?.name)}` : `Apri la mappa di ${fixGymText(gym?.name)}`}
-      >
-        {website ? 'Sito' : 'Dettagli'}
-      </a>
-    </div>
-  </div>
 </div>
