@@ -7,9 +7,23 @@ import { canPersistWrites, readGyms, writeGyms } from '$lib/server/gym-store';
 
 const REQUIRED_FIELDS = ['nome', 'discipline', 'citta'];
 const IMPORT_BACKUP_DIR = path.join(process.cwd(), 'data', 'admin-import-backups');
+const SUPABASE_URL = process.env.SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL || '';
+const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY || '';
 
 function clean(value) {
   return String(value ?? '').trim();
+}
+
+function supabaseBaseUrl() {
+  return SUPABASE_URL.replace(/\/$/, '');
+}
+
+function supabaseHeaders(extra = {}) {
+  return {
+    apikey: SUPABASE_SERVICE_ROLE_KEY,
+    Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+    ...extra
+  };
 }
 
 function parseCsv(text) {
@@ -289,13 +303,56 @@ function normalizeMode(value) {
 }
 
 async function backupGyms(gyms) {
-  await mkdir(IMPORT_BACKUP_DIR, { recursive: true });
   const stamp = new Date().toISOString().replace(/[:.]/g, '-');
   const jsonPath = path.join(IMPORT_BACKUP_DIR, `before-import-${stamp}.json`);
   const csvPath = path.join(IMPORT_BACKUP_DIR, `before-import-${stamp}.csv`);
-  await writeFile(jsonPath, JSON.stringify(gyms, null, 2), 'utf-8');
-  await writeFile(csvPath, gymsToAdminCsv(gyms), 'utf-8');
-  return { jsonPath, csvPath };
+
+  try {
+    await mkdir(IMPORT_BACKUP_DIR, { recursive: true });
+    await writeFile(jsonPath, JSON.stringify(gyms, null, 2), 'utf-8');
+    await writeFile(csvPath, gymsToAdminCsv(gyms), 'utf-8');
+    return { type: 'local', jsonPath, csvPath, count: gyms.length };
+  } catch (err) {
+    if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) throw err;
+
+    const response = await fetch(`${supabaseBaseUrl()}/rest/v1/admin_audit_log`, {
+      method: 'POST',
+      headers: supabaseHeaders({
+        'Content-Type': 'application/json',
+        Prefer: 'return=representation'
+      }),
+      body: JSON.stringify({
+        action: 'IMPORT_BACKUP',
+        table_name: 'gyms',
+        record_id: `before-import-${stamp}`,
+        before_data: {
+          count: gyms.length,
+          gyms
+        },
+        after_data: {
+          reason: 'Backup automatico prima di import CSV admin su runtime read-only.'
+        }
+      })
+    });
+
+    if (!response.ok) {
+      let details = '';
+      try {
+        const payload = await response.json();
+        details = [payload?.message, payload?.details, payload?.hint].filter(Boolean).join(' ');
+      } catch {
+        details = await response.text().catch(() => '');
+      }
+      throw new Error(`Backup import non riuscito su Supabase audit log (${response.status}). ${details}`.trim());
+    }
+
+    const payload = await response.json();
+    return {
+      type: 'supabase-audit-log',
+      auditLogId: Array.isArray(payload) ? payload[0]?.id : payload?.id,
+      count: gyms.length
+    };
+  }
 }
 
 function parseRequest(form) {
