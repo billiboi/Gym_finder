@@ -1,5 +1,5 @@
 import { fail, redirect } from '@sveltejs/kit';
-import { canWriteSupabase, readGyms, writeGyms } from '$lib/server/gym-store';
+import { canWriteSupabase, readGyms, writeGymRecords } from '$lib/server/gym-store';
 import { adminErrorMessage, archiveGym, isArchivedGym } from '$lib/admin/gyms';
 
 function clean(value) {
@@ -136,7 +136,7 @@ export const actions = {
     };
 
     try {
-      await writeGyms(gyms);
+      await writeGymRecords(gyms[index]);
     } catch (err) {
       return fail(500, { error: adminErrorMessage(err, 'Salvataggio non riuscito.') });
     }
@@ -170,7 +170,7 @@ export const actions = {
     gyms[index] = archiveGym(gyms[index]);
 
     try {
-      await writeGyms(gyms);
+      await writeGymRecords(gyms[index]);
     } catch (err) {
       return fail(500, { error: adminErrorMessage(err, 'Archiviazione non riuscita.') });
     }
@@ -205,7 +205,7 @@ export const actions = {
     };
 
     try {
-      await writeGyms(gyms);
+      await writeGymRecords(gyms[index]);
     } catch (err) {
       return fail(500, { error: adminErrorMessage(err, 'Salvataggio non riuscito.') });
     }
@@ -243,25 +243,34 @@ export const actions = {
     const selected = new Set(ids);
 
     let touched = 0;
-    const next = gyms.map((gym) => {
+    const changedGyms = [];
+    gyms.map((gym) => {
       if (!selected.has(clean(gym.id))) return gym;
       touched += 1;
 
-      if (operation === 'archive') return archiveGym(gym);
+      if (operation === 'archive') {
+        const changed = archiveGym(gym);
+        changedGyms.push(changed);
+        return changed;
+      }
 
       if (operation === 'apply-discipline') {
         const disciplines = toDisciplines(bulkDisciplines, disciplineTextForGym(gym));
-        return {
+        const changed = {
           ...gym,
           discipline: disciplines[0],
           disciplines
         };
+        changedGyms.push(changed);
+        return changed;
       }
 
-      return {
+      const changed = {
         ...gym,
         verified: operation === 'verify'
       };
+      changedGyms.push(changed);
+      return changed;
     });
 
     if (touched === 0) {
@@ -269,7 +278,7 @@ export const actions = {
     }
 
     try {
-      await writeGyms(next);
+      await writeGymRecords(changedGyms);
     } catch (err) {
       return fail(500, {
         error:

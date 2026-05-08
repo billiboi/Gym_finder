@@ -3,7 +3,7 @@ import { randomUUID } from 'node:crypto';
 import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { gymHref } from '$lib/gym-detail';
-import { canWriteSupabase, getUploadsDir, gymStoreStatus, readGyms, writeGyms } from '$lib/server/gym-store';
+import { canWriteSupabase, getUploadsDir, gymStoreStatus, readGyms, writeGymRecords } from '$lib/server/gym-store';
 import {
   adminErrorMessage,
   adminGymView,
@@ -151,29 +151,26 @@ export const actions = {
       return fail(400, { createError: err?.message || 'Errore durante il caricamento immagine.' });
     }
 
-    const next = [
-      ...gyms,
-      {
-        id: `gym-${randomUUID()}`,
-        name,
-        discipline: disciplines[0],
-        disciplines,
-        address,
-        city,
-        phone: normalizePhone(form.get('phone')),
-        hours_info: clean(form.get('hours_info')) || 'Orari da verificare',
-        website,
-        description: clean(form.get('description')),
-        verified: clean(form.get('verified')) === '1',
-        latitude: toNullableNumber(form.get('latitude')),
-        longitude: toNullableNumber(form.get('longitude')),
-        image_url: imageUrl,
-        weekly_hours: {}
-      }
-    ];
+    const nextGym = {
+      id: `gym-${randomUUID()}`,
+      name,
+      discipline: disciplines[0],
+      disciplines,
+      address,
+      city,
+      phone: normalizePhone(form.get('phone')),
+      hours_info: clean(form.get('hours_info')) || 'Orari da verificare',
+      website,
+      description: clean(form.get('description')),
+      verified: clean(form.get('verified')) === '1',
+      latitude: toNullableNumber(form.get('latitude')),
+      longitude: toNullableNumber(form.get('longitude')),
+      image_url: imageUrl,
+      weekly_hours: {}
+    };
 
     try {
-      await writeGyms(next);
+      await writeGymRecords(nextGym);
     } catch (err) {
       return fail(500, { createError: adminErrorMessage(err, 'Creazione non riuscita.') });
     }
@@ -236,7 +233,7 @@ export const actions = {
     };
 
     try {
-      await writeGyms(gyms);
+      await writeGymRecords(gyms[idx]);
     } catch (err) {
       return fail(500, { error: adminErrorMessage(err, 'Salvataggio non riuscito.') });
     }
@@ -270,7 +267,7 @@ export const actions = {
     gyms[index] = archiveGym(gyms[index]);
 
     try {
-      await writeGyms(gyms);
+      await writeGymRecords(gyms[index]);
     } catch (err) {
       return fail(500, { error: adminErrorMessage(err, 'Archiviazione non riuscita.') });
     }
@@ -297,7 +294,7 @@ export const actions = {
     gyms[index] = restoreGym(gyms[index]);
 
     try {
-      await writeGyms(gyms);
+      await writeGymRecords(gyms[index]);
     } catch (err) {
       return fail(500, { error: adminErrorMessage(err, 'Ripristino non riuscito.') });
     }
@@ -322,7 +319,7 @@ export const actions = {
     if (!source) return fail(404, { error: 'Palestra non trovata.' });
 
     try {
-      await writeGyms([...gyms, duplicateGym(source, `gym-${randomUUID()}`)]);
+      await writeGymRecords(duplicateGym(source, `gym-${randomUUID()}`));
     } catch (err) {
       return fail(500, { error: adminErrorMessage(err, 'Duplicazione non riuscita.') });
     }

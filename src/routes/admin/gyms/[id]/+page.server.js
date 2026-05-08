@@ -1,7 +1,7 @@
 import { error, fail, redirect } from '@sveltejs/kit';
 import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { canWriteSupabase, getUploadsDir, readGyms, writeGyms } from '$lib/server/gym-store';
+import { canWriteSupabase, getUploadsDir, readGyms, writeGymRecords } from '$lib/server/gym-store';
 
 function clean(value) {
   return String(value ?? '').trim();
@@ -145,7 +145,7 @@ export const actions = {
     };
 
     try {
-      await writeGyms(gyms);
+      await writeGymRecords(gyms[idx]);
     } catch (err) {
       return fail(500, {
         error: err?.message || 'Errore durante il salvataggio.'

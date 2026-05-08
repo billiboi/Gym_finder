@@ -513,6 +513,22 @@ async function upsertGymsInSupabase(gyms) {
   }
 }
 
+export async function writeGymRecords(gyms) {
+  const normalized = (Array.isArray(gyms) ? gyms : [gyms]).filter(Boolean).map((gym, index) =>
+    normalizeGymRecord(gym, gym?.id || `gym-${index + 1}`)
+  );
+
+  if (!normalized.length) return;
+
+  if (!hasSupabaseWrite) {
+    throw new Error(
+      'Scrittura Supabase non configurata: imposta SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY nell\'ambiente corrente.'
+    );
+  }
+
+  await upsertGymsInSupabase(normalized);
+}
+
 export async function readGyms() {
   const runtimeGyms = getRuntimeGyms();
   if (runtimeGyms && runtimeGyms.length > 0) {
