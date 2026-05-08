@@ -3,7 +3,7 @@ import { randomUUID } from 'node:crypto';
 import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { gymHref } from '$lib/gym-detail';
-import { canPersistWrites, getUploadsDir, readGyms, writeGyms } from '$lib/server/gym-store';
+import { canWriteSupabase, getUploadsDir, gymStoreStatus, readGyms, writeGyms } from '$lib/server/gym-store';
 import {
   adminErrorMessage,
   adminGymView,
@@ -104,7 +104,7 @@ async function getGymsWithFallback(fetchFn) {
 
 export async function load({ url, fetch }) {
   const gyms = await getGymsWithFallback(fetch);
-  const persistentWrites = canPersistWrites();
+  const persistentWrites = canWriteSupabase();
 
   return {
     gyms: gyms
@@ -114,6 +114,7 @@ export async function load({ url, fetch }) {
       }))
       .sort((a, b) => a.name.localeCompare(b.name, 'it')),
     persistentWrites,
+    storeStatus: gymStoreStatus(),
     archived: url.searchParams.get('archived') === '1',
     restored: url.searchParams.get('restored') === '1',
     duplicated: url.searchParams.get('duplicated') === '1',
@@ -124,10 +125,10 @@ export async function load({ url, fetch }) {
 
 export const actions = {
   create: async ({ request, fetch }) => {
-    if (!canPersistWrites()) {
+    if (!canWriteSupabase()) {
       return fail(503, {
         createError:
-          'Nel deploy pubblico le modifiche non sono persistenti. Usa l\'ambiente locale oppure collega un database.'
+          'Salvataggio bloccato: questa area admin deve scrivere su Supabase, ma SUPABASE_SERVICE_ROLE_KEY non è disponibile nell\'ambiente corrente.'
       });
     }
 
@@ -181,10 +182,10 @@ export const actions = {
   },
 
   update: async ({ request, fetch }) => {
-    if (!canPersistWrites()) {
+    if (!canWriteSupabase()) {
       return fail(503, {
         error:
-          'Nel deploy pubblico le modifiche non sono persistenti. Usa l\'ambiente locale oppure collega un database.'
+          'Salvataggio bloccato: questa area admin deve scrivere su Supabase, ma SUPABASE_SERVICE_ROLE_KEY non è disponibile nell\'ambiente corrente.'
       });
     }
 
@@ -251,10 +252,10 @@ export const actions = {
     // Guardrail anti-disastro: questa action mantiene il nome storico "delete"
     // per compatibilità con i form esistenti, ma non cancella mai record gyms.
     // Ogni rimozione admin deve passare da archiveGym().
-    if (!canPersistWrites()) {
+    if (!canWriteSupabase()) {
       return fail(503, {
         error:
-          'L\'archiviazione dal deploy pubblico non è persistente. Usa l\'ambiente locale oppure collega un database.'
+          'Archiviazione bloccata: questa area admin deve scrivere su Supabase, ma SUPABASE_SERVICE_ROLE_KEY non è disponibile nell\'ambiente corrente.'
       });
     }
 
@@ -278,8 +279,11 @@ export const actions = {
   },
 
   restore: async ({ request, fetch }) => {
-    if (!canPersistWrites()) {
-      return fail(503, { error: 'Il ripristino non è persistente senza database configurato.' });
+    if (!canWriteSupabase()) {
+      return fail(503, {
+        error:
+          'Ripristino bloccato: questa area admin deve scrivere su Supabase, ma SUPABASE_SERVICE_ROLE_KEY non è disponibile nell\'ambiente corrente.'
+      });
     }
 
     const form = await request.formData();
@@ -302,8 +306,11 @@ export const actions = {
   },
 
   duplicate: async ({ request, fetch }) => {
-    if (!canPersistWrites()) {
-      return fail(503, { error: 'La duplicazione non è persistente senza database configurato.' });
+    if (!canWriteSupabase()) {
+      return fail(503, {
+        error:
+          'Duplicazione bloccata: questa area admin deve scrivere su Supabase, ma SUPABASE_SERVICE_ROLE_KEY non è disponibile nell\'ambiente corrente.'
+      });
     }
 
     const form = await request.formData();

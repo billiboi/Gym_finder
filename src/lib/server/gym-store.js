@@ -571,8 +571,9 @@ export async function writeGyms(gyms) {
   }
 
   if (isReadOnlyRuntime && !hasSupabaseWrite) {
-    setRuntimeGyms(normalized);
-    return;
+    throw new Error(
+      'Scrittura Supabase non configurata: imposta SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY nell\'ambiente corrente.'
+    );
   }
 
   if (!isReadOnlyRuntime) {
@@ -586,6 +587,20 @@ export async function writeGyms(gyms) {
 
 export function canPersistWrites() {
   return hasSupabaseWrite || !isReadOnlyRuntime;
+}
+
+export function canWriteSupabase() {
+  return hasSupabaseWrite;
+}
+
+export function gymStoreStatus() {
+  return {
+    readOnlyRuntime: isReadOnlyRuntime,
+    hasSupabaseRead,
+    hasSupabaseWrite,
+    table: SUPABASE_GYMS_TABLE,
+    persistence: hasSupabaseWrite ? 'supabase' : isReadOnlyRuntime ? 'runtime-only' : 'local-files'
+  };
 }
 
 export function getUploadsDir() {

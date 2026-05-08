@@ -1,5 +1,5 @@
 import { fail, redirect } from '@sveltejs/kit';
-import { canPersistWrites, readGyms, writeGyms } from '$lib/server/gym-store';
+import { canWriteSupabase, readGyms, writeGyms } from '$lib/server/gym-store';
 import { adminErrorMessage, archiveGym, isArchivedGym } from '$lib/admin/gyms';
 
 function clean(value) {
@@ -75,7 +75,7 @@ function parseIds(form) {
 
 export async function load({ url, fetch }) {
   const gyms = await getGymsWithFallback(fetch);
-  const persistentWrites = canPersistWrites();
+  const persistentWrites = canWriteSupabase();
 
   const mapped = gyms
     .map((gym) => ({
@@ -103,9 +103,10 @@ export async function load({ url, fetch }) {
 
 export const actions = {
   save: async ({ request, fetch }) => {
-    if (!canPersistWrites()) {
+    if (!canWriteSupabase()) {
       return fail(503, {
-        error: 'Nel deploy pubblico le modifiche non sono persistenti. Usa l\'ambiente locale oppure collega un database.'
+        error:
+          'Salvataggio bloccato: questa area admin deve scrivere su Supabase, ma SUPABASE_SERVICE_ROLE_KEY non è disponibile nell\'ambiente corrente.'
       });
     }
 
@@ -145,9 +146,10 @@ export const actions = {
   delete: async ({ request, fetch }) => {
     // Guardrail anti-disastro: l'action resta "delete" solo per compatibilità.
     // Non usare delete reale su gyms; archiviare con archiveGym().
-    if (!canPersistWrites()) {
+    if (!canWriteSupabase()) {
       return fail(503, {
-        error: 'Nel deploy pubblico le modifiche non sono persistenti. Usa l\'ambiente locale oppure collega un database.'
+        error:
+          'Archiviazione bloccata: questa area admin deve scrivere su Supabase, ma SUPABASE_SERVICE_ROLE_KEY non è disponibile nell\'ambiente corrente.'
       });
     }
 
@@ -176,9 +178,10 @@ export const actions = {
     throw redirect(303, '/admin/riclassifica?archived=1');
   },
   toggleVerified: async ({ request, fetch }) => {
-    if (!canPersistWrites()) {
+    if (!canWriteSupabase()) {
       return fail(503, {
-        error: 'Nel deploy pubblico le modifiche non sono persistenti. Usa l\'ambiente locale oppure collega un database.'
+        error:
+          'Salvataggio bloccato: questa area admin deve scrivere su Supabase, ma SUPABASE_SERVICE_ROLE_KEY non è disponibile nell\'ambiente corrente.'
       });
     }
 
@@ -212,9 +215,10 @@ export const actions = {
   bulkUpdate: async ({ request, fetch }) => {
     // Le azioni bulk richiedono selezione esplicita lato UI e conferma per archiviazione.
     // Nessuna operazione bulk esegue cancellazioni fisiche.
-    if (!canPersistWrites()) {
+    if (!canWriteSupabase()) {
       return fail(503, {
-        error: 'Nel deploy pubblico le modifiche non sono persistenti. Usa l\'ambiente locale oppure collega un database.'
+        error:
+          'Azione bulk bloccata: questa area admin deve scrivere su Supabase, ma SUPABASE_SERVICE_ROLE_KEY non è disponibile nell\'ambiente corrente.'
       });
     }
 

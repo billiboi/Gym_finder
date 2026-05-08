@@ -185,7 +185,11 @@
 
     {#if !data.persistentWrites}
       <p class="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-3 py-3 text-sm font-semibold text-amber-800">
-        Nel deploy pubblico le modifiche admin non sono persistenti. Per creare, modificare o archiviare schede in modo stabile usa l'ambiente locale o configura Supabase.
+        Modifiche admin bloccate: questo pannello deve scrivere su Supabase, ma la chiave server non è disponibile nell'ambiente corrente. Verifica SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY su Vercel.
+      </p>
+    {:else}
+      <p class="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-3 text-sm font-semibold text-emerald-900">
+        Database collegato: le modifiche admin vengono salvate sulla tabella {data.storeStatus?.table || 'gyms'} di Supabase.
       </p>
     {/if}
 

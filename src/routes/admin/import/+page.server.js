@@ -3,7 +3,7 @@ import { createHash, randomUUID } from 'node:crypto';
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { adminErrorMessage, gymsToAdminCsv } from '$lib/admin/gyms';
-import { canPersistWrites, readGyms, writeGyms } from '$lib/server/gym-store';
+import { canWriteSupabase, readGyms, writeGyms } from '$lib/server/gym-store';
 
 const REQUIRED_FIELDS = ['nome', 'discipline', 'citta'];
 const IMPORT_BACKUP_DIR = path.join(process.cwd(), 'data', 'admin-import-backups');
@@ -384,8 +384,11 @@ function parseRequest(form) {
 
 export const actions = {
   dryRun: async ({ request }) => {
-    if (!canPersistWrites()) {
-      return fail(503, { error: 'Import non disponibile: le modifiche non sono persistenti in questo ambiente.' });
+    if (!canWriteSupabase()) {
+      return fail(503, {
+        error:
+          'Import bloccato: questa area admin deve scrivere su Supabase, ma SUPABASE_SERVICE_ROLE_KEY non è disponibile nell\'ambiente corrente.'
+      });
     }
 
     const form = await request.formData();
@@ -411,8 +414,11 @@ export const actions = {
   },
 
   confirmImport: async ({ request }) => {
-    if (!canPersistWrites()) {
-      return fail(503, { error: 'Import non disponibile: le modifiche non sono persistenti in questo ambiente.' });
+    if (!canWriteSupabase()) {
+      return fail(503, {
+        error:
+          'Import bloccato: questa area admin deve scrivere su Supabase, ma SUPABASE_SERVICE_ROLE_KEY non è disponibile nell\'ambiente corrente.'
+      });
     }
 
     const form = await request.formData();

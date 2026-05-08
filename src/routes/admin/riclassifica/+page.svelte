@@ -84,7 +84,7 @@
 
     {#if !data.persistentWrites}
       <p class="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-3 py-3 text-sm font-semibold text-amber-800">
-        Nel deploy pubblico le modifiche non sono persistenti. Usa l'ambiente locale oppure collega un database.
+        Modifiche admin bloccate: questo pannello deve scrivere su Supabase. Verifica SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY nell'ambiente corrente.
       </p>
     {/if}
 

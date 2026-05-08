@@ -1,7 +1,7 @@
 import { error, fail, redirect } from '@sveltejs/kit';
 import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { getUploadsDir, readGyms, writeGyms } from '$lib/server/gym-store';
+import { canWriteSupabase, getUploadsDir, readGyms, writeGyms } from '$lib/server/gym-store';
 
 function clean(value) {
   return String(value ?? '').trim();
@@ -88,6 +88,13 @@ export async function load({ params, fetch }) {
 
 export const actions = {
   default: async ({ params, request, fetch }) => {
+    if (!canWriteSupabase()) {
+      return fail(503, {
+        error:
+          'Salvataggio bloccato: questa area admin deve scrivere su Supabase, ma SUPABASE_SERVICE_ROLE_KEY non è disponibile nell\'ambiente corrente.'
+      });
+    }
+
     const form = await request.formData();
 
     const name = clean(form.get('name'));
