@@ -1,6 +1,6 @@
-﻿import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { randomUUID } from 'node:crypto';
+import { randomBytes, randomUUID } from 'node:crypto';
 
 const dataDir = path.join(process.cwd(), 'data');
 const claimRequestsFilePath = path.join(dataDir, 'claim-requests.json');
@@ -10,6 +10,7 @@ const SUPABASE_URL = process.env.SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY || '';
 const SUPABASE_CLAIMS_TABLE = process.env.SUPABASE_CLAIMS_TABLE || 'claim_requests';
 const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
+const SITE_URL = (process.env.PUBLIC_SITE_URL || process.env.SITE_URL || 'https://www.palestreinzona.it').replace(/\/$/, '');
 const CLAIM_NOTIFICATION_TO =
   process.env.CLAIM_NOTIFICATION_TO || process.env.SITE_CONTACT_EMAIL || 'info@palestreinzona.it';
 const CLAIM_NOTIFICATION_FROM =
@@ -17,9 +18,48 @@ const CLAIM_NOTIFICATION_FROM =
 
 const hasSupabase = Boolean(SUPABASE_URL && SUPABASE_KEY);
 const hasResend = Boolean(RESEND_API_KEY && CLAIM_NOTIFICATION_TO && CLAIM_NOTIFICATION_FROM);
+const EXTENDED_WRITE_KEYS = new Set([
+  'gym_id',
+  'verification_token',
+  'verification_sent_at',
+  'email_verified_at',
+  'approved_at',
+  'rejected_at',
+  'owner_token',
+  'requested_updates',
+  'image_uploads',
+  'admin_notes',
+  'updated_at'
+]);
 
 function clean(value) {
   return String(value ?? '').trim();
+}
+
+function token() {
+  return randomBytes(24).toString('hex');
+}
+
+function nowIso() {
+  return new Date().toISOString();
+}
+
+function safeJson(value, fallback) {
+  if (Array.isArray(value) || (value && typeof value === 'object')) return value;
+  if (!clean(value)) return fallback;
+  try {
+    const parsed = JSON.parse(value);
+    return parsed ?? fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function normalizeStatus(value) {
+  const status = clean(value).toLowerCase();
+  if (status === 'new' || status === 'reviewed') return 'pending';
+  if (status === 'resolved') return 'approved';
+  return ['pending', 'approved', 'rejected'].includes(status) ? status : 'pending';
 }
 
 function supabaseHeaders(extra = {}) {
@@ -34,6 +74,16 @@ function supabaseBaseUrl() {
   return SUPABASE_URL.replace(/\/$/, '');
 }
 
+function supabaseErrorMessage(response, details, action) {
+  if (response.status === 404 || response.status === 400) {
+    return `${action}: verifica che la tabella "${SUPABASE_CLAIMS_TABLE}" abbia le colonne della migration claim system. ${details}`.trim();
+  }
+  if (response.status === 401 || response.status === 403) {
+    return `${action}: richiesta non autorizzata su Supabase. Verifica SUPABASE_SERVICE_ROLE_KEY e RLS. ${details}`.trim();
+  }
+  return `${action} (${response.status}). ${details}`.trim();
+}
+
 async function ensureStorage() {
   await mkdir(dataDir, { recursive: true });
 
@@ -44,58 +94,78 @@ async function ensureStorage() {
   }
 }
 
-function normalizeClaimRequest(input) {
+export function normalizeClaimRequest(input) {
+  const createdAt = clean(input?.created_at) || nowIso();
   return {
     id: clean(input?.id) || `claim-${randomUUID()}`,
+    gym_id: clean(input?.gym_id),
     gym_name: clean(input?.gym_name),
     gym_url: clean(input?.gym_url),
-    reason: clean(input?.reason) || 'Aggiornamento dati',
+    reason: clean(input?.reason) || 'Rivendicazione scheda',
     requester_name: clean(input?.requester_name),
     requester_role: clean(input?.requester_role),
-    requester_email: clean(input?.requester_email),
+    requester_email: clean(input?.requester_email).toLowerCase(),
     requester_phone: clean(input?.requester_phone),
     message: clean(input?.message),
-    status: clean(input?.status) || 'new',
-    created_at: clean(input?.created_at) || new Date().toISOString()
+    status: normalizeStatus(input?.status),
+    verification_token: clean(input?.verification_token),
+    verification_sent_at: clean(input?.verification_sent_at),
+    email_verified_at: clean(input?.email_verified_at),
+    approved_at: clean(input?.approved_at),
+    rejected_at: clean(input?.rejected_at),
+    owner_token: clean(input?.owner_token),
+    requested_updates: safeJson(input?.requested_updates, {}),
+    image_uploads: safeJson(input?.image_uploads, []),
+    admin_notes: clean(input?.admin_notes),
+    created_at: createdAt,
+    updated_at: clean(input?.updated_at) || createdAt
   };
 }
 
+function claimToSupabaseRecord(input, { legacy = false } = {}) {
+  const request = normalizeClaimRequest(input);
+  const record = { ...request };
+
+  if (legacy) {
+    for (const key of EXTENDED_WRITE_KEYS) delete record[key];
+  }
+
+  return record;
+}
+
+async function responseDetails(response) {
+  try {
+    const payload = await response.json();
+    return [payload?.message, payload?.details, payload?.hint].filter(Boolean).join(' ');
+  } catch {
+    return await response.text().catch(() => '');
+  }
+}
+
 async function writeClaimRequestToSupabase(request) {
-  const response = await fetch(`${supabaseBaseUrl()}/rest/v1/${SUPABASE_CLAIMS_TABLE}`, {
-    method: 'POST',
-    headers: supabaseHeaders({
-      'Content-Type': 'application/json',
-      Prefer: 'return=representation'
-    }),
-    body: JSON.stringify([request])
-  });
+  async function post(record) {
+    return fetch(`${supabaseBaseUrl()}/rest/v1/${SUPABASE_CLAIMS_TABLE}`, {
+      method: 'POST',
+      headers: supabaseHeaders({
+        'Content-Type': 'application/json',
+        Prefer: 'return=representation'
+      }),
+      body: JSON.stringify([record])
+    });
+  }
+
+  let response = await post(claimToSupabaseRecord(request));
+  if (!response.ok && response.status === 400) {
+    response = await post(claimToSupabaseRecord(request, { legacy: true }));
+  }
 
   if (!response.ok) {
-    let details = '';
-    try {
-      const payload = await response.json();
-      details = String(payload?.message || payload?.hint || '').trim();
-    } catch {
-      details = '';
-    }
-
-    if (response.status === 404 || response.status === 400) {
-      throw new Error(
-        `Claim flow non configurato su Supabase: crea la tabella "${SUPABASE_CLAIMS_TABLE}" oppure configura SUPABASE_CLAIMS_TABLE correttamente. ${details}`.trim()
-      );
-    }
-
-    if (response.status === 401 || response.status === 403) {
-      throw new Error(
-        `Claim flow non autorizzato su Supabase: configura SUPABASE_SERVICE_ROLE_KEY lato server e verifica che la tabella "${SUPABASE_CLAIMS_TABLE}" non sia esposta pubblicamente. ${details}`.trim()
-      );
-    }
-
-    throw new Error(`Salvataggio richiesta fallito (${response.status}). ${details}`.trim());
+    const details = await responseDetails(response);
+    throw new Error(supabaseErrorMessage(response, details, 'Salvataggio claim non riuscito'));
   }
 
   const rows = await response.json();
-  return Array.isArray(rows) && rows.length ? normalizeClaimRequest(rows[0]) : request;
+  return Array.isArray(rows) && rows.length ? normalizeClaimRequest({ ...request, ...rows[0] }) : request;
 }
 
 async function writeClaimRequestToFile(request) {
@@ -108,35 +178,28 @@ async function writeClaimRequestToFile(request) {
   return request;
 }
 
-async function updateClaimRequestInSupabase(id, patch) {
-  const response = await fetch(
-    `${supabaseBaseUrl()}/rest/v1/${SUPABASE_CLAIMS_TABLE}?id=eq.${encodeURIComponent(id)}`,
-    {
+async function patchClaimRequestInSupabase(id, patch) {
+  async function patchRecord(record) {
+    return fetch(`${supabaseBaseUrl()}/rest/v1/${SUPABASE_CLAIMS_TABLE}?id=eq.${encodeURIComponent(id)}`, {
       method: 'PATCH',
       headers: supabaseHeaders({
         'Content-Type': 'application/json',
         Prefer: 'return=representation'
       }),
-      body: JSON.stringify(patch)
-    }
-  );
+      body: JSON.stringify(record)
+    });
+  }
+
+  let response = await patchRecord(patch);
+  if (!response.ok && response.status === 400) {
+    const legacyPatch = { ...patch };
+    for (const key of EXTENDED_WRITE_KEYS) delete legacyPatch[key];
+    response = await patchRecord(legacyPatch);
+  }
 
   if (!response.ok) {
-    let details = '';
-    try {
-      const payload = await response.json();
-      details = String(payload?.message || payload?.hint || '').trim();
-    } catch {
-      details = '';
-    }
-
-    if (response.status === 401 || response.status === 403) {
-      throw new Error(
-        `Aggiornamento richiesta non autorizzato su Supabase: verifica SUPABASE_SERVICE_ROLE_KEY e le policy RLS di "${SUPABASE_CLAIMS_TABLE}". ${details}`.trim()
-      );
-    }
-
-    throw new Error(`Aggiornamento richiesta fallito (${response.status}). ${details}`.trim());
+    const details = await responseDetails(response);
+    throw new Error(supabaseErrorMessage(response, details, 'Aggiornamento claim non riuscito'));
   }
 
   const rows = await response.json();
@@ -150,27 +213,43 @@ async function updateClaimRequestInFile(id, patch) {
   const next = Array.isArray(current) ? current : [];
   const index = next.findIndex((item) => String(item?.id) === id);
 
-  if (index < 0) {
-    throw new Error('Richiesta non trovata.');
-  }
+  if (index < 0) throw new Error('Richiesta non trovata.');
 
   next[index] = normalizeClaimRequest({
     ...next[index],
-    ...patch
+    ...patch,
+    updated_at: nowIso()
   });
 
   await writeFile(claimRequestsFilePath, JSON.stringify(next, null, 2), 'utf-8');
   return next[index];
 }
 
-async function sendClaimNotification(request) {
-  if (!hasResend) return;
+async function sendEmail({ to, subject, text }) {
+  if (!hasResend || !to) return;
 
-  const subject = `Nuova richiesta palestra: ${request.gym_name || 'Scheda senza nome'}`;
+  await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${RESEND_API_KEY}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      from: CLAIM_NOTIFICATION_FROM,
+      to: [to],
+      subject,
+      text
+    })
+  });
+}
+
+async function sendClaimNotification(request) {
+  const subject = `Nuova richiesta claim: ${request.gym_name || 'Scheda senza nome'}`;
   const text = [
     'Nuova richiesta ricevuta da Palestre in Zona',
     '',
     `ID: ${request.id}`,
+    `Stato: ${request.status}`,
     `Palestra: ${request.gym_name}`,
     `Link scheda: ${request.gym_url || '-'}`,
     `Motivo: ${request.reason}`,
@@ -183,18 +262,52 @@ async function sendClaimNotification(request) {
     request.message || '-'
   ].join('\n');
 
-  await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${RESEND_API_KEY}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      from: CLAIM_NOTIFICATION_FROM,
-      to: [CLAIM_NOTIFICATION_TO],
-      subject,
-      text
-    })
+  await sendEmail({ to: CLAIM_NOTIFICATION_TO, subject, text });
+}
+
+async function sendVerificationEmail(request) {
+  if (!request.requester_email || !request.verification_token) return;
+  const verifyUrl = `${SITE_URL}/rivendica-scheda/verifica/${request.verification_token}`;
+  const text = [
+    `Ciao ${request.requester_name || ''},`,
+    '',
+    'abbiamo ricevuto la richiesta per gestire una scheda su Palestre in Zona.',
+    'Per continuare, verifica la tua email aprendo questo link:',
+    verifyUrl,
+    '',
+    'Dopo la verifica, la richiesta passa in approval manuale. Nessuna modifica viene pubblicata automaticamente.',
+    '',
+    `Palestra: ${request.gym_name || '-'}`,
+    `ID richiesta: ${request.id}`
+  ].join('\n');
+
+  await sendEmail({
+    to: request.requester_email,
+    subject: `Verifica email per ${request.gym_name || 'la tua richiesta'}`,
+    text
+  });
+}
+
+async function sendOwnerDashboardEmail(request) {
+  if (!request.requester_email || !request.owner_token) return;
+  const dashboardUrl = `${SITE_URL}/dashboard-proprietario/${request.owner_token}`;
+  const text = [
+    `Ciao ${request.requester_name || ''},`,
+    '',
+    'la richiesta è stata approvata.',
+    'Puoi proporre aggiornamenti da questa dashboard:',
+    dashboardUrl,
+    '',
+    'Le modifiche restano in revisione: non vengono pubblicate senza controllo admin.',
+    '',
+    `Palestra: ${request.gym_name || '-'}`,
+    `ID richiesta: ${request.id}`
+  ].join('\n');
+
+  await sendEmail({
+    to: request.requester_email,
+    subject: `Dashboard proprietario approvata per ${request.gym_name || 'la scheda'}`,
+    text
   });
 }
 
@@ -212,21 +325,8 @@ async function readClaimRequestsFromSupabase() {
   );
 
   if (!response.ok) {
-    let details = '';
-    try {
-      const payload = await response.json();
-      details = String(payload?.message || payload?.hint || '').trim();
-    } catch {
-      details = '';
-    }
-
-    if (response.status === 401 || response.status === 403) {
-      throw new Error(
-        `Lettura richieste non autorizzata su Supabase: verifica SUPABASE_SERVICE_ROLE_KEY e le policy RLS di "${SUPABASE_CLAIMS_TABLE}". ${details}`.trim()
-      );
-    }
-
-    throw new Error(`Lettura richieste fallita (${response.status}). ${details}`.trim());
+    const details = await responseDetails(response);
+    throw new Error(supabaseErrorMessage(response, details, 'Lettura claim non riuscita'));
   }
 
   const rows = await response.json();
@@ -249,36 +349,91 @@ async function readClaimRequestsFromFile() {
 }
 
 export async function readClaimRequests() {
-  if (hasSupabase) {
-    return readClaimRequestsFromSupabase();
-  }
-
-  if (isReadOnlyRuntime) {
-    return [];
-  }
-
+  if (hasSupabase) return readClaimRequestsFromSupabase();
+  if (isReadOnlyRuntime) return [];
   return readClaimRequestsFromFile();
 }
 
-export async function updateClaimRequestStatus(id, status) {
-  const normalizedStatus = clean(status).toLowerCase();
-  if (!['new', 'reviewed', 'resolved'].includes(normalizedStatus)) {
+export async function findClaimRequestByOwnerToken(ownerToken) {
+  const cleanToken = clean(ownerToken);
+  if (!cleanToken) return null;
+  const requests = await readClaimRequests();
+  return requests.find((request) => request.owner_token === cleanToken) || null;
+}
+
+export async function verifyClaimEmail(verificationToken) {
+  const cleanToken = clean(verificationToken);
+  if (!cleanToken) throw new Error('Token verifica mancante.');
+  const requests = await readClaimRequests();
+  const current = requests.find((request) => request.verification_token === cleanToken);
+  if (!current) throw new Error('Token verifica non valido o scaduto.');
+
+  if (current.email_verified_at) return current;
+
+  const patch = {
+    email_verified_at: nowIso(),
+    updated_at: nowIso()
+  };
+
+  if (hasSupabase) return patchClaimRequestInSupabase(current.id, patch);
+  if (isReadOnlyRuntime) throw new Error('Verifica non disponibile in questo ambiente.');
+  return updateClaimRequestInFile(current.id, patch);
+}
+
+export async function updateClaimRequestStatus(id, status, adminNotes = '') {
+  const normalizedStatus = normalizeStatus(status);
+  if (!['pending', 'approved', 'rejected'].includes(normalizedStatus)) {
     throw new Error('Stato richiesta non valido.');
   }
 
-  if (hasSupabase) {
-    return updateClaimRequestInSupabase(id, { status: normalizedStatus });
+  const requests = await readClaimRequests();
+  const current = requests.find((request) => request.id === clean(id));
+  if (!current) throw new Error('Richiesta non trovata.');
+
+  const patch = {
+    status: normalizedStatus,
+    admin_notes: clean(adminNotes) || current.admin_notes,
+    updated_at: nowIso()
+  };
+
+  if (normalizedStatus === 'approved') {
+    patch.approved_at = current.approved_at || nowIso();
+    patch.rejected_at = null;
+    patch.owner_token = current.owner_token || token();
   }
 
-  if (isReadOnlyRuntime) {
-    throw new Error('Impossibile aggiornare lo stato in questo ambiente.');
+  if (normalizedStatus === 'rejected') {
+    patch.rejected_at = current.rejected_at || nowIso();
   }
 
-  return updateClaimRequestInFile(id, { status: normalizedStatus });
+  const updated = hasSupabase
+    ? await patchClaimRequestInSupabase(current.id, patch)
+    : isReadOnlyRuntime
+      ? (() => {
+          throw new Error('Impossibile aggiornare lo stato in questo ambiente.');
+        })()
+      : await updateClaimRequestInFile(current.id, patch);
+
+  if (updated?.status === 'approved') {
+    try {
+      await sendOwnerDashboardEmail(updated);
+    } catch {
+      // Email failure must not rollback approval.
+    }
+  }
+
+  return updated;
 }
 
 export async function createClaimRequest(input) {
-  const request = normalizeClaimRequest(input);
+  const request = normalizeClaimRequest({
+    ...input,
+    status: 'pending',
+    verification_token: token(),
+    verification_sent_at: nowIso(),
+    created_at: nowIso(),
+    updated_at: nowIso()
+  });
   let saved;
 
   if (hasSupabase) {
@@ -286,15 +441,15 @@ export async function createClaimRequest(input) {
   } else {
     if (isReadOnlyRuntime) {
       throw new Error(
-        'Il flusso richieste non può salvare dati in questo ambiente. Configura Supabase oppure usa un ambiente con scrittura persistente.'
+        'Il flusso claim non può salvare dati in questo ambiente. Configura Supabase oppure usa un ambiente con scrittura persistente.'
       );
     }
-
     saved = await writeClaimRequestToFile(request);
   }
 
   try {
     await sendClaimNotification(saved);
+    await sendVerificationEmail(saved);
   } catch {
     // Notification failure must not block the request itself.
   }
@@ -302,3 +457,23 @@ export async function createClaimRequest(input) {
   return saved;
 }
 
+export async function submitOwnerClaimUpdate(ownerToken, updates) {
+  const claim = await findClaimRequestByOwnerToken(ownerToken);
+  if (!claim) throw new Error('Dashboard proprietario non trovata.');
+  if (claim.status !== 'approved') throw new Error('La richiesta non è ancora approvata.');
+  if (!claim.email_verified_at) throw new Error('Email non ancora verificata.');
+
+  const patch = {
+    requested_updates: {
+      ...(claim.requested_updates && typeof claim.requested_updates === 'object' ? claim.requested_updates : {}),
+      ...updates,
+      submitted_at: nowIso()
+    },
+    image_uploads: Array.isArray(updates.image_uploads) ? updates.image_uploads : claim.image_uploads,
+    updated_at: nowIso()
+  };
+
+  if (hasSupabase) return patchClaimRequestInSupabase(claim.id, patch);
+  if (isReadOnlyRuntime) throw new Error('Dashboard non persistente in questo ambiente.');
+  return updateClaimRequestInFile(claim.id, patch);
+}

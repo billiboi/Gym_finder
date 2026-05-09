@@ -24,6 +24,8 @@ export async function load({ url }) {
       url: clean(url.searchParams.get('url')),
       reason: normalizeReason(url.searchParams.get('reason'))
     },
+    verified: url.searchParams.get('verified') === '1',
+    verifyError: clean(url.searchParams.get('verify_error')),
     persistentClaimFlow: canPersistClaimRequests()
   };
 }
@@ -33,6 +35,7 @@ export const actions = {
     const form = await request.formData();
 
     const payload = {
+      gym_id: clean(form.get('gym_id')),
       gym_name: clean(form.get('gym_name')),
       gym_url: clean(form.get('gym_url')),
       reason: normalizeReason(form.get('reason')),
@@ -56,6 +59,7 @@ export const actions = {
       return {
         success: true,
         requestId: saved.id,
+        emailVerificationRequired: true,
         values: payload
       };
     } catch (error) {

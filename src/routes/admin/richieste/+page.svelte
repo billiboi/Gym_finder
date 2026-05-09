@@ -16,24 +16,24 @@
 
   function badgeClass(status) {
     const normalized = String(status || '').toLowerCase();
-    if (normalized === 'new') return 'bg-amber-100 text-amber-800';
-    if (normalized === 'reviewed') return 'bg-blue-100 text-blue-800';
-    if (normalized === 'resolved') return 'bg-emerald-100 text-emerald-800';
+    if (normalized === 'pending') return 'bg-amber-100 text-amber-800';
+    if (normalized === 'approved') return 'bg-emerald-100 text-emerald-800';
+    if (normalized === 'rejected') return 'bg-red-100 text-red-800';
     return 'bg-slate-100 text-slate-700';
   }
 
   $: query = q.trim().toLowerCase();
   $: requestStats = {
-    new: data.requests.filter((request) => (request.status || 'new') === 'new').length,
-    reviewed: data.requests.filter((request) => request.status === 'reviewed').length,
-    resolved: data.requests.filter((request) => request.status === 'resolved').length,
-    open: data.requests.filter((request) => (request.status || 'new') !== 'resolved').length
+    pending: data.requests.filter((request) => (request.status || 'pending') === 'pending').length,
+    approved: data.requests.filter((request) => request.status === 'approved').length,
+    rejected: data.requests.filter((request) => request.status === 'rejected').length,
+    open: data.requests.filter((request) => (request.status || 'pending') === 'pending').length
   };
   $: filtered = data.requests.filter((request) => {
     const normalizedStatus = request.status || 'new';
     const matchesStatus =
       statusFilter === 'all' ||
-      (statusFilter === 'open' && normalizedStatus !== 'resolved') ||
+      (statusFilter === 'open' && normalizedStatus === 'pending') ||
       normalizedStatus === statusFilter;
 
     if (!matchesStatus) return false;
@@ -80,9 +80,9 @@
         aria-label="Filtro stato richiesta"
       >
         <option value="open">Aperte</option>
-        <option value="new">Nuove</option>
-        <option value="reviewed">In revisione</option>
-        <option value="resolved">Risolte</option>
+        <option value="pending">Pending</option>
+        <option value="approved">Approved</option>
+        <option value="rejected">Rejected</option>
         <option value="all">Tutte</option>
       </select>
       <div class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700">
@@ -96,16 +96,16 @@
         <span class="font-semibold">aperte</span>
       </button>
       <button type="button" class={`rounded-2xl border px-3 py-3 text-left text-sm transition ${statusFilter === 'new' ? 'border-amber-300 bg-amber-50 text-amber-900' : 'border-slate-200 bg-white/85 text-slate-700 hover:bg-slate-50'}`} on:click={() => (statusFilter = 'new')}>
-        <span class="block text-xl font-bold">{requestStats.new}</span>
-        <span class="font-semibold">nuove</span>
+        <span class="block text-xl font-bold">{requestStats.pending}</span>
+        <span class="font-semibold">pending</span>
       </button>
-      <button type="button" class={`rounded-2xl border px-3 py-3 text-left text-sm transition ${statusFilter === 'reviewed' ? 'border-blue-300 bg-blue-50 text-blue-900' : 'border-slate-200 bg-white/85 text-slate-700 hover:bg-slate-50'}`} on:click={() => (statusFilter = 'reviewed')}>
-        <span class="block text-xl font-bold">{requestStats.reviewed}</span>
-        <span class="font-semibold">in revisione</span>
+      <button type="button" class={`rounded-2xl border px-3 py-3 text-left text-sm transition ${statusFilter === 'approved' ? 'border-emerald-300 bg-emerald-50 text-emerald-900' : 'border-slate-200 bg-white/85 text-slate-700 hover:bg-slate-50'}`} on:click={() => (statusFilter = 'approved')}>
+        <span class="block text-xl font-bold">{requestStats.approved}</span>
+        <span class="font-semibold">approved</span>
       </button>
-      <button type="button" class={`rounded-2xl border px-3 py-3 text-left text-sm transition ${statusFilter === 'resolved' ? 'border-emerald-300 bg-emerald-50 text-emerald-900' : 'border-slate-200 bg-white/85 text-slate-700 hover:bg-slate-50'}`} on:click={() => (statusFilter = 'resolved')}>
-        <span class="block text-xl font-bold">{requestStats.resolved}</span>
-        <span class="font-semibold">risolte</span>
+      <button type="button" class={`rounded-2xl border px-3 py-3 text-left text-sm transition ${statusFilter === 'rejected' ? 'border-red-300 bg-red-50 text-red-900' : 'border-slate-200 bg-white/85 text-slate-700 hover:bg-slate-50'}`} on:click={() => (statusFilter = 'rejected')}>
+        <span class="block text-xl font-bold">{requestStats.rejected}</span>
+        <span class="font-semibold">rejected</span>
       </button>
     </div>
 
@@ -129,7 +129,7 @@
               <div class="flex flex-wrap items-center gap-2">
                 <h2 class="text-lg font-bold text-slate-900">{request.gym_name || 'Richiesta senza palestra'}</h2>
                 <span class={`inline-flex rounded-full px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] ${badgeClass(request.status)}`}>
-                  {request.status || 'new'}
+                {request.status || 'pending'}
                 </span>
               </div>
               <p class="mt-1 text-sm text-slate-600">{request.reason}</p>
@@ -137,10 +137,11 @@
             <form method="POST" action="?/updateStatus" class="flex flex-wrap items-center gap-2">
               <input type="hidden" name="id" value={request.id} />
               <select name="status" class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2">
-                <option value="new" selected={request.status === 'new'}>new</option>
-                <option value="reviewed" selected={request.status === 'reviewed'}>reviewed</option>
-                <option value="resolved" selected={request.status === 'resolved'}>resolved</option>
+                <option value="pending" selected={request.status === 'pending'}>pending</option>
+                <option value="approved" selected={request.status === 'approved'}>approved</option>
+                <option value="rejected" selected={request.status === 'rejected'}>rejected</option>
               </select>
+              <input name="admin_notes" placeholder="Note admin" class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2" />
               <button type="submit" class="rounded-xl bg-slate-900 px-3 py-2 text-sm font-semibold text-white hover:bg-slate-800">
                 Salva stato
               </button>
@@ -170,6 +171,7 @@
             </div>
             <div class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm text-slate-700">
               <p><strong>ID richiesta:</strong> {request.id}</p>
+              <p class="mt-1"><strong>Email verificata:</strong> {request.email_verified_at ? 'sì' : 'no'}</p>
               <p class="mt-1"><strong>Creata il:</strong> {formatDate(request.created_at)}</p>
               <p class="mt-1 break-all">
                 <strong>Link scheda:</strong>
@@ -186,6 +188,22 @@
             <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Messaggio</p>
             <p class="mt-2 whitespace-pre-wrap text-sm leading-7 text-slate-700">{request.message || '-'}</p>
           </div>
+
+          {#if request.status === 'approved' && request.owner_token}
+            <div class="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-3 text-sm text-emerald-900">
+              <p class="font-bold">Dashboard proprietario</p>
+              <a class="mt-1 inline-flex font-semibold underline-offset-2 hover:underline" href={`/dashboard-proprietario/${request.owner_token}`} target="_blank" rel="noreferrer">
+                Apri dashboard approvata
+              </a>
+            </div>
+          {/if}
+
+          {#if request.requested_updates && Object.keys(request.requested_updates).length}
+            <div class="mt-4 rounded-xl border border-blue-200 bg-blue-50 px-3 py-3">
+              <p class="text-xs font-bold uppercase tracking-[0.18em] text-blue-800">Aggiornamenti proposti</p>
+              <pre class="mt-2 overflow-auto whitespace-pre-wrap text-xs leading-6 text-blue-950">{JSON.stringify(request.requested_updates, null, 2)}</pre>
+            </div>
+          {/if}
         </article>
       {/each}
     {/if}

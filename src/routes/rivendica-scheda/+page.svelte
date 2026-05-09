@@ -39,7 +39,7 @@
       messageLabel: 'Spiega il tuo ruolo',
       messagePlaceholder:
         'Esempio: sono il titolare o faccio parte dello staff e posso confermare le informazioni ufficiali della struttura.',
-      submitLabel: 'Invia richiesta di rivendicazione'
+      submitLabel: 'Richiedi accesso proprietario'
     },
     {
       value: 'Collaborazione commerciale',
@@ -137,10 +137,23 @@
     {#if form?.success}
       <section class="mt-5 rounded-3xl border border-emerald-200 bg-emerald-50/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
         <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Richiesta inviata</p>
-        <h2 class="mt-2 text-2xl font-bold text-slate-900">Perfetto, abbiamo registrato la richiesta</h2>
+        <h2 class="mt-2 text-2xl font-bold text-slate-900">Richiesta registrata: verifica la tua email</h2>
         <p class="mt-3 text-sm leading-7 text-slate-700 sm:text-base">
-          ID richiesta: <strong>{form.requestId}</strong>. Tieni questo riferimento se vorrai riscriverci sulla stessa segnalazione.
+          ID richiesta: <strong>{form.requestId}</strong>. Ti inviamo un link di verifica email. Dopo la verifica, la richiesta passa in approval manuale e nessuna modifica viene pubblicata automaticamente.
         </p>
+      </section>
+    {:else if data.verified}
+      <section class="mt-5 rounded-3xl border border-emerald-200 bg-emerald-50/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+        <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Email verificata</p>
+        <h2 class="mt-2 text-2xl font-bold text-slate-900">La richiesta può passare in approval</h2>
+        <p class="mt-3 text-sm leading-7 text-slate-700 sm:text-base">
+          Ora un admin può controllare la richiesta e approvare l’accesso alla dashboard proprietario.
+        </p>
+      </section>
+    {:else if data.verifyError}
+      <section class="mt-5 rounded-3xl border border-red-200 bg-red-50/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+        <p class="text-xs font-bold uppercase tracking-[0.24em] text-red-700">Verifica non riuscita</p>
+        <p class="mt-3 text-sm leading-7 text-slate-700 sm:text-base">{data.verifyError}</p>
       </section>
     {:else if form?.error}
       <section class="mt-5 rounded-3xl border border-red-200 bg-red-50/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
@@ -163,7 +176,7 @@
           <div class="flex flex-wrap items-start justify-between gap-3">
             <div>
               <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Obiettivo selezionato</p>
-              <p class="mt-2 text-lg font-bold text-slate-900">{selectedFlow.title}</p>
+          <p class="mt-2 text-lg font-bold text-slate-900">{selectedFlow.title}</p>
             </div>
             <div class="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-emerald-800">
               {selectedFlow.tag}
@@ -192,6 +205,7 @@
       </div>
 
       <form method="POST" action="?/submit" class="mt-5 grid gap-4">
+        <input type="hidden" name="gym_id" value="" />
         <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
           {#each reasonOptions as option}
             <label class={`rounded-2xl border p-4 transition ${currentValues.reason === option.value ? 'border-emerald-500 bg-emerald-50/90 shadow-sm' : 'border-slate-200 bg-white/90 hover:border-slate-300'}`}>
@@ -256,7 +270,7 @@
             <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Cosa succede dopo</p>
             <p class="mt-2 text-sm leading-7 text-slate-700">
               {#if data.persistentClaimFlow}
-                La richiesta viene salvata dal sito e possiamo ripartire da un riferimento chiaro invece di perderci tra messaggi vaghi.
+                La richiesta viene salvata come pending. Prima serve verifica email, poi approval admin. Solo dopo avrai accesso alla dashboard proprietario.
               {:else}
                 Se il salvataggio diretto non è disponibile, puoi comunque usare l’email precompilata senza perdere i dettagli già inseriti.
               {/if}
