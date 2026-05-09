@@ -283,6 +283,10 @@ body {
   min-width: 0;
 }
 
+.sc-hero-actions > a {
+  flex: 0 0 auto;
+}
+
 .sc-hero-search {
   border: 1px solid rgba(31, 92, 74, 0.1);
   background:
@@ -322,6 +326,14 @@ body {
 
   .sc-hero-search .sc-button,
   .sc-hero-search .sc-button-ghost {
+    width: 100%;
+  }
+
+  .sc-hero-actions {
+    flex-direction: column;
+  }
+
+  .sc-hero-actions > a {
     width: 100%;
   }
 

@@ -646,7 +646,7 @@
             <span aria-hidden="true">&bull;</span>
             <span>dati aggiornati</span>
           </p>
-          <div class="mt-5 flex flex-wrap gap-3">
+          <div class="mt-5 flex flex-wrap gap-3 sc-hero-actions">
             <a
               href="#home-search"
               class="inline-flex min-h-[3rem] items-center justify-center rounded-2xl px-5 text-sm font-bold text-white transition sc-button"
@@ -656,7 +656,7 @@
             </a>
             <a
               href="/per-le-palestre"
-              class="inline-flex min-h-[3rem] items-center justify-center rounded-2xl border border-slate-200 bg-white px-5 text-sm font-bold text-slate-900 transition hover:bg-slate-50"
+              class="inline-flex min-h-[3rem] items-center justify-center rounded-2xl border border-slate-200 bg-white px-5 text-sm font-bold text-slate-900 transition hover:bg-slate-50 sc-hero-secondary-cta"
             >
               Per proprietari
             </a>
