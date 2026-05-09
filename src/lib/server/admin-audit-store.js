@@ -63,3 +63,37 @@ export async function readAdminAuditLog({ limit = 30 } = {}) {
     error: ''
   };
 }
+
+export async function writeAdminAuditLog({ actor = 'admin', action, tableName = 'gyms', recordId, beforeData, afterData }) {
+  if (!SUPABASE_URL || !SUPABASE_KEY) {
+    throw new Error('Audit log non disponibile: variabili Supabase server-side mancanti.');
+  }
+
+  const response = await fetch(`${supabaseBaseUrl()}/rest/v1/admin_audit_log`, {
+    method: 'POST',
+    headers: supabaseHeaders({
+      'Content-Type': 'application/json',
+      Prefer: 'return=minimal'
+    }),
+    body: JSON.stringify({
+      actor,
+      action,
+      table_name: tableName,
+      record_id: String(recordId || ''),
+      before_data: beforeData || null,
+      after_data: afterData || null
+    })
+  });
+
+  if (!response.ok) {
+    let details = '';
+    try {
+      const payload = await response.json();
+      details = [payload?.message, payload?.details, payload?.hint].filter(Boolean).join(' ');
+    } catch {
+      details = await response.text().catch(() => '');
+    }
+
+    throw new Error(`Scrittura audit log non riuscita (${response.status}). ${details}`.trim());
+  }
+}

@@ -2,7 +2,7 @@ import { fail } from '@sveltejs/kit';
 import { createHash, randomUUID } from 'node:crypto';
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { adminErrorMessage, gymsToAdminCsv } from '$lib/admin/gyms';
+import { adminErrorMessage, gymsToAdminCsv, hasGenericDiscipline, hoursNeedReview } from '$lib/admin/gyms';
 import { canWriteSupabase, readGyms, writeGyms } from '$lib/server/gym-store';
 
 const REQUIRED_FIELDS = ['nome', 'discipline', 'citta'];
@@ -122,6 +122,24 @@ function isValidUrl(value) {
   }
 }
 
+function hasCoordinates(gym) {
+  return Number.isFinite(Number(gym?.latitude)) && Number.isFinite(Number(gym?.longitude));
+}
+
+function qualityWarnings(gym, line) {
+  const warnings = [];
+  const name = gym.name || 'Scheda senza nome';
+
+  if (!clean(gym.phone)) warnings.push({ line, name, message: 'Telefono mancante.' });
+  if (!clean(gym.website)) warnings.push({ line, name, message: 'Sito ufficiale mancante.' });
+  if (hoursNeedReview(gym)) warnings.push({ line, name, message: 'Orari assenti o da verificare.' });
+  if (!hasCoordinates(gym)) warnings.push({ line, name, message: 'Coordinate mancanti.' });
+  if (!clean(gym.description)) warnings.push({ line, name, message: 'Descrizione mancante.' });
+  if (hasGenericDiscipline(gym)) warnings.push({ line, name, message: 'Disciplina generica: controlla classificazione.' });
+
+  return warnings;
+}
+
 function rowToImportGymFixed(row, headers, mapping) {
   const disciplines = toDisciplines(rowCell(row, headers, mapping, 'discipline') || rowCell(row, headers, mapping, 'disciplines'));
   const weeklyHours = {};
@@ -159,6 +177,7 @@ function rowToImportGymFixed(row, headers, mapping) {
 function validateMappedRows(headers, rows, mapping) {
   const missingMapping = REQUIRED_FIELDS.filter((field) => !clean(mapping[field]));
   const errors = [];
+  const warnings = [];
   const imported = [];
   const seen = new Map();
 
@@ -188,10 +207,11 @@ function validateMappedRows(headers, rows, mapping) {
       }
     }
 
+    warnings.push(...qualityWarnings(gym, line));
     imported.push({ line, gym, keys: rowKeys });
   });
 
-  return { missingMapping, errors, imported };
+  return { missingMapping, errors, warnings, imported };
 }
 
 function currentIndex(gyms) {
@@ -246,12 +266,13 @@ function mergeGym(existing, incoming, mode) {
   return merged;
 }
 
-function buildImportPlan(existingGyms, imported, mode) {
+function buildImportPlan(existingGyms, imported, mode, baseWarnings = []) {
   const index = currentIndex(existingGyms);
   const next = [...existingGyms];
   const creates = [];
   const updates = [];
   const skipped = [];
+  const warnings = [...baseWarnings];
 
   for (const item of imported) {
     const matchIndex = item.keys.map((key) => index.get(key)).find((value) => Number.isInteger(value));
@@ -259,10 +280,20 @@ function buildImportPlan(existingGyms, imported, mode) {
     if (Number.isInteger(matchIndex)) {
       if (mode === 'create-only') {
         skipped.push({ line: item.line, name: item.gym.name, reason: 'duplicato esistente' });
+        warnings.push({
+          line: item.line,
+          name: item.gym.name,
+          message: 'Duplicato già presente: verrà saltato in modalità solo nuove schede.'
+        });
         continue;
       }
       next[matchIndex] = mergeGym(next[matchIndex], item.gym, mode);
       updates.push({ line: item.line, name: item.gym.name });
+      warnings.push({
+        line: item.line,
+        name: item.gym.name,
+        message: 'Corrisponde a una scheda esistente: controlla che l’aggiornamento sia intenzionale.'
+      });
       continue;
     }
 
@@ -279,9 +310,11 @@ function buildImportPlan(existingGyms, imported, mode) {
       createCount: creates.length,
       updateCount: updates.length,
       skipCount: skipped.length,
+      warningCount: warnings.length,
       creates: creates.slice(0, 20),
       updates: updates.slice(0, 20),
-      skipped: skipped.slice(0, 20)
+      skipped: skipped.slice(0, 20),
+      warnings: warnings.slice(0, 40)
     }
   };
 }
@@ -379,7 +412,7 @@ function parseRequest(form) {
     };
   }
 
-  return { csvText, mapping, mode, imported: validation.imported };
+  return { csvText, mapping, mode, imported: validation.imported, warnings: validation.warnings };
 }
 
 export const actions = {
@@ -396,7 +429,7 @@ export const actions = {
     if (parsed.error) return fail(400, parsed);
 
     const gyms = await readGyms();
-    const { report } = buildImportPlan(gyms, parsed.imported, parsed.mode);
+    const { report } = buildImportPlan(gyms, parsed.imported, parsed.mode, parsed.warnings);
 
     return {
       dryRun: true,
@@ -447,7 +480,7 @@ export const actions = {
       });
     }
 
-    const { next, report } = buildImportPlan(gyms, parsed.imported, parsed.mode);
+    const { next, report } = buildImportPlan(gyms, parsed.imported, parsed.mode, parsed.warnings);
 
     try {
       const backup = await backupGyms(gyms);
