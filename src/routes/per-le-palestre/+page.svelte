@@ -1,33 +1,75 @@
 <script>
-  import { SITE_CONTACT_EMAIL, SITE_CONTACT_MAILTO, SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
+  import { SITE_CONTACT_EMAIL, SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
+
+  export let form;
 
   const pageUrl = absoluteUrl('/per-le-palestre');
-  const title = `Per le palestre | ${SITE_NAME}`;
+  const title = `Soluzioni per palestre | ${SITE_NAME}`;
   const description =
-    'Aggiorna, rivendica o potenzia la scheda della tua palestra su Palestre in Zona con un percorso pensato per contatti locali qualificati.';
-  const premiumPlans = [
+    'Porta più chiarezza, contatti e richieste qualificate alla tua palestra con schede verificate, premium e percorsi commerciali locali.';
+
+  const plans = [
     {
       name: 'Scheda verificata',
-      tag: 'Base',
-      description: 'Dati corretti, referente riconoscibile e contenuti essenziali ordinati.',
-      items: ['Revisione contatti e orari', 'Descrizione più chiara', 'Link ufficiali e social'],
-      href: '/rivendica-scheda?reason=Rivendicazione%20scheda'
+      kicker: 'Partenza',
+      price: 'Gratis',
+      period: 'in fase iniziale',
+      description: 'Per correggere dati essenziali e rendere la scheda affidabile.',
+      features: ['Contatti e orari rivisti', 'Link ufficiali e social', 'Badge verifica dopo controllo'],
+      cta: 'Verifica la scheda'
     },
     {
       name: 'Scheda premium',
-      tag: 'Visibilità',
-      description: 'Scheda più competitiva per chi confronta palestre nella stessa zona.',
-      items: ['Sezione prezzi quando disponibili', 'Contenuti editoriali migliori', 'Percorsi rapidi verso contatto'],
-      href: '/rivendica-scheda?reason=Collaborazione%20commerciale&plan=premium'
+      kicker: 'Visibilità',
+      price: 'Su richiesta',
+      period: 'dopo audit scheda',
+      description: 'Per rendere la scheda più competitiva nelle ricerche locali.',
+      features: ['Prezzi e descrizione curati', 'CTA più forti verso contatto', 'Priorità editoriale controllata'],
+      cta: 'Richiedi premium',
+      featured: true
     },
     {
       name: 'Partner locale',
-      tag: 'Crescita',
-      description: 'Percorso commerciale per campagne locali, priorità e miglioramento continuo.',
-      items: ['Analisi della scheda', 'Priorità commerciali', 'Piano di miglioramento mensile'],
-      href: '/rivendica-scheda?reason=Collaborazione%20commerciale&plan=partner'
+      kicker: 'Crescita',
+      price: 'Su progetto',
+      period: 'per campagne locali',
+      description: 'Per strutture che vogliono lavorare su lead e presenza territoriale.',
+      features: ['Piano mensile di miglioramento', 'Analisi ricerche e scheda', 'Supporto commerciale dedicato'],
+      cta: 'Parla del progetto'
     }
   ];
+
+  const proofItems = [
+    { value: '683', label: 'schede palestra nel catalogo' },
+    { value: '57+', label: 'discipline organizzate' },
+    { value: 'SEO', label: 'pagine per zone, discipline e schede' }
+  ];
+
+  const faqItems = [
+    {
+      question: 'La scheda verificata è a pagamento?',
+      answer:
+        'No. La verifica base serve a rendere corretti i dati essenziali e a identificare un referente affidabile della struttura.'
+    },
+    {
+      question: 'Quando ha senso passare a premium?',
+      answer:
+        'Quando vuoi usare la scheda per ricevere più contatti, spiegare meglio prezzi e servizi, e distinguerti nelle ricerche locali.'
+    },
+    {
+      question: 'Le modifiche vengono pubblicate subito?',
+      answer:
+        'No. Le richieste passano da verifica email e controllo admin. Questo protegge il catalogo e riduce errori sui dati.'
+    },
+    {
+      question: 'Posso partire anche se la mia palestra non è nel catalogo?',
+      answer:
+        'Si. Invia i dati della struttura dal form: verranno valutati prima della pubblicazione.'
+    }
+  ];
+
+  const selectedPlan = form?.values?.plan || 'Scheda premium';
+
   const structuredDataScript = jsonLdScript({
     '@context': 'https://schema.org',
     '@graph': [
@@ -39,18 +81,45 @@
       },
       {
         '@type': 'OfferCatalog',
-        name: 'Soluzioni per palestre',
+        name: 'Soluzioni commerciali per palestre',
         url: pageUrl,
-        itemListElement: premiumPlans.map((plan, index) => ({
+        itemListElement: plans.map((plan, index) => ({
           '@type': 'Offer',
           position: index + 1,
           name: plan.name,
           description: plan.description,
-          url: absoluteUrl(plan.href)
+          priceSpecification: {
+            '@type': 'PriceSpecification',
+            price: plan.price,
+            description: plan.period
+          },
+          url: `${pageUrl}#lead`
+        }))
+      },
+      {
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer
+          }
         }))
       }
     ]
   });
+
+  function trackLeadEvent(action, detail = {}) {
+    if (typeof window === 'undefined') return;
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'business_lead',
+      action,
+      page: '/per-le-palestre',
+      ...detail
+    });
+  }
 </script>
 
 <svelte:head>
@@ -68,120 +137,199 @@
 </svelte:head>
 
 <div class="min-h-screen w-full sc-page">
-  <main class="mx-auto w-full max-w-5xl px-4 pb-10 pt-4 sm:px-6 lg:px-8">
-    <section class="rounded-3xl border border-white/80 bg-white/80 p-5 shadow-xl backdrop-blur-sm sc-panel sm:p-7">
-      <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Per le palestre</p>
-      <h1 class="mt-2 text-3xl font-bold text-slate-900 sm:text-5xl">Vuoi usare la tua scheda come leva commerciale, non solo come presenza passiva?</h1>
-      <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-600 sm:text-base">
-        Se gestisci una struttura presente nel catalogo, puoi partire da aggiornamenti, rivendicazione scheda e prime richieste commerciali per rendere la tua presenza pi&ugrave; chiara, affidabile e utile a chi ti cerca.
-      </p>
+  <main class="mx-auto w-full max-w-6xl px-4 pb-10 pt-4 sm:px-6 lg:px-8">
+    <section class="rounded-3xl border border-white/80 bg-white/80 p-5 shadow-xl backdrop-blur-sm sc-panel sm:p-7 lg:p-9">
+      <div class="grid gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)] lg:items-center">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Per proprietari e manager</p>
+          <h1 class="mt-3 max-w-4xl text-4xl font-bold leading-tight text-slate-950 sm:text-5xl">
+            Trasforma la tua scheda in un canale che porta contatti migliori
+          </h1>
+          <p class="mt-4 max-w-2xl text-base leading-8 text-slate-600">
+            Palestre in Zona aiuta chi sta scegliendo dove allenarsi. Una scheda chiara, verificata e completa riduce dubbi, aumenta fiducia e rende più semplice contattarti.
+          </p>
+          <div class="mt-6 flex flex-wrap gap-3">
+            <a
+              href="#lead"
+              on:click={() => trackLeadEvent('hero_cta_click', { placement: 'hero' })}
+              class="inline-flex min-h-[3rem] items-center justify-center rounded-xl bg-slate-900 px-5 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
+            >
+              Richiedi contatto
+            </a>
+            <a
+              href="#pricing"
+              on:click={() => trackLeadEvent('pricing_cta_click', { placement: 'hero' })}
+              class="inline-flex min-h-[3rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-5 text-sm font-bold text-slate-900 transition hover:bg-slate-50"
+            >
+              Vedi soluzioni
+            </a>
+          </div>
+        </div>
 
-      <div class="mt-5 grid gap-3 md:grid-cols-3">
-        <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
-          <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">1. Correggi i dati che contano</p>
-          <p class="mt-3 text-sm leading-7 text-slate-600">Orari, contatti, sito, discipline e testo della scheda sono il primo livello minimo per non perdere fiducia.</p>
-        </div>
-        <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
-          <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">2. Renditi pi&ugrave; confrontabile</p>
-          <p class="mt-3 text-sm leading-7 text-slate-600">Una scheda pi&ugrave; completa aiuta chi sta valutando diverse palestre e vuole decidere in fretta.</p>
-        </div>
-        <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
-          <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">3. Apri un contatto commerciale</p>
-          <p class="mt-3 text-sm leading-7 text-slate-600">Se vuoi andare oltre il semplice aggiornamento, puoi usare lo stesso flusso per aprire una collaborazione.</p>
+        <div class="rounded-3xl border border-emerald-900/10 bg-emerald-950 p-5 text-white shadow-xl sm:p-6">
+          <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-100">Perché funziona</p>
+          <div class="mt-5 grid gap-3">
+            {#each proofItems as item}
+              <div class="rounded-2xl border border-white/10 bg-white/10 p-4">
+                <p class="text-3xl font-bold leading-none">{item.value}</p>
+                <p class="mt-2 text-sm leading-6 text-emerald-50">{item.label}</p>
+              </div>
+            {/each}
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
-      <div class="max-w-3xl">
-        <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Sistema premium</p>
-        <h2 class="mt-2 text-2xl font-bold text-slate-900">Tre livelli per trasformare una scheda in un canale commerciale</h2>
+    <section id="pricing" class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+      <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+        <div class="max-w-3xl">
+          <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Pricing</p>
+          <h2 class="mt-2 text-3xl font-bold text-slate-950">Scegli il livello giusto per la tua palestra</h2>
+        </div>
+        <p class="max-w-sm text-sm leading-7 text-slate-600">I prezzi premium vengono confermati dopo audit: niente promesse vaghe, prima guardiamo scheda, zona e obiettivo.</p>
       </div>
 
-      <div class="mt-4 grid gap-4 md:grid-cols-3">
-        {#each premiumPlans as plan}
-          <article class="flex h-full flex-col rounded-2xl border border-slate-200 bg-white/90 p-4">
-            <div>
-              <p class="text-xs font-bold uppercase tracking-[0.18em] text-emerald-800">{plan.tag}</p>
-              <h3 class="mt-2 text-xl font-bold text-slate-900">{plan.name}</h3>
-              <p class="mt-3 text-sm leading-7 text-slate-600">{plan.description}</p>
+      <div class="mt-5 grid gap-4 lg:grid-cols-3">
+        {#each plans as plan}
+          <article class={`flex h-full flex-col rounded-3xl border p-5 ${plan.featured ? 'border-emerald-700 bg-emerald-950 text-white shadow-xl' : 'border-slate-200 bg-white/92 text-slate-950'}`}>
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <p class={`text-xs font-bold uppercase tracking-[0.2em] ${plan.featured ? 'text-emerald-100' : 'text-emerald-800'}`}>{plan.kicker}</p>
+                <h3 class="mt-2 text-2xl font-bold">{plan.name}</h3>
+              </div>
+              {#if plan.featured}
+                <span class="rounded-full bg-white px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-emerald-950">Consigliata</span>
+              {/if}
             </div>
-            <ul class="mt-4 grid gap-2 text-sm leading-6 text-slate-700">
-              {#each plan.items as item}
+            <p class={`mt-4 text-sm leading-7 ${plan.featured ? 'text-emerald-50' : 'text-slate-600'}`}>{plan.description}</p>
+            <div class="mt-5">
+              <p class="text-3xl font-bold">{plan.price}</p>
+              <p class={`mt-1 text-sm ${plan.featured ? 'text-emerald-100' : 'text-slate-500'}`}>{plan.period}</p>
+            </div>
+            <ul class="mt-5 grid gap-2 text-sm leading-6">
+              {#each plan.features as feature}
                 <li class="flex items-start gap-2">
-                  <span class="mt-2 h-1.5 w-1.5 rounded-full bg-emerald-700"></span>
-                  <span>{item}</span>
+                  <span class={`mt-2 h-1.5 w-1.5 rounded-full ${plan.featured ? 'bg-emerald-200' : 'bg-emerald-700'}`}></span>
+                  <span>{feature}</span>
                 </li>
               {/each}
             </ul>
-            <a href={plan.href} class="mt-5 inline-flex min-h-[2.75rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-bold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50">
-              Richiedi informazioni
+            <a
+              href="#lead"
+              on:click={() => trackLeadEvent('plan_cta_click', { plan: plan.name })}
+              class={`mt-6 inline-flex min-h-[2.9rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition ${plan.featured ? 'bg-white text-emerald-950 hover:bg-emerald-50' : 'border border-slate-200 bg-white text-slate-950 hover:bg-slate-50'}`}
+            >
+              {plan.cta}
             </a>
           </article>
         {/each}
       </div>
     </section>
 
-    <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
-      <div class="max-w-3xl">
-        <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Percorso operativo</p>
-        <h2 class="mt-2 text-2xl font-bold text-slate-900">Come iniziare senza attrito</h2>
+    <section class="mt-5 grid gap-5 lg:grid-cols-[minmax(0,0.95fr)_minmax(360px,1.05fr)]">
+      <div class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+        <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Proof</p>
+        <h2 class="mt-2 text-3xl font-bold text-slate-950">Cosa migliora quando la scheda è curata</h2>
+        <div class="mt-5 grid gap-3">
+          <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
+            <p class="text-sm font-bold text-slate-950">Meno attrito prima del contatto</p>
+            <p class="mt-2 text-sm leading-7 text-slate-600">Orari, indirizzo, telefono, sito e prezzo aiutano l'utente a decidere senza cercare altrove.</p>
+          </div>
+          <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
+            <p class="text-sm font-bold text-slate-950">Pi&ugrave; fiducia nella struttura</p>
+            <p class="mt-2 text-sm leading-7 text-slate-600">Una scheda verificata comunica che la palestra è seguita da un referente reale.</p>
+          </div>
+          <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
+            <p class="text-sm font-bold text-slate-950">Pi&ugrave; contesto SEO locale</p>
+            <p class="mt-2 text-sm leading-7 text-slate-600">Zone, discipline e schede si collegano tra loro per intercettare ricerche locali più specifiche.</p>
+          </div>
+        </div>
       </div>
 
-      <div class="mt-4 grid gap-4 md:grid-cols-3">
-        <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
-          <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">1. Identifica la scheda</p>
-          <p class="mt-3 text-sm leading-7 text-slate-600">Invia il nome della palestra e, se possibile, il link esatto della pagina pubblica da correggere.</p>
-        </div>
-        <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
-          <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">2. Spiega l'obiettivo</p>
-          <p class="mt-3 text-sm leading-7 text-slate-600">Indica se vuoi correggere dati, rivendicare la scheda o valutare un percorso premium.</p>
-        </div>
-        <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
-          <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">3. Apri il canale giusto</p>
-          <p class="mt-3 text-sm leading-7 text-slate-600">Il form raccoglie le richieste in modo ordinato e lascia traccia del contesto commerciale.</p>
-        </div>
-      </div>
+      <section id="lead" class="rounded-3xl border border-white/70 bg-white/90 p-5 shadow-xl backdrop-blur-sm sc-panel sm:p-7">
+        <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Lead form</p>
+        <h2 class="mt-2 text-3xl font-bold text-slate-950">Parliamo della tua scheda</h2>
+        <p class="mt-3 text-sm leading-7 text-slate-600">Rispondiamo a {SITE_CONTACT_EMAIL}. Il lead viene salvato come richiesta commerciale e passa da verifica.</p>
+
+        {#if form?.success}
+          <div class="mt-5 rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
+            <p class="text-sm font-bold text-emerald-950">Richiesta ricevuta</p>
+            <p class="mt-2 text-sm leading-7 text-slate-700">ID: <strong>{form.requestId}</strong>. Controlla l'email per il link di verifica.</p>
+          </div>
+        {:else if form?.error}
+          <div class="mt-5 rounded-2xl border border-red-200 bg-red-50 p-4">
+            <p class="text-sm font-bold text-red-900">Invio non riuscito</p>
+            <p class="mt-2 text-sm leading-7 text-slate-700">{form.error}</p>
+          </div>
+        {/if}
+
+        <form method="POST" action="?/lead" class="mt-5 grid gap-4" on:submit={() => trackLeadEvent('lead_submit_attempt', { plan: selectedPlan })}>
+          <div class="grid gap-4 md:grid-cols-2">
+            <label class="grid gap-2">
+              <span class="text-sm font-semibold text-slate-700">Nome palestra</span>
+              <input name="gym_name" value={form?.values?.gym_name || ''} class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2" required />
+            </label>
+            <label class="grid gap-2">
+              <span class="text-sm font-semibold text-slate-700">Piano</span>
+              <select name="plan" class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2">
+                {#each plans as plan}
+                  <option value={plan.name} selected={selectedPlan === plan.name}>{plan.name}</option>
+                {/each}
+              </select>
+            </label>
+          </div>
+
+          <div class="grid gap-4 md:grid-cols-2">
+            <label class="grid gap-2">
+              <span class="text-sm font-semibold text-slate-700">Referente</span>
+              <input name="requester_name" value={form?.values?.requester_name || ''} class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2" required />
+            </label>
+            <label class="grid gap-2">
+              <span class="text-sm font-semibold text-slate-700">Ruolo</span>
+              <input name="requester_role" value={form?.values?.requester_role || ''} placeholder="Titolare, manager, staff" class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2" />
+            </label>
+          </div>
+
+          <div class="grid gap-4 md:grid-cols-2">
+            <label class="grid gap-2">
+              <span class="text-sm font-semibold text-slate-700">Email</span>
+              <input name="requester_email" type="email" value={form?.values?.requester_email || ''} class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2" required />
+            </label>
+            <label class="grid gap-2">
+              <span class="text-sm font-semibold text-slate-700">Telefono</span>
+              <input name="requester_phone" value={form?.values?.requester_phone || ''} class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2" />
+            </label>
+          </div>
+
+          <label class="grid gap-2">
+            <span class="text-sm font-semibold text-slate-700">Sito o link scheda</span>
+            <input name="website" value={form?.values?.website || ''} placeholder="https://..." class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2" />
+          </label>
+
+          <label class="grid gap-2">
+            <span class="text-sm font-semibold text-slate-700">Obiettivo</span>
+            <textarea name="message" rows="5" class="rounded-2xl border border-slate-200 bg-white px-3 py-3 text-sm leading-7 text-slate-900 outline-none ring-slate-900 transition focus:ring-2" placeholder="Esempio: voglio aggiornare prezzi, orari e rendere la scheda più efficace per chi cerca corsi nella mia zona.">{form?.values?.message || ''}</textarea>
+          </label>
+
+          <button type="submit" class="inline-flex min-h-[3rem] items-center justify-center rounded-xl bg-slate-900 px-5 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
+            Invia richiesta commerciale
+          </button>
+        </form>
+      </section>
     </section>
 
     <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
-      <div class="grid gap-5 lg:grid-cols-[minmax(0,1.15fr)_minmax(280px,0.85fr)] lg:items-start">
-        <div class="max-w-3xl">
-          <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Contatto diretto</p>
-          <h2 class="mt-2 text-2xl font-bold text-slate-900">Scegli il percorso pi&ugrave; adatto</h2>
-          <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
-            Scrivi a <strong>{SITE_CONTACT_EMAIL}</strong> includendo nome palestra, link scheda e obiettivo della richiesta.
-          </p>
-          <div class="mt-4 flex flex-wrap gap-3">
-            <a href="/rivendica-scheda?reason=Rivendicazione%20scheda" class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
-              Avvia richiesta guidata
-            </a>
-            <a href="/rivendica-scheda?reason=Collaborazione%20commerciale" class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50">
-              Richiedi contatto commerciale
-            </a>
-            <a href={SITE_CONTACT_MAILTO} class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50">
-              Scrivi via email
-            </a>
-          </div>
-        </div>
-
-        <div class="rounded-3xl border border-slate-200 bg-white/90 p-5">
-          <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Richieste adatte a questa fase</p>
-          <div class="mt-4 grid gap-3">
-            <div class="rounded-2xl border border-slate-200 bg-white px-4 py-3">
-              <p class="text-sm font-bold text-slate-900">Aggiornamento dati</p>
-              <p class="mt-1 text-sm leading-6 text-slate-600">Per correggere o completare una scheda gi&agrave; pubblica.</p>
-            </div>
-            <div class="rounded-2xl border border-slate-200 bg-white px-4 py-3">
-              <p class="text-sm font-bold text-slate-900">Rivendicazione scheda</p>
-              <p class="mt-1 text-sm leading-6 text-slate-600">Per farti riconoscere come referente della struttura.</p>
-            </div>
-            <div class="rounded-2xl border border-slate-200 bg-white px-4 py-3">
-              <p class="text-sm font-bold text-slate-900">Collaborazione commerciale</p>
-              <p class="mt-1 text-sm leading-6 text-slate-600">Per parlare di visibilit&agrave;, qualit&agrave; della scheda e sviluppo del canale.</p>
-            </div>
-          </div>
-        </div>
+      <div class="max-w-3xl">
+        <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">FAQ commerciali</p>
+        <h2 class="mt-2 text-3xl font-bold text-slate-950">Domande prima di iniziare</h2>
+      </div>
+      <div class="mt-5 grid gap-3 md:grid-cols-2">
+        {#each faqItems as item}
+          <article class="rounded-2xl border border-slate-200 bg-white/90 p-4">
+            <h3 class="text-base font-bold text-slate-950">{item.question}</h3>
+            <p class="mt-2 text-sm leading-7 text-slate-600">{item.answer}</p>
+          </article>
+        {/each}
       </div>
     </section>
   </main>
