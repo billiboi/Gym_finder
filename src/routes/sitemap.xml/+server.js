@@ -15,34 +15,43 @@ function escapeXml(value) {
 export async function GET() {
   const gyms = (await readGyms()).filter((gym) => isIndexableGym(gym));
   const indexableGyms = gyms.filter((gym) => isIndexableGym(gym));
+  const today = new Date().toISOString().slice(0, 10);
+  const lastmodForGym = (gym) => {
+    const raw = gym?.updated_at || gym?.data_verified_at || gym?.price_updated_at || gym?.enrichment_updated_at || today;
+    const date = new Date(raw);
+    return Number.isNaN(date.getTime()) ? today : date.toISOString().slice(0, 10);
+  };
   const staticEntries = [
-    { loc: `${SITE_URL}/`, changefreq: 'daily', priority: '1.0' },
-    { loc: `${SITE_URL}/zone`, changefreq: 'weekly', priority: '0.8' },
-    { loc: `${SITE_URL}/discipline`, changefreq: 'weekly', priority: '0.8' },
-    { loc: `${SITE_URL}/contatti`, changefreq: 'monthly', priority: '0.4' },
-    { loc: `${SITE_URL}/per-le-palestre`, changefreq: 'monthly', priority: '0.7' },
-    { loc: `${SITE_URL}/privacy`, changefreq: 'yearly', priority: '0.2' },
-    { loc: `${SITE_URL}/rivendica-scheda`, changefreq: 'monthly', priority: '0.5' }
+    { loc: `${SITE_URL}/`, changefreq: 'daily', priority: '1.0', lastmod: today },
+    { loc: `${SITE_URL}/zone`, changefreq: 'weekly', priority: '0.8', lastmod: today },
+    { loc: `${SITE_URL}/discipline`, changefreq: 'weekly', priority: '0.8', lastmod: today },
+    { loc: `${SITE_URL}/contatti`, changefreq: 'monthly', priority: '0.4', lastmod: today },
+    { loc: `${SITE_URL}/per-le-palestre`, changefreq: 'monthly', priority: '0.7', lastmod: today },
+    { loc: `${SITE_URL}/privacy`, changefreq: 'yearly', priority: '0.2', lastmod: today },
+    { loc: `${SITE_URL}/rivendica-scheda`, changefreq: 'monthly', priority: '0.5', lastmod: today }
   ];
 
   const locationEntries = buildSeoLocationEntries(gyms, { includeLowCount: false }).map((location) => ({
     loc: `${SITE_URL}/zone/${location.slug}`,
     changefreq: 'weekly',
-    priority: location.featured ? '0.8' : '0.6'
+    priority: location.featured ? '0.8' : '0.6',
+    lastmod: today
   }));
 
   const disciplineEntries = buildSeoDisciplineEntries(gyms, { includeLowCount: false }).map(
     (discipline) => ({
       loc: `${SITE_URL}/discipline/${discipline.slug}`,
       changefreq: 'weekly',
-      priority: discipline.featured ? '0.8' : '0.6'
+      priority: discipline.featured ? '0.8' : '0.6',
+      lastmod: today
     })
   );
 
   const gymEntries = indexableGyms.map((gym) => ({
     loc: `${SITE_URL}/palestre/${slugifyGym(gym)}`,
     changefreq: 'weekly',
-    priority: '0.5'
+    priority: '0.5',
+    lastmod: lastmodForGym(gym)
   }));
 
   const seen = new Set();
@@ -57,7 +66,7 @@ export async function GET() {
 ${urls
   .map(
     (url) =>
-      `  <url><loc>${escapeXml(url.loc)}</loc><changefreq>${url.changefreq}</changefreq><priority>${url.priority}</priority></url>`
+      `  <url><loc>${escapeXml(url.loc)}</loc><lastmod>${escapeXml(url.lastmod)}</lastmod><changefreq>${url.changefreq}</changefreq><priority>${url.priority}</priority></url>`
   )
   .join('\n')}
 </urlset>`;

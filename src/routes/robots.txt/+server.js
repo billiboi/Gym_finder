@@ -1,7 +1,14 @@
 import { SITE_URL } from '$lib/site';
 
 export function GET() {
-  const body = [`User-agent: *`, `Allow: /`, `Sitemap: ${SITE_URL}/sitemap.xml`].join('\n');
+  const body = [
+    `User-agent: *`,
+    `Allow: /`,
+    `Disallow: /admin`,
+    `Disallow: /dashboard-proprietario`,
+    `Disallow: /rivendica-scheda/verifica`,
+    `Sitemap: ${SITE_URL}/sitemap.xml`
+  ].join('\n');
 
   return new Response(body, {
     headers: {
@@ -10,4 +17,3 @@ export function GET() {
     }
   });
 }
-

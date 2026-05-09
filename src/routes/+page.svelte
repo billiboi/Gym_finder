@@ -171,7 +171,7 @@
   $: hasActiveFilters = activeFilterCount > 0;
   $: if (!locationReady && sortMode === 'distance') sortMode = 'recommended';
   $: if (searchInput !== filterText) scheduleSearchApply(searchInput);
-  $: catalogGymCount = gyms.length || totalGyms || 0;
+  $: catalogGymCount = data?.catalogTotalGyms || gyms.length || totalGyms || 0;
   $: catalogGymLabel = catalogGymCount ? `${catalogGymCount}` : '500+';
   $: catalogDisciplineCount = Math.max(disciplineCount || 0, 57);
 

@@ -2,6 +2,8 @@ import { dedupeDisciplines } from '$lib/disciplines';
 import { isArchivedGym } from '$lib/admin/gyms';
 import { readGyms } from '$lib/server/gym-store';
 
+const INITIAL_GYM_LIMIT = 24;
+
 export async function load() {
   const gyms = (await readGyms()).filter((gym) => !isArchivedGym(gym));
   const disciplines = dedupeDisciplines(
@@ -16,7 +18,8 @@ export async function load() {
   );
 
   return {
-    initialGyms: gyms,
+    initialGyms: gyms.slice(0, INITIAL_GYM_LIMIT),
+    catalogTotalGyms: gyms.length,
     initialDisciplines: disciplines
   };
 }
