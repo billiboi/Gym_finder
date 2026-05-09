@@ -14,10 +14,18 @@ function lines(value) {
 }
 
 export async function load({ params }) {
-  const claim = await findClaimRequestByOwnerToken(params.token);
+  let claim = null;
+  let error = '';
+
+  try {
+    claim = await findClaimRequestByOwnerToken(params.token);
+  } catch (err) {
+    error = err?.message || 'Dashboard proprietario non disponibile in questo momento.';
+  }
 
   return {
     claim,
+    error,
     token: params.token,
     canUseDashboard: Boolean(claim && claim.status === 'approved' && claim.email_verified_at)
   };

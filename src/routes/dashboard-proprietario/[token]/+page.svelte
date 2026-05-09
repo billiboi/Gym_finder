@@ -16,7 +16,9 @@
     <p class="text-xs font-bold uppercase tracking-[0.22em] text-emerald-800">Dashboard proprietario</p>
     {#if !claim}
       <h1 class="mt-2 text-3xl font-bold text-slate-900">Accesso non valido</h1>
-      <p class="mt-3 text-sm leading-7 text-slate-600">Il link non è valido oppure la richiesta non è più disponibile.</p>
+      <p class="mt-3 text-sm leading-7 text-slate-600">
+        {data.error || 'Il link non è valido oppure la richiesta non è più disponibile.'}
+      </p>
     {:else if !data.canUseDashboard}
       <h1 class="mt-2 text-3xl font-bold text-slate-900">Accesso in attesa di verifica</h1>
       <p class="mt-3 text-sm leading-7 text-slate-600">
