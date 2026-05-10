@@ -486,6 +486,67 @@ const OFFICIAL_GYM_OVERRIDES = {
   "20' Training Lab Gallarate": OFFICIAL_20TRAININGLAB_OVERRIDE,
   "20' Training Lab Saronno": OFFICIAL_20TRAININGLAB_OVERRIDE,
   "20' Training Lab Varese": OFFICIAL_20TRAININGLAB_OVERRIDE,
+  'Soledad Surace - Insegnante di KUNDALINI YOGA': {
+    sourceUrl: 'https://www.tempiacquariani.com/lezioni-yoga/',
+    website: 'https://www.tempiacquariani.com/lezioni-yoga/',
+    seoTitle: 'Soledad Surace: Kundalini Yoga a Gallarate e online',
+    seoDescription:
+      'Scheda di Soledad Surace: lezioni di Kundalini Yoga a Gallarate e online via Zoom, con orari, sede, pratica, meditazione e contatti ufficiali.',
+    hoursInfo:
+      'In presenza: Mar 09:30-11:00 e 18:45-20:15 | Mer 18:45-20:15 | Online Zoom: Mer 09:00-10:30 | Sadhana Zoom: tutti i giorni 06:45',
+    infoCards: [
+      {
+        label: 'Sede',
+        value: 'Via Achille Cadolini 1, Gallarate',
+        body: 'Le lezioni in presenza si tengono al primo piano, in un contesto raccolto e accogliente.'
+      },
+      {
+        label: 'Lezioni in presenza',
+        value: 'Martedì e mercoledì',
+        body: 'Il calendario ufficiale indica martedì mattina, martedì sera e mercoledì sera per le lezioni regolari a Gallarate.'
+      },
+      {
+        label: 'Online',
+        value: 'Zoom il mercoledì mattina',
+        body: 'La lezione online si svolge su Zoom il mercoledì dalle 9:00 alle 10:30, con possibili appuntamenti supplementari.'
+      },
+      {
+        label: 'Pratica',
+        value: 'Kriya, pranayama, meditazione e mantra',
+        body: 'La pagina ufficiale descrive il Kundalini Yoga come pratica completa su corpo, respiro, mente e spirito.'
+      }
+    ],
+    presentation:
+      'Soledad Surace propone lezioni di Kundalini Yoga a Gallarate e online. La pagina ufficiale presenta una pratica completa con movimenti rigeneranti, respirazioni consapevoli, meditazioni guidate e mantra, adatta anche a chi vuole iniziare in un ambiente raccolto.',
+    highlights: [
+      'Le lezioni in presenza si tengono a Gallarate, in Via Achille Cadolini 1, al primo piano.',
+      'Il calendario ufficiale indica lezioni in presenza il martedì dalle 9:30 alle 11:00 e dalle 18:45 alle 20:15, oltre al mercoledì dalle 18:45 alle 20:15.',
+      'Per chi non può raggiungere Gallarate, la pagina ufficiale indica una lezione online su Zoom il mercoledì dalle 9:00 alle 10:30.',
+      'Sono citati anche incontri mattutini, Sadhana quotidiana su Zoom alle 6:45, eventi e masterclass per approfondire la pratica.'
+    ],
+    faqItems: [
+      {
+        question: 'Che tipo di yoga propone Soledad Surace?',
+        answer:
+          'La pagina ufficiale parla di Kundalini Yoga, con pratica basata su kriya, respirazione consapevole, meditazioni guidate e mantra.'
+      },
+      {
+        question: 'Dove si tengono le lezioni in presenza?',
+        answer:
+          'Le lezioni in presenza sono indicate a Gallarate, in Via Achille Cadolini 1, al primo piano.'
+      },
+      {
+        question: 'Sono disponibili lezioni online?',
+        answer:
+          'Sì. La fonte ufficiale indica lezioni su Zoom, in particolare il mercoledì mattina dalle 9:00 alle 10:30.'
+      },
+      {
+        question: 'Serve prenotare?',
+        answer:
+          'Sì. La pagina ufficiale specifica che la prenotazione è necessaria per partecipare alle lezioni.'
+      }
+    ]
+  },
   'FitActive Mendrisio': {
     sourceUrl: 'https://www.fitactive.it/i-club/Mendrisio.php',
     seoTitle: 'FitActive Mendrisio: palestra 24/7, prezzi e contatti',

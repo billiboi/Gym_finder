@@ -55,6 +55,8 @@
   $: hasEditorialContent = Boolean(editorialSummary || editorialHighlights.length);
   $: presentation = officialOverride?.presentation || editorialSummary || buildGymPresentation(gym);
   $: seoHighlights = officialOverride?.highlights || editorialHighlights.length ? (officialOverride?.highlights || editorialHighlights) : buildGymSeoHighlights(gym);
+  $: officialInfoCards = officialOverride?.infoCards || [];
+  $: officialFaqItems = officialOverride?.faqItems || [];
   $: cityLabel = cityLabelForGym(gym);
   $: imageAsset = imageForGym(gym);
   $: imageMeta =
@@ -62,7 +64,7 @@
       ? { src: imageAsset, candidates: [imageAsset], fallback: imageAsset }
       : imageAsset;
   $: imageSrc = imageMeta.src;
-  $: hoursInfo = fixGymText(gym?.hours_info) || 'Orari da verificare';
+  $: hoursInfo = officialOverride?.hoursInfo || fixGymText(gym?.hours_info) || 'Orari da verificare';
   $: hoursRows = weeklyHoursRows(hoursInfo);
   $: alwaysOpen = isAlwaysOpen(hoursInfo);
   $: address = formatAddressForDisplay(gym);
@@ -75,7 +77,7 @@
   $: officialSocialLinks = officialOverride?.socialLinks || [];
   $: hasOfficialData = Boolean(officialMonthlyPrice || officialSourceUrl || officialEmail || officialSocialLinks.length);
   $: phone = fixGymText(gym?.phone) || 'Non disponibile';
-  $: website = fixGymText(gym?.website) || officialOverride?.website || officialSourceUrl;
+  $: website = officialOverride?.website || fixGymText(gym?.website) || officialSourceUrl;
   $: hasPhone = phone && phone !== 'Non disponibile';
   $: sameAsLinks = [...officialSocialLinks.map((link) => link?.href || link), website]
     .map((url) => publicUrl(url))
@@ -151,7 +153,22 @@
         : undefined
     }
   ];
-  $: detailStructuredDataScript = jsonLdScript(detailStructuredData);
+  $: faqStructuredData = officialFaqItems.length
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: officialFaqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer
+          }
+        }))
+      }
+    : null;
+  $: structuredData = faqStructuredData ? [...detailStructuredData, faqStructuredData] : detailStructuredData;
+  $: detailStructuredDataScript = jsonLdScript(structuredData);
 
   function handleImageError(event) {
     const img = event.currentTarget;
@@ -400,6 +417,20 @@
                   </div>
                 </div>
               {/if}
+
+              {#if officialInfoCards.length}
+                <div class="grid gap-3 sm:grid-cols-2">
+                  {#each officialInfoCards as card}
+                    <article class="rounded-2xl border border-slate-200 bg-white/90 p-4 sc-detail-card">
+                      <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">{card.label}</p>
+                      <h3 class="mt-2 text-base font-bold leading-6 text-slate-950">{card.value}</h3>
+                      {#if card.body}
+                        <p class="mt-2 text-sm leading-6 text-slate-600">{card.body}</p>
+                      {/if}
+                    </article>
+                  {/each}
+                </div>
+              {/if}
             </div>
           </section>
         {/if}
@@ -473,6 +504,24 @@
           title="Recensioni e segnali da leggere prima del contatto"
           intro="Prima di scegliere una palestra, usa recensioni esterne e scheda pubblica insieme: feedback, orari, contatti e posizione raccontano cose diverse."
         />
+
+        {#if officialFaqItems.length}
+          <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sc-detail-section sm:p-5">
+            <div class="max-w-3xl">
+              <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">FAQ ufficiali</p>
+              <h2 class="mt-2 text-2xl font-bold text-slate-900">Domande utili prima di prenotare</h2>
+            </div>
+
+            <div class="mt-5 grid gap-3">
+              {#each officialFaqItems as item}
+                <article class="rounded-2xl border border-slate-200 bg-white/90 p-4 sc-detail-card">
+                  <h3 class="text-base font-bold leading-6 text-slate-950">{item.question}</h3>
+                  <p class="mt-2 text-sm leading-7 text-slate-600 sm:text-base">{item.answer}</p>
+                </article>
+              {/each}
+            </div>
+          </section>
+        {/if}
 
       </div>
 
