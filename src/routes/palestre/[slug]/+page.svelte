@@ -16,7 +16,6 @@
   import { isAlwaysOpen, weeklyHoursRows } from '$lib/hours';
   import { SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
   import ReviewPrinciples from '$lib/components/ReviewPrinciples.svelte';
-  import TrustBadges from '$lib/components/TrustBadges.svelte';
 
   export let data;
 
@@ -451,16 +450,6 @@
             </div>
           </section>
         {/if}
-        <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sc-detail-section sm:p-5">
-          <div class="max-w-4xl">
-            <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Affidabilita scheda</p>
-            <h2 class="mt-2 text-2xl font-bold text-slate-900">Perche questi dati sono separati e controllabili</h2>
-          </div>
-          <div class="mt-4">
-            <TrustBadges dense={true} />
-          </div>
-        </section>
-
         <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sc-detail-section sm:p-5">
           <div class="max-w-4xl">
             <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Verifiche rapide</p>
