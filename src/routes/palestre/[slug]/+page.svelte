@@ -56,6 +56,7 @@
   $: presentation = officialOverride?.presentation || editorialSummary || buildGymPresentation(gym);
   $: seoHighlights = officialOverride?.highlights || editorialHighlights.length ? (officialOverride?.highlights || editorialHighlights) : buildGymSeoHighlights(gym);
   $: officialInfoCards = officialOverride?.infoCards || [];
+  $: officialScheduleCards = officialOverride?.scheduleCards || [];
   $: officialFaqItems = officialOverride?.faqItems || [];
   $: cityLabel = cityLabelForGym(gym);
   $: imageAsset = imageForGym(gym);
@@ -67,7 +68,7 @@
   $: hoursInfo = officialOverride?.hoursInfo || fixGymText(gym?.hours_info) || 'Orari da verificare';
   $: hoursRows = weeklyHoursRows(hoursInfo);
   $: alwaysOpen = isAlwaysOpen(hoursInfo);
-  $: address = formatAddressForDisplay(gym);
+  $: address = officialOverride?.address || formatAddressForDisplay(gym);
   $: structuredAddress = structuredAddressForGym(gym);
   $: isIndexable = isIndexableGym(gym);
   $: officialSourceUrl = officialOverride?.sourceUrl || fixGymText(gym?.official_source_url) || '';
@@ -262,6 +263,20 @@
 
             <p class="text-sm leading-7 text-slate-600 sm:text-[0.98rem] sc-detail-copy">{presentation}</p>
 
+            {#if officialScheduleCards.length}
+              <div class="grid gap-2 sm:grid-cols-3">
+                {#each officialScheduleCards as card}
+                  <div class="rounded-2xl border border-emerald-900/10 bg-emerald-50/80 p-3 sc-detail-meta">
+                    <p class="text-[0.68rem] font-bold uppercase tracking-[0.18em] text-emerald-900">{card.label}</p>
+                    <p class="mt-1.5 text-sm font-black leading-5 text-slate-950">{card.value}</p>
+                    {#if card.body}
+                      <p class="mt-1 text-xs font-semibold leading-5 text-slate-600">{card.body}</p>
+                    {/if}
+                  </div>
+                {/each}
+              </div>
+            {/if}
+
             <div class="grid gap-2 sm:grid-cols-3">
               <a
                 href={mapsHref}
@@ -341,7 +356,9 @@
           </div>
 
           <div class="rounded-2xl border border-slate-200 bg-white/90 p-4 sc-detail-meta lg:col-span-3">
-            <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Orari</p>
+            <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">
+              {officialScheduleCards.length ? 'Orari lezioni in presenza' : 'Orari'}
+            </p>
             {#if hoursRows.length}
               <div class="mt-2 space-y-2">
                 {#if alwaysOpen}

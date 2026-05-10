@@ -492,7 +492,25 @@ const OFFICIAL_GYM_OVERRIDES = {
     seoTitle: 'Soledad Surace: Kundalini Yoga a Gallarate e online',
     seoDescription:
       'Scheda di Soledad Surace: lezioni di Kundalini Yoga a Gallarate e online via Zoom, con orari, sede, pratica, meditazione e contatti ufficiali.',
+    address: 'Via Achille Cadolini 1, Gallarate',
     hoursInfo: 'Mar 09:30-11:00, 18:45-20:15 | Mer 18:45-20:15',
+    scheduleCards: [
+      {
+        label: 'In presenza',
+        value: 'Mar 09:30-11:00 · 18:45-20:15',
+        body: 'Mer 18:45-20:15'
+      },
+      {
+        label: 'Online Zoom',
+        value: 'Mer 09:00-10:30',
+        body: 'Lezione da casa su piattaforma Zoom'
+      },
+      {
+        label: 'Sadhana Zoom',
+        value: 'Tutti i giorni 06:45',
+        body: 'Pratica mattutina indicata dalla fonte ufficiale'
+      }
+    ],
     infoCards: [
       {
         label: 'Sede',
