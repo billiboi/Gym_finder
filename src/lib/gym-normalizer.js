@@ -33,6 +33,7 @@ export const GYM_LEGACY_FIELDS = [
   'website',
   'description',
   'discipline',
+  'disciplines',
   'hours_info',
   'latitude',
   'longitude',
