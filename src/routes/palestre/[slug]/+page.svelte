@@ -17,7 +17,6 @@
   } from '$lib/gym-detail';
   import { isAlwaysOpen, weeklyHoursRows } from '$lib/hours';
   import { SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
-  import ReviewPrinciples from '$lib/components/ReviewPrinciples.svelte';
 
   export let data;
 
@@ -515,11 +514,6 @@
             </div>
           </section>
         {/if}
-
-        <ReviewPrinciples
-          title="Recensioni e segnali da leggere prima del contatto"
-          intro="Prima di scegliere una palestra, usa recensioni esterne e scheda pubblica insieme: feedback, orari, contatti e posizione raccontano cose diverse."
-        />
 
         {#if officialFaqItems.length}
           <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sc-detail-section sm:p-5">

@@ -1,5 +1,4 @@
 <script>
-  import ReviewPrinciples from '$lib/components/ReviewPrinciples.svelte';
   import TrustBadges from '$lib/components/TrustBadges.svelte';
   import { VERIFICATION_STEPS } from '$lib/trust';
   import { SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
@@ -12,10 +11,6 @@
     {
       question: 'Una richiesta proprietario modifica subito la scheda?',
       answer: 'No. La richiesta viene registrata, verificata via email e poi controllata manualmente prima della pubblicazione.'
-    },
-    {
-      question: 'Come vengono gestite le recensioni?',
-      answer: 'Non pubblichiamo recensioni inventate o comprate. Il feedback utile resta separato dai dati verificabili della scheda.'
     },
     {
       question: 'Posso segnalare un errore anche se non gestisco la palestra?',
@@ -103,13 +98,6 @@
         <TrustBadges />
       </div>
     </section>
-
-    <div class="mt-5">
-      <ReviewPrinciples
-        title="Recensioni: utili, ma non al posto dei dati"
-        intro="Le recensioni aiutano a leggere esperienza, tono e aspettative. Per decidere davvero servono anche orari, contatti, posizione e discipline verificabili."
-      />
-    </div>
 
     <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
       <div class="max-w-3xl">

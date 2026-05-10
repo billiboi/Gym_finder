@@ -656,7 +656,7 @@
     <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
       <div class="max-w-3xl">
         <p class="text-xs font-bold uppercase tracking-[0.22em] text-emerald-800">Fiducia</p>
-        <h2 class="mt-2 text-2xl font-bold leading-tight text-slate-900 sm:text-3xl">Dati leggibili, correzioni controllate, recensioni non inventate</h2>
+        <h2 class="mt-2 text-2xl font-bold leading-tight text-slate-900 sm:text-3xl">Dati leggibili, fonti distinguibili, correzioni controllate</h2>
       </div>
       <a href="/verifica-schede" class="inline-flex min-h-[2.75rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-bold text-slate-900 transition hover:bg-slate-50">Come funziona</a>
     </div>

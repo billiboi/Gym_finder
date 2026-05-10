@@ -1,6 +1,5 @@
 <script>
   import BrandMark from '$lib/components/BrandMark.svelte';
-  import ReviewPrinciples from '$lib/components/ReviewPrinciples.svelte';
   import TrustBadges from '$lib/components/TrustBadges.svelte';
   import { BRAND_PROOF_ITEMS } from '$lib/trust';
   import { SITE_CONTACT_EMAIL, SITE_CONTACT_MAILTO, SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
@@ -92,10 +91,6 @@
         <TrustBadges />
       </div>
     </section>
-
-    <div class="mt-5">
-      <ReviewPrinciples />
-    </div>
 
     <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
       <div class="grid gap-4 md:grid-cols-[minmax(0,1fr)_auto] md:items-center">

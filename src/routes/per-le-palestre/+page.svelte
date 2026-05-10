@@ -1,6 +1,5 @@
 <script>
   import { SITE_CONTACT_EMAIL, SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
-  import ReviewPrinciples from '$lib/components/ReviewPrinciples.svelte';
   import TrustBadges from '$lib/components/TrustBadges.svelte';
 
   export let form;
@@ -332,13 +331,6 @@
         <TrustBadges />
       </div>
     </section>
-
-    <div class="mt-5">
-      <ReviewPrinciples
-        title="Recensioni, reputazione e scheda pubblica"
-        intro="Una palestra puo avere ottime recensioni e dati confusi, oppure dati chiari e poche recensioni. Per questo separiamo reputazione, contatti e informazioni verificabili."
-      />
-    </div>
 
     <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
       <div class="max-w-3xl">

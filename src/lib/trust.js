@@ -17,21 +17,6 @@ export const TRUST_BADGES = [
   }
 ];
 
-export const REVIEW_PRINCIPLES = [
-  {
-    title: 'Recensioni non comprate',
-    text: 'Non vendiamo recensioni e non inseriamo valutazioni inventate nelle schede.'
-  },
-  {
-    title: 'Feedback separato dai dati',
-    text: 'Un commento puo aiutare a scegliere, ma indirizzo, orari e contatti restano dati da verificare.'
-  },
-  {
-    title: 'Segnalazioni utili',
-    text: 'Accettiamo segnalazioni pratiche su errori, chiusure, cambi sede, telefono o sito.'
-  }
-];
-
 export const BRAND_PROOF_ITEMS = [
   { value: '683', label: 'schede nel catalogo attivo' },
   { value: '57+', label: 'discipline normalizzate' },
