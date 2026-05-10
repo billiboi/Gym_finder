@@ -231,7 +231,7 @@ function toBoolean(value) {
 }
 
 function normalizeGymRecord(gym, fallbackId) {
-  const { address, city } = normalizeAddressAndCity(gym?.address || gym?.indirizzo, gym?.city || gym?.citta);
+  const { address, city } = normalizeAddressAndCity(gym?.indirizzo || gym?.address, gym?.citta || gym?.city);
   const disciplines = Array.isArray(gym?.disciplines)
     ? gym.disciplines.map((d) => repairMojibake(d).trim()).filter(Boolean)
     : disciplinesFromField(gym?.discipline);
@@ -245,18 +245,18 @@ function normalizeGymRecord(gym, fallbackId) {
     {
       ...gym,
       id: String(gym?.id || fallbackId),
-      name: repairMojibake(gym?.name || gym?.nome).trim(),
+      name: repairMojibake(gym?.nome || gym?.name).trim(),
     disciplines,
     discipline: repairMojibake(gym?.discipline || primaryDiscipline(disciplines)).trim() || 'Fitness',
     address,
     city,
-      phone: repairMojibake(gym?.phone || gym?.telefono).trim(),
-      hours_info: repairMojibake(gym?.hours_info || gym?.orari).trim() || 'Orari da verificare',
-      website: String(gym?.website || gym?.sito || '').trim(),
-      description: repairMojibake(gym?.description || gym?.descrizione || gym?.presentazione).trim(),
+      phone: repairMojibake(gym?.telefono || gym?.phone).trim(),
+      hours_info: repairMojibake(gym?.orari || gym?.hours_info).trim() || 'Orari da verificare',
+      website: String(gym?.sito || gym?.website || '').trim(),
+      description: repairMojibake(gym?.descrizione || gym?.description || gym?.presentazione).trim(),
     verified,
-      latitude: gym?.latitude ?? gym?.lat,
-      longitude: gym?.longitude ?? gym?.lng,
+      latitude: gym?.lat ?? gym?.latitude,
+      longitude: gym?.lng ?? gym?.longitude,
     image_url: String(gym?.image_url || '').trim(),
     official_source_url: String(gym?.official_source_url || '').trim(),
     editorial_summary: repairMojibake(gym?.editorial_summary || '').trim(),
