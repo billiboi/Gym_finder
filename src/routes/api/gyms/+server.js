@@ -1,5 +1,6 @@
 import { json } from '@sveltejs/kit';
 import { isArchivedGym } from '$lib/admin/gyms';
+import { publicClientGym } from '$lib/gym-client';
 import { isGymOpenNow } from '$lib/hours';
 import { readGyms } from '$lib/server/gym-store';
 
@@ -259,9 +260,26 @@ export async function GET({ url, fetch }) {
       }
     }
 
-    return json(filterGyms(gyms.filter((gym) => !isArchivedGym(gym)), { q, discipline, openState, userLat, userLng, radiusKm }));
+    const filtered = filterGyms(gyms.filter((gym) => !isArchivedGym(gym)), {
+      q,
+      discipline,
+      openState,
+      userLat,
+      userLng,
+      radiusKm
+    }).map(publicClientGym);
+
+    return json(filtered, {
+      headers: {
+        'Cache-Control': 'public, max-age=60, stale-while-revalidate=300'
+      }
+    });
   } catch {
-    return json([]);
+    return json([], {
+      headers: {
+        'Cache-Control': 'public, max-age=30, stale-while-revalidate=120'
+      }
+    });
   }
 }
 

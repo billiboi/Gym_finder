@@ -1,5 +1,6 @@
 import { dedupeDisciplines } from '$lib/disciplines';
 import { isArchivedGym } from '$lib/admin/gyms';
+import { publicClientGym } from '$lib/gym-client';
 import { readGyms } from '$lib/server/gym-store';
 
 const INITIAL_GYM_LIMIT = 24;
@@ -18,7 +19,7 @@ export async function load() {
   );
 
   return {
-    initialGyms: gyms.slice(0, INITIAL_GYM_LIMIT),
+    initialGyms: gyms.slice(0, INITIAL_GYM_LIMIT).map(publicClientGym),
     catalogTotalGyms: gyms.length,
     initialDisciplines: disciplines
   };

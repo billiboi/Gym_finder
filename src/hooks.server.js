@@ -29,7 +29,13 @@ export async function handle({ event, resolve }) {
   }
 
   if (!isAdminRoute) {
-    return resolve(event);
+    const response = await resolve(event);
+    if (pathname.startsWith('/images/')) {
+      response.headers.set('Cache-Control', 'public, max-age=31536000, immutable');
+    } else if (pathname === '/palestre.csv') {
+      response.headers.set('Cache-Control', 'public, max-age=300, stale-while-revalidate=1800');
+    }
+    return response;
   }
 
   const configured = isAdminConfigured();

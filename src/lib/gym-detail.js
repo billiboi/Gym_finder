@@ -217,9 +217,11 @@ function hashSeed(seed = '') {
 export function orderedStockImageCandidates(discipline, seed = '') {
   const candidates = stockImageCandidatesForDiscipline(discipline);
   if (!candidates.length) return [];
+  if (candidates.length === 1) return candidates;
 
-  const offset = hashSeed(seed || discipline) % candidates.length;
-  return [...candidates.slice(offset), ...candidates.slice(0, offset)];
+  const [primary, ...alternates] = candidates;
+  const offset = hashSeed(seed || discipline) % alternates.length;
+  return [primary, ...alternates.slice(offset), ...alternates.slice(0, offset)];
 }
 
 export function resolveAvailableStockImage(discipline, seed = '') {

@@ -208,6 +208,10 @@
             class="h-full min-h-[260px] w-full object-cover"
             decoding="async"
             fetchpriority="high"
+            loading="eager"
+            width="760"
+            height="430"
+            sizes="(min-width: 1024px) 56vw, 100vw"
             on:error={handleImageError}
           />
         </div>
@@ -282,6 +286,8 @@
                   src={osmEmbedHref}
                   class="h-56 w-full"
                   loading="lazy"
+                  width="640"
+                  height="224"
                 ></iframe>
               </div>
             {/if}

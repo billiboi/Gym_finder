@@ -252,6 +252,9 @@
                 class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                 loading="lazy"
                 decoding="async"
+                width="360"
+                height="176"
+                sizes="(min-width: 1280px) 31vw, (min-width: 640px) 48vw, 100vw"
                 on:error={(event) => handleImageError(event, image)}
               />
               <span class="absolute left-3 top-3 rounded-full bg-slate-900/85 px-2.5 py-1 text-xs font-bold text-white sc-badge sc-badge--accent">

@@ -96,15 +96,27 @@ export async function GET({ fetch }) {
   try {
     const gyms = await readGyms();
     if (Array.isArray(gyms) && gyms.length > 0) {
-      return json(disciplinesFromGyms(gyms.filter((gym) => !isArchivedGym(gym))));
+      return json(disciplinesFromGyms(gyms.filter((gym) => !isArchivedGym(gym))), {
+        headers: {
+          'Cache-Control': 'public, max-age=300, stale-while-revalidate=1800'
+        }
+      });
     }
 
     const csvResponse = await fetch('/palestre.csv');
     if (!csvResponse.ok) return json([]);
 
     const csvText = await csvResponse.text();
-    return json(parseDisciplines(csvText));
+    return json(parseDisciplines(csvText), {
+      headers: {
+        'Cache-Control': 'public, max-age=300, stale-while-revalidate=1800'
+      }
+    });
   } catch {
-    return json([]);
+    return json([], {
+      headers: {
+        'Cache-Control': 'public, max-age=60, stale-while-revalidate=300'
+      }
+    });
   }
 }

@@ -8,6 +8,11 @@
   import TrustBadges from '$lib/components/TrustBadges.svelte';
   export let data;
 
+  const CLIENT_CACHE_KEY = 'palestreinzona:catalog:v1';
+  const CLIENT_CACHE_TTL = 5 * 60 * 1000;
+  const INITIAL_VISIBLE_LIMIT = 24;
+  const LOAD_MORE_STEP = 24;
+
   const popularSearches = [
     { label: 'Palestre a Varese', href: '/zone/varese' },
     { label: 'Palestre a Lugano', href: '/zone/lugano' },
@@ -145,6 +150,9 @@
   let filtersExpanded = false;
   let searchDebounceTimer = null;
   let scheduledSearchValue = '';
+  let visibleLimit = INITIAL_VISIBLE_LIMIT;
+  let catalogHydrated = Array.isArray(data?.initialGyms) && data.initialGyms.length >= (data?.catalogTotalGyms || 0);
+  let backgroundCatalogLoading = false;
 
   $: {
   filterText;
@@ -156,6 +164,8 @@
   locationRadius;
   filteredGyms = filterClientGyms(gyms);
 }
+  $: visibleGyms = filteredGyms.slice(0, visibleLimit);
+  $: hasMoreVisibleGyms = filteredGyms.length > visibleGyms.length;
   $: totalGyms = filteredGyms.length;
   $: disciplineCount = disciplines.length;
   $: locationReady = Boolean(userLocation);
@@ -175,8 +185,7 @@
   $: catalogGymCount = data?.catalogTotalGyms || gyms.length || totalGyms || 0;
   $: catalogGymLabel = catalogGymCount ? `${catalogGymCount}` : '500+';
   $: catalogDisciplineCount = Math.max(disciplineCount || 0, 57);
-
-  let csvGymsCache = null;
+  $: resultsCountLabel = !hasActiveFilters && !catalogHydrated ? catalogGymLabel : String(filteredGyms.length);
 
   if (Array.isArray(data?.initialGyms)) {
     gyms = data.initialGyms;
@@ -222,90 +231,6 @@
       }
     ];
   $: homeStructuredDataScript = jsonLdScript(homeStructuredData);
-
-  function splitCsvLine(line, delimiter = ',') {
-    const out = [];
-    let cur = '';
-    let inQuotes = false;
-
-    for (let i = 0; i < line.length; i += 1) {
-      const ch = line[i];
-      const next = line[i + 1];
-
-      if (ch === '"') {
-        if (inQuotes && next === '"') {
-          cur += '"';
-          i += 1;
-        } else {
-          inQuotes = !inQuotes;
-        }
-        continue;
-      }
-
-      if (ch === delimiter && !inQuotes) {
-        out.push(cur);
-        cur = '';
-        continue;
-      }
-
-      cur += ch;
-    }
-
-    out.push(cur);
-    return out;
-  }
-
-  function parseCsvGyms(text) {
-    const lines = String(text || '')
-      .replace(/^\uFEFF/, '')
-      .split(/\r?\n/)
-      .filter((line) => line.trim() !== '');
-
-    if (lines.length <= 1) return [];
-
-    const header = splitCsvLine(lines[0], ',').map((h) => h.trim().toLowerCase());
-    const idx = {
-      name: header.indexOf('nome palestra'),
-      disciplines: header.indexOf('discipline'),
-      address: header.indexOf('indirizzo'),
-      phone: header.indexOf('telefono'),
-      hours: header.indexOf('orari di apertura'),
-      website: header.indexOf('pagina web'),
-      lat: header.indexOf('lat'),
-      long: header.indexOf('long')
-    };
-
-    return lines
-      .slice(1)
-      .map((line, i) => {
-        const c = splitCsvLine(line, ',');
-        const fullAddress = String(c[idx.address] || '').trim();
-        const parts = fullAddress.split(',').map((p) => p.trim()).filter(Boolean);
-        const address = parts.length > 1 ? parts.slice(0, -1).join(', ') : fullAddress;
-        const city = parts.length > 1 ? parts[parts.length - 1] : '';
-        const discipline = String(c[idx.disciplines] || '').trim();
-        const latitude = Number(String(c[idx.lat] || '').trim());
-        const longitude = Number(String(c[idx.long] || '').trim());
-
-        return {
-          id: `csv-${i + 1}`,
-          name: String(c[idx.name] || '').trim(),
-          discipline,
-          disciplines: discipline
-            .split('|')
-            .map((d) => d.trim())
-            .filter(Boolean),
-          address,
-          city,
-          phone: String(c[idx.phone] || '').trim(),
-          hours_info: String(c[idx.hours] || '').trim() || 'Orari da verificare',
-          website: String(c[idx.website] || '').trim(),
-          latitude: Number.isFinite(latitude) ? latitude : null,
-          longitude: Number.isFinite(longitude) ? longitude : null
-        };
-      })
-      .filter((g) => g.name);
-  }
 
   function toRadians(degrees) {
     return (degrees * Math.PI) / 180;
@@ -509,35 +434,28 @@
     }, 140);
   }
 
-  async function getCsvGyms() {
-    if (Array.isArray(csvGymsCache)) return csvGymsCache;
-    const res = await fetch('/palestre.csv');
-    if (!res.ok) return [];
-    const text = await res.text();
-    csvGymsCache = parseCsvGyms(text);
-    return csvGymsCache;
-  }
   async function loadGyms() {
-    loadingGyms = true;
+    if (catalogHydrated || backgroundCatalogLoading) return;
+    backgroundCatalogLoading = true;
     try {
       const res = await fetch('/api/gyms');
       if (res.ok) {
         const data = await res.json();
         if (Array.isArray(data)) {
           gyms = data;
-          loadingGyms = false;
+          catalogHydrated = true;
+          backgroundCatalogLoading = false;
           return;
         }
       }
     } catch {
-      // fallback below
+      // Keep the server-rendered initial slice if hydration fails.
     }
 
-    const csvGyms = await getCsvGyms();
-    gyms = csvGyms;
-    loadingGyms = false;
+    backgroundCatalogLoading = false;
   }
   async function loadDisciplines() {
+    if (!loadingDisciplines && disciplines.length) return;
     loadingDisciplines = true;
     try {
       const res = await fetch('/api/disciplines');
@@ -550,11 +468,9 @@
         }
       }
     } catch {
-      // fallback below
+      // Keep server-rendered disciplines if the endpoint is unavailable.
     }
 
-    const csvGyms = await getCsvGyms();
-    disciplines = dedupeDisciplines(csvGyms.flatMap((gym) => disciplineListForGym(gym)));
     loadingDisciplines = false;
   }
 
@@ -599,11 +515,63 @@
     locationError = '';
     locationRadius = 20;
     nearbyOnly = true;
+    visibleLimit = INITIAL_VISIBLE_LIMIT;
   }
 
-  onMount(async () => {
+  function readCachedCatalog() {
+    try {
+      const cached = JSON.parse(sessionStorage.getItem(CLIENT_CACHE_KEY) || 'null');
+      if (!cached || Date.now() - cached.cachedAt > CLIENT_CACHE_TTL) return false;
+      if (Array.isArray(cached.gyms) && cached.gyms.length) {
+        gyms = cached.gyms;
+        catalogHydrated = true;
+      }
+      if (Array.isArray(cached.disciplines) && cached.disciplines.length) {
+        disciplines = cached.disciplines;
+        loadingDisciplines = false;
+      }
+      return catalogHydrated;
+    } catch {
+      return false;
+    }
+  }
+
+  function writeCachedCatalog() {
+    try {
+      sessionStorage.setItem(
+        CLIENT_CACHE_KEY,
+        JSON.stringify({
+          cachedAt: Date.now(),
+          gyms,
+          disciplines
+        })
+      );
+    } catch {
+      // Session storage is optional.
+    }
+  }
+
+  function scheduleCatalogHydration() {
+    const hydrate = async () => {
+      await Promise.all([loadGyms(), loadDisciplines()]);
+      if (catalogHydrated) writeCachedCatalog();
+    };
+
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(hydrate, { timeout: 1800 });
+      return;
+    }
+
+    window.setTimeout(hydrate, 900);
+  }
+
+  function showMoreGyms() {
+    visibleLimit += LOAD_MORE_STEP;
+  }
+
+  onMount(() => {
     applyUrlSearchParams();
-    await Promise.all([loadGyms(), loadDisciplines()]);
+    if (!readCachedCatalog()) scheduleCatalogHydration();
   });
 
   onDestroy(() => {
@@ -822,7 +790,7 @@
           </button>
         {/if}
         <p class="min-w-0 text-sm font-semibold text-slate-600" aria-live="polite">
-          {filteredGyms.length} palestre trovate
+          {resultsCountLabel} palestre trovate
         </p>
         {#if hasActiveFilters}
           <button type="button" class="inline-flex min-h-[2.7rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button-ghost" on:click={resetFilters}>
@@ -1033,7 +1001,7 @@
         </div>
       </div>
     {:else}
-      {#each filteredGyms as gym, i}
+      {#each visibleGyms as gym, i}
         {@const image = resolveImageSource(gym)}
         {@const disciplinePreview = disciplinePreviewForGym(gym, 4)}
         {@const phone = displayName(gym.phone)}
@@ -1055,6 +1023,9 @@
               class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
               loading="lazy"
               decoding="async"
+              width="360"
+              height="160"
+              sizes="(min-width: 1280px) 31vw, (min-width: 640px) 48vw, 100vw"
               on:error={(event) => handleImageError(event, image)}
             />
           </div>
@@ -1144,7 +1115,19 @@
       {/each}
     {/if}
   </div>
-  </section>
+
+  {#if hasMoreVisibleGyms}
+    <div class="mt-5 flex justify-center">
+      <button
+        type="button"
+        class="inline-flex min-h-[2.9rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-5 text-sm font-bold text-slate-900 transition hover:bg-slate-50"
+        on:click={showMoreGyms}
+      >
+        Mostra altre {Math.min(LOAD_MORE_STEP, filteredGyms.length - visibleGyms.length)} palestre
+      </button>
+    </div>
+  {/if}
+</section>
   </main>
 </div>
 
