@@ -13,6 +13,7 @@
 
   let q = '';
   let selectedGymId = '';
+  let appliedFormEditId = '';
   let createDisciplineInput = '';
   let qualityFilter = 'all';
   let modalDirty = false;
@@ -119,6 +120,10 @@
     return matchesQualityFilter(gym, qualityFilter);
   });
   $: selectedGym = data.gyms.find((gym) => gym.id === selectedGymId) || null;
+  $: if (form?.editId && form.editId !== appliedFormEditId) {
+    selectedGymId = form.editId;
+    appliedFormEditId = form.editId;
+  }
   $: createPreview = previewAssetsForDiscipline(createDisciplineInput);
   $: selectedPreview = selectedGym
     ? previewAssetsForDiscipline(disciplinesForGym(selectedGym).join(' | '))

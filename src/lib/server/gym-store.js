@@ -23,6 +23,7 @@ const SUPABASE_GYMS_TABLE = process.env.SUPABASE_GYMS_TABLE || 'gyms';
 
 const hasSupabaseRead = Boolean(SUPABASE_URL && SUPABASE_READ_KEY);
 const hasSupabaseWrite = Boolean(SUPABASE_URL && SUPABASE_WRITE_KEY);
+const isDevelopment = process.env.NODE_ENV === 'development';
 const RUNTIME_CACHE_KEY = '__gymfinder_runtime_gyms__';
 const SUPABASE_SCHEMA_CACHE_KEY = '__gymfinder_supabase_columns__';
 
@@ -511,6 +512,128 @@ async function upsertGymsInSupabase(gyms) {
       throw new Error(`Supabase insert failed (${insResponse.status}). ${details}`.trim());
     }
   }
+}
+
+function supabasePayloadDetails(payload) {
+  if (!payload) return '';
+  if (typeof payload === 'string') return payload;
+  return [payload?.message, payload?.details, payload?.hint].filter(Boolean).join(' ');
+}
+
+async function readSupabaseResponse(response) {
+  const text = await response.text().catch(() => '');
+  if (!text) return null;
+
+  try {
+    return JSON.parse(text);
+  } catch {
+    return text;
+  }
+}
+
+function adminUpdateFilter(normalized, availableColumns) {
+  if (availableColumns.includes('id') && normalized.id) {
+    return { column: 'id', value: normalized.id };
+  }
+
+  if (availableColumns.includes('slug') && normalized.slug) {
+    return { column: 'slug', value: normalized.slug };
+  }
+
+  throw new Error('Aggiornamento non riuscito: la tabella Supabase non espone id o slug per identificare la scheda.');
+}
+
+function adminUpdateRecord(gym, availableColumns) {
+  const normalized = normalizeGymRecord(gym, gym?.id || '');
+  const allowed = new Set(availableColumns);
+  const hasItalianSchema = ['nome', 'indirizzo', 'citta', 'orari'].some((column) => allowed.has(column));
+
+  if (!hasItalianSchema) {
+    return gymToSupabaseRecord(normalized, availableColumns);
+  }
+
+  const record = {};
+  const italianColumns = [
+    'nome',
+    'discipline',
+    'indirizzo',
+    'citta',
+    'telefono',
+    'orari',
+    'sito',
+    'descrizione',
+    'lat',
+    'lng',
+    'is_premium',
+    'is_verified',
+    'priority_score'
+  ];
+
+  for (const column of italianColumns) {
+    if (allowed.has(column) && normalized[column] !== undefined) {
+      record[column] = normalized[column];
+    }
+  }
+
+  if (allowed.has('image_url') && normalized.image_url !== undefined) {
+    record.image_url = normalized.image_url;
+  }
+
+  if (allowed.has('weekly_hours')) {
+    record.weekly_hours = normalized.weekly_hours;
+  }
+
+  return record;
+}
+
+export async function updateGymRecord(gym) {
+  if (!hasSupabaseWrite) {
+    throw new Error(
+      'Scrittura Supabase non configurata: imposta SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY nell\'ambiente corrente.'
+    );
+  }
+
+  const availableColumns = await supabaseAvailableColumns();
+  const normalized = normalizeGymRecord(gym, gym?.id || '');
+  const filter = adminUpdateFilter(normalized, availableColumns);
+  const payload = adminUpdateRecord(normalized, availableColumns);
+  const base = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}`;
+  const url = `${base}?${filter.column}=eq.${encodeURIComponent(filter.value)}`;
+
+  const response = await fetch(url, {
+    method: 'PATCH',
+    headers: supabaseHeaders(SUPABASE_WRITE_KEY, {
+      'Content-Type': 'application/json',
+      Prefer: 'return=representation'
+    }),
+    body: JSON.stringify(payload)
+  });
+
+  const responsePayload = await readSupabaseResponse(response);
+
+  if (isDevelopment) {
+    console.info('[admin-schede:update]', {
+      id: normalized.id,
+      filter,
+      payload,
+      supabase: {
+        ok: response.ok,
+        status: response.status,
+        response: responsePayload
+      }
+    });
+  }
+
+  if (!response.ok) {
+    const details = supabasePayloadDetails(responsePayload);
+    throw new Error(`Aggiornamento Supabase non riuscito (${response.status}). ${details}`.trim());
+  }
+
+  if (Array.isArray(responsePayload) && responsePayload.length === 0) {
+    throw new Error(`Aggiornamento Supabase non riuscito: nessuna scheda trovata con ${filter.column}=${filter.value}.`);
+  }
+
+  return Array.isArray(responsePayload) ? responsePayload.map((row, index) => normalizeGymRecord(row, normalized.id || `db-${index + 1}`)) : [];
 }
 
 export async function writeGymRecords(gyms) {

@@ -1,7 +1,7 @@
 import { error, fail, redirect } from '@sveltejs/kit';
 import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { canWriteSupabase, getUploadsDir, readGyms, writeGymRecords } from '$lib/server/gym-store';
+import { canWriteSupabase, getUploadsDir, readGyms, updateGymRecord } from '$lib/server/gym-store';
 
 function clean(value) {
   return String(value ?? '').trim();
@@ -130,22 +130,31 @@ export const actions = {
 
     gyms[idx] = {
       ...gyms[idx],
+      nome: name,
       name,
       discipline: disciplines[0],
       disciplines,
+      indirizzo: address,
       address,
+      citta: city,
       city,
+      telefono: clean(form.get('phone')),
       phone: clean(form.get('phone')),
+      orari: clean(form.get('hours_info')) || 'Orari da verificare',
       hours_info: clean(form.get('hours_info')) || 'Orari da verificare',
+      sito: clean(form.get('website')),
       website: clean(form.get('website')),
+      descrizione: clean(form.get('description')),
       description: clean(form.get('description')),
+      lat: toNullableNumber(form.get('latitude')),
       latitude: toNullableNumber(form.get('latitude')),
+      lng: toNullableNumber(form.get('longitude')),
       longitude: toNullableNumber(form.get('longitude')),
       image_url: imageUrl
     };
 
     try {
-      await writeGymRecords(gyms[idx]);
+      await updateGymRecord(gyms[idx]);
     } catch (err) {
       return fail(500, {
         error: err?.message || 'Errore durante il salvataggio.'

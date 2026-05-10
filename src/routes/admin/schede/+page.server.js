@@ -3,7 +3,14 @@ import { randomUUID } from 'node:crypto';
 import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { gymHref } from '$lib/gym-detail';
-import { canWriteSupabase, getUploadsDir, gymStoreStatus, readGyms, writeGymRecords } from '$lib/server/gym-store';
+import {
+  canWriteSupabase,
+  getUploadsDir,
+  gymStoreStatus,
+  readGyms,
+  updateGymRecord,
+  writeGymRecords
+} from '$lib/server/gym-store';
 import {
   adminErrorMessage,
   adminGymView,
@@ -204,12 +211,12 @@ export const actions = {
     const validationError = validateGymPayload({ name, city, disciplines, website });
 
     if (!id) return fail(400, { error: 'ID palestra mancante.' });
-    if (validationError) return fail(400, { error: validationError });
+    if (validationError) return fail(400, { error: validationError, editId: id });
 
     const gyms = await getGymsWithFallback(fetch);
     const idx = gyms.findIndex((gym) => gym.id === id);
 
-    if (idx < 0) return fail(404, { error: 'Palestra non trovata.' });
+    if (idx < 0) return fail(404, { error: 'Palestra non trovata.', editId: id });
 
     let imageUrl = gyms[idx].image_url || '';
 
@@ -220,7 +227,7 @@ export const actions = {
         imageUrl = await storeImage(uploadedImage, name);
       }
     } catch (err) {
-      return fail(400, { error: err?.message || 'Errore durante il caricamento immagine.' });
+      return fail(400, { error: err?.message || 'Errore durante il caricamento immagine.', editId: id });
     }
 
     const verified = clean(form.get('verified')) === '1';
@@ -229,19 +236,28 @@ export const actions = {
 
     gyms[idx] = {
       ...gyms[idx],
+      nome: name,
       name,
       discipline: disciplines[0],
       disciplines,
+      indirizzo: address,
       address,
+      citta: city,
       city,
+      telefono: normalizePhone(form.get('phone')),
       phone: normalizePhone(form.get('phone')),
+      orari: clean(form.get('hours_info')) || 'Orari da verificare',
       hours_info: clean(form.get('hours_info')) || 'Orari da verificare',
+      sito: website,
       website,
+      descrizione: clean(form.get('description')),
       description: clean(form.get('description')),
       verified,
       is_verified: verified,
       is_premium: premium,
+      lat: toNullableNumber(form.get('latitude')),
       latitude: toNullableNumber(form.get('latitude')),
+      lng: toNullableNumber(form.get('longitude')),
       longitude: toNullableNumber(form.get('longitude')),
       image_url: imageUrl,
       weekly_hours: {
@@ -252,9 +268,9 @@ export const actions = {
     };
 
     try {
-      await writeGymRecords(gyms[idx]);
+      await updateGymRecord(gyms[idx]);
     } catch (err) {
-      return fail(500, { error: adminErrorMessage(err, 'Salvataggio non riuscito.') });
+      return fail(500, { error: adminErrorMessage(err, 'Salvataggio non riuscito.'), editId: id });
     }
 
     if (clean(form.get('next_action')) === 'open_public') {
