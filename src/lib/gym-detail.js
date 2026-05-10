@@ -270,6 +270,9 @@ export function imageForGym(gym) {
 }
 
 export function slugifyGym(gym) {
+  const canonicalSlug = String(gym?._canonical_slug || '').trim();
+  if (canonicalSlug) return canonicalSlug;
+
   const base = fixGymText(gym?.name || 'palestra')
     .toLowerCase()
     .normalize('NFD')
@@ -278,9 +281,13 @@ export function slugifyGym(gym) {
     .replace(/^-+|-+$/g, '')
     .replace(/-{2,}/g, '-');
 
-  const fallback = base || 'palestra';
+  return base || 'palestra';
+}
+
+export function legacySlugifyGym(gym) {
+  const base = slugifyGym({ ...gym, _canonical_slug: '' });
   const id = String(gym?.id || '').trim();
-  return id ? `${fallback}-${id}` : fallback;
+  return id ? `${base}-${id}` : base;
 }
 
 export function gymHref(gym) {

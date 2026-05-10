@@ -281,6 +281,85 @@ function normalizeGymRecord(gym, fallbackId) {
   );
 }
 
+function slugPart(value) {
+  return (
+    repairMojibake(value)
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .replace(/-{2,}/g, '-') || ''
+  );
+}
+
+function baseGymSlug(gym) {
+  return slugPart(gym?.name || gym?.nome) || 'palestra';
+}
+
+function citySlugForGym(gym) {
+  return slugPart(gym?.city || gym?.citta);
+}
+
+function streetSlugForGym(gym) {
+  return slugPart(String(gym?.address || gym?.indirizzo || '').split(',')[0]);
+}
+
+function joinSlugParts(parts) {
+  return parts.filter(Boolean).join('-').replace(/-{2,}/g, '-').replace(/^-+|-+$/g, '') || 'palestra';
+}
+
+function canonicalSlugCandidates(gym, base, duplicateGroup) {
+  if (!duplicateGroup) return [base];
+
+  const city = citySlugForGym(gym);
+  const street = streetSlugForGym(gym);
+  const cityPart = city && !base.includes(city) ? city : '';
+
+  return [
+    joinSlugParts([base, cityPart]),
+    joinSlugParts([base, cityPart, street]),
+    joinSlugParts([base, street])
+  ].filter((value, index, list) => value && list.indexOf(value) === index);
+}
+
+function withCanonicalGymSlugs(gyms) {
+  const normalized = gyms.map((gym) => ({ ...gym }));
+  const groups = new Map();
+
+  for (const gym of normalized) {
+    const base = baseGymSlug(gym);
+    if (!groups.has(base)) groups.set(base, []);
+    groups.get(base).push(gym);
+  }
+
+  const used = new Set();
+
+  for (const [base, group] of groups) {
+    const duplicateGroup = group.length > 1;
+
+    group.forEach((gym, index) => {
+      const candidates = canonicalSlugCandidates(gym, base, duplicateGroup);
+      let slug = candidates.find((candidate) => !used.has(candidate));
+
+      if (!slug) {
+        const fallbackBase = candidates[candidates.length - 1] || base;
+        let suffix = index + 1;
+        do {
+          slug = `${fallbackBase}-${suffix}`;
+          suffix += 1;
+        } while (used.has(slug));
+      }
+
+      used.add(slug);
+      gym._canonical_slug = slug;
+      gym._legacy_slug = gym?.id ? `${base}-${String(gym.id).trim()}` : base;
+    });
+  }
+
+  return normalized;
+}
+
 function gymsFromCsv(csvText) {
   const lines = csvText
     .replace(/^\uFEFF/, '')
@@ -660,14 +739,14 @@ export async function writeGymRecords(gyms) {
 export async function readGyms() {
   const runtimeGyms = getRuntimeGyms();
   if (runtimeGyms && runtimeGyms.length > 0) {
-    return runtimeGyms;
+    return withCanonicalGymSlugs(runtimeGyms);
   }
 
   if (hasSupabaseRead) {
     try {
       const dbGyms = await readGymsFromSupabase();
       if (Array.isArray(dbGyms) && dbGyms.length > 0) {
-        return dbGyms.filter((gym) => !isExcludedGymRecord(gym));
+        return withCanonicalGymSlugs(dbGyms.filter((gym) => !isExcludedGymRecord(gym)));
       }
     } catch {
       // fallback below
@@ -683,7 +762,7 @@ export async function readGyms() {
       const csvRaw = await readFile(candidatePath, 'utf-8');
       const csvGyms = gymsFromCsv(csvRaw);
       if (csvGyms.length > 0) {
-        return csvGyms.filter((gym) => !isExcludedGymRecord(gym));
+        return withCanonicalGymSlugs(csvGyms.filter((gym) => !isExcludedGymRecord(gym)));
       }
     } catch {
       // try next source
@@ -694,9 +773,11 @@ export async function readGyms() {
     const raw = await readFile(dataFilePath, 'utf-8');
     const gyms = JSON.parse(raw);
     return Array.isArray(gyms)
-      ? gyms
-          .map((gym, index) => normalizeGymRecord(gym, `json-${index + 1}`))
-          .filter((gym) => !isExcludedGymRecord(gym))
+      ? withCanonicalGymSlugs(
+          gyms
+            .map((gym, index) => normalizeGymRecord(gym, `json-${index + 1}`))
+            .filter((gym) => !isExcludedGymRecord(gym))
+        )
       : [];
   } catch {
     return [];

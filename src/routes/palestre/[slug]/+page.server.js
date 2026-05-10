@@ -1,6 +1,6 @@
-import { error } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 import { readGyms } from '$lib/server/gym-store';
-import { cityLabelForGym, isIndexableGym, primaryDisciplineForGym, slugifyGym } from '$lib/gym-detail';
+import { cityLabelForGym, isIndexableGym, legacySlugifyGym, primaryDisciplineForGym, slugifyGym } from '$lib/gym-detail';
 import { seoLocationForGym } from '$lib/seo-locations';
 import { seoDisciplineForGym } from '$lib/seo-disciplines';
 
@@ -20,7 +20,12 @@ function publicDetailGym(gym) {
 
 export async function load({ params }) {
   const gyms = await readGyms();
-  const gym = gyms.find((item) => slugifyGym(item) === params.slug);
+  let gym = gyms.find((item) => slugifyGym(item) === params.slug);
+  const legacyGym = gym ? null : gyms.find((item) => legacySlugifyGym(item) === params.slug || item?._legacy_slug === params.slug);
+
+  if (legacyGym) {
+    throw redirect(301, `/palestre/${slugifyGym(legacyGym)}`);
+  }
 
   if (!gym || !isIndexableGym(gym)) {
     throw error(404, 'Palestra non trovata');
@@ -57,7 +62,7 @@ export async function load({ params }) {
 
   return {
     gym: publicDetailGym(gym),
-    gymSlug: params.slug,
+    gymSlug: slugifyGym(gym),
     relatedGyms: relatedGyms.map(publicDetailGym),
     relatedLocation: seoLocationForGym(gym) || dynamicLocation,
     relatedDiscipline: seoDisciplineForGym(gym) || dynamicDiscipline

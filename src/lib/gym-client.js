@@ -1,6 +1,7 @@
 export function publicClientGym(gym) {
   return {
     id: gym.id,
+    _canonical_slug: gym._canonical_slug,
     name: gym.name,
     discipline: gym.discipline,
     disciplines: gym.disciplines,
