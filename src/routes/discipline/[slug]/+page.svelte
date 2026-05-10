@@ -1,5 +1,5 @@
 <script>
-  import { disciplinePreviewForGym, gymHref, imageForGym } from '$lib/gym-detail';
+  import { disciplinePreviewForGym, gymHref, imageForGym, isPremiumGym, isVerifiedGym } from '$lib/gym-detail';
   import { slugifySeoName } from '$lib/seo-directory';
   import { absoluteUrl, SITE_NAME, jsonLdScript } from '$lib/site';
   import { editorialGuideHref } from '$lib/editorial';
@@ -261,6 +261,8 @@
         {#each gyms as gym, i}
           {@const image = imageMetaForGym(gym)}
           {@const disciplinePreview = disciplinePreviewForGym(gym, 4)}
+          {@const verified = isVerifiedGym(gym)}
+          {@const premium = isPremiumGym(gym)}
           <article class="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl sc-card sc-gym-card" style={`animation-delay:${i * 20}ms`}>
             <div class="relative h-44 overflow-hidden">
               <img
@@ -293,6 +295,12 @@
                     {#if disciplinePreview.remaining}
                       <span class="rounded-full px-2.5 py-1 text-[11px] font-semibold sc-discipline-chip sc-discipline-chip--muted">+{disciplinePreview.remaining}</span>
                     {/if}
+                  {/if}
+                  {#if verified}
+                    <span class="rounded-full bg-emerald-100 px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-800">Verificata</span>
+                  {/if}
+                  {#if premium}
+                    <span class="rounded-full bg-sky-100 px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-sky-800">Premium</span>
                   {/if}
                 </div>
               </div>

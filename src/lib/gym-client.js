@@ -16,6 +16,9 @@ export function publicClientGym(gym) {
     monthly_price: gym.monthly_price,
     monthlyPrice: gym.monthlyPrice,
     image_url: gym.image_url,
+    verified: gym.verified,
+    is_verified: gym.is_verified,
+    is_premium: gym.is_premium,
     is_open_now: gym.is_open_now,
     distance_km: gym.distance_km
   };

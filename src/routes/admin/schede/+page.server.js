@@ -151,6 +151,9 @@ export const actions = {
       return fail(400, { createError: err?.message || 'Errore durante il caricamento immagine.' });
     }
 
+    const verified = clean(form.get('verified')) === '1';
+    const premium = clean(form.get('premium')) === '1';
+
     const nextGym = {
       id: `gym-${randomUUID()}`,
       name,
@@ -162,11 +165,16 @@ export const actions = {
       hours_info: clean(form.get('hours_info')) || 'Orari da verificare',
       website,
       description: clean(form.get('description')),
-      verified: clean(form.get('verified')) === '1',
+      verified,
+      is_verified: verified,
+      is_premium: premium,
       latitude: toNullableNumber(form.get('latitude')),
       longitude: toNullableNumber(form.get('longitude')),
       image_url: imageUrl,
-      weekly_hours: {}
+      weekly_hours: {
+        _verified: verified,
+        _is_premium: premium
+      }
     };
 
     try {
@@ -215,6 +223,10 @@ export const actions = {
       return fail(400, { error: err?.message || 'Errore durante il caricamento immagine.' });
     }
 
+    const verified = clean(form.get('verified')) === '1';
+    const premium = clean(form.get('premium')) === '1';
+    const weeklyHours = gyms[idx]?.weekly_hours && typeof gyms[idx].weekly_hours === 'object' ? gyms[idx].weekly_hours : {};
+
     gyms[idx] = {
       ...gyms[idx],
       name,
@@ -226,10 +238,17 @@ export const actions = {
       hours_info: clean(form.get('hours_info')) || 'Orari da verificare',
       website,
       description: clean(form.get('description')),
-      verified: clean(form.get('verified')) === '1',
+      verified,
+      is_verified: verified,
+      is_premium: premium,
       latitude: toNullableNumber(form.get('latitude')),
       longitude: toNullableNumber(form.get('longitude')),
-      image_url: imageUrl
+      image_url: imageUrl,
+      weekly_hours: {
+        ...weeklyHours,
+        _verified: verified,
+        _is_premium: premium
+      }
     };
 
     try {

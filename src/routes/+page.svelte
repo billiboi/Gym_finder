@@ -1,7 +1,7 @@
 <script>
   import { onDestroy, onMount } from 'svelte';
   import { dedupeDisciplines, normalizeDisciplineLabel } from '$lib/disciplines';
-  import { disciplinePreviewForGym, gymHref, imageForGym, officialGymOverride } from '$lib/gym-detail';
+  import { disciplinePreviewForGym, gymHref, imageForGym, isPremiumGym, isVerifiedGym, officialGymOverride } from '$lib/gym-detail';
   import { isGymOpenNow } from '$lib/hours';
   import { SITE_DESCRIPTION, SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
   import { repairMojibake } from '$lib/text-repair';
@@ -1007,6 +1007,8 @@
         {@const phone = displayName(gym.phone)}
         {@const phoneLink = phoneHref(gym.phone)}
         {@const hasWebsite = Boolean(displayName(gym.website))}
+        {@const verified = isVerifiedGym(gym)}
+        {@const premium = isPremiumGym(gym)}
         {@const openLabel = gym.is_open_now === true ? 'Aperta ora' : gym.is_open_now === false ? 'Chiusa ora' : 'Orari n/d'}
         {@const openClass = gym.is_open_now === true ? 'sc-status-pill--open' : gym.is_open_now === false ? 'sc-status-pill--closed' : 'sc-status-pill--muted'}
         {@const hours = hoursForCard(gym.hours_info)}
@@ -1045,6 +1047,12 @@
                   {/if}
                   {#if displayName(gym.city)}
                     <span class="rounded-full bg-slate-100 px-2.5 py-1">{displayName(gym.city)}</span>
+                  {/if}
+                  {#if verified}
+                    <span class="rounded-full bg-emerald-100 px-2.5 py-1 text-emerald-800">Verificata</span>
+                  {/if}
+                  {#if premium}
+                    <span class="rounded-full bg-sky-100 px-2.5 py-1 text-sky-800">Premium</span>
                   {/if}
                 </div>
                 <div class="flex flex-wrap gap-2 sc-discipline-list">

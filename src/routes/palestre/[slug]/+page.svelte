@@ -9,6 +9,8 @@
     gymHref,
     imageForGym,
     isIndexableGym,
+    isPremiumGym,
+    isVerifiedGym,
     officialGymOverride,
     primaryDisciplineForGym,
     structuredAddressForGym
@@ -48,6 +50,8 @@
   $: ({ gym, relatedGyms = [], relatedLocation, relatedDiscipline } = data);
   $: officialOverride = officialGymOverride(gym);
   $: disciplines = disciplineListForGym(gym);
+  $: isVerified = isVerifiedGym(gym);
+  $: isPremium = isPremiumGym(gym);
   $: primaryDiscipline = primaryDisciplineForGym(gym);
   $: editorialSummary = fixGymText(gym?.editorial_summary);
   $: editorialHighlights = textArray(gym?.editorial_highlights);
@@ -241,6 +245,12 @@
                   {discipline}
                 </span>
               {/each}
+              {#if isVerified}
+                <span class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-emerald-900 sc-badge">Verificata</span>
+              {/if}
+              {#if isPremium}
+                <span class="rounded-full bg-sky-100 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-sky-900 sc-badge">Premium</span>
+              {/if}
             </div>
 
             <div class="rounded-3xl sc-detail-hero p-3.5 lg:p-4">

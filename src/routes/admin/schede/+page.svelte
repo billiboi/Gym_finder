@@ -356,6 +356,18 @@
         </label>
       </div>
 
+      <section class="grid gap-2 rounded-2xl border border-slate-200 bg-white p-4">
+        <h3 class="text-sm font-bold uppercase tracking-[0.18em] text-slate-500">Stato scheda</h3>
+        <label class="inline-flex items-center gap-2 text-sm font-semibold text-slate-700">
+          <input type="checkbox" name="verified" value="1" />
+          Scheda verificata
+        </label>
+        <label class="inline-flex items-center gap-2 text-sm font-semibold text-slate-700">
+          <input type="checkbox" name="premium" value="1" />
+          Scheda premium
+        </label>
+      </section>
+
       <button type="submit" class="mt-2 rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700">
         Crea scheda
       </button>
@@ -600,6 +612,10 @@
             <label class="inline-flex items-center gap-2 text-sm font-semibold text-slate-700">
               <input type="checkbox" name="verified" value="1" checked={selectedGym.verified} />
               Scheda verificata
+            </label>
+            <label class="inline-flex items-center gap-2 text-sm font-semibold text-slate-700">
+              <input type="checkbox" name="premium" value="1" checked={selectedGym.premium} />
+              Scheda premium
             </label>
             <div class="flex flex-wrap gap-2 text-xs font-bold">
               {#if selectedGym.premium}

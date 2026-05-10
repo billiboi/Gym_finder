@@ -84,6 +84,14 @@ export function primaryDisciplineForGym(gym) {
   return disciplineListForGym(gym)[0] || 'Fitness';
 }
 
+export function isVerifiedGym(gym) {
+  return Boolean(gym?.verified || gym?.is_verified || gym?.weekly_hours?._verified);
+}
+
+export function isPremiumGym(gym) {
+  return Boolean(gym?.is_premium || gym?.weekly_hours?._is_premium);
+}
+
 export function disciplinePreviewForGym(gym, max = 3) {
   const list = disciplineListForGym(gym);
   return {
