@@ -1,5 +1,6 @@
 <script>
   import { page } from '$app/stores';
+  import BrandMark from '$lib/components/BrandMark.svelte';
 
   $: path = $page.url.pathname;
   $: isHome = path === '/';
@@ -17,9 +18,7 @@
     <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
       <div class="sc-header-top flex items-center justify-between gap-3">
       <a href="/" class="inline-flex min-w-0 max-w-full items-center gap-3">
-        <span class="min-w-0">
-          <span class="block text-[10px] font-bold uppercase tracking-[0.28em] text-emerald-800 sm:text-xs">Palestre in Zona</span>
-        </span>
+        <BrandMark />
       </a>
       </div>
 
@@ -39,6 +38,12 @@
         </a>
         <a href="/discipline" class={navClass()}>
           Discipline
+        </a>
+        <a href="/guide" class={navClass()}>
+          Guide
+        </a>
+        <a href="/chi-siamo" class={navClass()}>
+          Chi siamo
         </a>
         <a href="/per-le-palestre" class={`sc-header-link sc-header-business-link sc-ui-pill sc-ui-pill--primary px-3.5 py-2 text-sm ${showReturnToList ? 'sc-header-business-link--secondary' : ''}`}>
           Per le palestre

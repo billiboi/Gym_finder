@@ -56,6 +56,19 @@
 
     <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
       <div class="max-w-4xl">
+        <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Guide editoriali</p>
+        <h2 class="mt-1 text-2xl font-bold text-slate-900">Non sai da quale disciplina partire?</h2>
+        <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
+          Le guide aiutano a confrontare obiettivi, logistica e differenze tra corsi prima di aprire le schede delle palestre.
+        </p>
+        <a href="/guide" class="mt-4 inline-flex min-h-[2.75rem] items-center rounded-xl bg-slate-900 px-4 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
+          Apri le guide
+        </a>
+      </div>
+    </section>
+
+    <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+      <div class="max-w-4xl">
         <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Pagine prioritarie</p>
         <h2 class="mt-1 text-2xl font-bold text-slate-900">Discipline con pagina dedicata</h2>
         <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">

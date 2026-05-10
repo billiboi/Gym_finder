@@ -4,6 +4,7 @@ import { slugifySeoName } from '$lib/seo-directory';
 import { readGyms } from '$lib/server/gym-store';
 import { getSeoDiscipline, gymsForSeoDiscipline } from '$lib/seo-disciplines';
 import { dedupeDisciplines } from '$lib/disciplines';
+import { relatedGuidesForDiscipline } from '$lib/editorial';
 
 export async function load({ params }) {
   const gyms = await readGyms();
@@ -40,6 +41,7 @@ export async function load({ params }) {
 
   return {
     discipline,
-    gyms: matchedGyms
+    gyms: matchedGyms,
+    relatedGuides: relatedGuidesForDiscipline(discipline.slug)
   };
 }

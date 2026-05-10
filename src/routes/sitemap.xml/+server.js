@@ -2,6 +2,7 @@ import { isIndexableGym, slugifyGym } from '$lib/gym-detail';
 import { readGyms } from '$lib/server/gym-store';
 import { SITE_URL } from '$lib/site';
 import { buildSeoDisciplineEntries, buildSeoLocationEntries } from '$lib/seo-directory';
+import { EDITORIAL_GUIDES, editorialGuideHref } from '$lib/editorial';
 
 function escapeXml(value) {
   return String(value || '')
@@ -25,6 +26,9 @@ export async function GET() {
     { loc: `${SITE_URL}/`, changefreq: 'daily', priority: '1.0', lastmod: today },
     { loc: `${SITE_URL}/zone`, changefreq: 'weekly', priority: '0.8', lastmod: today },
     { loc: `${SITE_URL}/discipline`, changefreq: 'weekly', priority: '0.8', lastmod: today },
+    { loc: `${SITE_URL}/guide`, changefreq: 'weekly', priority: '0.7', lastmod: today },
+    { loc: `${SITE_URL}/chi-siamo`, changefreq: 'monthly', priority: '0.5', lastmod: today },
+    { loc: `${SITE_URL}/verifica-schede`, changefreq: 'monthly', priority: '0.5', lastmod: today },
     { loc: `${SITE_URL}/contatti`, changefreq: 'monthly', priority: '0.4', lastmod: today },
     { loc: `${SITE_URL}/per-le-palestre`, changefreq: 'monthly', priority: '0.7', lastmod: today },
     { loc: `${SITE_URL}/privacy`, changefreq: 'yearly', priority: '0.2', lastmod: today },
@@ -54,8 +58,15 @@ export async function GET() {
     lastmod: lastmodForGym(gym)
   }));
 
+  const guideEntries = EDITORIAL_GUIDES.map((guide) => ({
+    loc: `${SITE_URL}${editorialGuideHref(guide)}`,
+    changefreq: 'monthly',
+    priority: '0.7',
+    lastmod: guide.updatedAt || today
+  }));
+
   const seen = new Set();
-  const urls = [...staticEntries, ...locationEntries, ...disciplineEntries, ...gymEntries].filter((entry) => {
+  const urls = [...staticEntries, ...locationEntries, ...disciplineEntries, ...guideEntries, ...gymEntries].filter((entry) => {
     if (seen.has(entry.loc)) return false;
     seen.add(entry.loc);
     return true;

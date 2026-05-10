@@ -5,6 +5,7 @@
   import { isGymOpenNow } from '$lib/hours';
   import { SITE_DESCRIPTION, SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
   import { repairMojibake } from '$lib/text-repair';
+  import TrustBadges from '$lib/components/TrustBadges.svelte';
   export let data;
 
   const popularSearches = [
@@ -660,6 +661,12 @@
             >
               Per proprietari
             </a>
+            <a
+              href="/verifica-schede"
+              class="inline-flex min-h-[3rem] items-center justify-center rounded-2xl border border-slate-200 bg-white px-5 text-sm font-bold text-slate-900 transition hover:bg-slate-50 sc-hero-secondary-cta"
+            >
+              Metodo verifica
+            </a>
           </div>
         </div>
 
@@ -674,6 +681,19 @@
       <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
         Palestre in Zona ti aiuta a cercare palestre nella tua città, confrontare corsi e discipline disponibili e trovare rapidamente contatti, orari e informazioni utili. Puoi cercare per zona, distanza o tipo di allenamento e scegliere la palestra più adatta alle tue esigenze.
       </p>
+    </div>
+  </section>
+
+  <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+    <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+      <div class="max-w-3xl">
+        <p class="text-xs font-bold uppercase tracking-[0.22em] text-emerald-800">Fiducia</p>
+        <h2 class="mt-2 text-2xl font-bold leading-tight text-slate-900 sm:text-3xl">Dati leggibili, correzioni controllate, recensioni non inventate</h2>
+      </div>
+      <a href="/verifica-schede" class="inline-flex min-h-[2.75rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-bold text-slate-900 transition hover:bg-slate-50">Come funziona</a>
+    </div>
+    <div class="mt-5">
+      <TrustBadges />
     </div>
   </section>
 

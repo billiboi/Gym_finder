@@ -2,10 +2,11 @@
   import { disciplinePreviewForGym, gymHref, imageForGym } from '$lib/gym-detail';
   import { slugifySeoName } from '$lib/seo-directory';
   import { absoluteUrl, SITE_NAME, jsonLdScript } from '$lib/site';
+  import { editorialGuideHref } from '$lib/editorial';
 
   export let data;
 
-  const { discipline, gyms } = data;
+  const { discipline, gyms, relatedGuides = [] } = data;
   const pageUrl = absoluteUrl(`/discipline/${discipline.slug}`);
   const title = `${discipline.title} | ${SITE_NAME}`;
   const description = `${discipline.description} ${gyms.length} schede pubbliche in catalogo.`;
@@ -202,6 +203,27 @@
           {#each cityLinks as item}
             <a href={item.href} class="inline-flex min-h-[2.75rem] items-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-bold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50">
               {item.city}
+            </a>
+          {/each}
+        </div>
+      </section>
+    {/if}
+
+    {#if relatedGuides.length}
+      <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+        <div class="max-w-4xl">
+          <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Guide collegate</p>
+          <h2 class="mt-1 text-2xl font-bold text-slate-900">Approfondisci prima di scegliere</h2>
+          <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
+            Questi contenuti spiegano differenze, criteri e controlli pratici legati a {discipline.name}, con link diretti alle pagine utili del catalogo.
+          </p>
+        </div>
+        <div class="mt-5 grid gap-3 sm:grid-cols-3">
+          {#each relatedGuides as guide}
+            <a href={editorialGuideHref(guide)} class="rounded-2xl border border-slate-200 bg-white/90 p-4 transition hover:-translate-y-0.5 hover:shadow-md">
+              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">{guide.readingMinutes} min</p>
+              <h3 class="mt-2 text-base font-bold leading-tight text-slate-900">{guide.title}</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-600">{guide.description}</p>
             </a>
           {/each}
         </div>

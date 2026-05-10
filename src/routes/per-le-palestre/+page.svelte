@@ -1,5 +1,7 @@
 <script>
   import { SITE_CONTACT_EMAIL, SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
+  import ReviewPrinciples from '$lib/components/ReviewPrinciples.svelte';
+  import TrustBadges from '$lib/components/TrustBadges.svelte';
 
   export let form;
 
@@ -317,6 +319,26 @@
         </form>
       </section>
     </section>
+
+    <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+      <div class="max-w-3xl">
+        <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Trust</p>
+        <h2 class="mt-2 text-3xl font-bold text-slate-950">Visibilita senza perdere credibilita</h2>
+        <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
+          Le schede migliori sono complete, verificabili e sobrie. La parte commerciale migliora la presentazione, non sostituisce i controlli sui dati.
+        </p>
+      </div>
+      <div class="mt-5">
+        <TrustBadges />
+      </div>
+    </section>
+
+    <div class="mt-5">
+      <ReviewPrinciples
+        title="Recensioni, reputazione e scheda pubblica"
+        intro="Una palestra puo avere ottime recensioni e dati confusi, oppure dati chiari e poche recensioni. Per questo separiamo reputazione, contatti e informazioni verificabili."
+      />
+    </div>
 
     <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
       <div class="max-w-3xl">

@@ -1,5 +1,6 @@
 <script>
   import { SITE_CONTACT_EMAIL, SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
+  import TrustBadges from '$lib/components/TrustBadges.svelte';
 
   export let data;
   export let form;
@@ -161,6 +162,19 @@
         <p class="mt-3 text-sm leading-7 text-slate-700 sm:text-base">{form.error}</p>
       </section>
     {/if}
+
+    <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+      <div class="max-w-3xl">
+        <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Processo protetto</p>
+        <h2 class="mt-2 text-2xl font-bold text-slate-900">La richiesta non cambia subito la scheda pubblica</h2>
+        <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
+          Prima verifichiamo email, ruolo e coerenza dei dati. Questo protegge utenti, proprietari e catalogo.
+        </p>
+      </div>
+      <div class="mt-5">
+        <TrustBadges dense={true} />
+      </div>
+    </section>
 
     <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
       <div class="grid gap-4 md:grid-cols-2">
