@@ -1,5 +1,8 @@
 import { fail } from '@sveltejs/kit';
 import { createClaimRequest } from '$lib/server/claim-request-store';
+import { dedupeDisciplines } from '$lib/disciplines';
+import { isArchivedGym } from '$lib/admin/gyms';
+import { readGyms } from '$lib/server/gym-store';
 
 const ALLOWED_PLANS = new Set(['Scheda verificata', 'Scheda premium', 'Partner locale']);
 
@@ -10,6 +13,25 @@ function clean(value) {
 function normalizePlan(value) {
   const plan = clean(value);
   return ALLOWED_PLANS.has(plan) ? plan : 'Scheda verificata';
+}
+
+export async function load() {
+  const gyms = (await readGyms()).filter((gym) => !isArchivedGym(gym));
+  const disciplines = dedupeDisciplines(
+    gyms.flatMap((gym) =>
+      Array.isArray(gym?.disciplines) && gym.disciplines.length
+        ? gym.disciplines
+        : String(gym?.discipline || '')
+            .split('|')
+            .map((value) => value.trim())
+            .filter(Boolean)
+    )
+  );
+
+  return {
+    catalogTotalGyms: gyms.length,
+    catalogTotalDisciplines: disciplines.length
+  };
 }
 
 export const actions = {

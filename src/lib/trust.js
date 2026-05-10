@@ -18,8 +18,8 @@ export const TRUST_BADGES = [
 ];
 
 export const BRAND_PROOF_ITEMS = [
-  { value: '683', label: 'schede nel catalogo attivo' },
-  { value: '57+', label: 'discipline normalizzate' },
+  { key: 'catalog_total', value: '680+', label: 'schede nel catalogo attivo' },
+  { key: 'discipline_total', value: '57+', label: 'discipline normalizzate' },
   { value: 'Manuale', label: 'controllo sulle richieste proprietario' }
 ];
 

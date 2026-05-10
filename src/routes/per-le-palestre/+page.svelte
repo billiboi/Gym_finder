@@ -2,6 +2,7 @@
   import { SITE_CONTACT_EMAIL, SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
   import TrustBadges from '$lib/components/TrustBadges.svelte';
 
+  export let data;
   export let form;
 
   const pageUrl = absoluteUrl('/per-le-palestre');
@@ -40,9 +41,9 @@
     }
   ];
 
-  const proofItems = [
-    { value: '683', label: 'schede palestra nel catalogo' },
-    { value: '57+', label: 'discipline organizzate' },
+  $: proofItems = [
+    { value: data?.catalogTotalGyms ? String(data.catalogTotalGyms) : '680+', label: 'schede palestra nel catalogo' },
+    { value: data?.catalogTotalDisciplines ? `${data.catalogTotalDisciplines}+` : '57+', label: 'discipline organizzate' },
     { value: 'SEO', label: 'pagine per zone, discipline e schede' }
   ];
 

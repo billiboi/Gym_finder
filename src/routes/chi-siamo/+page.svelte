@@ -4,6 +4,18 @@
   import { BRAND_PROOF_ITEMS } from '$lib/trust';
   import { SITE_CONTACT_EMAIL, SITE_CONTACT_MAILTO, SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
 
+  export let data;
+
+  $: proofItems = BRAND_PROOF_ITEMS.map((item) => {
+    if (item.key === 'catalog_total') {
+      return { ...item, value: data?.catalogTotalGyms ? String(data.catalogTotalGyms) : item.value };
+    }
+    if (item.key === 'discipline_total') {
+      return { ...item, value: data?.catalogTotalDisciplines ? `${data.catalogTotalDisciplines}+` : item.value };
+    }
+    return item;
+  });
+
   const pageUrl = absoluteUrl('/chi-siamo');
   const title = `Chi siamo | ${SITE_NAME}`;
   const description =
@@ -51,7 +63,7 @@
           </p>
         </div>
         <div class="grid gap-3 rounded-3xl bg-emerald-950 p-4 text-white">
-          {#each BRAND_PROOF_ITEMS as item}
+          {#each proofItems as item}
             <div class="rounded-2xl border border-white/10 bg-white/10 p-4">
               <p class="text-3xl font-black leading-none">{item.value}</p>
               <p class="mt-2 text-sm font-semibold leading-6 text-emerald-50">{item.label}</p>
