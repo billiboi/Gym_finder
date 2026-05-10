@@ -232,9 +232,13 @@ function toBoolean(value) {
 
 function normalizeGymRecord(gym, fallbackId) {
   const { address, city } = normalizeAddressAndCity(gym?.indirizzo || gym?.address, gym?.citta || gym?.city);
-  const disciplines = Array.isArray(gym?.disciplines)
-    ? gym.disciplines.map((d) => repairMojibake(d).trim()).filter(Boolean)
-    : disciplinesFromField(gym?.discipline);
+  const disciplineListSource =
+    Array.isArray(gym?.disciplines) && gym.disciplines.length
+      ? gym.disciplines
+      : gym?.discipline;
+  const disciplines = Array.isArray(disciplineListSource)
+    ? disciplineListSource.map((d) => repairMojibake(d).trim()).filter(Boolean)
+    : disciplinesFromField(disciplineListSource);
   const weeklyHours =
     gym?.weekly_hours && typeof gym.weekly_hours === 'object' && !Array.isArray(gym.weekly_hours)
       ? gym.weekly_hours
@@ -247,7 +251,7 @@ function normalizeGymRecord(gym, fallbackId) {
       id: String(gym?.id || fallbackId),
       name: repairMojibake(gym?.nome || gym?.name).trim(),
     disciplines,
-    discipline: repairMojibake(gym?.discipline || primaryDiscipline(disciplines)).trim() || 'Fitness',
+    discipline: primaryDiscipline(disciplines),
     address,
     city,
       phone: repairMojibake(gym?.telefono || gym?.phone).trim(),
@@ -555,6 +559,7 @@ function adminUpdateRecord(gym, availableColumns) {
   const record = {};
   const italianColumns = [
     'nome',
+    'disciplines',
     'discipline',
     'indirizzo',
     'citta',
