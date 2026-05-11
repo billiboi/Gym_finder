@@ -101,7 +101,7 @@
       officialMonthlyPrice ? `Prezzo indicato: ${officialMonthlyPrice}.` : '',
       `Indirizzo, contatti, orari e scheda completa su ${SITE_NAME}.`
     ]);
-  $: claimHref = `/rivendica-scheda?gym=${encodeURIComponent(fixGymText(gym?.name))}&url=${encodeURIComponent(pageUrl)}&reason=${encodeURIComponent('Rivendicazione scheda')}`;
+  $: claimHref = `/rivendica-scheda?gym=${encodeURIComponent(fixGymText(gym?.name))}&url=${encodeURIComponent(pageUrl)}&reason=${encodeURIComponent('Rivendicazione scheda')}&gym_id=${encodeURIComponent(gym?.id || '')}`;
 
   $: detailStructuredData = [
     {
@@ -540,7 +540,7 @@
           <div>
             <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Gestisci questa palestra</p>
             <h2 class="mt-2 text-xl font-bold text-slate-900">Richiedi accesso proprietario</h2>
-            <p class="mt-3 text-sm leading-7 text-slate-600 sc-detail-copy">Verifica email, approval admin e dashboard proprietario prima di qualsiasi modifica pubblica.</p>
+            <p class="mt-3 text-sm leading-7 text-slate-600 sc-detail-copy">Aggiornare la scheda base &egrave; gratuito e non comporta obblighi pubblicitari.</p>
           </div>
 
           <div class="mt-4 grid gap-2 text-sm font-semibold text-slate-700">

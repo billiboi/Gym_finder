@@ -58,8 +58,11 @@ function safeJson(value, fallback) {
 function normalizeStatus(value) {
   const status = clean(value).toLowerCase();
   if (status === 'new' || status === 'reviewed') return 'pending';
-  if (status === 'resolved') return 'approved';
-  return ['pending', 'approved', 'rejected'].includes(status) ? status : 'pending';
+  if (['in_review', 'in revisione', 'review', 'reviewing'].includes(status)) return 'in_review';
+  if (['resolved', 'risolta', 'risolto'].includes(status)) return 'resolved';
+  if (['approve', 'approvata', 'approvato'].includes(status)) return 'approved';
+  if (['reject', 'rifiutata', 'rifiutato'].includes(status)) return 'rejected';
+  return ['pending', 'in_review', 'approved', 'rejected', 'resolved'].includes(status) ? status : 'pending';
 }
 
 function supabaseHeaders(extra = {}) {
@@ -380,9 +383,9 @@ export async function verifyClaimEmail(verificationToken) {
   return updateClaimRequestInFile(current.id, patch);
 }
 
-export async function updateClaimRequestStatus(id, status, adminNotes = '') {
+export async function updateClaimRequestStatus(id, status, adminNotes = '', extraPatch = {}) {
   const normalizedStatus = normalizeStatus(status);
-  if (!['pending', 'approved', 'rejected'].includes(normalizedStatus)) {
+  if (!['pending', 'in_review', 'approved', 'rejected', 'resolved'].includes(normalizedStatus)) {
     throw new Error('Stato richiesta non valido.');
   }
 
@@ -391,6 +394,7 @@ export async function updateClaimRequestStatus(id, status, adminNotes = '') {
   if (!current) throw new Error('Richiesta non trovata.');
 
   const patch = {
+    ...extraPatch,
     status: normalizedStatus,
     admin_notes: clean(adminNotes) || current.admin_notes,
     updated_at: nowIso()

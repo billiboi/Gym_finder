@@ -29,10 +29,12 @@ export async function load({ fetch }) {
     ).length
   };
   const requestStats = {
-    new: requests.filter((request) => (request.status || 'new') === 'new').length,
-    reviewed: requests.filter((request) => request.status === 'reviewed').length,
+    pending: requests.filter((request) => (request.status || 'pending') === 'pending').length,
+    inReview: requests.filter((request) => request.status === 'in_review').length,
+    approved: requests.filter((request) => request.status === 'approved').length,
+    rejected: requests.filter((request) => request.status === 'rejected').length,
     resolved: requests.filter((request) => request.status === 'resolved').length,
-    open: requests.filter((request) => (request.status || 'new') !== 'resolved').length
+    open: requests.filter((request) => ['pending', 'in_review'].includes(request.status || 'pending')).length
   };
 
   return {

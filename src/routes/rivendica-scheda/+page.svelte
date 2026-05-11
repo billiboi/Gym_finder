@@ -69,6 +69,7 @@
   });
 
   $: currentValues = {
+    gym_id: form?.values?.gym_id ?? data.prefill.gym_id ?? '',
     gym_name: form?.values?.gym_name ?? data.prefill.gym ?? '',
     gym_url: form?.values?.gym_url ?? data.prefill.url ?? '',
     reason: form?.values?.reason ?? data.prefill.reason ?? 'Aggiornamento dati',
@@ -76,6 +77,8 @@
     requester_role: form?.values?.requester_role ?? '',
     requester_email: form?.values?.requester_email ?? '',
     requester_phone: form?.values?.requester_phone ?? '',
+    official_website: form?.values?.official_website ?? '',
+    image_url: form?.values?.image_url ?? '',
     message: form?.values?.message ?? ''
   };
   $: selectedFlow = reasonOptions.find((option) => option.value === currentValues.reason) ?? reasonOptions[0];
@@ -96,6 +99,8 @@
     `Ruolo: ${currentValues.requester_role || '[ruolo]'}`,
     `Email: ${currentValues.requester_email || '[email]'}`,
     `Telefono: ${currentValues.requester_phone || '[telefono]'}`,
+    `Sito ufficiale: ${currentValues.official_website || '[sito ufficiale]'}`,
+    `URL immagine: ${currentValues.image_url || '[url immagine]'}`,
     '',
     'Dettagli richiesta:',
     currentValues.message || '[descrivi qui la richiesta]',
@@ -219,7 +224,7 @@
       </div>
 
       <form method="POST" action="?/submit" class="mt-5 grid gap-4">
-        <input type="hidden" name="gym_id" value="" />
+        <input type="hidden" name="gym_id" value={currentValues.gym_id} />
         <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
           {#each reasonOptions as option}
             <label class={`rounded-2xl border p-4 transition ${currentValues.reason === option.value ? 'border-emerald-500 bg-emerald-50/90 shadow-sm' : 'border-slate-200 bg-white/90 hover:border-slate-300'}`}>
@@ -266,6 +271,17 @@
           <label class="grid gap-2">
             <span class="text-sm font-semibold text-slate-700">Telefono</span>
             <input name="requester_phone" value={currentValues.requester_phone} class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2" />
+          </label>
+        </div>
+
+        <div class="grid gap-4 md:grid-cols-2">
+          <label class="grid gap-2">
+            <span class="text-sm font-semibold text-slate-700">Sito ufficiale</span>
+            <input name="official_website" type="url" value={currentValues.official_website} placeholder="https://..." class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2" />
+          </label>
+          <label class="grid gap-2">
+            <span class="text-sm font-semibold text-slate-700">URL immagine</span>
+            <input name="image_url" type="url" value={currentValues.image_url} placeholder="https://..." class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2" />
           </label>
         </div>
 

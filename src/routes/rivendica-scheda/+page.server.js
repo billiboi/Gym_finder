@@ -20,6 +20,7 @@ function normalizeReason(value) {
 export async function load({ url }) {
   return {
     prefill: {
+      gym_id: clean(url.searchParams.get('gym_id')),
       gym: clean(url.searchParams.get('gym')),
       url: clean(url.searchParams.get('url')),
       reason: normalizeReason(url.searchParams.get('reason'))
@@ -43,6 +44,8 @@ export const actions = {
       requester_role: clean(form.get('requester_role')),
       requester_email: clean(form.get('requester_email')),
       requester_phone: clean(form.get('requester_phone')),
+      official_website: clean(form.get('official_website')),
+      image_url: clean(form.get('image_url')),
       message: clean(form.get('message'))
     };
 
@@ -55,7 +58,15 @@ export const actions = {
     }
 
     try {
-      const saved = await createClaimRequest(payload);
+      const saved = await createClaimRequest({
+        ...payload,
+        requested_updates: {
+          sito: payload.official_website,
+          official_source_url: payload.official_website,
+          image_url: payload.image_url
+        },
+        image_uploads: payload.image_url ? [payload.image_url] : []
+      });
       return {
         success: true,
         requestId: saved.id,
