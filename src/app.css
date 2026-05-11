@@ -27,6 +27,10 @@ body {
   min-height: 100%;
 }
 
+html {
+  scroll-padding-top: 6.25rem;
+}
+
 body {
   font-family:
     Inter,
@@ -192,6 +196,11 @@ body {
   white-space: nowrap;
 }
 
+.sc-site-header {
+  transition: transform 180ms ease;
+  will-change: transform;
+}
+
 .sc-brand-mark {
   box-shadow:
     0 14px 28px rgba(31, 92, 74, 0.2),
@@ -226,9 +235,17 @@ body {
 }
 
 @media (max-width: 640px) {
+  html {
+    scroll-padding-top: 3.75rem;
+  }
+
+  .sc-site-header--hidden {
+    transform: translateY(calc(-100% - 0.45rem));
+  }
+
   .sc-header {
-    border-radius: 1.25rem;
-    padding: 0.8rem !important;
+    border-radius: 1rem;
+    padding: 0.38rem !important;
   }
 
   .sc-header::after {
@@ -238,31 +255,21 @@ body {
     height: 150px;
   }
 
-  .sc-header nav {
-    gap: 0.5rem;
-    padding-bottom: 0.1rem;
-  }
-
-  .sc-header-top {
-    width: 100%;
-  }
-
   .sc-header-return {
-    min-height: 2.35rem;
-    padding-inline: 0.95rem !important;
-    font-size: 0.78rem;
+    min-height: 2rem;
+    padding-inline: 0.7rem !important;
+    font-size: 0.72rem;
     box-shadow: 0 10px 22px rgba(31, 92, 74, 0.18);
   }
 
   .sc-header-nav {
-    display: grid !important;
-    width: 100%;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    overflow: visible !important;
-  }
-
-  .sc-header-nav--with-return {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    display: flex !important;
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
+    gap: 0.35rem;
+    overflow-x: auto !important;
+    padding-bottom: 0.05rem;
   }
 
   .sc-header-home-link {
@@ -275,14 +282,36 @@ body {
 
   .sc-header nav a {
     display: inline-flex;
-    min-width: 0;
-    width: 100%;
-    min-height: 2.45rem;
+    width: auto;
+    min-height: 2rem;
     align-items: center;
     justify-content: center;
-    padding-inline: 0.9rem;
+    padding: 0.4rem 0.7rem !important;
     text-align: center;
-    white-space: normal;
+    white-space: nowrap;
+    font-size: 0.72rem;
+  }
+
+  .sc-header .sc-brand-mark {
+    height: 2rem;
+    width: 2rem;
+    border-radius: 0.8rem;
+    font-size: 0.78rem;
+  }
+
+  .sc-header > div,
+  .sc-header-top {
+    min-width: 0;
+  }
+
+  .sc-header > div {
+    flex-direction: row !important;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .sc-header-top {
+    flex: 0 0 auto;
   }
 }
 
