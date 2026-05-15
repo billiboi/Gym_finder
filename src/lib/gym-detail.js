@@ -242,7 +242,7 @@ export function selectRandomStockImage(discipline, seed = '') {
 }
 
 export function imageForGym(gym) {
-  const imageUrl = String(gym?.image_url || '').trim();
+  const imageUrl = String(gym?.image_url || gym?.weekly_hours?._image_url || '').trim();
   if (imageUrl) {
     return {
       src: imageUrl,

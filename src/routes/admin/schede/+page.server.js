@@ -229,6 +229,7 @@ export const actions = {
       weekly_hours: {
         _verified: verified,
         _is_premium: premium,
+        _image_url: imageUrl,
         _discipline_aliases: aliases
       }
     };
@@ -323,6 +324,7 @@ export const actions = {
         ...weeklyHours,
         _verified: verified,
         _is_premium: premium,
+        _image_url: imageUrl,
         _discipline_aliases: aliases
       }
     };

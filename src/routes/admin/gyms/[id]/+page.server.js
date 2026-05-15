@@ -202,6 +202,7 @@ export const actions = {
       image_url: imageUrl,
       weekly_hours: {
         ...(gyms[idx]?.weekly_hours && typeof gyms[idx].weekly_hours === 'object' ? gyms[idx].weekly_hours : {}),
+        _image_url: imageUrl,
         _discipline_aliases: aliases
       }
     };

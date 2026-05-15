@@ -196,7 +196,7 @@ export function normalizeGym(gym, fallbackId = '') {
     verified: canonical.is_verified,
     latitude: canonical.lat,
     longitude: canonical.lng,
-    image_url: clean(firstValue(gym, ['image_url'])),
+    image_url: clean(firstValue(gym, ['image_url'], weeklyHours._image_url || '')),
     official_source_url: clean(firstValue(gym, ['official_source_url'])),
     editorial_summary: clean(firstValue(gym, ['editorial_summary'])),
     editorial_highlights: Array.isArray(gym?.editorial_highlights) ? gym.editorial_highlights : [],
@@ -214,6 +214,7 @@ export function normalizeGym(gym, fallbackId = '') {
       _verified: isVerified,
       _is_premium: isPremium,
       _priority_score: priorityScore,
+      _image_url: clean(firstValue(gym, ['image_url'], weeklyHours._image_url || '')),
       _discipline_aliases: canonical.discipline_aliases,
       ...(deletedAt ? { _deleted_at: deletedAt } : {})
     }

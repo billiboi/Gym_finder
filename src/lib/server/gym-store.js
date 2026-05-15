@@ -261,7 +261,7 @@ function normalizeGymRecord(gym, fallbackId) {
     verified,
       latitude: gym?.lat ?? gym?.latitude,
       longitude: gym?.lng ?? gym?.longitude,
-    image_url: String(gym?.image_url || '').trim(),
+    image_url: String(gym?.image_url || gym?.weekly_hours?._image_url || '').trim(),
     official_source_url: String(gym?.official_source_url || '').trim(),
     editorial_summary: repairMojibake(gym?.editorial_summary || '').trim(),
     editorial_highlights: Array.isArray(gym?.editorial_highlights) ? gym.editorial_highlights : [],
