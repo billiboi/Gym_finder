@@ -107,6 +107,15 @@
 </script>
 
 <main class="mx-auto min-h-screen w-full max-w-[96rem] px-4 pb-10 pt-6 sm:px-6 lg:px-8">
+  <datalist id="discipline-canonical-options">
+    {#each data.disciplineOptions || [] as option}
+      <option value={option}>{option}</option>
+    {/each}
+    {#each data.aliasSuggestions || [] as suggestion}
+      <option value={suggestion.alias}>{suggestion.alias} -> {suggestion.discipline_name}</option>
+    {/each}
+  </datalist>
+
   <section class="rounded-3xl border border-white/80 bg-white/80 p-5 shadow-xl backdrop-blur-sm sm:p-7">
     <div class="flex flex-wrap items-end justify-between gap-4">
       <div>
@@ -226,6 +235,7 @@
       </span>
       <input
         name="bulk_disciplines"
+        list="discipline-canonical-options"
         class="min-h-[2.4rem] min-w-[230px] rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none ring-slate-900 transition focus:ring-2"
         placeholder="Disciplina per selezionate"
       />
@@ -303,7 +313,7 @@
               <input type="hidden" name="current_disciplines" value={gym.disciplineText} />
               <input type="hidden" name="verified" value={gym.verified ? '1' : '0'} />
               <label class="sr-only" for={`compact-disciplines-${gym.id}`}>Nuova disciplina per {gym.name}</label>
-              <input id={`compact-disciplines-${gym.id}`} name="disciplines" value={gym.disciplineText} class={`${inputClass} min-w-0 flex-1`} />
+              <input id={`compact-disciplines-${gym.id}`} name="disciplines" list="discipline-canonical-options" value={gym.disciplineText} class={`${inputClass} min-w-0 flex-1`} />
               <button type="submit" class="rounded-lg bg-emerald-700 px-2.5 text-xs font-bold text-white hover:bg-emerald-800 disabled:opacity-50" disabled={!data.persistentWrites || savingKey === `save-${gym.id}`}>
                 {savingKey === `save-${gym.id}` ? '...' : 'Salva'}
               </button>
@@ -386,7 +396,7 @@
                   <input type="hidden" name="verified" value={gym.verified ? '1' : '0'} />
                   <label class="grid gap-1">
                     <span class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Nuova disciplina</span>
-                    <input name="disciplines" value={gym.disciplineText} class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none ring-slate-900 transition focus:ring-2" placeholder="Es: Judo | Jujitsu Brasiliano" />
+                    <input name="disciplines" list="discipline-canonical-options" value={gym.disciplineText} class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none ring-slate-900 transition focus:ring-2" placeholder="Es: Judo | Brazilian Jiu Jitsu" />
                   </label>
 
                   <div class="flex flex-wrap gap-2">

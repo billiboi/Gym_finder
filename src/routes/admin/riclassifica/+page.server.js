@@ -1,25 +1,19 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { canWriteSupabase, readGyms, updateGymRecord } from '$lib/server/gym-store';
 import { adminErrorMessage, archiveGym, isArchivedGym } from '$lib/admin/gyms';
+import { DISCIPLINE_MASTER, DISCIPLINE_ALIAS_ROWS } from '$lib/discipline-taxonomy';
+import { normalizeDisciplineField } from '$lib/disciplines';
 
 function clean(value) {
   return String(value ?? '').trim();
 }
 
 function toDisciplines(value, fallback = 'Fitness') {
-  const list = clean(value)
-    .split('|')
-    .map((item) => item.trim())
-    .filter(Boolean);
+  return normalizeDisciplineField(value, clean(fallback).split('|').map((item) => item.trim()).filter(Boolean)).disciplines;
+}
 
-  if (list.length) return [...new Set(list)];
-
-  return clean(fallback)
-    .split('|')
-    .map((item) => item.trim())
-    .filter(Boolean).length
-    ? [...new Set(clean(fallback).split('|').map((item) => item.trim()).filter(Boolean))]
-    : ['Fitness'];
+function disciplineAliases(value, fallback = []) {
+  return normalizeDisciplineField(value, fallback).aliases;
 }
 
 async function getGymsWithFallback(fetchFn) {
@@ -114,6 +108,8 @@ export async function load({ url, fetch }) {
   return {
     gyms: mapped,
     persistentWrites,
+    disciplineOptions: DISCIPLINE_MASTER.map((discipline) => discipline.name),
+    aliasSuggestions: DISCIPLINE_ALIAS_ROWS,
     saved: url.searchParams.get('saved') === '1',
     archived: url.searchParams.get('archived') === '1'
   };
@@ -145,11 +141,17 @@ export const actions = {
     }
 
     const disciplines = toDisciplines(disciplineText, currentDisciplines || disciplineTextForGym(gyms[index]));
+    const aliases = disciplineAliases(disciplineText, disciplines);
     const verified = clean(form.get('verified')) === '1';
     gyms[index] = withVerifiedState({
       ...gyms[index],
       discipline: disciplines[0],
-      disciplines
+      disciplines,
+      discipline_aliases: aliases,
+      weekly_hours: {
+        ...(gyms[index]?.weekly_hours && typeof gyms[index].weekly_hours === 'object' ? gyms[index].weekly_hours : {}),
+        _discipline_aliases: aliases
+      }
     }, verified);
 
     try {
@@ -270,10 +272,16 @@ export const actions = {
 
       if (operation === 'apply-discipline') {
         const disciplines = toDisciplines(bulkDisciplines, disciplineTextForGym(gym));
+        const aliases = disciplineAliases(bulkDisciplines, disciplines);
         const changed = {
           ...gym,
           discipline: disciplines[0],
-          disciplines
+          disciplines,
+          discipline_aliases: aliases,
+          weekly_hours: {
+            ...(gym?.weekly_hours && typeof gym.weekly_hours === 'object' ? gym.weekly_hours : {}),
+            _discipline_aliases: aliases
+          }
         };
         changedGyms.push(changed);
         return changed;

@@ -31,10 +31,10 @@ function inferredDisciplinesFromName(name) {
     ['Taekwondo', /(^|\s)taekwondo(\s|$)/i],
     ['Aikido', /(^|\s)aikido(\s|$)/i],
     ['Scherma', /(^|\s)scherma(\s|$)|(^|\s)fencing(\s|$)/i],
-    ['Jujitsu Brasiliano', /(^|\s)bjj(\s|$)|brazilian jiu jitsu|jiu ?jitsu brasiliano|ju ?jitsu brasiliano/i],
+    ['Brazilian Jiu Jitsu', /(^|\s)bjj(\s|$)|brazilian jiu jitsu|jiu ?jitsu brasiliano|ju ?jitsu brasiliano/i],
     ['Jujitsu', /(^|\s)jiu ?jitsu(\s|$)|(^|\s)ju ?jitsu(\s|$)/i],
     ['Grappling', /(^|\s)grappling(\s|$)|(^|\s)wrestling(\s|$)|(^|\s)lotta(\s|$)/i],
-    ['Kickboxe', /(^|\s)kick ?boxing?(\s|$)|(^|\s)kickboxe(\s|$)/i],
+    ['Kickboxing', /(^|\s)kick ?boxing?(\s|$)|(^|\s)kickboxe(\s|$)/i],
     ['Muay Thai', /(^|\s)muay ?thai(\s|$)/i],
     ['K1', /(^|\s)k1(\s|$)/i],
     ['MMA', /(^|\s)mma(\s|$)|mixed martial arts/i],
@@ -44,7 +44,7 @@ function inferredDisciplinesFromName(name) {
     ['Difesa Personale', /self defense|difesa personale/i],
     ['CrossFit', /(^|\s)crossfit(\s|$)/i],
     ['Calisthenics', /(^|\s)calisthenics(\s|$)/i],
-    ['Functional', /(^|\s)functional(\s|$)/i],
+    ['Functional Training', /(^|\s)functional(\s|$)|functional training/i],
     ['Nuoto', /(^|\s)nuoto(\s|$)|(^|\s)swim(ming)?(\s|$)/i],
     ['Yoga', /(^|\s)yoga(\s|$)/i],
     ['Pilates', /(^|\s)pilates(\s|$)/i],
@@ -105,13 +105,13 @@ export function placeholderImageForDiscipline(discipline) {
   const normalized = normalizeDisciplineLabel(discipline) || 'Fitness';
   const map = {
     Boxe: '/images/placeholders/boxe.svg',
-    Kickboxe: '/images/placeholders/kickboxe.svg',
+    Kickboxing: '/images/placeholders/kickboxe.svg',
     'Muay Thai': '/images/placeholders/muay-thai.svg',
     K1: '/images/placeholders/kickboxe.svg',
     MMA: '/images/placeholders/mma.svg',
     Judo: '/images/placeholders/judo.svg',
     Jujitsu: '/images/placeholders/grappling.svg',
-    'Jujitsu Brasiliano': '/images/placeholders/grappling.svg',
+    'Brazilian Jiu Jitsu': '/images/placeholders/grappling.svg',
     Grappling: '/images/placeholders/grappling.svg',
     Karate: '/images/placeholders/karate.svg',
     Taekwondo: '/images/placeholders/taekwondo.svg',
@@ -131,7 +131,7 @@ export function placeholderImageForDiscipline(discipline) {
     Calcio: '/images/placeholders/calcio.svg',
     Pattinaggio: '/images/placeholders/pattinaggio.svg',
     Calisthenics: '/images/placeholders/functional.svg',
-    Functional: '/images/placeholders/functional.svg',
+    'Functional Training': '/images/placeholders/functional.svg',
     Bodybuilding: '/images/placeholders/fitness.svg',
     Fitness: '/images/placeholders/fitness.svg'
   };
@@ -143,13 +143,13 @@ export function stockImageForDiscipline(discipline) {
   const normalized = normalizeDisciplineLabel(discipline) || 'Fitness';
   const map = {
     Boxe: '/images/stock/boxe',
-    Kickboxe: '/images/stock/kickboxe',
+    Kickboxing: '/images/stock/kickboxe',
     'Muay Thai': '/images/stock/muay-thai',
     K1: '/images/stock/kickboxe',
     MMA: '/images/stock/mma',
     Judo: '/images/stock/judo',
     Jujitsu: '/images/stock/grappling',
-    'Jujitsu Brasiliano': '/images/stock/grappling',
+    'Brazilian Jiu Jitsu': '/images/stock/grappling',
     Grappling: '/images/stock/grappling',
     Karate: '/images/stock/karate',
     Taekwondo: '/images/stock/taekwondo',
@@ -169,7 +169,7 @@ export function stockImageForDiscipline(discipline) {
     Calcio: '/images/stock/calcio',
     Pattinaggio: '/images/stock/pattinaggio',
     Calisthenics: '/images/stock/functional',
-    Functional: '/images/stock/functional',
+    'Functional Training': '/images/stock/functional',
     Bodybuilding: '/images/stock/fitness',
     Fitness: '/images/stock/fitness'
   };

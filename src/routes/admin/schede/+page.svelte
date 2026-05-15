@@ -131,6 +131,15 @@
 </script>
 
 <main class="mx-auto min-h-screen w-full max-w-7xl px-4 pb-10 pt-6 sm:px-6 lg:px-8">
+  <datalist id="discipline-canonical-options">
+    {#each data.disciplineOptions || [] as option}
+      <option value={option}>{option}</option>
+    {/each}
+    {#each data.aliasSuggestions || [] as suggestion}
+      <option value={suggestion.alias}>{suggestion.alias} -> {suggestion.discipline_name}</option>
+    {/each}
+  </datalist>
+
   <section class="rounded-3xl border border-white/80 bg-white/80 p-5 shadow-xl backdrop-blur-sm sm:p-7">
     <div class="flex flex-wrap items-end justify-between gap-4">
       <div>
@@ -283,8 +292,9 @@
         <span class="text-sm font-semibold text-slate-700">Discipline (separate da |)</span>
         <input
           name="discipline"
+          list="discipline-canonical-options"
           class="rounded-xl border border-slate-200 px-3 py-2 text-sm"
-          placeholder="Es: Boxe | Kickboxe"
+          placeholder="Es: Boxe | Kickboxing"
           bind:value={createDisciplineInput}
           required
         />
@@ -313,6 +323,11 @@
       <label class="grid gap-1">
         <span class="text-sm font-semibold text-slate-700">Sito web</span>
         <input name="website" type="url" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" placeholder="https://..." />
+      </label>
+
+      <label class="grid gap-1">
+        <span class="text-sm font-semibold text-slate-700">URL immagine copertina</span>
+        <input name="image_url" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" placeholder="https://..." />
       </label>
 
         <label class="grid gap-1">
@@ -518,6 +533,7 @@
             <span class="text-sm font-semibold text-slate-700">Discipline (separate da |)</span>
             <input
               name="discipline"
+              list="discipline-canonical-options"
               class="rounded-xl border border-slate-200 px-3 py-2 text-sm"
               value={disciplinesForGym(selectedGym).join(' | ')}
               required
@@ -580,6 +596,11 @@
               Sostituisci immagine attuale
             </label>
           </div>
+
+          <label class="grid gap-1">
+            <span class="text-sm font-semibold text-slate-700">URL immagine copertina</span>
+            <input name="image_url" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" value={selectedGym.image_url || ''} placeholder="https://..." />
+          </label>
 
           {#if selectedGym.image_url}
             <div class="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">

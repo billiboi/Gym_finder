@@ -640,6 +640,8 @@ function adminUpdateRecord(gym, availableColumns) {
     'nome',
     'disciplines',
     'discipline',
+    'discipline_aliases',
+    'discipline_canonical_slugs',
     'indirizzo',
     'citta',
     'telefono',

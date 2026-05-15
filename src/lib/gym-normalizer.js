@@ -1,4 +1,6 @@
 import { repairMojibake } from '$lib/text-repair';
+import { normalizeDisciplineField } from '$lib/disciplines';
+import { canonicalizeDiscipline } from '$lib/discipline-taxonomy';
 
 export const GYM_CANONICAL_FIELDS = [
   'id',
@@ -13,6 +15,8 @@ export const GYM_CANONICAL_FIELDS = [
   'sito',
   'descrizione',
   'discipline',
+  'discipline_aliases',
+  'discipline_canonical_slugs',
   'orari',
   'lat',
   'lng',
@@ -34,6 +38,8 @@ export const GYM_LEGACY_FIELDS = [
   'description',
   'discipline',
   'disciplines',
+  'discipline_aliases',
+  'discipline_canonical_slugs',
   'hours_info',
   'latitude',
   'longitude',
@@ -84,17 +90,7 @@ function toBoolean(value) {
 }
 
 function toDisciplines(value, fallback = []) {
-  if (Array.isArray(value)) {
-    const list = value.map((item) => clean(item)).filter(Boolean);
-    return list.length ? [...new Set(list)] : fallback;
-  }
-
-  const list = clean(value)
-    .split('|')
-    .map((item) => item.trim())
-    .filter(Boolean);
-
-  return list.length ? [...new Set(list)] : fallback;
+  return normalizeDisciplineField(value, fallback).disciplines;
 }
 
 function sourceWeeklyHours(gym) {
@@ -141,6 +137,13 @@ export function computeGymQualityScore(gym) {
 export function normalizeGym(gym, fallbackId = '') {
   const weeklyHours = sourceWeeklyHours(gym);
   const disciplineList = toDisciplines(gym?.disciplines, toDisciplines(gym?.discipline, ['Fitness']));
+  const disciplineAliases = normalizeDisciplineField(
+    Array.isArray(gym?.disciplines) && gym.disciplines.length ? gym.disciplines : gym?.discipline,
+    disciplineList
+  ).aliases;
+  const disciplineCanonicalSlugs = disciplineList
+    .map((discipline) => canonicalizeDiscipline(discipline)?.slug)
+    .filter(Boolean);
   const primaryDiscipline = disciplineList[0] || 'Fitness';
   const isVerified = sourceVerified(gym);
   const isPremium = sourcePremium(gym);
@@ -162,6 +165,12 @@ export function normalizeGym(gym, fallbackId = '') {
     sito: clean(firstValue(gym, ['sito', 'website'])),
     descrizione: clean(firstValue(gym, ['descrizione', 'description', 'presentazione'])),
     discipline: disciplineList,
+    discipline_aliases: Array.isArray(gym?.discipline_aliases) && gym.discipline_aliases.length
+      ? gym.discipline_aliases
+      : disciplineAliases,
+    discipline_canonical_slugs: Array.isArray(gym?.discipline_canonical_slugs) && gym.discipline_canonical_slugs.length
+      ? gym.discipline_canonical_slugs
+      : disciplineCanonicalSlugs,
     orari: clean(firstValue(gym, ['orari', 'hours_info'])) || 'Orari da verificare',
     lat,
     lng,
@@ -205,6 +214,7 @@ export function normalizeGym(gym, fallbackId = '') {
       _verified: isVerified,
       _is_premium: isPremium,
       _priority_score: priorityScore,
+      _discipline_aliases: canonical.discipline_aliases,
       ...(deletedAt ? { _deleted_at: deletedAt } : {})
     }
   };

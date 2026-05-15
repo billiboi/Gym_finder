@@ -1,12 +1,17 @@
-import { error } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 import { isIndexableGym } from '$lib/gym-detail';
 import { slugifySeoName } from '$lib/seo-directory';
 import { readGyms } from '$lib/server/gym-store';
 import { getSeoDiscipline, gymsForSeoDiscipline } from '$lib/seo-disciplines';
 import { dedupeDisciplines } from '$lib/disciplines';
 import { relatedGuidesForDiscipline } from '$lib/editorial';
+import { canonicalSlugForDisciplineSlug, isDisciplineAliasSlug } from '$lib/discipline-taxonomy';
 
 export async function load({ params }) {
+  if (isDisciplineAliasSlug(params.slug)) {
+    throw redirect(301, `/discipline/${canonicalSlugForDisciplineSlug(params.slug)}`);
+  }
+
   const gyms = await readGyms();
   let discipline = getSeoDiscipline(params.slug);
 

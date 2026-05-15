@@ -7,6 +7,15 @@
 </script>
 
 <main class="mx-auto min-h-screen w-full max-w-3xl px-4 pb-10 pt-6 sm:px-6 lg:px-8">
+  <datalist id="discipline-canonical-options">
+    {#each data.disciplineOptions || [] as option}
+      <option value={option}>{option}</option>
+    {/each}
+    {#each data.aliasSuggestions || [] as suggestion}
+      <option value={suggestion.alias}>{suggestion.alias} -> {suggestion.discipline_name}</option>
+    {/each}
+  </datalist>
+
   <section class="rounded-3xl border border-white/80 bg-white/80 p-5 shadow-xl backdrop-blur-sm sm:p-7">
     <div class="flex flex-wrap items-center justify-between gap-3">
       <div>
@@ -36,7 +45,7 @@
 
       <label class="grid gap-1">
         <span class="text-sm font-semibold text-slate-700">Discipline (separate da |)</span>
-        <input name="discipline" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" value={gym.discipline_text} />
+        <input name="discipline" list="discipline-canonical-options" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" value={gym.discipline_text} />
       </label>
 
       <label class="grid gap-1">
@@ -74,6 +83,11 @@
           Sostituisci immagine attuale
         </label>
       </div>
+
+      <label class="grid gap-1">
+        <span class="text-sm font-semibold text-slate-700">URL immagine copertina</span>
+        <input name="image_url" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" value={gym.image_url || ''} placeholder="https://..." />
+      </label>
 
       {#if gym.image_url}
         <div class="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">

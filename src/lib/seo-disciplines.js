@@ -1,3 +1,5 @@
+import { canonicalDisciplineName } from '$lib/disciplines';
+
 export const SEO_DISCIPLINES = [
   {
     slug: 'boxe',
@@ -5,7 +7,7 @@ export const SEO_DISCIPLINES = [
     title: 'Palestre di Boxe',
     description:
       'Scopri palestre e corsi di boxe con schede complete, contatti e orari aggiornabili.',
-    keywords: ['Boxe']
+    keywords: ['Boxe', 'Boxing', 'Pugilato']
   },
   {
     slug: 'judo',
@@ -21,15 +23,23 @@ export const SEO_DISCIPLINES = [
     title: 'Palestre di MMA',
     description:
       'Esplora palestre di MMA e sport da combattimento con una selezione orientata alla ricerca locale.',
-    keywords: ['MMA']
+    keywords: ['MMA', 'Mixed Martial Arts']
   },
   {
-    slug: 'kickboxe',
-    name: 'Kickboxe',
-    title: 'Palestre di Kickboxe',
+    slug: 'kickboxing',
+    name: 'Kickboxing',
+    title: 'Palestre di Kickboxing',
     description:
-      'Consulta una raccolta di palestre di kickboxe con schede dedicate e link ai dettagli completi.',
-    keywords: ['Kickboxe']
+      'Consulta una raccolta di palestre di kickboxing con schede dedicate e link ai dettagli completi.',
+    keywords: ['Kickboxing', 'Kickboxe', 'Kick Boxing']
+  },
+  {
+    slug: 'brazilian-jiu-jitsu',
+    name: 'Brazilian Jiu Jitsu',
+    title: 'Palestre di Brazilian Jiu Jitsu',
+    description:
+      'Trova accademie e corsi di Brazilian Jiu Jitsu con schede locali e dati utili per confrontare le strutture.',
+    keywords: ['Brazilian Jiu Jitsu', 'BJJ', 'Jujitsu Brasiliano']
   },
   {
     slug: 'pilates',
@@ -45,7 +55,39 @@ export const SEO_DISCIPLINES = [
     title: 'Palestre Fitness',
     description:
       'Trova palestre fitness e club generalisti con informazioni utili per confrontare posizione, orari e contatti.',
-    keywords: ['Fitness', 'Functional', 'Bodybuilding', 'Calisthenics']
+    keywords: ['Fitness']
+  },
+  {
+    slug: 'personal-training',
+    name: 'Personal Training',
+    title: 'Personal Training e trainer',
+    description:
+      'Confronta strutture e studi con personal training, contatti e schede locali verificabili.',
+    keywords: ['Personal Training', 'Personal Trainer']
+  },
+  {
+    slug: 'functional-training',
+    name: 'Functional Training',
+    title: 'Palestre di Functional Training',
+    description:
+      'Trova palestre e corsi di functional training, circuiti e allenamento funzionale.',
+    keywords: ['Functional Training', 'Functional']
+  },
+  {
+    slug: 'cross-training',
+    name: 'Cross Training',
+    title: 'Palestre di Cross Training',
+    description:
+      'Consulta strutture con cross training e allenamento incrociato, senza confonderle con CrossFit.',
+    keywords: ['Cross Training', 'Crosstraining']
+  },
+  {
+    slug: 'crossfit',
+    name: 'CrossFit',
+    title: 'Box e palestre CrossFit',
+    description:
+      'Trova box CrossFit e strutture specializzate con informazioni locali e schede complete.',
+    keywords: ['CrossFit', 'Cross Fit']
   },
   {
     slug: 'yoga',
@@ -61,7 +103,7 @@ export const SEO_DISCIPLINES = [
     title: 'Palestre di Karate',
     description:
       'Scopri dojo e associazioni di karate con discipline collegate, indirizzi e schede di approfondimento.',
-    keywords: ['Karate']
+    keywords: ['Karate', 'Kyokushin', 'Shito Ryu', 'Wa Rei Ryu']
   },
   {
     slug: 'nuoto',
@@ -69,7 +111,7 @@ export const SEO_DISCIPLINES = [
     title: 'Piscine e centri nuoto',
     description:
       'Consulta piscine e centri sportivi con nuoto, informazioni locali e link alle schede complete.',
-    keywords: ['Nuoto']
+    keywords: ['Nuoto', 'Swimming']
   },
   {
     slug: 'padel',
@@ -88,7 +130,7 @@ export function getSeoDiscipline(slug) {
 export function gymsForSeoDiscipline(gyms, discipline) {
   if (!discipline) return [];
 
-  const keywords = discipline.keywords.map((keyword) => keyword.toLowerCase());
+  const keywords = new Set(discipline.keywords.map((keyword) => canonicalDisciplineName(keyword).toLowerCase()));
 
   return gyms.filter((gym) => {
     const values = Array.isArray(gym?.disciplines) && gym.disciplines.length
@@ -98,7 +140,7 @@ export function gymsForSeoDiscipline(gyms, discipline) {
           .map((value) => value.trim())
           .filter(Boolean);
 
-    return values.some((value) => keywords.includes(String(value).toLowerCase()));
+    return values.some((value) => keywords.has(canonicalDisciplineName(value).toLowerCase()));
   });
 }
 
@@ -112,10 +154,10 @@ export function seoDisciplineForGym(gym) {
         .map((value) => value.trim())
         .filter(Boolean);
 
-  const normalized = values.map((value) => String(value).toLowerCase());
+  const normalized = values.map((value) => canonicalDisciplineName(value).toLowerCase()).filter(Boolean);
   return (
     SEO_DISCIPLINES.find((discipline) =>
-      discipline.keywords.some((keyword) => normalized.includes(keyword.toLowerCase()))
+      discipline.keywords.some((keyword) => normalized.includes(canonicalDisciplineName(keyword).toLowerCase()))
     ) || null
   );
 }

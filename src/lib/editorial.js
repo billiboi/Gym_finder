@@ -25,8 +25,8 @@ export const DISCIPLINE_CLUSTERS = [
   {
     slug: 'sport-da-combattimento',
     name: 'Sport da combattimento',
-    description: 'Boxe, kickboxe, MMA e discipline da ring o tatami con forte componente tecnica.',
-    disciplines: ['boxe', 'kickboxe', 'mma', 'karate', 'judo']
+    description: 'Boxe, kickboxing, MMA e discipline da ring o tatami con forte componente tecnica.',
+    disciplines: ['boxe', 'kickboxing', 'mma', 'karate', 'judo']
   },
   {
     slug: 'fitness-e-forza',
@@ -101,7 +101,7 @@ export const EDITORIAL_GUIDES = [
       'Panoramica chiara per orientarsi tra boxe, kickboxe e MMA e aprire le pagine disciplina piu utili.',
     updatedAt: '2026-05-10',
     readingMinutes: 6,
-    disciplines: ['boxe', 'kickboxe', 'mma'],
+    disciplines: ['boxe', 'kickboxing', 'mma'],
     locations: ['varese', 'lugano', 'busto-arsizio'],
     intro:
       'Le discipline da combattimento non sono intercambiabili. Cambiano tecniche, ritmo, obiettivi e tipo di palestra da cercare.',

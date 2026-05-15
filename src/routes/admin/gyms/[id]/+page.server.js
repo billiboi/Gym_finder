@@ -2,6 +2,8 @@ import { error, fail, redirect } from '@sveltejs/kit';
 import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { canWriteSupabase, getUploadsDir, readGyms, updateGymRecord } from '$lib/server/gym-store';
+import { normalizeDisciplineField } from '$lib/disciplines';
+import { DISCIPLINE_MASTER, DISCIPLINE_ALIAS_ROWS } from '$lib/discipline-taxonomy';
 
 function clean(value) {
   return String(value ?? '').trim();
@@ -15,11 +17,11 @@ function toNullableNumber(value) {
 }
 
 function toDisciplines(value) {
-  const list = clean(value)
-    .split('|')
-    .map((item) => item.trim())
-    .filter(Boolean);
-  return list.length ? list : ['Fitness'];
+  return normalizeDisciplineField(value, ['Fitness']).disciplines;
+}
+
+function disciplineAliases(value, fallback = []) {
+  return normalizeDisciplineField(value, fallback).aliases;
 }
 
 function sanitizeFileName(value) {
@@ -54,6 +56,41 @@ async function storeImage(file, gymName) {
   return `/uploads/${fileName}`;
 }
 
+function isValidImageUrl(value) {
+  const raw = clean(value);
+  if (!raw) return true;
+  if (raw.startsWith('data:image/')) return true;
+
+  try {
+    const url = new URL(raw);
+    return ['http:', 'https:'].includes(url.protocol);
+  } catch {
+    return false;
+  }
+}
+
+async function persistentImageFromFile(file, gymName) {
+  if (!(file instanceof File) || file.size === 0) return '';
+
+  const isVercelRuntime = process.env.VERCEL === '1';
+  if (!isVercelRuntime) {
+    return storeImage(file, gymName);
+  }
+
+  const allowed = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
+  if (!allowed.has(file.type)) {
+    throw new Error('Formato immagine non supportato. Usa JPG, PNG, WEBP o GIF.');
+  }
+
+  const maxBytes = 2 * 1024 * 1024;
+  if (file.size > maxBytes) {
+    throw new Error('Immagine troppo grande per il salvataggio diretto. Usa un file sotto 2 MB oppure incolla un URL immagine.');
+  }
+
+  const buffer = Buffer.from(await file.arrayBuffer());
+  return `data:${file.type};base64,${buffer.toString('base64')}`;
+}
+
 async function getGymsWithFallback(fetchFn) {
   const gyms = await readGyms();
   if (Array.isArray(gyms) && gyms.length > 0) return gyms;
@@ -82,7 +119,9 @@ export async function load({ params, fetch }) {
       discipline_text: Array.isArray(gym.disciplines)
         ? gym.disciplines.join(' | ')
         : clean(gym.discipline) || 'Fitness'
-    }
+    },
+    disciplineOptions: DISCIPLINE_MASTER.map((discipline) => discipline.name),
+    aliasSuggestions: DISCIPLINE_ALIAS_ROWS
   };
 }
 
@@ -114,13 +153,22 @@ export const actions = {
     }
 
     const disciplines = toDisciplines(disciplineText);
-    let imageUrl = gyms[idx].image_url || '';
+    const aliases = disciplineAliases(disciplineText, disciplines);
+    let imageUrl = clean(form.get('image_url')) || gyms[idx].image_url || '';
+    if (!isValidImageUrl(imageUrl)) {
+      return fail(400, {
+        error: 'URL immagine non valido. Usa un URL http/https oppure carica un file.',
+        editId: params.id
+      });
+    }
 
     try {
       const uploadedImage = form.get('image');
       const replaceImage = clean(form.get('replace_image')) === '1';
-      if (replaceImage && uploadedImage instanceof File && uploadedImage.size > 0) {
-        imageUrl = await storeImage(uploadedImage, name);
+      if (uploadedImage instanceof File && uploadedImage.size > 0) {
+        imageUrl = await persistentImageFromFile(uploadedImage, name);
+      } else if (replaceImage && !clean(form.get('image_url'))) {
+        imageUrl = '';
       }
     } catch (err) {
       return fail(400, {
@@ -134,6 +182,7 @@ export const actions = {
       name,
       discipline: disciplines[0],
       disciplines,
+      discipline_aliases: aliases,
       indirizzo: address,
       address,
       citta: city,
@@ -150,7 +199,11 @@ export const actions = {
       latitude: toNullableNumber(form.get('latitude')),
       lng: toNullableNumber(form.get('longitude')),
       longitude: toNullableNumber(form.get('longitude')),
-      image_url: imageUrl
+      image_url: imageUrl,
+      weekly_hours: {
+        ...(gyms[idx]?.weekly_hours && typeof gyms[idx].weekly_hours === 'object' ? gyms[idx].weekly_hours : {}),
+        _discipline_aliases: aliases
+      }
     };
 
     try {

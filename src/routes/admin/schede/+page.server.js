@@ -18,6 +18,8 @@ import {
   duplicateGym,
   restoreGym
 } from '$lib/admin/gyms';
+import { DISCIPLINE_MASTER, DISCIPLINE_ALIAS_ROWS } from '$lib/discipline-taxonomy';
+import { normalizeDisciplineField } from '$lib/disciplines';
 
 function clean(value) {
   return String(value ?? '').trim();
@@ -31,11 +33,12 @@ function toNullableNumber(value) {
 }
 
 function toDisciplines(value) {
-  const list = clean(value)
-    .split('|')
-    .map((item) => item.trim())
-    .filter(Boolean);
+  const list = normalizeDisciplineField(value, []).disciplines;
   return list.length ? list : [];
+}
+
+function disciplineAliases(value, fallback = []) {
+  return normalizeDisciplineField(value, fallback).aliases;
 }
 
 function isValidUrl(value) {
@@ -95,6 +98,41 @@ async function storeImage(file, gymName) {
   return `/uploads/${fileName}`;
 }
 
+function isValidImageUrl(value) {
+  const raw = clean(value);
+  if (!raw) return true;
+  if (raw.startsWith('data:image/')) return true;
+
+  try {
+    const url = new URL(raw);
+    return ['http:', 'https:'].includes(url.protocol);
+  } catch {
+    return false;
+  }
+}
+
+async function persistentImageFromFile(file, gymName) {
+  if (!(file instanceof File) || file.size === 0) return '';
+
+  const isVercelRuntime = process.env.VERCEL === '1';
+  if (!isVercelRuntime) {
+    return storeImage(file, gymName);
+  }
+
+  const allowed = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
+  if (!allowed.has(file.type)) {
+    throw new Error('Formato immagine non supportato. Usa JPG, PNG, WEBP o GIF.');
+  }
+
+  const maxBytes = 2 * 1024 * 1024;
+  if (file.size > maxBytes) {
+    throw new Error('Immagine troppo grande per il salvataggio diretto. Usa un file sotto 2 MB oppure incolla un URL immagine.');
+  }
+
+  const buffer = Buffer.from(await file.arrayBuffer());
+  return `data:${file.type};base64,${buffer.toString('base64')}`;
+}
+
 async function getGymsWithFallback(fetchFn) {
   const gyms = await readGyms();
   if (Array.isArray(gyms) && gyms.length > 0) return gyms;
@@ -121,6 +159,8 @@ export async function load({ url, fetch }) {
       }))
       .sort((a, b) => a.name.localeCompare(b.name, 'it')),
     persistentWrites,
+    disciplineOptions: DISCIPLINE_MASTER.map((discipline) => discipline.name),
+    aliasSuggestions: DISCIPLINE_ALIAS_ROWS,
     storeStatus: gymStoreStatus(),
     archived: url.searchParams.get('archived') === '1',
     restored: url.searchParams.get('restored') === '1',
@@ -142,6 +182,7 @@ export const actions = {
     const form = await request.formData();
     const name = clean(form.get('name'));
     const disciplines = toDisciplines(form.get('discipline'));
+    const aliases = disciplineAliases(form.get('discipline'), disciplines);
     const address = clean(form.get('address'));
     const city = clean(form.get('city'));
     const website = clean(form.get('website'));
@@ -150,10 +191,16 @@ export const actions = {
     if (validationError) return fail(400, { createError: validationError });
 
     const gyms = await getGymsWithFallback(fetch);
-    let imageUrl = '';
+    let imageUrl = clean(form.get('image_url'));
+    if (!isValidImageUrl(imageUrl)) {
+      return fail(400, { createError: 'URL immagine non valido. Usa un URL http/https oppure carica un file.' });
+    }
 
     try {
-      imageUrl = await storeImage(form.get('image'), name);
+      const uploadedImage = form.get('image');
+      if (uploadedImage instanceof File && uploadedImage.size > 0) {
+        imageUrl = await persistentImageFromFile(uploadedImage, name);
+      }
     } catch (err) {
       return fail(400, { createError: err?.message || 'Errore durante il caricamento immagine.' });
     }
@@ -166,6 +213,7 @@ export const actions = {
       name,
       discipline: disciplines[0],
       disciplines,
+      discipline_aliases: aliases,
       address,
       city,
       phone: normalizePhone(form.get('phone')),
@@ -180,7 +228,8 @@ export const actions = {
       image_url: imageUrl,
       weekly_hours: {
         _verified: verified,
-        _is_premium: premium
+        _is_premium: premium,
+        _discipline_aliases: aliases
       }
     };
 
@@ -205,6 +254,7 @@ export const actions = {
     const id = clean(form.get('id'));
     const name = clean(form.get('name'));
     const disciplines = toDisciplines(form.get('discipline'));
+    const aliases = disciplineAliases(form.get('discipline'), disciplines);
     const address = clean(form.get('address'));
     const city = clean(form.get('city'));
     const website = clean(form.get('website'));
@@ -218,13 +268,21 @@ export const actions = {
 
     if (idx < 0) return fail(404, { error: 'Palestra non trovata.', editId: id });
 
-    let imageUrl = gyms[idx].image_url || '';
+    let imageUrl = clean(form.get('image_url')) || gyms[idx].image_url || '';
+    if (!isValidImageUrl(imageUrl)) {
+      return fail(400, {
+        error: 'URL immagine non valido. Usa un URL http/https oppure carica un file.',
+        editId: id
+      });
+    }
 
     try {
       const uploadedImage = form.get('image');
       const replaceImage = clean(form.get('replace_image')) === '1';
-      if (replaceImage && uploadedImage instanceof File && uploadedImage.size > 0) {
-        imageUrl = await storeImage(uploadedImage, name);
+      if (uploadedImage instanceof File && uploadedImage.size > 0) {
+        imageUrl = await persistentImageFromFile(uploadedImage, name);
+      } else if (replaceImage && !clean(form.get('image_url'))) {
+        imageUrl = '';
       }
     } catch (err) {
       return fail(400, { error: err?.message || 'Errore durante il caricamento immagine.', editId: id });
@@ -240,6 +298,7 @@ export const actions = {
       name,
       discipline: disciplines[0],
       disciplines,
+      discipline_aliases: aliases,
       indirizzo: address,
       address,
       citta: city,
@@ -263,7 +322,8 @@ export const actions = {
       weekly_hours: {
         ...weeklyHours,
         _verified: verified,
-        _is_premium: premium
+        _is_premium: premium,
+        _discipline_aliases: aliases
       }
     };
 

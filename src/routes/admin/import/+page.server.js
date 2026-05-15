@@ -4,6 +4,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { adminErrorMessage, gymsToAdminCsv, hasGenericDiscipline, hoursNeedReview } from '$lib/admin/gyms';
 import { canWriteSupabase, readGyms, writeGyms } from '$lib/server/gym-store';
+import { normalizeDisciplineField } from '$lib/disciplines';
 
 const REQUIRED_FIELDS = ['nome', 'discipline', 'citta'];
 const IMPORT_BACKUP_DIR = path.join(process.cwd(), 'data', 'admin-import-backups');
@@ -93,10 +94,11 @@ function rowCell(row, headers, mapping, field) {
 }
 
 function toDisciplines(value) {
-  return clean(value)
-    .split('|')
-    .map((item) => item.trim())
-    .filter(Boolean);
+  return normalizeDisciplineField(value, []).disciplines;
+}
+
+function disciplineAliases(value, fallback = []) {
+  return normalizeDisciplineField(value, fallback).aliases;
 }
 
 function toNullableNumber(value) {
@@ -141,13 +143,16 @@ function qualityWarnings(gym, line) {
 }
 
 function rowToImportGymFixed(row, headers, mapping) {
-  const disciplines = toDisciplines(rowCell(row, headers, mapping, 'discipline') || rowCell(row, headers, mapping, 'disciplines'));
+  const rawDisciplines = rowCell(row, headers, mapping, 'discipline') || rowCell(row, headers, mapping, 'disciplines');
+  const disciplines = toDisciplines(rawDisciplines);
+  const aliases = disciplineAliases(rawDisciplines, disciplines);
   const weeklyHours = {};
   const premiumValue = rowCell(row, headers, mapping, 'is_premium');
   const priorityValue = rowCell(row, headers, mapping, 'priority_score');
   const verifiedValue = rowCell(row, headers, mapping, 'is_verified');
   if (premiumValue) weeklyHours._is_premium = toBoolean(premiumValue);
   if (priorityValue) weeklyHours._priority_score = Number(priorityValue) || 0;
+  if (aliases.length) weeklyHours._discipline_aliases = aliases;
 
   const gym = {
     id: rowCell(row, headers, mapping, 'id') || `import-${randomUUID()}`,
@@ -155,6 +160,7 @@ function rowToImportGymFixed(row, headers, mapping) {
     name: rowCell(row, headers, mapping, 'nome'),
     disciplines,
     discipline: disciplines[0] || 'Fitness',
+    discipline_aliases: aliases,
     address: rowCell(row, headers, mapping, 'indirizzo'),
     city: rowCell(row, headers, mapping, 'citta'),
     provincia: rowCell(row, headers, mapping, 'provincia'),
