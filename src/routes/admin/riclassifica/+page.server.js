@@ -75,9 +75,10 @@ function parseIds(form) {
 
 export async function load({ url, fetch }) {
   const gyms = await getGymsWithFallback(fetch);
+  const activeGyms = gyms.filter((gym) => !isArchivedGym(gym));
   const persistentWrites = canWriteSupabase();
 
-  const mapped = gyms
+  const mapped = activeGyms
     .map((gym) => ({
       id: gym.id,
       name: gym.name || 'Senza nome',
@@ -85,7 +86,6 @@ export async function load({ url, fetch }) {
       address: [gym.address, gym.city].filter(Boolean).join(', '),
       website: gym.website || '',
       verified: Boolean(gym.verified),
-      archived: isArchivedGym(gym),
       suspiciousScore: suspiciousScore(gym)
     }))
     .sort((a, b) => {
