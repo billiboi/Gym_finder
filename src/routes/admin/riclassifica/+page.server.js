@@ -83,7 +83,9 @@ export async function load({ url, fetch }) {
       id: gym.id,
       name: gym.name || 'Senza nome',
       disciplineText: disciplineTextForGym(gym),
+      city: gym.city || '',
       address: [gym.address, gym.city].filter(Boolean).join(', '),
+      shortAddress: gym.address || gym.city || '',
       website: gym.website || '',
       verified: Boolean(gym.verified),
       suspiciousScore: suspiciousScore(gym)
