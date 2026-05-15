@@ -251,6 +251,15 @@ export function imageForGym(gym) {
     };
   }
 
+  const officialOverride = officialOverrideForGym(gym);
+  if (officialOverride?.imageUrl) {
+    return {
+      src: officialOverride.imageUrl,
+      candidates: [officialOverride.imageUrl],
+      fallback: officialOverride.imageUrl
+    };
+  }
+
   const discipline = primaryDisciplineForGym(gym);
   const stockCandidates = orderedStockImageCandidates(
     discipline,
@@ -504,6 +513,7 @@ const OFFICIAL_GYM_OVERRIDES = {
   'Soledad Surace - Insegnante di KUNDALINI YOGA': {
     sourceUrl: 'https://www.tempiacquariani.com/lezioni-yoga/',
     website: 'https://www.tempiacquariani.com/lezioni-yoga/',
+    imageUrl: 'https://www.tempiacquariani.com/wp-content/uploads/2025/04/FOTO-PER-HERO-WEBSITE-WEBINAR.webp',
     seoTitle: 'Soledad Surace: Kundalini Yoga a Gallarate e online',
     seoDescription:
       'Scheda di Soledad Surace: lezioni di Kundalini Yoga a Gallarate e online via Zoom, con orari, sede, pratica, meditazione e contatti ufficiali.',
