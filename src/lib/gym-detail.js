@@ -1310,6 +1310,10 @@ const OFFICIAL_GYM_OVERRIDES = {
 };
 
 export function officialGymOverride(gym) {
+  if (String(gym?.id || '').trim() === 'csv-544') {
+    return OFFICIAL_GYM_OVERRIDES['Soledad Surace - Insegnante di KUNDALINI YOGA'] || null;
+  }
+
   const name = fixGymText(gym?.name || '');
   return OFFICIAL_GYM_OVERRIDES[name] || null;
 }
