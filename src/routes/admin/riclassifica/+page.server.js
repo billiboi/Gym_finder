@@ -1,5 +1,5 @@
 import { fail, redirect } from '@sveltejs/kit';
-import { canWriteSupabase, readGyms, writeGymRecords } from '$lib/server/gym-store';
+import { canWriteSupabase, readGyms, updateGymRecord } from '$lib/server/gym-store';
 import { adminErrorMessage, archiveGym, isArchivedGym } from '$lib/admin/gyms';
 
 function clean(value) {
@@ -138,7 +138,7 @@ export const actions = {
     };
 
     try {
-      await writeGymRecords(gyms[index]);
+      await updateGymRecord(gyms[index]);
     } catch (err) {
       return fail(500, { error: adminErrorMessage(err, 'Salvataggio non riuscito.') });
     }
@@ -172,7 +172,7 @@ export const actions = {
     gyms[index] = archiveGym(gyms[index]);
 
     try {
-      await writeGymRecords(gyms[index]);
+      await updateGymRecord(gyms[index]);
     } catch (err) {
       return fail(500, { error: adminErrorMessage(err, 'Archiviazione non riuscita.') });
     }
@@ -207,7 +207,7 @@ export const actions = {
     };
 
     try {
-      await writeGymRecords(gyms[index]);
+      await updateGymRecord(gyms[index]);
     } catch (err) {
       return fail(500, { error: adminErrorMessage(err, 'Salvataggio non riuscito.') });
     }
@@ -280,7 +280,7 @@ export const actions = {
     }
 
     try {
-      await writeGymRecords(changedGyms);
+      await Promise.all(changedGyms.map((gym) => updateGymRecord(gym)));
     } catch (err) {
       return fail(500, {
         error:

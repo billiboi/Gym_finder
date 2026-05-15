@@ -650,7 +650,8 @@ function adminUpdateRecord(gym, availableColumns) {
     'lng',
     'is_premium',
     'is_verified',
-    'priority_score'
+    'priority_score',
+    'deleted_at'
   ];
 
   for (const column of italianColumns) {
