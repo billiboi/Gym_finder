@@ -251,7 +251,7 @@ export function imageForGym(gym) {
     };
   }
 
-  const officialOverride = officialOverrideForGym(gym);
+  const officialOverride = officialGymOverride(gym);
   if (officialOverride?.imageUrl) {
     return {
       src: officialOverride.imageUrl,
