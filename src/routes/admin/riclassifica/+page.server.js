@@ -44,8 +44,24 @@ function disciplineTextForGym(gym) {
   return clean(gym?.discipline) || 'Fitness';
 }
 
+function getVerifiedState(gym) {
+  return Boolean(gym?.is_verified || gym?.verified || gym?.weekly_hours?._verified);
+}
+
+function withVerifiedState(gym, verified) {
+  return {
+    ...gym,
+    verified,
+    is_verified: verified,
+    weekly_hours: {
+      ...(gym?.weekly_hours && typeof gym.weekly_hours === 'object' ? gym.weekly_hours : {}),
+      _verified: verified
+    }
+  };
+}
+
 function suspiciousScore(gym) {
-  if (gym?.verified) return 0;
+  if (getVerifiedState(gym)) return 0;
 
   const name = clean(gym?.name).toLowerCase();
   const disciplineText = disciplineTextForGym(gym);
@@ -87,7 +103,7 @@ export async function load({ url, fetch }) {
       address: [gym.address, gym.city].filter(Boolean).join(', '),
       shortAddress: gym.address || gym.city || '',
       website: gym.website || '',
-      verified: Boolean(gym.verified),
+      verified: getVerifiedState(gym),
       suspiciousScore: suspiciousScore(gym)
     }))
     .sort((a, b) => {
@@ -130,12 +146,11 @@ export const actions = {
 
     const disciplines = toDisciplines(disciplineText, currentDisciplines || disciplineTextForGym(gyms[index]));
     const verified = clean(form.get('verified')) === '1';
-    gyms[index] = {
+    gyms[index] = withVerifiedState({
       ...gyms[index],
       discipline: disciplines[0],
-      disciplines,
-      verified
-    };
+      disciplines
+    }, verified);
 
     try {
       await updateGymRecord(gyms[index]);
@@ -201,10 +216,7 @@ export const actions = {
       return fail(404, { error: 'Palestra non trovata.' });
     }
 
-    gyms[index] = {
-      ...gyms[index],
-      verified: !Boolean(gyms[index]?.verified)
-    };
+    gyms[index] = withVerifiedState(gyms[index], !getVerifiedState(gyms[index]));
 
     try {
       await updateGymRecord(gyms[index]);
@@ -267,10 +279,7 @@ export const actions = {
         return changed;
       }
 
-      const changed = {
-        ...gym,
-        verified: operation === 'verify'
-      };
+      const changed = withVerifiedState(gym, operation === 'verify');
       changedGyms.push(changed);
       return changed;
     });
