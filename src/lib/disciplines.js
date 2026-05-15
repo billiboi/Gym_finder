@@ -4,6 +4,8 @@ import {
   normalizeDisciplinesWithAliases
 } from '$lib/discipline-taxonomy';
 
+export { canonicalDisciplineName };
+
 function fixMojibake(value) {
   let text = String(value || '').trim();
   if (!text) return '';
