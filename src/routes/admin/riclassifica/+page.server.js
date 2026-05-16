@@ -2,7 +2,7 @@ import { fail, redirect } from '@sveltejs/kit';
 import { canWriteSupabase, readGyms, updateGymRecord } from '$lib/server/gym-store';
 import { adminErrorMessage, archiveGym, isArchivedGym } from '$lib/admin/gyms';
 import { DISCIPLINE_MASTER, DISCIPLINE_ALIAS_ROWS } from '$lib/discipline-taxonomy';
-import { normalizeDisciplineField } from '$lib/disciplines';
+import { normalizeDisciplineField, normalizeDisciplineSlugs } from '$lib/disciplines';
 
 function clean(value) {
   return String(value ?? '').trim();
@@ -14,6 +14,10 @@ function toDisciplines(value, fallback = 'Fitness') {
 
 function disciplineAliases(value, fallback = []) {
   return normalizeDisciplineField(value, fallback).aliases;
+}
+
+function disciplineSlugs(value, fallback = []) {
+  return normalizeDisciplineSlugs(value, fallback);
 }
 
 async function getGymsWithFallback(fetchFn) {
@@ -142,15 +146,18 @@ export const actions = {
 
     const disciplines = toDisciplines(disciplineText, currentDisciplines || disciplineTextForGym(gyms[index]));
     const aliases = disciplineAliases(disciplineText, disciplines);
+    const canonicalSlugs = disciplineSlugs(disciplineText, disciplines);
     const verified = clean(form.get('verified')) === '1';
     gyms[index] = withVerifiedState({
       ...gyms[index],
       discipline: disciplines[0],
       disciplines,
       discipline_aliases: aliases,
+      discipline_canonical_slugs: canonicalSlugs,
       weekly_hours: {
         ...(gyms[index]?.weekly_hours && typeof gyms[index].weekly_hours === 'object' ? gyms[index].weekly_hours : {}),
-        _discipline_aliases: aliases
+        _discipline_aliases: aliases,
+        _discipline_canonical_slugs: canonicalSlugs
       }
     }, verified);
 
@@ -273,14 +280,17 @@ export const actions = {
       if (operation === 'apply-discipline') {
         const disciplines = toDisciplines(bulkDisciplines, disciplineTextForGym(gym));
         const aliases = disciplineAliases(bulkDisciplines, disciplines);
+        const canonicalSlugs = disciplineSlugs(bulkDisciplines, disciplines);
         const changed = {
           ...gym,
           discipline: disciplines[0],
           disciplines,
           discipline_aliases: aliases,
+          discipline_canonical_slugs: canonicalSlugs,
           weekly_hours: {
             ...(gym?.weekly_hours && typeof gym.weekly_hours === 'object' ? gym.weekly_hours : {}),
-            _discipline_aliases: aliases
+            _discipline_aliases: aliases,
+            _discipline_canonical_slugs: canonicalSlugs
           }
         };
         changedGyms.push(changed);

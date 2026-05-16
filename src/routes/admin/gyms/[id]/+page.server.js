@@ -2,7 +2,7 @@ import { error, fail, redirect } from '@sveltejs/kit';
 import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { canWriteSupabase, getUploadsDir, readGyms, updateGymRecord } from '$lib/server/gym-store';
-import { normalizeDisciplineField } from '$lib/disciplines';
+import { normalizeDisciplineField, normalizeDisciplineSlugs } from '$lib/disciplines';
 import { DISCIPLINE_MASTER, DISCIPLINE_ALIAS_ROWS } from '$lib/discipline-taxonomy';
 
 function clean(value) {
@@ -22,6 +22,10 @@ function toDisciplines(value) {
 
 function disciplineAliases(value, fallback = []) {
   return normalizeDisciplineField(value, fallback).aliases;
+}
+
+function disciplineSlugs(value, fallback = []) {
+  return normalizeDisciplineSlugs(value, fallback);
 }
 
 function sanitizeFileName(value) {
@@ -154,6 +158,7 @@ export const actions = {
 
     const disciplines = toDisciplines(disciplineText);
     const aliases = disciplineAliases(disciplineText, disciplines);
+    const canonicalSlugs = disciplineSlugs(disciplineText, disciplines);
     let imageUrl = clean(form.get('image_url')) || gyms[idx].image_url || '';
     if (!isValidImageUrl(imageUrl)) {
       return fail(400, {
@@ -183,6 +188,7 @@ export const actions = {
       discipline: disciplines[0],
       disciplines,
       discipline_aliases: aliases,
+      discipline_canonical_slugs: canonicalSlugs,
       indirizzo: address,
       address,
       citta: city,
@@ -203,7 +209,8 @@ export const actions = {
       weekly_hours: {
         ...(gyms[idx]?.weekly_hours && typeof gyms[idx].weekly_hours === 'object' ? gyms[idx].weekly_hours : {}),
         _image_url: imageUrl,
-        _discipline_aliases: aliases
+        _discipline_aliases: aliases,
+        _discipline_canonical_slugs: canonicalSlugs
       }
     };
 

@@ -15,7 +15,31 @@ const DISCIPLINE_DEFINITIONS = [
     name: 'Functional Training',
     slug: 'functional-training',
     description: 'Allenamento funzionale, circuiti e preparazione fisica generale.',
-    aliases: ['Functional', 'Allenamento funzionale', 'Functional Fitness']
+    aliases: ['Functional', 'Ginnastica Funzionale', 'Allenamento funzionale', 'Functional Fitness']
+  },
+  {
+    name: 'GAG',
+    slug: 'gag',
+    description: 'Corsi gambe, addominali e glutei.',
+    aliases: ['G.a.g', 'G.A.G.', 'Gambe Addominali Glutei']
+  },
+  {
+    name: 'HIIT',
+    slug: 'hiit',
+    description: 'Allenamento intervallato ad alta intensita.',
+    aliases: ['Hiit', 'High Intensity Interval Training']
+  },
+  {
+    name: 'TRX',
+    slug: 'trx',
+    description: 'Allenamento in sospensione con TRX o attrezzi analoghi.',
+    aliases: ['Trx', 'Suspension Training']
+  },
+  {
+    name: 'EMS Training',
+    slug: 'ems-training',
+    description: 'Allenamento con elettrostimolazione muscolare.',
+    aliases: ['Ems', 'EMS', 'Elettrostimolazione']
   },
   {
     name: 'Cross Training',
@@ -298,7 +322,8 @@ const aliasIndex = new Map();
 const slugIndex = new Map();
 
 for (const discipline of DISCIPLINE_MASTER) {
-  aliasIndex.set(foldDisciplineKey(discipline.name), {
+  const canonicalFolded = foldDisciplineKey(discipline.name);
+  aliasIndex.set(canonicalFolded, {
     name: discipline.name,
     slug: discipline.slug,
     matchedAlias: '',
@@ -307,7 +332,10 @@ for (const discipline of DISCIPLINE_MASTER) {
   slugIndex.set(discipline.slug, discipline);
 
   for (const alias of discipline.aliases) {
-    aliasIndex.set(foldDisciplineKey(alias), {
+    const aliasFolded = foldDisciplineKey(alias);
+    if (aliasFolded === canonicalFolded) continue;
+
+    aliasIndex.set(aliasFolded, {
       name: discipline.name,
       slug: discipline.slug,
       matchedAlias: alias,
@@ -382,9 +410,10 @@ export function normalizeDisciplinesWithAliases(values, fallback = []) {
     }
   }
 
+  const slugs = [...output.keys()];
   const disciplines = [...output.values()];
   if (disciplines.length) {
-    return { disciplines, aliases };
+    return { disciplines, aliases, slugs };
   }
 
   return normalizeDisciplinesWithAliases(fallbackSource.length ? fallbackSource : ['Fitness'], []);

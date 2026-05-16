@@ -7,6 +7,7 @@
     selectRandomStockImage,
     stockImageForDiscipline
   } from '$lib/gym-detail';
+  import { firstAliasNotice } from '$lib/discipline-alias-ui';
 
   export let data;
   export let form;
@@ -125,8 +126,12 @@
     appliedFormEditId = form.editId;
   }
   $: createPreview = previewAssetsForDiscipline(createDisciplineInput);
+  $: createAliasNotice = firstAliasNotice(createDisciplineInput, data.aliasSuggestions);
   $: selectedPreview = selectedGym
     ? previewAssetsForDiscipline(disciplinesForGym(selectedGym).join(' | '))
+    : null;
+  $: selectedAliasNotice = selectedGym
+    ? firstAliasNotice(disciplinesForGym(selectedGym).join(' | '), data.aliasSuggestions)
     : null;
 </script>
 
@@ -298,6 +303,11 @@
           bind:value={createDisciplineInput}
           required
         />
+        {#if createAliasNotice}
+          <span class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-800">
+            Alias rilevato: “{createAliasNotice.input}” verrà salvato come “{createAliasNotice.canonical}”.
+          </span>
+        {/if}
       </label>
 
       <label class="grid gap-1">
@@ -538,6 +548,11 @@
               value={disciplinesForGym(selectedGym).join(' | ')}
               required
             />
+            {#if selectedAliasNotice}
+              <span class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-800">
+                Alias rilevato: “{selectedAliasNotice.input}” verrà salvato come “{selectedAliasNotice.canonical}”.
+              </span>
+            {/if}
           </label>
 
           <label class="grid gap-1">

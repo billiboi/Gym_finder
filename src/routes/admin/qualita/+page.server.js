@@ -1,7 +1,7 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { gymHref, slugifyGym } from '$lib/gym-detail';
 import { adminErrorMessage, adminGymView, archiveGym, hasGenericDiscipline, hoursNeedReview, isArchivedGym } from '$lib/admin/gyms';
-import { dedupeDisciplines } from '$lib/disciplines';
+import { dedupeDisciplines, normalizeDisciplineField } from '$lib/disciplines';
 import { writeAdminAuditLog } from '$lib/server/admin-audit-store';
 import { canWriteSupabase, readGyms, writeGymRecords } from '$lib/server/gym-store';
 
@@ -54,6 +54,13 @@ function disciplineText(gym) {
 function normalizedDisciplinesForGym(gym) {
   return dedupeDisciplines(
     Array.isArray(gym?.disciplines) && gym.disciplines.length ? gym.disciplines : clean(gym?.discipline).split('|')
+  );
+}
+
+function normalizedDisciplineMetadataForGym(gym) {
+  return normalizeDisciplineField(
+    Array.isArray(gym?.disciplines) && gym.disciplines.length ? gym.disciplines : clean(gym?.discipline).split('|'),
+    ['Fitness']
   );
 }
 
@@ -303,11 +310,20 @@ export const actions = {
     const changed = gyms
       .filter((gym) => selected.has(clean(gym.id)) && !isArchivedGym(gym) && needsDisciplineNormalization(gym))
       .map((gym) => {
-        const disciplines = normalizedDisciplinesForGym(gym);
+        const metadata = normalizedDisciplineMetadataForGym(gym);
+        const disciplines = metadata.disciplines;
+        const weeklyHours = gym?.weekly_hours && typeof gym.weekly_hours === 'object' ? gym.weekly_hours : {};
         return {
           ...gym,
           discipline: disciplines[0] || gym.discipline || 'Fitness',
-          disciplines: disciplines.length ? disciplines : gym.disciplines
+          disciplines: disciplines.length ? disciplines : gym.disciplines,
+          discipline_aliases: metadata.aliases || [],
+          discipline_canonical_slugs: metadata.slugs || [],
+          weekly_hours: {
+            ...weeklyHours,
+            _discipline_aliases: metadata.aliases || [],
+            _discipline_canonical_slugs: metadata.slugs || []
+          }
         };
       });
 

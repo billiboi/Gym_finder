@@ -1,5 +1,6 @@
 <script>
   import { enhance } from '$app/forms';
+  import { firstAliasNotice } from '$lib/discipline-alias-ui';
 
   export let data;
   export let form;
@@ -13,6 +14,7 @@
   let savingKey = '';
   let savedKey = '';
   let clientError = '';
+  let bulkDisciplineInput = '';
 
   function isInteractiveTarget(target) {
     return Boolean(target?.closest?.('a, button, input, select, textarea, label'));
@@ -99,6 +101,7 @@
   $: selectedIds = selectedIds.filter((id) => data.gyms.some((gym) => gym.id === id));
   $: selectedVisibleCount = visibleIds.filter((id) => selectedIds.includes(id)).length;
   $: allVisibleSelected = visibleIds.length > 0 && selectedVisibleCount === visibleIds.length;
+  $: bulkAliasNotice = firstAliasNotice(bulkDisciplineInput, data.aliasSuggestions);
   $: rowPadding = density === 'compact' ? 'px-3 py-2' : 'px-4 py-3';
   $: inputClass =
     density === 'compact'
@@ -238,7 +241,13 @@
         list="discipline-canonical-options"
         class="min-h-[2.4rem] min-w-[230px] rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none ring-slate-900 transition focus:ring-2"
         placeholder="Disciplina per selezionate"
+        bind:value={bulkDisciplineInput}
       />
+      {#if bulkAliasNotice}
+        <span class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-800">
+          Alias: “{bulkAliasNotice.input}” verrà salvato come “{bulkAliasNotice.canonical}”.
+        </span>
+      {/if}
       <button type="submit" name="operation" value="apply-discipline" class="rounded-xl bg-emerald-700 px-3 py-2 text-sm font-semibold text-white hover:bg-emerald-800 disabled:opacity-50" disabled={!data.persistentWrites || selectedIds.length === 0}>
         Applica disciplina
       </button>
@@ -280,6 +289,7 @@
         </div>
 
         {#each filtered as gym}
+          {@const rowAliasNotice = firstAliasNotice(gym.disciplineText, data.aliasSuggestions)}
           <div
             class={`grid cursor-pointer grid-cols-[42px_minmax(210px,1.45fr)_minmax(90px,0.55fr)_minmax(170px,1fr)_minmax(145px,0.8fr)_minmax(210px,1fr)_120px_270px] items-center gap-2 border-b border-slate-100 ${rowPadding} text-sm transition hover:bg-emerald-50/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-slate-900 ${selectedIds.includes(gym.id) ? 'bg-emerald-50/70' : 'bg-white'}`}
             role="button"
@@ -318,6 +328,11 @@
                 {savingKey === `save-${gym.id}` ? '...' : 'Salva'}
               </button>
             </form>
+            {#if rowAliasNotice}
+              <p class="mt-1 text-xs font-semibold text-amber-800">
+                Alias: “{rowAliasNotice.input}” -> “{rowAliasNotice.canonical}”
+              </p>
+            {/if}
 
             <div>
               {#if gym.verified}

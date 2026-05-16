@@ -19,7 +19,7 @@ import {
   restoreGym
 } from '$lib/admin/gyms';
 import { DISCIPLINE_MASTER, DISCIPLINE_ALIAS_ROWS } from '$lib/discipline-taxonomy';
-import { normalizeDisciplineField } from '$lib/disciplines';
+import { normalizeDisciplineField, normalizeDisciplineSlugs } from '$lib/disciplines';
 
 function clean(value) {
   return String(value ?? '').trim();
@@ -39,6 +39,10 @@ function toDisciplines(value) {
 
 function disciplineAliases(value, fallback = []) {
   return normalizeDisciplineField(value, fallback).aliases;
+}
+
+function disciplineSlugs(value, fallback = []) {
+  return normalizeDisciplineSlugs(value, fallback);
 }
 
 function isValidUrl(value) {
@@ -183,6 +187,7 @@ export const actions = {
     const name = clean(form.get('name'));
     const disciplines = toDisciplines(form.get('discipline'));
     const aliases = disciplineAliases(form.get('discipline'), disciplines);
+    const canonicalSlugs = disciplineSlugs(form.get('discipline'), disciplines);
     const address = clean(form.get('address'));
     const city = clean(form.get('city'));
     const website = clean(form.get('website'));
@@ -214,6 +219,7 @@ export const actions = {
       discipline: disciplines[0],
       disciplines,
       discipline_aliases: aliases,
+      discipline_canonical_slugs: canonicalSlugs,
       address,
       city,
       phone: normalizePhone(form.get('phone')),
@@ -230,7 +236,8 @@ export const actions = {
         _verified: verified,
         _is_premium: premium,
         _image_url: imageUrl,
-        _discipline_aliases: aliases
+        _discipline_aliases: aliases,
+        _discipline_canonical_slugs: canonicalSlugs
       }
     };
 
@@ -256,6 +263,7 @@ export const actions = {
     const name = clean(form.get('name'));
     const disciplines = toDisciplines(form.get('discipline'));
     const aliases = disciplineAliases(form.get('discipline'), disciplines);
+    const canonicalSlugs = disciplineSlugs(form.get('discipline'), disciplines);
     const address = clean(form.get('address'));
     const city = clean(form.get('city'));
     const website = clean(form.get('website'));
@@ -300,6 +308,7 @@ export const actions = {
       discipline: disciplines[0],
       disciplines,
       discipline_aliases: aliases,
+      discipline_canonical_slugs: canonicalSlugs,
       indirizzo: address,
       address,
       citta: city,
@@ -325,7 +334,8 @@ export const actions = {
         _verified: verified,
         _is_premium: premium,
         _image_url: imageUrl,
-        _discipline_aliases: aliases
+        _discipline_aliases: aliases,
+        _discipline_canonical_slugs: canonicalSlugs
       }
     };
 

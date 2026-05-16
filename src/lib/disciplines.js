@@ -36,6 +36,10 @@ export function normalizeDisciplineField(value, fallback = ['Fitness']) {
   );
 }
 
+export function normalizeDisciplineSlugs(value, fallback = ['Fitness']) {
+  return normalizeDisciplineField(value, fallback).slugs || [];
+}
+
 export function dedupeDisciplines(values) {
   const map = new Map();
 
