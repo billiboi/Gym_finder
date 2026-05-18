@@ -3,13 +3,15 @@
   import { slugifySeoName } from '$lib/seo-directory';
   import { absoluteUrl, SITE_NAME, jsonLdScript } from '$lib/site';
   import { editorialGuideHref } from '$lib/editorial';
+  import { buildDisciplineSeoMeta } from '$lib/seo-meta';
 
   export let data;
 
   const { discipline, gyms, relatedGuides = [] } = data;
   const pageUrl = absoluteUrl(`/discipline/${discipline.slug}`);
-  const title = `${discipline.title} | ${SITE_NAME}`;
-  const description = `${discipline.description} ${gyms.length} schede pubbliche in catalogo.`;
+  const seoMeta = buildDisciplineSeoMeta(discipline.name);
+  const title = seoMeta.title;
+  const description = seoMeta.description;
   const isIndexableLanding = gyms.length >= 2;
   const cityStats = [...gyms
     .reduce((map, gym) => {

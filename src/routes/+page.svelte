@@ -4,6 +4,7 @@
   import { disciplinePreviewForGym, gymHref, imageForGym, isPremiumGym, isVerifiedGym, officialGymOverride } from '$lib/gym-detail';
   import { isGymOpenNow } from '$lib/hours';
   import { SITE_DESCRIPTION, SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
+  import { buildHomepageSeoMeta } from '$lib/seo-meta';
   import { repairMojibake } from '$lib/text-repair';
   import TrustBadges from '$lib/components/TrustBadges.svelte';
   export let data;
@@ -195,9 +196,9 @@
     disciplines = data.initialDisciplines;
   }
 
-  $: homepageTitle = `${SITE_NAME} | Trova palestre vicino a te`;
-  $: homepageDescription =
-    'Cerca palestre vicino a te per città, disciplina e distanza. Scopri orari, contatti e informazioni utili su oltre 680 palestre.';
+  $: homepageSeo = buildHomepageSeoMeta();
+  $: homepageTitle = homepageSeo.title;
+  $: homepageDescription = homepageSeo.description;
   $: featuredGyms = filteredGyms.slice(0, 12);
   $: homeStructuredData = [
       {

@@ -17,6 +17,7 @@
   } from '$lib/gym-detail';
   import { isAlwaysOpen, weeklyHoursRows } from '$lib/hours';
   import { SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
+  import { appendSiteName, buildGymSeoMeta } from '$lib/seo-meta';
 
   export let data;
 
@@ -28,17 +29,6 @@
   function textArray(value) {
     if (!Array.isArray(value)) return [];
     return value.map((item) => fixGymText(item)).filter(Boolean);
-  }
-
-  function compactMetaDescription(parts) {
-    const text = parts
-      .map((part) => fixGymText(part))
-      .filter(Boolean)
-      .join(' ')
-      .replace(/\s+/g, ' ')
-      .trim();
-
-    return text.length > 158 ? `${text.slice(0, 155).replace(/\s+\S*$/, '')}...` : text;
   }
 
   function publicUrl(value) {
@@ -91,16 +81,13 @@
     ? `https://www.openstreetmap.org/export/embed.html?bbox=${Number(gym.longitude) - 0.01}%2C${Number(gym.latitude) - 0.008}%2C${Number(gym.longitude) + 0.01}%2C${Number(gym.latitude) + 0.008}&layer=mapnik&marker=${Number(gym.latitude)}%2C${Number(gym.longitude)}`
     : '';
   $: pageUrl = absoluteUrl(`/palestre/${data.gymSlug}`);
-  $: seoTitle = officialOverride?.seoTitle
-    ? `${officialOverride.seoTitle} | ${SITE_NAME}`
-    : `${fixGymText(gym?.name)}: ${primaryDiscipline} a ${cityLabel} | ${SITE_NAME}`;
-  $: seoDescription =
-    officialOverride?.seoDescription ||
-    compactMetaDescription([
-      `${fixGymText(gym?.name)} a ${cityLabel}: ${primaryDiscipline}.`,
-      officialMonthlyPrice ? `Prezzo indicato: ${officialMonthlyPrice}.` : '',
-      `Indirizzo, contatti, orari e scheda completa su ${SITE_NAME}.`
-    ]);
+  $: fallbackGymSeo = buildGymSeoMeta({
+    name: fixGymText(gym?.name),
+    city: cityLabel,
+    discipline: primaryDiscipline
+  });
+  $: seoTitle = officialOverride?.seoTitle ? appendSiteName(officialOverride.seoTitle) : fallbackGymSeo.title;
+  $: seoDescription = officialOverride?.seoDescription || fallbackGymSeo.description;
   $: claimHref = `/rivendica-scheda?gym=${encodeURIComponent(fixGymText(gym?.name))}&url=${encodeURIComponent(pageUrl)}&reason=${encodeURIComponent('Rivendicazione scheda')}&gym_id=${encodeURIComponent(gym?.id || '')}`;
 
   $: detailStructuredData = [
