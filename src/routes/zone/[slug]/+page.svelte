@@ -2,13 +2,15 @@
   import { disciplinePreviewForGym, gymHref, imageForGym, isPremiumGym, isVerifiedGym } from '$lib/gym-detail';
   import { slugifySeoName } from '$lib/seo-directory';
   import { absoluteUrl, SITE_NAME, jsonLdScript } from '$lib/site';
+  import { buildLocationSeoMeta } from '$lib/seo-meta';
 
   export let data;
 
   const { location, gyms, topDisciplines } = data;
   const pageUrl = absoluteUrl(`/zone/${location.slug}`);
-  const title = `${location.title} | ${SITE_NAME}`;
-  const description = `${location.description} Consulta una selezione di ${gyms.length} schede pubbliche con link ai dettagli completi.`;
+  const seoMeta = buildLocationSeoMeta(location.name, topDisciplines);
+  const title = seoMeta.title;
+  const description = seoMeta.description;
   const isIndexableLanding = gyms.length >= 2;
   const disciplineSummary = topDisciplines.join(', ');
   const cityStats = [...gyms
