@@ -115,8 +115,15 @@ function sourcePriorityScore(gym) {
   return Number.isFinite(value) ? value : 0;
 }
 
-function qualityFlag(value) {
-  return clean(value) ? 20 : 0;
+function hasCoordinates(gym) {
+  const lat = toNumberOrNull(firstValue(gym, ['lat', 'latitude']));
+  const lng = toNumberOrNull(firstValue(gym, ['lng', 'longitude']));
+  return Number.isFinite(lat) && Number.isFinite(lng);
+}
+
+function hasUsableHours(value) {
+  const hours = clean(value);
+  return Boolean(hours && !/orari da verificare|da verificare|non disponibili|n\/d/i.test(hours));
 }
 
 export function computeGymQualityScore(gym) {
@@ -124,13 +131,23 @@ export function computeGymQualityScore(gym) {
   const hasDisciplines = Array.isArray(gym?.disciplines) && gym.disciplines.length > 0;
   const hasGenericDiscipline =
     !hasDisciplines && (!disciplines.length || ['fitness', 'sport', 'palestra'].includes(clean(disciplines[0]).toLowerCase()));
+  const weeklyHours = sourceWeeklyHours(gym);
+  const checks = [
+    clean(firstValue(gym, ['nome', 'name'])),
+    clean(firstValue(gym, ['indirizzo', 'address'])),
+    clean(firstValue(gym, ['citta', 'city'])),
+    clean(firstValue(gym, ['telefono', 'phone'])),
+    clean(firstValue(gym, ['sito', 'website'])),
+    clean(firstValue(gym, ['descrizione', 'description'])).length >= 80,
+    hasUsableHours(firstValue(gym, ['orari', 'hours_info'])),
+    hasCoordinates(gym),
+    disciplines.length > 0 || hasDisciplines,
+    !hasGenericDiscipline,
+    sourceVerified(gym),
+    clean(firstValue(gym, ['image_url', 'cover_image_url'], weeklyHours._image_url || ''))
+  ];
 
-  let score = 0;
-  score += qualityFlag(firstValue(gym, ['telefono', 'phone']));
-  score += qualityFlag(firstValue(gym, ['sito', 'website']));
-  score += /orari da verificare|da verificare/i.test(clean(firstValue(gym, ['orari', 'hours_info']))) ? 0 : 20;
-  score += clean(firstValue(gym, ['descrizione', 'description'])).length >= 80 ? 20 : 0;
-  score += hasGenericDiscipline ? 0 : 20;
+  const score = Math.round((checks.filter(Boolean).length / checks.length) * 100);
   return Math.max(0, Math.min(100, score));
 }
 

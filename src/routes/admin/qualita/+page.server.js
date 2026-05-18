@@ -1,8 +1,9 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { gymHref, slugifyGym } from '$lib/gym-detail';
-import { adminErrorMessage, adminGymView, archiveGym, hasGenericDiscipline, hoursNeedReview, isArchivedGym } from '$lib/admin/gyms';
+import { adminErrorMessage, adminGymView, archiveGym as archiveGymRecord, hasGenericDiscipline, hoursNeedReview, isArchivedGym } from '$lib/admin/gyms';
 import { dedupeDisciplines, normalizeDisciplineField } from '$lib/disciplines';
 import { writeAdminAuditLog } from '$lib/server/admin-audit-store';
+import { readClaimRequests } from '$lib/server/claim-request-store';
 import { canWriteSupabase, readGyms, writeGymRecords } from '$lib/server/gym-store';
 
 function clean(value) {
@@ -41,6 +42,10 @@ function hasDescription(gym) {
   return Boolean(clean(gym?.description || gym?.descrizione || gym?.editorial_summary));
 }
 
+function hasCoverImage(gym) {
+  return Boolean(clean(gym?.image_url || gym?.weekly_hours?._image_url));
+}
+
 function isVerified(gym) {
   return Boolean(gym?.is_verified || gym?.verified || gym?.weekly_hours?._verified);
 }
@@ -70,18 +75,83 @@ function needsDisciplineNormalization(gym) {
   return normalized.length > 0 && normalized.join(' | ') !== current;
 }
 
-function qualityFlags(gym, slugCounts) {
+function hasPlaceholderHours(gym) {
+  const hours = clean(gym?.hours_info || gym?.orari);
+  return !hours || /orari da verificare|da verificare|non disponibili|n\/d/i.test(hours);
+}
+
+function isCapLike(value) {
+  return /^\d{4,5}$/.test(clean(value));
+}
+
+function hasSuspiciousCity(gym) {
+  const city = clean(gym?.city || gym?.citta);
+  if (!city) return true;
+  if (isCapLike(city)) return true;
+  if (city.length > 42) return true;
+  if (/[|/\\]/.test(city)) return true;
+  return false;
+}
+
+function hasContaminatedData(gym) {
+  const fields = [
+    gym?.name,
+    gym?.address,
+    gym?.city,
+    gym?.phone,
+    gym?.website,
+    gym?.description,
+    gym?.hours_info
+  ].map(clean);
+
+  return fields.some((value) =>
+    /undefined|null|nan|\[object object\]|<script|coupon|casino|crypto|porn|escort/i.test(value)
+  );
+}
+
+function claimForGym(gym, claimIndex) {
+  const id = clean(gym?.id);
+  const slug = slugifyGym(gym);
+  const name = fold(gym?.name || gym?.nome);
+
+  return (
+    (id && claimIndex.byGymId.get(id)) ||
+    (slug && claimIndex.bySlug.get(slug)) ||
+    (name && claimIndex.byName.get(name)) ||
+    null
+  );
+}
+
+function qualityFlags(gym, slugCounts, claimIndex) {
   const slug = clean(gym?.slug) || slugifyGym(gym);
+  const claim = claimForGym(gym, claimIndex);
+  const disciplines = normalizedDisciplinesForGym(gym);
+  const noDisciplines = disciplines.length === 0;
+  const genericDiscipline = hasGenericDiscipline(gym);
+  const disciplineNeedsReview = noDisciplines || genericDiscipline || needsDisciplineNormalization(gym);
 
   return {
+    noName: !clean(gym?.name || gym?.nome),
+    noAddress: !clean(gym?.address || gym?.indirizzo),
+    noCity: !clean(gym?.city || gym?.citta),
     noPhone: !clean(gym?.phone || gym?.telefono),
     noWebsite: !clean(gym?.website || gym?.sito),
     noHours: hoursNeedReview(gym),
+    placeholderHours: hasPlaceholderHours(gym),
     noCoordinates: !hasCoordinates(gym),
     noDescription: !hasDescription(gym),
-    genericDiscipline: hasGenericDiscipline(gym),
+    noDisciplines,
+    missingPrimaryDiscipline: !clean(gym?.discipline) && !disciplines.length,
+    genericDiscipline,
+    disciplineNeedsReview,
+    noImage: !hasCoverImage(gym),
     duplicateSlug: Boolean(slug && slugCounts.get(slug) > 1),
-    unverified: !isVerified(gym)
+    unverified: !isVerified(gym),
+    claimPending: Boolean(claim && ['pending', 'in_review'].includes(claim.status || 'pending')),
+    claimApproved: Boolean(claim && claim.status === 'approved'),
+    contaminatedData: hasContaminatedData(gym),
+    suspiciousCity: hasSuspiciousCity(gym),
+    capAsCity: isCapLike(gym?.city || gym?.citta)
   };
 }
 
@@ -161,19 +231,60 @@ function mergeIntoPrimary(primary, secondary) {
 
 function issueLabels(flags) {
   return [
+    flags.noName ? 'Senza nome' : '',
+    flags.noAddress ? 'Senza indirizzo' : '',
+    flags.noCity ? 'Senza città' : '',
     flags.noPhone ? 'Senza telefono' : '',
     flags.noWebsite ? 'Senza sito' : '',
     flags.noHours ? 'Senza orari' : '',
+    flags.placeholderHours ? 'Orari placeholder' : '',
     flags.noCoordinates ? 'Senza coordinate' : '',
     flags.noDescription ? 'Descrizione mancante' : '',
+    flags.noDisciplines ? 'Senza discipline' : '',
+    flags.missingPrimaryDiscipline ? 'Disciplina principale mancante' : '',
     flags.genericDiscipline ? 'Disciplina generica' : '',
+    flags.disciplineNeedsReview ? 'Disciplina da verificare' : '',
+    flags.noImage ? 'Senza copertina' : '',
     flags.duplicateSlug ? 'Slug duplicato' : '',
-    flags.unverified ? 'Non verificata' : ''
+    flags.unverified ? 'Non verificata' : '',
+    flags.claimPending ? 'Claim pending' : '',
+    flags.contaminatedData ? 'Dati sospetti' : '',
+    flags.suspiciousCity ? 'Città sospetta' : '',
+    flags.capAsCity ? 'CAP usato come città' : ''
   ].filter(Boolean);
+}
+
+function buildClaimIndex(requests) {
+  const index = {
+    byGymId: new Map(),
+    bySlug: new Map(),
+    byName: new Map()
+  };
+
+  for (const request of requests) {
+    const gymId = clean(request?.gym_id);
+    const url = clean(request?.gym_url);
+    const slug = url.match(/\/palestre\/([^/?#]+)/)?.[1] || '';
+    const name = fold(request?.gym_name);
+
+    if (gymId && !index.byGymId.has(gymId)) index.byGymId.set(gymId, request);
+    if (slug && !index.bySlug.has(slug)) index.bySlug.set(slug, request);
+    if (name && !index.byName.has(name)) index.byName.set(name, request);
+  }
+
+  return index;
+}
+
+function scoreBand(score) {
+  if (score < 40) return 'low';
+  if (score <= 70) return 'medium';
+  return 'high';
 }
 
 export async function load({ url }) {
   const gyms = await readGyms();
+  const claims = await readClaimRequests();
+  const claimIndex = buildClaimIndex(claims);
   const visibleGyms = gyms.filter((gym) => !isArchivedGym(gym));
   const slugCounts = new Map();
   const duplicateGroups = buildDuplicateGroups(visibleGyms);
@@ -187,15 +298,26 @@ export async function load({ url }) {
   const items = visibleGyms
     .map((gym) => {
       const view = adminGymView(gym);
-      const flags = qualityFlags(gym, slugCounts);
+      const flags = qualityFlags(gym, slugCounts, claimIndex);
       const issues = issueLabels(flags);
+      const claim = claimForGym(gym, claimIndex);
 
       return {
         ...view,
+        updated_at: clean(gym?.updated_at),
         publicHref: gymHref(gym),
         qualityFlags: flags,
         issueLabels: issues,
-        issueCount: issues.length
+        issueCount: issues.length,
+        qualityBand: scoreBand(view.data_quality_score),
+        claim: claim
+          ? {
+              id: claim.id,
+              status: claim.status || 'pending',
+              requester: clean(claim.requester_name || claim.nome || claim.email || claim.requester_email),
+              href: '/admin/richieste'
+            }
+          : null
       };
     })
     .sort((a, b) => {
@@ -208,11 +330,21 @@ export async function load({ url }) {
     noPhone: items.filter((item) => item.qualityFlags.noPhone).length,
     noWebsite: items.filter((item) => item.qualityFlags.noWebsite).length,
     noHours: items.filter((item) => item.qualityFlags.noHours).length,
+    placeholderHours: items.filter((item) => item.qualityFlags.placeholderHours).length,
     noCoordinates: items.filter((item) => item.qualityFlags.noCoordinates).length,
     noDescription: items.filter((item) => item.qualityFlags.noDescription).length,
+    noImage: items.filter((item) => item.qualityFlags.noImage).length,
     genericDiscipline: items.filter((item) => item.qualityFlags.genericDiscipline).length,
+    disciplineNeedsReview: items.filter((item) => item.qualityFlags.disciplineNeedsReview).length,
     duplicateSlug: items.filter((item) => item.qualityFlags.duplicateSlug).length,
     unverified: items.filter((item) => item.qualityFlags.unverified).length,
+    claimPending: items.filter((item) => item.qualityFlags.claimPending).length,
+    lowQuality: items.filter((item) => item.data_quality_score < 40).length,
+    mediumQuality: items.filter((item) => item.data_quality_score >= 40 && item.data_quality_score <= 70).length,
+    highQuality: items.filter((item) => item.data_quality_score > 70).length,
+    contaminatedData: items.filter((item) => item.qualityFlags.contaminatedData).length,
+    suspiciousCity: items.filter((item) => item.qualityFlags.suspiciousCity).length,
+    capAsCity: items.filter((item) => item.qualityFlags.capAsCity).length,
     probableDuplicateGroups: duplicateGroups.length,
     disciplineNormalization: visibleGyms.filter((gym) => needsDisciplineNormalization(gym)).length
   };
@@ -233,7 +365,9 @@ export async function load({ url }) {
       .slice(0, 80),
     persistentWrites: canWriteSupabase(),
     merged: url.searchParams.get('merged') === '1',
-    normalized: url.searchParams.get('normalized') === '1'
+    normalized: url.searchParams.get('normalized') === '1',
+    verified: url.searchParams.get('verified') === '1',
+    archived: url.searchParams.get('archived') === '1'
   };
 }
 
@@ -268,7 +402,7 @@ export const actions = {
     }
 
     const mergedPrimary = mergeIntoPrimary(primary, secondary);
-    const archivedSecondary = archiveGym(secondary);
+    const archivedSecondary = archiveGymRecord(secondary);
 
     try {
       await writeGymRecords([mergedPrimary, archivedSecondary]);
@@ -351,5 +485,83 @@ export const actions = {
     }
 
     throw redirect(303, '/admin/qualita?normalized=1');
+  },
+
+  verifyGym: async ({ request }) => {
+    if (!canWriteSupabase()) {
+      return fail(503, {
+        error:
+          'Verifica bloccata: questa azione deve scrivere su Supabase staging/preview e richiede SUPABASE_SERVICE_ROLE_KEY.'
+      });
+    }
+
+    const form = await request.formData();
+    const id = clean(form.get('id'));
+    if (!id) return fail(400, { error: 'ID palestra mancante.' });
+
+    const gyms = await readGyms();
+    const gym = gyms.find((item) => clean(item.id) === id);
+    if (!gym || isArchivedGym(gym)) return fail(404, { error: 'Scheda attiva non trovata.' });
+
+    const changed = {
+      ...gym,
+      is_verified: true,
+      verified: true,
+      weekly_hours: {
+        ...(gym?.weekly_hours && typeof gym.weekly_hours === 'object' ? gym.weekly_hours : {}),
+        _verified: true
+      }
+    };
+
+    try {
+      await writeGymRecords([changed]);
+      await writeAdminAuditLog({
+        action: 'QUALITY_VERIFY_GYM',
+        recordId: id,
+        beforeData: { is_verified: gym.is_verified, verified: gym.verified },
+        afterData: { is_verified: true, verified: true }
+      }).catch(() => {});
+    } catch (err) {
+      return fail(500, { error: adminErrorMessage(err, 'Verifica scheda non riuscita.') });
+    }
+
+    throw redirect(303, '/admin/qualita?verified=1');
+  },
+
+  archiveGym: async ({ request }) => {
+    if (!canWriteSupabase()) {
+      return fail(503, {
+        error:
+          'Archiviazione bloccata: questa azione deve scrivere su Supabase staging/preview e richiede SUPABASE_SERVICE_ROLE_KEY.'
+      });
+    }
+
+    const form = await request.formData();
+    const id = clean(form.get('id'));
+    const confirmText = clean(form.get('confirm_text'));
+    if (!id) return fail(400, { error: 'ID palestra mancante.' });
+    if (confirmText !== 'ARCHIVIA') {
+      return fail(400, { error: 'Archiviazione bloccata: scrivi ARCHIVIA per confermare.' });
+    }
+
+    const gyms = await readGyms();
+    const gym = gyms.find((item) => clean(item.id) === id);
+    if (!gym || isArchivedGym(gym)) return fail(404, { error: 'Scheda attiva non trovata.' });
+
+    const changed = archiveGymRecord(gym);
+
+    try {
+      await writeGymRecords([changed]);
+      await writeAdminAuditLog({
+        action: 'QUALITY_ARCHIVE_GYM',
+        recordId: id,
+        beforeData: gym,
+        afterData: changed
+      }).catch(() => {});
+    } catch (err) {
+      return fail(500, { error: adminErrorMessage(err, 'Archiviazione scheda non riuscita.') });
+    }
+
+    throw redirect(303, '/admin/qualita?archived=1');
   }
 };
