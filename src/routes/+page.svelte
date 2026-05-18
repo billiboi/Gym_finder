@@ -5,6 +5,7 @@
   import { isGymOpenNow } from '$lib/hours';
   import { SITE_DESCRIPTION, SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
   import { repairMojibake } from '$lib/text-repair';
+  import { gymTrackingPayload, trackEvent } from '$lib/tracking';
   import TrustBadges from '$lib/components/TrustBadges.svelte';
   export let data;
 
@@ -384,6 +385,12 @@
 
     scheduledSearchValue = searchInput;
     filterText = searchInput;
+    trackEvent('search_submit', {
+      query: searchInput.trim(),
+      disciplina_principale: filterDiscipline.trim(),
+      stato_apertura: filterOpenState,
+      risultati_visibili: filteredGyms.length
+    });
   }
 
   function focusSearchBox() {
@@ -1104,7 +1111,7 @@
             <div class="grid gap-2 border-t border-slate-200 pt-3">
               <div class="flex min-h-[2.4rem] items-center rounded-xl bg-slate-50 px-3 text-sm font-semibold text-slate-700">
                 {#if phoneLink}
-                  <a href={phoneLink} class="min-w-0 truncate transition hover:text-emerald-800">Tel. {phone}</a>
+                  <a href={phoneLink} class="min-w-0 truncate transition hover:text-emerald-800" on:click={() => trackEvent('click_telefono', gymTrackingPayload(gym))}>Tel. {phone}</a>
                 {:else}
                   <span>Telefono non disponibile</span>
                 {/if}

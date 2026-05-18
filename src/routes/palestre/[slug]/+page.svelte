@@ -17,6 +17,7 @@
   } from '$lib/gym-detail';
   import { isAlwaysOpen, weeklyHoursRows } from '$lib/hours';
   import { SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
+  import { gymTrackingPayload, trackEvent } from '$lib/tracking';
 
   export let data;
 
@@ -102,6 +103,7 @@
       `Indirizzo, contatti, orari e scheda completa su ${SITE_NAME}.`
     ]);
   $: claimHref = `/rivendica-scheda?gym=${encodeURIComponent(fixGymText(gym?.name))}&url=${encodeURIComponent(pageUrl)}&reason=${encodeURIComponent('Rivendicazione scheda')}&gym_id=${encodeURIComponent(gym?.id || '')}`;
+  $: trackingPayload = gymTrackingPayload({ ...gym, slug: data.gymSlug, discipline: primaryDiscipline, city: cityLabel });
 
   $: detailStructuredData = [
     {
@@ -291,12 +293,14 @@
                 target="_blank"
                 rel="noreferrer"
                 class="inline-flex min-h-[2.8rem] items-center justify-center rounded-xl bg-slate-900 px-4 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
+                on:click={() => trackEvent('click_indicazioni', trackingPayload)}
               >
                 Apri mappa
               </a>
               <a
                 href={hasPhone ? `tel:${phone.replace(/\s+/g, '')}` : mapsHref}
                 class="inline-flex min-h-[2.8rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-bold text-slate-900 transition hover:bg-slate-50"
+                on:click={() => trackEvent(hasPhone ? 'click_telefono' : 'click_indicazioni', trackingPayload)}
               >
                 {hasPhone ? 'Chiama' : 'Contatti'}
               </a>
@@ -306,6 +310,7 @@
                   target="_blank"
                   rel="noreferrer"
                   class="inline-flex min-h-[2.8rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-bold text-slate-900 transition hover:bg-slate-50"
+                  on:click={() => trackEvent('click_sito', trackingPayload)}
                 >
                   Sito
                 </a>
@@ -313,6 +318,7 @@
                 <a
                   href={claimHref}
                   class="inline-flex min-h-[2.8rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-bold text-slate-900 transition hover:bg-slate-50"
+                  on:click={() => trackEvent('claim_click', trackingPayload)}
                 >
                   Aggiorna dati
                 </a>
@@ -355,6 +361,7 @@
                 target="_blank"
                 rel="noreferrer"
                 class="mt-2 inline-flex text-sm font-semibold text-emerald-800 underline decoration-2 underline-offset-2 sc-detail-link"
+                on:click={() => trackEvent('click_sito', trackingPayload)}
               >
                 Visita il sito ufficiale
               </a>
@@ -550,10 +557,13 @@
           </div>
 
           <div class="mt-4 flex flex-col gap-2">
-            <a href={claimHref} class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
+            <a href={claimHref} class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-slate-800 sc-button" on:click={() => {
+              trackEvent('owner_cta_click', trackingPayload);
+              trackEvent('claim_click', { ...trackingPayload, posizione: 'scheda_owner_box' });
+            }}>
               Gestisci questa palestra
             </a>
-            <a href="/per-le-palestre" class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50">
+            <a href="/per-le-palestre" class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50" on:click={() => trackEvent('partner_cta_click', { ...trackingPayload, posizione: 'scheda_owner_box' })}>
               Info per le palestre
             </a>
           </div>

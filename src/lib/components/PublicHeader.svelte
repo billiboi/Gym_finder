@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { page } from '$app/stores';
   import BrandMark from '$lib/components/BrandMark.svelte';
+  import { trackEvent } from '$lib/tracking';
 
   const MOBILE_HEADER_BREAKPOINT = 768;
 
@@ -87,7 +88,7 @@
         <a href="/chi-siamo" on:click={showHeaderForNavigation} class={navClass()}>
           Chi siamo
         </a>
-        <a href="/per-le-palestre" on:click={showHeaderForNavigation} class={`sc-header-link sc-header-business-link sc-ui-pill sc-ui-pill--primary px-3.5 py-2 text-sm ${showReturnToList ? 'sc-header-business-link--secondary' : ''}`}>
+        <a href="/per-le-palestre" on:click={() => { showHeaderForNavigation(); trackEvent('partner_cta_click', { posizione: 'header', cta: 'per_le_palestre' }); }} class={`sc-header-link sc-header-business-link sc-ui-pill sc-ui-pill--primary px-3.5 py-2 text-sm ${showReturnToList ? 'sc-header-business-link--secondary' : ''}`}>
           Per le palestre
         </a>
       </nav>

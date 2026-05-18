@@ -1,3 +1,7 @@
+<script>
+  import { trackEvent } from '$lib/tracking';
+</script>
+
 <footer class="mx-auto w-full max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
   <div class="rounded-3xl border border-white/70 bg-white/80 px-4 py-4 shadow-lg backdrop-blur-sm sc-panel">
     <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
@@ -14,7 +18,7 @@
         <a href="/chi-siamo" class="sc-ui-pill px-3 py-2">Chi siamo</a>
         <a href="/verifica-schede" class="sc-ui-pill px-3 py-2">Verifica schede</a>
         <a href="/contatti" class="sc-ui-pill px-3 py-2">Contatti</a>
-        <a href="/per-le-palestre" class="sc-ui-pill px-3 py-2">Per le palestre</a>
+        <a href="/per-le-palestre" class="sc-ui-pill px-3 py-2" on:click={() => trackEvent('partner_cta_click', { posizione: 'footer', cta: 'per_le_palestre' })}>Per le palestre</a>
         <a href="/privacy" class="sc-ui-pill px-3 py-2">Privacy</a>
       </nav>
     </div>

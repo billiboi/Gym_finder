@@ -1,5 +1,6 @@
 <script>
   import { SITE_CONTACT_EMAIL, SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
+  import { trackEvent } from '$lib/tracking';
   import TrustBadges from '$lib/components/TrustBadges.svelte';
 
   export let data;
@@ -112,15 +113,8 @@
     ]
   });
 
-  function trackLeadEvent(action, detail = {}) {
-    if (typeof window === 'undefined') return;
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      event: 'business_lead',
-      action,
-      page: '/per-le-palestre',
-      ...detail
-    });
+  function trackPartnerEvent(detail = {}) {
+    trackEvent('partner_cta_click', detail);
   }
 </script>
 
@@ -153,14 +147,14 @@
           <div class="mt-6 flex flex-wrap gap-3">
             <a
               href="#lead"
-              on:click={() => trackLeadEvent('hero_cta_click', { placement: 'hero' })}
+              on:click={() => trackPartnerEvent({ posizione: 'hero', cta: 'richiedi_audit' })}
               class="inline-flex min-h-[3rem] items-center justify-center rounded-xl bg-slate-900 px-5 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
             >
               Richiedi contatto
             </a>
             <a
               href="#pricing"
-              on:click={() => trackLeadEvent('pricing_cta_click', { placement: 'hero' })}
+              on:click={() => trackPartnerEvent({ posizione: 'hero', cta: 'vedi_soluzioni' })}
               class="inline-flex min-h-[3rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-5 text-sm font-bold text-slate-900 transition hover:bg-slate-50"
             >
               Vedi soluzioni
@@ -218,7 +212,7 @@
             </ul>
             <a
               href="#lead"
-              on:click={() => trackLeadEvent('plan_cta_click', { plan: plan.name })}
+              on:click={() => trackPartnerEvent({ posizione: 'piano', piano: plan.name, cta: plan.cta })}
               class={`mt-6 inline-flex min-h-[2.9rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition ${plan.featured ? 'bg-white text-emerald-950 hover:bg-emerald-50' : 'border border-slate-200 bg-white text-slate-950 hover:bg-slate-50'}`}
             >
               {plan.cta}
@@ -265,7 +259,7 @@
           </div>
         {/if}
 
-        <form method="POST" action="?/lead" class="mt-5 grid gap-4" on:submit={() => trackLeadEvent('lead_submit_attempt', { plan: selectedPlan })}>
+        <form method="POST" action="?/lead" class="mt-5 grid gap-4" on:submit={() => trackPartnerEvent({ posizione: 'form', piano: selectedPlan, cta: 'submit_lead' })}>
           <div class="grid gap-4 md:grid-cols-2">
             <label class="grid gap-2">
               <span class="text-sm font-semibold text-slate-700">Nome palestra</span>

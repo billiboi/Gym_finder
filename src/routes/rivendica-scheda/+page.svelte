@@ -1,5 +1,6 @@
 <script>
   import { SITE_CONTACT_EMAIL, SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
+  import { trackEvent } from '$lib/tracking';
   import TrustBadges from '$lib/components/TrustBadges.svelte';
 
   export let data;
@@ -223,7 +224,12 @@
         <h2 class="mt-2 text-2xl font-bold text-slate-900">Scegli il tipo di richiesta e compila il form</h2>
       </div>
 
-      <form method="POST" action="?/submit" class="mt-5 grid gap-4">
+      <form method="POST" action="?/submit" class="mt-5 grid gap-4" on:submit={() => trackEvent('claim_submit', {
+        id_scheda: currentValues.gym_id,
+        nome_palestra: currentValues.gym_name,
+        slug_scheda: currentValues.gym_url.split('/palestre/')[1]?.split(/[?#]/)[0] || '',
+        tipo_richiesta: currentValues.reason
+      })}>
         <input type="hidden" name="gym_id" value={currentValues.gym_id} />
         <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
           {#each reasonOptions as option}
@@ -310,7 +316,12 @@
             <button type="submit" class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
               {selectedFlow.submitLabel}
             </button>
-            <a href={mailtoHref} class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50">
+            <a href={mailtoHref} class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50" on:click={() => trackEvent('claim_click', {
+              id_scheda: currentValues.gym_id,
+              nome_palestra: currentValues.gym_name,
+              tipo_richiesta: currentValues.reason,
+              canale: 'email_precompilata'
+            })}>
               Apri email precompilata
             </a>
           </div>
