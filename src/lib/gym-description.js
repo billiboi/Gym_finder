@@ -167,6 +167,17 @@ export function safeFallbackDescription(gym) {
 }
 
 export function pickPublicDescription(gym, context = {}) {
+  const explicitPublicDescription = clean(gym?.descrizione_pubblica);
+  if (explicitPublicDescription && !isUnsafePublicDescription(gym, explicitPublicDescription, context)) {
+    return {
+      text: explicitPublicDescription,
+      source: clean(gym?.descrizione_source) || 'pubblica',
+      qualityScore: scoreDescription(gym, explicitPublicDescription, context),
+      needsReview: Boolean(gym?.descrizione_needs_review)
+    };
+  }
+
+  const generatedNeedsReview = Boolean(gym?.descrizione_needs_review);
   const candidates = [
     {
       source: 'owner',
@@ -182,7 +193,7 @@ export function pickPublicDescription(gym, context = {}) {
     },
     {
       source: 'generata',
-      text: clean(gym?.descrizione_generata)
+      text: generatedNeedsReview ? '' : clean(gym?.descrizione_generata)
     }
   ];
 
