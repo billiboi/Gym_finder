@@ -1,5 +1,5 @@
 import { json } from '@sveltejs/kit';
-import { dedupeDisciplines, normalizeDisciplineLabel } from '$lib/disciplines';
+import { dedupeDisciplines, normalizeDisciplineLabel, publicDisciplineFilterOptions } from '$lib/disciplines';
 import { isArchivedGym } from '$lib/admin/gyms';
 import { readGyms } from '$lib/server/gym-store';
 
@@ -57,7 +57,7 @@ function disciplinesFromGyms(gyms) {
     disciplinesFromField(gym.discipline).forEach((d) => set.add(d));
   });
 
-  return dedupeDisciplines(set);
+  return publicDisciplineFilterOptions(set);
 }
 
 function parseDisciplines(csvText) {
@@ -89,7 +89,7 @@ function parseDisciplines(csvText) {
       .forEach((d) => set.add(normalizeDisciplineLabel(d)));
   }
 
-  return dedupeDisciplines(set);
+  return publicDisciplineFilterOptions(set);
 }
 
 export async function GET({ fetch }) {

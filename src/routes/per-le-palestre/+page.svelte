@@ -67,7 +67,7 @@
     {
       question: 'Posso partire anche se la mia palestra non è nel catalogo?',
       answer:
-        'Si. Invia i dati della struttura dal form: verranno valutati prima della pubblicazione.'
+        'Sì. Invia i dati della struttura dal form: verranno valutati prima della pubblicazione.'
     }
   ];
 
@@ -232,11 +232,11 @@
             <p class="mt-2 text-sm leading-7 text-slate-600">Orari, indirizzo, telefono, sito e prezzo aiutano l'utente a decidere senza cercare altrove.</p>
           </div>
           <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
-            <p class="text-sm font-bold text-slate-950">Pi&ugrave; fiducia nella struttura</p>
+            <p class="text-sm font-bold text-slate-950">Più fiducia nella struttura</p>
             <p class="mt-2 text-sm leading-7 text-slate-600">Una scheda verificata comunica che la palestra è seguita da un referente reale.</p>
           </div>
           <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
-            <p class="text-sm font-bold text-slate-950">Pi&ugrave; contesto SEO locale</p>
+            <p class="text-sm font-bold text-slate-950">Più contesto SEO locale</p>
             <p class="mt-2 text-sm leading-7 text-slate-600">Zone, discipline e schede si collegano tra loro per intercettare ricerche locali più specifiche.</p>
           </div>
         </div>
@@ -317,7 +317,7 @@
     <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
       <div class="max-w-3xl">
         <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Trust</p>
-        <h2 class="mt-2 text-3xl font-bold text-slate-950">Visibilita senza perdere credibilita</h2>
+        <h2 class="mt-2 text-3xl font-bold text-slate-950">Visibilità senza perdere credibilità</h2>
         <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
           Le schede migliori sono complete, verificabili e sobrie. La parte commerciale migliora la presentazione, non sostituisce i controlli sui dati.
         </p>

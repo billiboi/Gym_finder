@@ -22,7 +22,7 @@ export const SEO_LOCATIONS = [
     name: 'Bellinzona',
     title: 'Palestre a Bellinzona',
     description:
-      'Esplora palestre e club sportivi a Bellinzona e nelle principali localita vicine del Ticino.',
+      'Esplora palestre e club sportivi a Bellinzona e nelle principali località vicine del Ticino.',
     keywords: ['bellinzona', 'giubiasco', 'arbedo', 'camorino', 'sant antonino', 'biasca']
   },
   {

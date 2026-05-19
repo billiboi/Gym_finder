@@ -2,7 +2,7 @@ import { SITE_NAME } from '$lib/site';
 
 const HOME_TITLE = 'Trova Palestre Vicino a Te | Fitness, Boxe, Yoga e Arti Marziali';
 const HOME_DESCRIPTION =
-  'Scopri palestre, corsi e discipline vicino a te. Confronta orari, contatti, sedi e attivita disponibili nella tua zona.';
+  'Scopri palestre, corsi e discipline vicino a te. Confronta orari, contatti, sedi e attività disponibili nella tua zona.';
 
 function cleanSeoText(value) {
   return String(value || '')
@@ -59,8 +59,8 @@ export function buildGymSeoMeta({ name, city, discipline, description } = {}) {
   const citySegment = cityText ? ` a ${cityText}` : '';
   const title = trimAtWord(`${gymName}${citySegment} | ${disciplineText}, orari e contatti`, 68);
   const fallbackDescription = cityText
-    ? `Scopri ${gymName} a ${cityText}: discipline, orari, contatti, sito ufficiale e informazioni utili per scegliere la palestra piu adatta.`
-    : `Scopri ${gymName}: discipline, orari, contatti, sito ufficiale e informazioni utili per scegliere la palestra piu adatta.`;
+    ? `Scopri ${gymName} a ${cityText}: discipline, orari, contatti, sito ufficiale e informazioni utili per scegliere la palestra più adatta.`
+    : `Scopri ${gymName}: discipline, orari, contatti, sito ufficiale e informazioni utili per scegliere la palestra più adatta.`;
 
   return {
     title,

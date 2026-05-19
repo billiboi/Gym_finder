@@ -1,6 +1,6 @@
 <script>
   import { onDestroy, onMount } from 'svelte';
-  import { dedupeDisciplines, normalizeDisciplineLabel } from '$lib/disciplines';
+  import { dedupeDisciplines, normalizeDisciplineLabel, publicDisciplineFilterOptions } from '$lib/disciplines';
   import { disciplinePreviewForGym, gymHref, imageForGym, isPremiumGym, isVerifiedGym, officialGymOverride } from '$lib/gym-detail';
   import { isGymOpenNow } from '$lib/hours';
   import { SITE_DESCRIPTION, SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
@@ -186,7 +186,7 @@
   $: if (searchInput !== filterText) scheduleSearchApply(searchInput);
   $: catalogGymCount = data?.catalogTotalGyms || gyms.length || totalGyms || 0;
   $: catalogGymLabel = catalogGymCount ? `${catalogGymCount}` : '500+';
-  $: catalogDisciplineCount = Math.max(disciplineCount || 0, 57);
+  $: catalogDisciplineCount = data?.catalogTotalDisciplines || disciplineCount || 0;
   $: resultsCountLabel = !hasActiveFilters && !catalogHydrated ? catalogGymLabel : String(filteredGyms.length);
 
   if (Array.isArray(data?.initialGyms)) {
@@ -194,7 +194,7 @@
   }
 
   if (Array.isArray(data?.initialDisciplines)) {
-    disciplines = data.initialDisciplines;
+    disciplines = publicDisciplineFilterOptions(data.initialDisciplines);
   }
 
   $: homepageSeo = buildHomepageSeoMeta();
@@ -470,7 +470,7 @@
       if (res.ok) {
         const data = await res.json();
         if (Array.isArray(data)) {
-          disciplines = dedupeDisciplines(data);
+          disciplines = publicDisciplineFilterOptions(data);
           loadingDisciplines = false;
           return;
         }
@@ -535,7 +535,7 @@
         catalogHydrated = true;
       }
       if (Array.isArray(cached.disciplines) && cached.disciplines.length) {
-        disciplines = cached.disciplines;
+        disciplines = publicDisciplineFilterOptions(cached.disciplines);
         loadingDisciplines = false;
       }
       return catalogHydrated;

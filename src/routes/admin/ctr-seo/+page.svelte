@@ -22,7 +22,7 @@
     {
       name: 'Zona',
       pattern: 'Palestre a {Citta} | Fitness, Boxe, Yoga, orari e contatti',
-      check: 'Query locali con citta o localita.'
+      check: 'Query locali con città o località.'
     },
     {
       name: 'Scheda palestra',

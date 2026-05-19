@@ -32,6 +32,10 @@
     href: `/zone/${slugifySeoName(city)}`
   }));
   const hasContactSignal = (gym) => Boolean(String(gym.phone || '').trim() || String(gym.website || '').trim());
+  const INITIAL_VISIBLE_GYMS = 24;
+  let visibleLimit = INITIAL_VISIBLE_GYMS;
+  $: visibleGyms = gyms.slice(0, visibleLimit);
+  $: hasMoreGyms = visibleGyms.length < gyms.length;
   const faqItems = [
     {
       question: `Che cosa trovo nella pagina ${location.title}?`,
@@ -243,7 +247,7 @@
           <p class="text-slate-600">Per questa zona non ci sono ancora abbastanza schede pubbliche curate.</p>
         </div>
       {:else}
-        {#each gyms as gym, i}
+        {#each visibleGyms as gym, i}
           {@const image = imageMetaForGym(gym)}
           {@const disciplinePreview = disciplinePreviewForGym(gym, 4)}
           {@const verified = isVerifiedGym(gym)}
@@ -307,6 +311,17 @@
             </div>
           </article>
         {/each}
+        {#if hasMoreGyms}
+          <div class="col-span-full flex justify-center rounded-2xl border border-slate-200 bg-white/80 p-4">
+            <button
+              type="button"
+              class="inline-flex min-h-[2.9rem] items-center justify-center rounded-xl bg-slate-900 px-5 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
+              on:click={() => (visibleLimit += 24)}
+            >
+              Carica altre schede ({gyms.length - visibleGyms.length})
+            </button>
+          </div>
+        {/if}
       {/if}
     </section>
 
@@ -327,6 +342,7 @@
     </section>
   </main>
 </div>
+
 
 
 

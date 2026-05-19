@@ -3,6 +3,7 @@ import { readGyms } from '$lib/server/gym-store';
 import { cityLabelForGym, isIndexableGym, legacySlugifyGym, primaryDisciplineForGym, slugifyGym } from '$lib/gym-detail';
 import { seoLocationForGym } from '$lib/seo-locations';
 import { seoDisciplineForGym } from '$lib/seo-disciplines';
+import { sanitizePublicGymData } from '$lib/public-data-sanitizer';
 
 function slugifyName(name) {
   return String(name || '')
@@ -14,7 +15,7 @@ function slugifyName(name) {
 }
 
 function publicDetailGym(gym) {
-  const { editorial_faq_items, ...publicGym } = gym || {};
+  const { editorial_faq_items, ...publicGym } = sanitizePublicGymData(gym) || {};
   return publicGym;
 }
 

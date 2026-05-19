@@ -14,7 +14,7 @@
     },
     {
       question: 'Posso segnalare un errore anche se non gestisco la palestra?',
-      answer: 'Si. Le segnalazioni su indirizzo, chiusure, sito, telefono e orari aiutano a migliorare il catalogo.'
+      answer: 'Sì. Le segnalazioni su indirizzo, chiusure, sito, telefono e orari aiutano a migliorare il catalogo.'
     }
   ];
   const structuredDataScript = jsonLdScript({
@@ -91,7 +91,7 @@
         <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Badge e limiti</p>
         <h2 class="mt-2 text-3xl font-bold text-slate-950">Cosa significa fidarsi di una scheda</h2>
         <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
-          Una scheda puo essere utile anche quando non e perfetta, se distingue bene cosa e disponibile, cosa e ufficiale e cosa va ancora confermato.
+          Una scheda può essere utile anche quando non è perfetta, se distingue bene cosa è disponibile, cosa è ufficiale e cosa va ancora confermato.
         </p>
       </div>
       <div class="mt-5">

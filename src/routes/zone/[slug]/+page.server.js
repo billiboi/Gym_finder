@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit';
 import { isIndexableGym } from '$lib/gym-detail';
-import { slugifySeoName } from '$lib/seo-directory';
+import { normalizeSeoLocationName, slugifySeoName } from '$lib/seo-directory';
 import { readGyms } from '$lib/server/gym-store';
 import { getSeoLocation, gymsForSeoLocation, topDisciplinesForGyms } from '$lib/seo-locations';
 
@@ -9,7 +9,7 @@ export async function load({ params }) {
   let location = getSeoLocation(params.slug);
 
   if (!location) {
-    const allCities = [...new Set(gyms.map((gym) => String(gym?.city || '').trim()).filter(Boolean))];
+    const allCities = [...new Set(gyms.map((gym) => normalizeSeoLocationName(gym?.city || '')).filter(Boolean))];
     const matchedName = allCities.find((name) => slugifySeoName(name) === params.slug);
 
     if (!matchedName) {

@@ -25,8 +25,8 @@
   ];
 
   const sortOptions = [
-    { id: 'quality-asc', label: 'Qualita piu bassa' },
-    { id: 'quality-desc', label: 'Qualita piu alta' },
+    { id: 'quality-asc', label: 'Qualità più bassa' },
+    { id: 'quality-desc', label: 'Qualità più alta' },
     { id: 'updated-desc', label: 'Aggiornate di recente' },
     { id: 'city-asc', label: 'Citta' },
     { id: 'discipline-asc', label: 'Disciplina' },
@@ -91,7 +91,7 @@
     <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
       <div class="max-w-3xl">
         <p class="text-xs font-bold uppercase tracking-[0.22em] text-emerald-800">Qualita schede</p>
-        <h1 class="mt-2 text-3xl font-bold text-slate-900 sm:text-4xl">Dashboard qualita</h1>
+        <h1 class="mt-2 text-3xl font-bold text-slate-900 sm:text-4xl">Dashboard qualità</h1>
         <p class="mt-2 text-sm leading-6 text-slate-600">
           Prioritizza schede deboli, claim aperti e dati incompleti. Le azioni di scrittura sono singole, confermate e usano soft-delete quando archiviano.
         </p>
@@ -337,7 +337,7 @@
               <div class="flex flex-wrap items-center gap-2">
                 <h2 class="text-xl font-bold text-slate-900">{gym.name}</h2>
                 <span class={`rounded-full px-3 py-1 text-xs font-black ring-1 ${scoreBadgeClass(gym.data_quality_score)}`}>
-                  qualita {gym.data_quality_score}/100
+                  qualità {gym.data_quality_score}/100
                 </span>
                 <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-700">{gym.issueCount} problemi</span>
                 {#if gym.claim}

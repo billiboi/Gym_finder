@@ -1,26 +1,30 @@
+import { sanitizePublicGymData } from '$lib/public-data-sanitizer';
+
 export function publicClientGym(gym) {
+  const safeGym = sanitizePublicGymData(gym);
+
   return {
-    id: gym.id,
-    _canonical_slug: gym._canonical_slug,
-    name: gym.name,
-    discipline: gym.discipline,
-    disciplines: gym.disciplines,
-    address: gym.address,
-    city: gym.city,
-    phone: gym.phone,
-    hours_info: gym.hours_info,
-    website: gym.website,
-    latitude: gym.latitude,
-    longitude: gym.longitude,
-    price_info: gym.price_info,
-    price: gym.price,
-    monthly_price: gym.monthly_price,
-    monthlyPrice: gym.monthlyPrice,
-    image_url: gym.image_url,
-    verified: gym.verified,
-    is_verified: gym.is_verified,
-    is_premium: gym.is_premium,
-    is_open_now: gym.is_open_now,
-    distance_km: gym.distance_km
+    id: safeGym.id,
+    _canonical_slug: safeGym._canonical_slug,
+    name: safeGym.name,
+    discipline: safeGym.discipline,
+    disciplines: safeGym.disciplines,
+    address: safeGym.address,
+    city: safeGym.city,
+    phone: safeGym.phone,
+    hours_info: safeGym.hours_info,
+    website: safeGym.website,
+    latitude: safeGym.latitude,
+    longitude: safeGym.longitude,
+    price_info: safeGym.price_info,
+    price: safeGym.price,
+    monthly_price: safeGym.monthly_price,
+    monthlyPrice: safeGym.monthlyPrice,
+    image_url: safeGym.image_url,
+    verified: safeGym.verified,
+    is_verified: safeGym.is_verified,
+    is_premium: safeGym.is_premium,
+    is_open_now: safeGym.is_open_now,
+    distance_km: safeGym.distance_km
   };
 }

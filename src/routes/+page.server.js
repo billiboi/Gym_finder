@@ -1,26 +1,21 @@
-import { dedupeDisciplines } from '$lib/disciplines';
 import { isArchivedGym } from '$lib/admin/gyms';
+import { buildCatalogStats } from '$lib/catalog-stats';
 import { publicClientGym } from '$lib/gym-client';
 import { readGyms } from '$lib/server/gym-store';
 
 const INITIAL_GYM_LIMIT = 24;
 
 export async function load() {
-  const gyms = (await readGyms()).filter((gym) => !isArchivedGym(gym));
-  const disciplines = dedupeDisciplines(
-    gyms.flatMap((gym) =>
-      Array.isArray(gym?.disciplines) && gym.disciplines.length
-        ? gym.disciplines
-        : String(gym?.discipline || '')
-            .split('|')
-            .map((value) => value.trim())
-            .filter(Boolean)
-    )
-  );
+  const allGyms = await readGyms();
+  const gyms = allGyms.filter((gym) => !isArchivedGym(gym));
+  const stats = buildCatalogStats({ allGyms, activeGyms: gyms });
 
   return {
     initialGyms: gyms.slice(0, INITIAL_GYM_LIMIT).map(publicClientGym),
-    catalogTotalGyms: gyms.length,
-    initialDisciplines: disciplines
+    catalogTotalGyms: stats.activeGyms,
+    catalogTotalRecords: stats.totalRecords,
+    catalogTotalDisciplines: stats.canonicalDisciplines,
+    catalogCuratedDisciplines: stats.curatedDisciplines,
+    initialDisciplines: stats.publicDisciplineOptions
   };
 }

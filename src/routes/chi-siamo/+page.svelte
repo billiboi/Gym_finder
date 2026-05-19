@@ -59,7 +59,7 @@
             Una directory locale pensata per scegliere una palestra con meno attrito
           </h1>
           <p class="mt-4 max-w-3xl text-base leading-8 text-slate-600">
-            Palestre in Zona organizza schede, discipline, zone, contatti e orari in un percorso semplice. Il punto non e fare rumore: e aiutare persone e strutture a incontrarsi con informazioni piu chiare.
+            Palestre in Zona organizza schede, discipline, zone, contatti e orari in un percorso semplice. Il punto non è fare rumore: è aiutare persone e strutture a incontrarsi con informazioni più chiare.
           </p>
         </div>
         <div class="grid gap-3 rounded-3xl bg-emerald-950 p-4 text-white">
@@ -89,7 +89,7 @@
         </article>
         <article class="rounded-2xl border border-slate-200 bg-white/90 p-4">
           <h3 class="text-base font-bold text-slate-950">Separiamo dati e promozione</h3>
-          <p class="mt-2 text-sm leading-7 text-slate-600">Una palestra puo chiedere una scheda migliore, ma le correzioni ai dati restano soggette a controllo.</p>
+          <p class="mt-2 text-sm leading-7 text-slate-600">Una palestra può chiedere una scheda migliore, ma le correzioni ai dati restano soggette a controllo.</p>
         </article>
       </div>
     </section>
@@ -109,7 +109,7 @@
         <div>
           <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Contatto</p>
           <h2 class="mt-2 text-2xl font-bold text-slate-950">Segnala un errore o una scheda da aggiornare</h2>
-          <p class="mt-3 text-sm leading-7 text-slate-600">Le segnalazioni precise migliorano il catalogo piu di qualsiasi claim generico.</p>
+          <p class="mt-3 text-sm leading-7 text-slate-600">Le segnalazioni precise migliorano il catalogo più di qualsiasi claim generico.</p>
         </div>
         <div class="flex flex-wrap gap-3">
           <a href="/verifica-schede" class="inline-flex min-h-[2.85rem] items-center justify-center rounded-xl bg-slate-900 px-4 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">Come verifichiamo</a>

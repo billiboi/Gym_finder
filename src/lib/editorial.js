@@ -36,14 +36,14 @@ export const DISCIPLINE_CLUSTERS = [
   },
   {
     slug: 'mobilita-e-benessere',
-    name: 'Mobilita e benessere',
-    description: 'Yoga, Pilates e attivita orientate a postura, mobilita e continuita.',
+    name: 'Mobilità e benessere',
+    description: 'Yoga, Pilates e attività orientate a postura, mobilità e continuità.',
     disciplines: ['pilates', 'yoga']
   },
   {
     slug: 'acqua-e-tecnica',
     name: 'Acqua e tecnica',
-    description: 'Nuoto e attivita tecniche dove logistica, orari e struttura contano molto.',
+    description: 'Nuoto e attività tecniche dove logistica, orari e struttura contano molto.',
     disciplines: ['nuoto']
   }
 ];
@@ -55,23 +55,23 @@ export const EDITORIAL_GUIDES = [
     cluster: 'fitness-e-forza',
     title: 'Come scegliere una palestra senza perdere tempo',
     description:
-      'Una guida pratica per confrontare palestre partendo da distanza, orari, discipline, contatti e qualita delle schede.',
+      'Una guida pratica per confrontare palestre partendo da distanza, orari, discipline, contatti e qualità delle schede.',
     updatedAt: '2026-05-10',
     readingMinutes: 5,
     disciplines: ['fitness', 'pilates', 'yoga'],
     locations: ['varese', 'lugano', 'gallarate'],
     intro:
-      'La palestra giusta non e solo quella piu vicina. Conta quanto e semplice arrivarci, se gli orari reggono nella tua settimana e se la struttura offre davvero cio che cerchi.',
+      'La palestra giusta non è solo quella più vicina. Conta quanto è semplice arrivarci, se gli orari reggono nella tua settimana e se la struttura offre davvero ciò che cerchi.',
     sections: [
       {
-        heading: 'Parti da logistica e continuita',
+        heading: 'Parti da logistica e continuità',
         body:
-          'Distanza, parcheggio, mezzi pubblici e fasce orarie decidono spesso piu del prezzo. Una palestra mediocre ma raggiungibile con costanza puo funzionare meglio di una struttura perfetta che resta scomoda.'
+          'Distanza, parcheggio, mezzi pubblici e fasce orarie decidono spesso più del prezzo. Una palestra mediocre ma raggiungibile con costanza può funzionare meglio di una struttura perfetta che resta scomoda.'
       },
       {
         heading: 'Controlla discipline e livello',
         body:
-          'Guarda se la scheda cita discipline specifiche, corsi guidati, sala attrezzi o attivita complementari. Se cerchi un corso tecnico, apri anche la pagina della disciplina per confrontare alternative simili.'
+          'Guarda se la scheda cita discipline specifiche, corsi guidati, sala attrezzi o attività complementari. Se cerchi un corso tecnico, apri anche la pagina della disciplina per confrontare alternative simili.'
       },
       {
         heading: 'Verifica prima di chiamare',
@@ -81,9 +81,9 @@ export const EDITORIAL_GUIDES = [
     ],
     faqs: [
       {
-        question: 'Meglio scegliere la palestra piu vicina o quella piu completa?',
+        question: 'Meglio scegliere la palestra più vicina o quella più completa?',
         answer:
-          'Per allenarti con regolarita, la vicinanza pesa molto. Se cerchi una disciplina specifica, pero, conviene confrontare anche strutture poco piu lontane.'
+          'Per allenarti con regolarità, la vicinanza pesa molto. Se cerchi una disciplina specifica, però, conviene confrontare anche strutture poco più lontane.'
       },
       {
         question: 'Quali informazioni controllare prima di contattare una palestra?',
@@ -98,7 +98,7 @@ export const EDITORIAL_GUIDES = [
     cluster: 'sport-da-combattimento',
     title: 'Boxe, kickboxe e MMA: differenze per scegliere il corso',
     description:
-      'Panoramica chiara per orientarsi tra boxe, kickboxe e MMA e aprire le pagine disciplina piu utili.',
+      'Panoramica chiara per orientarsi tra boxe, kickboxe e MMA e aprire le pagine disciplina più utili.',
     updatedAt: '2026-05-10',
     readingMinutes: 6,
     disciplines: ['boxe', 'kickboxing', 'mma'],
@@ -126,12 +126,12 @@ export const EDITORIAL_GUIDES = [
       {
         question: 'Meglio iniziare da boxe o MMA?',
         answer:
-          'Se parti da zero, la boxe puo essere piu semplice da leggere. Le MMA sono ottime se vuoi un percorso completo e accetti una curva iniziale piu ampia.'
+          'Se parti da zero, la boxe può essere più semplice da leggere. Le MMA sono ottime se vuoi un percorso completo e accetti una curva iniziale più ampia.'
       },
       {
         question: 'La kickboxe e adatta anche a chi cerca fitness?',
         answer:
-          'Si, molte palestre propongono corsi orientati al condizionamento. Conviene verificare livello, contatto previsto e struttura della lezione.'
+          'Sì, molte palestre propongono corsi orientati al condizionamento. Conviene verificare livello, contatto previsto e struttura della lezione.'
       }
     ]
   },
@@ -139,7 +139,7 @@ export const EDITORIAL_GUIDES = [
     slug: 'pilates-yoga-fitness-quale-scegliere',
     template: 'discipline-cluster',
     cluster: 'mobilita-e-benessere',
-    title: 'Pilates, yoga o fitness: quale percorso ha piu senso',
+    title: 'Pilates, yoga o fitness: quale percorso ha più senso',
     description:
       'Guida comparativa per capire quando cercare Pilates, yoga o palestra fitness in base a obiettivi e abitudini.',
     updatedAt: '2026-05-10',
@@ -155,26 +155,26 @@ export const EDITORIAL_GUIDES = [
           'Il Pilates funziona bene se vuoi lavoro guidato, controllo del movimento e attenzione alla postura. Controlla se la struttura offre corsi a piccoli gruppi o macchine dedicate.'
       },
       {
-        heading: 'Yoga per mobilita e continuita',
+        heading: 'Yoga per mobilità e continuità',
         body:
-          'Lo yoga puo essere piu fisico o piu orientato a respirazione e mobilita. Leggi la scheda e cerca indicazioni sullo stile se hai esigenze precise.'
+          'Lo yoga può essere più fisico o più orientato a respirazione e mobilità. Leggi la scheda e cerca indicazioni sullo stile se hai esigenze precise.'
       },
       {
-        heading: 'Fitness per varieta e autonomia',
+        heading: 'Fitness per varietà e autonomia',
         body:
-          'Una palestra fitness e adatta se vuoi sala attrezzi, corsi diversi e maggiore flessibilita. In questo caso orari, affollamento e posizione pesano molto.'
+          'Una palestra fitness è adatta se vuoi sala attrezzi, corsi diversi e maggiore flessibilità. In questo caso orari, affollamento e posizione pesano molto.'
       }
     ],
     faqs: [
       {
         question: 'Pilates e yoga sono alternative alla palestra?',
         answer:
-          'Possono esserlo, ma dipende dall obiettivo. Se cerchi forza massimale o sala attrezzi, una palestra fitness resta piu adatta.'
+          "Possono esserlo, ma dipende dall'obiettivo. Se cerchi forza massimale o sala attrezzi, una palestra fitness resta più adatta."
       },
       {
         question: 'Cosa guardare in una scheda Pilates o yoga?',
         answer:
-          'Verifica indirizzo, orari, tipo di corso, contatti e discipline associate. Se hai esigenze fisiche specifiche, conferma sempre con l insegnante.'
+          "Verifica indirizzo, orari, tipo di corso, contatti e discipline associate. Se hai esigenze fisiche specifiche, conferma sempre con l'insegnante."
       }
     ]
   },
@@ -190,7 +190,7 @@ export const EDITORIAL_GUIDES = [
     disciplines: ['fitness', 'boxe', 'pilates'],
     locations: ['varese', 'lugano', 'saronno', 'gallarate'],
     intro:
-      'Quando cerchi una palestra vicina, il rischio e aprire troppe schede senza un ordine. Una checklist breve rende il confronto piu pulito.',
+      'Quando cerchi una palestra vicina, il rischio è aprire troppe schede senza un ordine. Una checklist breve rende il confronto più pulito.',
     sections: [
       {
         heading: 'Guarda prima area e tragitto',
@@ -200,12 +200,12 @@ export const EDITORIAL_GUIDES = [
       {
         heading: 'Usa discipline e zone come filtri mentali',
         body:
-          'Apri le pagine per zona quando vuoi orientarti localmente, oppure le pagine disciplina quando il corso e la priorita.'
+          'Apri le pagine per zona quando vuoi orientarti localmente, oppure le pagine disciplina quando il corso è la priorità.'
       },
       {
         heading: 'Controlla i segnali minimi',
         body:
-          'Una scheda utile dovrebbe darti almeno nome, indirizzo, citta, disciplina, contatti o sito, orari e posizione mappa quando disponibili.'
+          'Una scheda utile dovrebbe darti almeno nome, indirizzo, città, disciplina, contatti o sito, orari e posizione mappa quando disponibili.'
       }
     ],
     faqs: [

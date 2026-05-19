@@ -1,4 +1,5 @@
 import { dedupeDisciplines } from '$lib/disciplines';
+import { DISCIPLINE_MASTER } from '$lib/discipline-taxonomy';
 import { isIndexableGym } from '$lib/gym-detail';
 import { SEO_DISCIPLINES, gymsForSeoDiscipline } from '$lib/seo-disciplines';
 import { SEO_LOCATIONS, gymsForSeoLocation } from '$lib/seo-locations';
@@ -23,6 +24,21 @@ function isBrowsableLocationName(name) {
   return true;
 }
 
+const LOWERCASE_LOCATION_WORDS = new Set(['al', 'alla', 'alle', 'con', 'di', 'del', 'della', 'dei', 'e']);
+
+export function normalizeSeoLocationName(name) {
+  return String(name || '')
+    .trim()
+    .replace(/\s+/g, ' ')
+    .split(' ')
+    .map((part, index) => {
+      const lower = part.toLocaleLowerCase('it');
+      if (index > 0 && LOWERCASE_LOCATION_WORDS.has(lower)) return lower;
+      return lower.charAt(0).toLocaleUpperCase('it') + lower.slice(1);
+    })
+    .join(' ');
+}
+
 export function disciplinesForGym(gym) {
   const values =
     Array.isArray(gym?.disciplines) && gym.disciplines.length
@@ -44,12 +60,15 @@ export function buildSeoLocationEntries(gyms, { includeLowCount = true } = {}) {
   const cityCounts = new Map();
 
   for (const gym of indexableGyms) {
-    const city = String(gym?.city || '').trim();
+    const city = normalizeSeoLocationName(gym?.city || '');
     if (!city || !isBrowsableLocationName(city)) continue;
-    cityCounts.set(city, (cityCounts.get(city) || 0) + 1);
+    const slug = slugifySeoName(city);
+    const current = cityCounts.get(slug) || { name: city, count: 0 };
+    current.count += 1;
+    cityCounts.set(slug, current);
   }
 
-  const seoLocationNames = new Set(SEO_LOCATIONS.map((location) => location.name));
+  const seoLocationSlugs = new Set(SEO_LOCATIONS.map((location) => location.slug));
   const featured = SEO_LOCATIONS.map((location) => ({
     name: location.name,
     slug: location.slug,
@@ -60,10 +79,10 @@ export function buildSeoLocationEntries(gyms, { includeLowCount = true } = {}) {
   }));
 
   const extra = [...cityCounts.entries()]
-    .filter(([name]) => !seoLocationNames.has(name))
-    .map(([name, count]) => ({
+    .filter(([slug]) => !seoLocationSlugs.has(slug))
+    .map(([slug, { name, count }]) => ({
       name,
-      slug: slugifySeoName(name),
+      slug,
       title: `Palestre a ${name}`,
       description: `Schede pubbliche collegate a ${name}, con contatti, orari e discipline quando disponibili.`,
       count,
@@ -77,36 +96,25 @@ export function buildSeoLocationEntries(gyms, { includeLowCount = true } = {}) {
 
 export function buildSeoDisciplineEntries(gyms, { includeLowCount = true } = {}) {
   const indexableGyms = gyms.filter((gym) => isIndexableGym(gym));
-  const disciplineCounts = new Map();
+  const seoBySlug = new Map(SEO_DISCIPLINES.map((discipline) => [discipline.slug, discipline]));
+  const canonical = DISCIPLINE_MASTER.map((discipline) => {
+    const seo = seoBySlug.get(discipline.slug);
+    return {
+      name: discipline.name,
+      slug: discipline.slug,
+      title: seo?.title || `Palestre di ${discipline.name}`,
+      description:
+        seo?.description ||
+        `Schede pubbliche collegate a ${discipline.name}, con contatti, orari e discipline correlate quando disponibili.`,
+      count: gymsForSeoDiscipline(indexableGyms, {
+        ...discipline,
+        keywords: [discipline.name, ...(discipline.aliases || [])]
+      }).length,
+      featured: Boolean(seo)
+    };
+  });
 
-  for (const gym of indexableGyms) {
-    for (const discipline of disciplinesForGym(gym)) {
-      disciplineCounts.set(discipline, (disciplineCounts.get(discipline) || 0) + 1);
-    }
-  }
-
-  const seoDisciplineNames = new Set(SEO_DISCIPLINES.map((discipline) => discipline.name));
-  const featured = SEO_DISCIPLINES.map((discipline) => ({
-    name: discipline.name,
-    slug: discipline.slug,
-    title: discipline.title,
-    description: discipline.description,
-    count: gymsForSeoDiscipline(indexableGyms, discipline).length,
-    featured: true
-  }));
-
-  const extra = [...disciplineCounts.entries()]
-    .filter(([name]) => !seoDisciplineNames.has(name))
-    .map(([name, count]) => ({
-      name,
-      slug: slugifySeoName(name),
-      title: `Palestre di ${name}`,
-      description: `Schede pubbliche collegate a ${name}, con contatti, orari e discipline correlate quando disponibili.`,
-      count,
-      featured: false
-    }));
-
-  return filterByCount([...featured, ...extra], includeLowCount)
+  return filterByCount(canonical, includeLowCount)
     .filter((entry) => entry.count > 0)
     .sort((left, right) => right.count - left.count || left.name.localeCompare(right.name, 'it'));
 }

@@ -2,7 +2,7 @@ const DISCIPLINE_DEFINITIONS = [
   {
     name: 'Fitness',
     slug: 'fitness',
-    description: 'Palestre generaliste, sala attrezzi e attivita fitness non specialistiche.',
+    description: 'Palestre generaliste, sala attrezzi e attività fitness non specialistiche.',
     aliases: ['Fitnes', 'Fitness ! Bodybuilding', 'Palestra', 'Sport']
   },
   {
@@ -80,7 +80,7 @@ const DISCIPLINE_DEFINITIONS = [
   {
     name: 'Nuoto',
     slug: 'nuoto',
-    description: 'Piscine, corsi di nuoto e attivita acquatiche.',
+    description: 'Piscine, corsi di nuoto e attività acquatiche.',
     aliases: ['Swimming', 'Swim']
   },
   {
@@ -170,7 +170,7 @@ const DISCIPLINE_DEFINITIONS = [
   {
     name: 'Arti Marziali',
     slug: 'arti-marziali',
-    description: 'Categoria generale da usare solo quando la disciplina specifica non e chiara.',
+    description: 'Categoria generale da usare solo quando la disciplina specifica non è chiara.',
     aliases: ['Martial Arts']
   },
   {
@@ -254,7 +254,7 @@ const DISCIPLINE_DEFINITIONS = [
   {
     name: 'Hockey',
     slug: 'hockey',
-    description: 'Hockey e attivita collegate.',
+    description: 'Hockey e attività collegate.',
     aliases: []
   },
   {
