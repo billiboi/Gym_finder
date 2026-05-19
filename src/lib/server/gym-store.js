@@ -653,7 +653,14 @@ function adminUpdateRecord(gym, availableColumns) {
     'is_premium',
     'is_verified',
     'priority_score',
-    'deleted_at'
+    'deleted_at',
+    'descrizione_owner',
+    'descrizione_editoriale',
+    'descrizione_generata',
+    'descrizione_pubblica',
+    'descrizione_source',
+    'descrizione_quality_score',
+    'descrizione_needs_review'
   ];
 
   for (const column of italianColumns) {

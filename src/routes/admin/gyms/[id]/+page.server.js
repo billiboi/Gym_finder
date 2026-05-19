@@ -4,6 +4,7 @@ import path from 'node:path';
 import { canWriteSupabase, getUploadsDir, readGyms, updateGymRecord } from '$lib/server/gym-store';
 import { normalizeDisciplineField, normalizeDisciplineSlugs } from '$lib/disciplines';
 import { DISCIPLINE_MASTER, DISCIPLINE_ALIAS_ROWS } from '$lib/discipline-taxonomy';
+import { generateGymDescription, pickPublicDescription, scoreDescription } from '$lib/gym-description';
 
 function clean(value) {
   return String(value ?? '').trim();
@@ -120,6 +121,10 @@ export async function load({ params, fetch }) {
   return {
     gym: {
       ...gym,
+      descrizione_pubblica_attuale: pickPublicDescription(gym).text,
+      descrizione_pubblica_source: pickPublicDescription(gym).source,
+      descrizione_generata_preview: gym.descrizione_generata || generateGymDescription(gym, gyms).description,
+      descrizione_quality_score_calculated: scoreDescription(gym, pickPublicDescription(gym).text),
       discipline_text: Array.isArray(gym.disciplines)
         ? gym.disciplines.join(' | ')
         : clean(gym.discipline) || 'Fitness'
@@ -201,6 +206,13 @@ export const actions = {
       website: clean(form.get('website')),
       descrizione: clean(form.get('description')),
       description: clean(form.get('description')),
+      descrizione_owner: clean(form.get('descrizione_owner')) || gyms[idx].descrizione_owner || '',
+      descrizione_editoriale: clean(form.get('descrizione_editoriale')) || '',
+      descrizione_generata: clean(form.get('descrizione_generata')) || gyms[idx].descrizione_generata || '',
+      descrizione_pubblica: clean(form.get('descrizione_pubblica')) || '',
+      descrizione_source: clean(form.get('descrizione_source')) || 'admin',
+      descrizione_quality_score: toNullableNumber(form.get('descrizione_quality_score')) || 0,
+      descrizione_needs_review: clean(form.get('descrizione_needs_review')) === '1',
       lat: toNullableNumber(form.get('latitude')),
       latitude: toNullableNumber(form.get('latitude')),
       lng: toNullableNumber(form.get('longitude')),

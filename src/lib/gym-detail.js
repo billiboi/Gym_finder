@@ -1,4 +1,5 @@
 import { normalizeDisciplineLabel } from '$lib/disciplines';
+import { pickPublicDescription } from '$lib/gym-description';
 
 export function fixGymText(value) {
   let text = String(value || '');
@@ -374,9 +375,9 @@ export function structuredAddressForGym(gym) {
 }
 
 export function buildGymPresentation(gym) {
-  const customDescription = fixGymText(gym?.description || gym?.presentazione || '');
-  if (customDescription) {
-    return customDescription;
+  const customDescription = pickPublicDescription(gym);
+  if (customDescription.text) {
+    return fixGymText(customDescription.text);
   }
 
   const name = fixGymText(gym?.name || 'Questa palestra');

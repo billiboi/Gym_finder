@@ -86,7 +86,8 @@
     name: fixGymText(gym?.name),
     city: cityLabel,
     discipline: primaryDiscipline,
-    disciplines
+    disciplines,
+    description: presentation
   });
   $: seoTitle = officialOverride?.seoTitle ? appendSiteName(officialOverride.seoTitle) : fallbackGymSeo.title;
   $: seoDescription = officialOverride?.seoDescription || fallbackGymSeo.description;

@@ -20,4 +20,6 @@ data/palestre_backup_1027_data.csv
 data/recovery-*.json
 data/enrichment-*.json
 data/supabase-*.json
+data/description-*.json
+data/description-*.csv
 static/preview.png

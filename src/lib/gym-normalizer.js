@@ -26,7 +26,14 @@ export const GYM_CANONICAL_FIELDS = [
   'deleted_at',
   'created_at',
   'updated_at',
-  'data_quality_score'
+  'data_quality_score',
+  'descrizione_owner',
+  'descrizione_editoriale',
+  'descrizione_generata',
+  'descrizione_pubblica',
+  'descrizione_source',
+  'descrizione_quality_score',
+  'descrizione_needs_review'
 ];
 
 export const GYM_LEGACY_FIELDS = [
@@ -226,6 +233,13 @@ export function normalizeGym(gym, fallbackId = '') {
     enrichment_updated_at: firstValue(gym, ['enrichment_updated_at'], null) || null,
     social_links: gym?.social_links && typeof gym.social_links === 'object' ? gym.social_links : null,
     data_verified_at: firstValue(gym, ['data_verified_at'], null) || null,
+    descrizione_owner: clean(firstValue(gym, ['descrizione_owner'])),
+    descrizione_editoriale: clean(firstValue(gym, ['descrizione_editoriale'])),
+    descrizione_generata: clean(firstValue(gym, ['descrizione_generata'])),
+    descrizione_pubblica: clean(firstValue(gym, ['descrizione_pubblica'])),
+    descrizione_source: clean(firstValue(gym, ['descrizione_source'])),
+    descrizione_quality_score: Number(firstValue(gym, ['descrizione_quality_score'], 0)) || 0,
+    descrizione_needs_review: toBoolean(firstValue(gym, ['descrizione_needs_review'], false)),
     weekly_hours: {
       ...weeklyHours,
       _verified: isVerified,

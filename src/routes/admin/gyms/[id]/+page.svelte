@@ -6,6 +6,12 @@
 
   let disciplineInput = data?.gym?.discipline_text || '';
   let disciplineInputInitializedFor = data?.gym?.id || '';
+  let generatedDescription = data?.gym?.descrizione_generata || data?.gym?.descrizione_generata_preview || '';
+  let editorialDescription = data?.gym?.descrizione_editoriale || '';
+  let publicDescription = data?.gym?.descrizione_pubblica || data?.gym?.descrizione_pubblica_attuale || '';
+  let descriptionSource = data?.gym?.descrizione_pubblica_source || data?.gym?.descrizione_source || 'esistente';
+  let descriptionQualityScore = data?.gym?.descrizione_quality_score || data?.gym?.descrizione_quality_score_calculated || 0;
+  let descriptionNeedsReview = Boolean(data?.gym?.descrizione_needs_review);
 
   $: gym = data.gym;
   $: saved = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('saved') === '1';
@@ -14,6 +20,19 @@
     disciplineInputInitializedFor = gym.id;
   }
   $: aliasNotice = firstAliasNotice(disciplineInput, data.aliasSuggestions);
+
+  function useGeneratedDescription() {
+    editorialDescription = generatedDescription;
+    publicDescription = generatedDescription;
+    descriptionSource = 'generata_approvata_admin';
+    descriptionNeedsReview = false;
+  }
+
+  function markDescriptionVerified() {
+    publicDescription = editorialDescription || generatedDescription || publicDescription;
+    descriptionSource = editorialDescription ? 'editoriale_verificata' : 'generata_verificata';
+    descriptionNeedsReview = false;
+  }
 </script>
 
 <main class="mx-auto min-h-screen w-full max-w-3xl px-4 pb-10 pt-6 sm:px-6 lg:px-8">
@@ -114,6 +133,61 @@
         <span class="text-sm font-semibold text-slate-700">Breve presentazione</span>
         <textarea name="description" rows="5" class="rounded-xl border border-slate-200 px-3 py-2 text-sm">{gym.description || ''}</textarea>
       </label>
+
+      <section class="grid gap-3 rounded-2xl border border-emerald-900/10 bg-emerald-50/60 p-4">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-[0.2em] text-emerald-800">Descrizione</p>
+          <h2 class="mt-1 text-lg font-bold text-slate-900">Revisione descrizione pubblica</h2>
+          <p class="mt-1 text-sm leading-6 text-slate-600">
+            Le descrizioni generate non vanno live da sole: scegli tu se usarle come descrizione editoriale e salva la scheda.
+          </p>
+        </div>
+
+        <div class="grid gap-3 rounded-xl border border-slate-200 bg-white p-3">
+          <div class="grid gap-2 sm:grid-cols-3">
+            <div>
+              <p class="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Source</p>
+              <p class="mt-1 text-sm font-semibold text-slate-900">{descriptionSource}</p>
+            </div>
+            <div>
+              <p class="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Quality score</p>
+              <p class="mt-1 text-sm font-semibold text-slate-900">{descriptionQualityScore}/100</p>
+            </div>
+            <div>
+              <p class="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Stato</p>
+              <p class="mt-1 text-sm font-semibold text-slate-900">{descriptionNeedsReview ? 'Da revisionare' : 'Utilizzabile'}</p>
+            </div>
+          </div>
+          <p class="text-sm leading-7 text-slate-700">{gym.descrizione_pubblica_attuale || 'Nessuna descrizione pubblica sicura disponibile.'}</p>
+        </div>
+
+        <label class="grid gap-1">
+          <span class="text-sm font-semibold text-slate-700">Descrizione generata</span>
+          <textarea name="descrizione_generata" rows="5" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" bind:value={generatedDescription}></textarea>
+        </label>
+
+        <label class="grid gap-1">
+          <span class="text-sm font-semibold text-slate-700">Descrizione editoriale</span>
+          <textarea name="descrizione_editoriale" rows="5" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" bind:value={editorialDescription}></textarea>
+        </label>
+
+        <input type="hidden" name="descrizione_pubblica" value={publicDescription} />
+        <input type="hidden" name="descrizione_source" value={descriptionSource} />
+        <input type="hidden" name="descrizione_quality_score" value={descriptionQualityScore} />
+        <input type="hidden" name="descrizione_needs_review" value={descriptionNeedsReview ? '1' : '0'} />
+
+        <div class="flex flex-wrap gap-2">
+          <button type="button" class="rounded-xl bg-emerald-800 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-900" on:click={useGeneratedDescription}>
+            Usa descrizione generata
+          </button>
+          <button type="button" class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50" on:click={() => (descriptionSource = 'editoriale_in_modifica')}>
+            Modifica descrizione editoriale
+          </button>
+          <button type="button" class="rounded-xl border border-emerald-200 bg-white px-4 py-2 text-sm font-semibold text-emerald-800 hover:bg-emerald-50" on:click={markDescriptionVerified}>
+            Segna descrizione verificata
+          </button>
+        </div>
+      </section>
 
       <div class="grid gap-3 sm:grid-cols-2">
         <label class="grid gap-1">

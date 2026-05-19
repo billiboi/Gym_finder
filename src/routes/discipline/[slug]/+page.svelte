@@ -306,6 +306,9 @@
                   {/if}
                 </div>
               </div>
+              <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm leading-6 text-slate-700">
+                {gym.public_description_short || 'Descrizione in verifica editoriale'}
+              </p>
               <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Indirizzo:</strong> {[gym.address, gym.city].filter(Boolean).join(', ') || 'Indirizzo non disponibile'}</p>
               <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Orari:</strong> {gym.hours_info || 'Orari da verificare'}</p>
               <div class="flex flex-wrap gap-2 text-xs font-bold sc-card-signal-list">

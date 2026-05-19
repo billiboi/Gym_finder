@@ -1,7 +1,9 @@
 import { sanitizePublicGymData } from '$lib/public-data-sanitizer';
+import { pickPublicDescription, shortPublicDescription } from '$lib/gym-description';
 
 export function publicClientGym(gym) {
   const safeGym = sanitizePublicGymData(gym);
+  const pickedDescription = pickPublicDescription(safeGym);
 
   return {
     id: safeGym.id,
@@ -14,6 +16,12 @@ export function publicClientGym(gym) {
     phone: safeGym.phone,
     hours_info: safeGym.hours_info,
     website: safeGym.website,
+    description: pickedDescription.text,
+    public_description: pickedDescription.text,
+    public_description_short: shortPublicDescription(safeGym),
+    description_source: pickedDescription.source,
+    description_quality_score: pickedDescription.qualityScore,
+    description_needs_review: pickedDescription.needsReview,
     latitude: safeGym.latitude,
     longitude: safeGym.longitude,
     price_info: safeGym.price_info,
