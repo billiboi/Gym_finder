@@ -1,11 +1,10 @@
 import { error, redirect } from '@sveltejs/kit';
 import { isIndexableGym } from '$lib/gym-detail';
-import { slugifySeoName } from '$lib/seo-directory';
+import { publicClientGym } from '$lib/gym-client';
 import { readGyms } from '$lib/server/gym-store';
 import { getSeoDiscipline, gymsForSeoDiscipline } from '$lib/seo-disciplines';
-import { dedupeDisciplines } from '$lib/disciplines';
 import { relatedGuidesForDiscipline } from '$lib/editorial';
-import { canonicalSlugForDisciplineSlug, isDisciplineAliasSlug } from '$lib/discipline-taxonomy';
+import { canonicalSlugForDisciplineSlug, getDisciplineBySlug, isDisciplineAliasSlug } from '$lib/discipline-taxonomy';
 
 export async function load({ params }) {
   if (isDisciplineAliasSlug(params.slug)) {
@@ -16,29 +15,18 @@ export async function load({ params }) {
   let discipline = getSeoDiscipline(params.slug);
 
   if (!discipline) {
-    const allDisciplines = dedupeDisciplines(
-      gyms.flatMap((gym) =>
-        Array.isArray(gym?.disciplines) && gym.disciplines.length
-          ? gym.disciplines
-          : String(gym?.discipline || '')
-              .split('|')
-              .map((value) => value.trim())
-              .filter(Boolean)
-      )
-    );
+    const canonical = getDisciplineBySlug(params.slug);
 
-    const matchedName = allDisciplines.find((name) => slugifySeoName(name) === params.slug);
-
-    if (!matchedName) {
+    if (!canonical || canonical.slug !== params.slug) {
       throw error(404, 'Disciplina non trovata');
     }
 
     discipline = {
       slug: params.slug,
-      name: matchedName,
-      title: `Palestre di ${matchedName}`,
-      description: `Esplora le schede pubbliche collegate a ${matchedName} e vedi quali strutture del catalogo rientrano davvero in questa disciplina.`,
-      keywords: [matchedName]
+      name: canonical.name,
+      title: `Palestre di ${canonical.name}`,
+      description: `Esplora le schede pubbliche collegate a ${canonical.name} e vedi quali strutture del catalogo rientrano davvero in questa disciplina.`,
+      keywords: [canonical.name, ...(canonical.aliases || [])]
     };
   }
 
@@ -46,7 +34,7 @@ export async function load({ params }) {
 
   return {
     discipline,
-    gyms: matchedGyms,
+    gyms: matchedGyms.map(publicClientGym),
     relatedGuides: relatedGuidesForDiscipline(discipline.slug)
   };
 }

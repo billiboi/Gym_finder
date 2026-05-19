@@ -6,14 +6,19 @@
 
   export let data;
 
-  const { location, gyms, topDisciplines } = data;
+  const { location, topDisciplines } = data;
+  let gyms = data.gyms || [];
+  let totalGyms = data.totalGyms || gyms.length;
+  let hasMoreFromServer = Boolean(data.hasMoreGyms);
+  let loadingMoreGyms = false;
+  let loadMoreError = '';
   const pageUrl = absoluteUrl(`/zone/${location.slug}`);
   const seoMeta = buildLocationSeoMeta(location.name, topDisciplines);
   const title = seoMeta.title;
   const description = seoMeta.description;
-  const isIndexableLanding = gyms.length >= 2;
+  $: isIndexableLanding = totalGyms >= 2;
   const disciplineSummary = topDisciplines.join(', ');
-  const cityStats = [...gyms
+  $: cityStats = [...gyms
     .reduce((map, gym) => {
       const city = String(gym.city || '').trim() || location.name;
       map.set(city, (map.get(city) || 0) + 1);
@@ -26,7 +31,7 @@
     name,
     href: `/discipline/${slugifySeoName(name)}`
   }));
-  const cityLinks = cityStats.map(([city, count]) => ({
+  $: cityLinks = cityStats.map(([city, count]) => ({
     city,
     count,
     href: `/zone/${slugifySeoName(city)}`
@@ -35,11 +40,40 @@
   const INITIAL_VISIBLE_GYMS = 24;
   let visibleLimit = INITIAL_VISIBLE_GYMS;
   $: visibleGyms = gyms.slice(0, visibleLimit);
-  $: hasMoreGyms = visibleGyms.length < gyms.length;
+  $: hasMoreGyms = visibleGyms.length < gyms.length || hasMoreFromServer;
+  async function loadMoreGyms() {
+    if (loadingMoreGyms) return;
+    if (visibleGyms.length < gyms.length) {
+      visibleLimit += 24;
+      return;
+    }
+
+    loadingMoreGyms = true;
+    loadMoreError = '';
+    try {
+      const response = await fetch(`/api/gyms?q=${encodeURIComponent(location.name)}`);
+      if (!response.ok) throw new Error('Caricamento non riuscito');
+      const payload = await response.json();
+      if (!Array.isArray(payload)) throw new Error('Risposta non valida');
+
+      const byId = new Map(gyms.map((gym) => [gym.id, gym]));
+      for (const gym of payload) {
+        if (gym?.id && !byId.has(gym.id)) byId.set(gym.id, gym);
+      }
+      gyms = [...byId.values()];
+      totalGyms = Math.max(totalGyms, gyms.length);
+      hasMoreFromServer = false;
+      visibleLimit += 24;
+    } catch {
+      loadMoreError = 'Non riesco a caricare altre schede ora. Riprova tra poco.';
+    } finally {
+      loadingMoreGyms = false;
+    }
+  }
   const faqItems = [
     {
       question: `Che cosa trovo nella pagina ${location.title}?`,
-      answer: `La pagina raccoglie ${gyms.length} schede pubbliche collegate a ${location.name}. Serve a vedere in un colpo solo quali strutture del catalogo ricadono davvero in quest'area.`
+      answer: `La pagina raccoglie ${totalGyms} schede pubbliche collegate a ${location.name}. Serve a vedere in un colpo solo quali strutture del catalogo ricadono davvero in quest'area.`
     },
     {
       question: `Quali discipline sono più presenti a ${location.name}?`,
@@ -297,15 +331,15 @@
               <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Orari:</strong> {gym.hours_info || 'Orari da verificare'}</p>
               <div class="flex flex-wrap gap-2 text-xs font-bold sc-card-signal-list">
                 <span class={`rounded-full px-2.5 py-1 ${hasContactSignal(gym) ? 'sc-card-signal--ok' : 'sc-card-signal--muted'}`}>
-                  {hasContactSignal(gym) ? 'Contatti' : 'Contatti n/d'}
+                  {hasContactSignal(gym) ? 'Contatti disponibili' : 'Contatti da verificare'}
                 </span>
                 <span class={`rounded-full px-2.5 py-1 ${gym.latitude && gym.longitude ? 'sc-card-signal--ok' : 'sc-card-signal--muted'}`}>
-                  {gym.latitude && gym.longitude ? 'Mappa' : 'Mappa n/d'}
+                  {gym.latitude && gym.longitude ? 'Indicazioni disponibili' : 'Indicazioni da verificare'}
                 </span>
               </div>
               <div class="rounded-2xl sc-gym-card-cta p-3">
                 <a href={gymHref(gym)} class="inline-flex items-center rounded-xl bg-slate-900 px-3 py-2 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
-                  Scheda completa
+                  Apri scheda completa
                 </a>
               </div>
             </div>
@@ -316,10 +350,13 @@
             <button
               type="button"
               class="inline-flex min-h-[2.9rem] items-center justify-center rounded-xl bg-slate-900 px-5 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
-              on:click={() => (visibleLimit += 24)}
+              on:click={loadMoreGyms}
             >
-              Carica altre schede ({gyms.length - visibleGyms.length})
+              {loadingMoreGyms ? 'Caricamento...' : `Carica altre schede (${Math.max(totalGyms - visibleGyms.length, 0)})`}
             </button>
+            {#if loadMoreError}
+              <p class="text-sm font-semibold text-red-700">{loadMoreError}</p>
+            {/if}
           </div>
         {/if}
       {/if}

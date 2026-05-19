@@ -82,6 +82,16 @@
     return cleaned ? `tel:${cleaned}` : '';
   }
 
+  function websiteHref(value) {
+    const url = displayName(value);
+    return /^https?:\/\//i.test(url) ? url : '';
+  }
+
+  function directionsHref(gym) {
+    const target = displayName([gym?.address, gym?.city].filter(Boolean).join(', '));
+    return target ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(target)}` : '';
+  }
+
   function hoursForCard(value) {
     const hours = displayName(value) || 'Da verificare';
     return hours
@@ -1014,7 +1024,9 @@
         {@const disciplinePreview = disciplinePreviewForGym(gym, 4)}
         {@const phone = displayName(gym.phone)}
         {@const phoneLink = phoneHref(gym.phone)}
-        {@const hasWebsite = Boolean(displayName(gym.website))}
+        {@const websiteLink = websiteHref(gym.website)}
+        {@const directionsLink = directionsHref(gym)}
+        {@const hasWebsite = Boolean(websiteLink)}
         {@const verified = isVerifiedGym(gym)}
         {@const premium = isPremiumGym(gym)}
         {@const openLabel = gym.is_open_now === true ? 'Aperta ora' : gym.is_open_now === false ? 'Chiusa ora' : 'Orari n/d'}
@@ -1101,30 +1113,38 @@
 
               <div class="flex flex-wrap gap-2 text-xs font-bold sc-card-signal-list">
                 <span class={`rounded-full px-2.5 py-1 ${phoneLink ? 'sc-card-signal--ok' : 'sc-card-signal--muted'}`}>
-                  {phoneLink ? 'Telefono' : 'Tel. n/d'}
+                  {phoneLink ? 'Telefono disponibile' : 'Telefono da verificare'}
                 </span>
                 <span class={`rounded-full px-2.5 py-1 ${hasWebsite ? 'sc-card-signal--ok' : 'sc-card-signal--muted'}`}>
-                  {hasWebsite ? 'Sito' : 'Sito n/d'}
+                  {hasWebsite ? 'Sito disponibile' : 'Sito non ancora disponibile'}
                 </span>
               </div>
             </div>
 
-            <div class="grid gap-2 border-t border-slate-200 pt-3">
-              <div class="flex min-h-[2.4rem] items-center rounded-xl bg-slate-50 px-3 text-sm font-semibold text-slate-700">
+            <div class="grid gap-2 border-t border-slate-200 pt-3 sm:grid-cols-2">
+              <div class="contents">
                 {#if phoneLink}
-                  <a href={phoneLink} class="min-w-0 truncate transition hover:text-emerald-800" on:click={() => trackEvent('click_telefono', gymTrackingPayload(gym))}>Tel. {phone}</a>
+                  <a href={phoneLink} class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-slate-900 transition hover:bg-slate-50" on:click={() => trackEvent('click_telefono', gymTrackingPayload(gym))}>Chiama</a>
                 {:else}
-                  <span>Telefono non disponibile</span>
+                  <span class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl border border-slate-200 bg-slate-50 px-3 text-center text-sm font-bold text-slate-500">Telefono da verificare</span>
                 {/if}
               </div>
-              <div class="grid gap-2">
+              {#if websiteLink}
+                <a href={websiteLink} target="_blank" rel="noreferrer" class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-slate-900 transition hover:bg-slate-50" on:click={() => trackEvent('click_sito', gymTrackingPayload(gym))}>Apri sito</a>
+              {:else}
+                <span class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl border border-slate-200 bg-slate-50 px-3 text-center text-sm font-bold text-slate-500">Sito non ancora disponibile</span>
+              {/if}
+              {#if directionsLink}
+                <a href={directionsLink} target="_blank" rel="noreferrer" class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-slate-900 transition hover:bg-slate-50" on:click={() => trackEvent('click_indicazioni', gymTrackingPayload(gym))}>Indicazioni</a>
+              {:else}
+                <span class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl border border-slate-200 bg-slate-50 px-3 text-center text-sm font-bold text-slate-500">Indirizzo da verificare</span>
+              {/if}
                 <a
                   href={gymHref(gym)}
                   class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl bg-slate-900 px-3 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
                 >
                   Scheda completa
                 </a>
-              </div>
             </div>
           </div>
         </article>

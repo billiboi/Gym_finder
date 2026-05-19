@@ -310,15 +310,15 @@
               <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Orari:</strong> {gym.hours_info || 'Orari da verificare'}</p>
               <div class="flex flex-wrap gap-2 text-xs font-bold sc-card-signal-list">
                 <span class={`rounded-full px-2.5 py-1 ${hasContactSignal(gym) ? 'sc-card-signal--ok' : 'sc-card-signal--muted'}`}>
-                  {hasContactSignal(gym) ? 'Contatti' : 'Contatti n/d'}
+                  {hasContactSignal(gym) ? 'Contatti disponibili' : 'Contatti da verificare'}
                 </span>
                 <span class={`rounded-full px-2.5 py-1 ${gym.latitude && gym.longitude ? 'sc-card-signal--ok' : 'sc-card-signal--muted'}`}>
-                  {gym.latitude && gym.longitude ? 'Mappa' : 'Mappa n/d'}
+                  {gym.latitude && gym.longitude ? 'Indicazioni disponibili' : 'Indicazioni da verificare'}
                 </span>
               </div>
               <div class="rounded-2xl sc-gym-card-cta p-3">
                 <a href={gymHref(gym)} class="inline-flex items-center rounded-xl bg-slate-900 px-3 py-2 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
-                  Scheda completa
+                  Apri scheda completa
                 </a>
               </div>
             </div>

@@ -280,7 +280,12 @@ export const EXCLUDED_DISCIPLINE_ALIASES = new Set([
   'danza moderna',
   'danza contemporanea',
   'danza sportiva',
-  'breakdance'
+  'breakdance',
+  'vacu',
+  'vacu gym',
+  'vacufit',
+  'vaculab',
+  'vacu training'
 ]);
 
 function titleCase(value) {

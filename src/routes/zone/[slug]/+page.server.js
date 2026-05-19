@@ -1,8 +1,11 @@
 import { error } from '@sveltejs/kit';
 import { isIndexableGym } from '$lib/gym-detail';
+import { publicClientGym } from '$lib/gym-client';
 import { normalizeSeoLocationName, slugifySeoName } from '$lib/seo-directory';
 import { readGyms } from '$lib/server/gym-store';
 import { getSeoLocation, gymsForSeoLocation, topDisciplinesForGyms } from '$lib/seo-locations';
+
+const INITIAL_ZONE_GYMS = 36;
 
 export async function load({ params }) {
   const gyms = await readGyms();
@@ -29,7 +32,9 @@ export async function load({ params }) {
 
   return {
     location,
-    gyms: matchedGyms,
+    gyms: matchedGyms.slice(0, INITIAL_ZONE_GYMS).map(publicClientGym),
+    totalGyms: matchedGyms.length,
+    hasMoreGyms: matchedGyms.length > INITIAL_ZONE_GYMS,
     topDisciplines: topDisciplinesForGyms(matchedGyms)
   };
 }

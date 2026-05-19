@@ -85,7 +85,8 @@
   $: fallbackGymSeo = buildGymSeoMeta({
     name: fixGymText(gym?.name),
     city: cityLabel,
-    discipline: primaryDiscipline
+    discipline: primaryDiscipline,
+    disciplines
   });
   $: seoTitle = officialOverride?.seoTitle ? appendSiteName(officialOverride.seoTitle) : fallbackGymSeo.title;
   $: seoDescription = officialOverride?.seoDescription || fallbackGymSeo.description;
@@ -289,7 +290,7 @@
                 class="inline-flex min-h-[2.8rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-bold text-slate-900 transition hover:bg-slate-50"
                 on:click={() => trackEvent(hasPhone ? 'click_telefono' : 'click_indicazioni', trackingPayload)}
               >
-                {hasPhone ? 'Chiama' : 'Contatti'}
+                {hasPhone ? 'Chiama' : 'Indicazioni'}
               </a>
               {#if website}
                 <a
@@ -299,7 +300,7 @@
                   class="inline-flex min-h-[2.8rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-bold text-slate-900 transition hover:bg-slate-50"
                   on:click={() => trackEvent('click_sito', trackingPayload)}
                 >
-                  Sito
+                  Apri sito
                 </a>
               {:else}
                 <a

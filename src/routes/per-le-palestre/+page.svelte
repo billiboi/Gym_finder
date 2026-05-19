@@ -7,9 +7,9 @@
   export let form;
 
   const pageUrl = absoluteUrl('/per-le-palestre');
-  const title = `Soluzioni per palestre | ${SITE_NAME}`;
+  const title = `Gestisci la scheda della tua palestra | ${SITE_NAME}`;
   const description =
-    'Porta più chiarezza, contatti e richieste qualificate alla tua palestra con schede verificate, premium e percorsi commerciali locali.';
+    'Aggiorna informazioni, contatti e orari senza obblighi pubblicitari. Le opzioni premium sono facoltative e vengono valutate solo su richiesta.';
 
   const plans = [
     {
@@ -139,10 +139,10 @@
         <div>
           <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Per proprietari e manager</p>
           <h1 class="mt-3 max-w-4xl text-4xl font-bold leading-tight text-slate-950 sm:text-5xl">
-            Trasforma la tua scheda in un canale che porta contatti migliori
+            Gestisci e migliora la scheda della tua palestra
           </h1>
           <p class="mt-4 max-w-2xl text-base leading-8 text-slate-600">
-            Palestre in Zona aiuta chi sta scegliendo dove allenarsi. Una scheda chiara, verificata e completa riduce dubbi, aumenta fiducia e rende più semplice contattarti.
+            Aggiorna informazioni, contatti e orari senza obblighi pubblicitari. Le opzioni premium sono facoltative e vengono valutate solo su richiesta.
           </p>
           <div class="mt-6 flex flex-wrap gap-3">
             <a

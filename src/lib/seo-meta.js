@@ -52,12 +52,21 @@ export function buildLocationSeoMeta(cityName, topDisciplines = []) {
   };
 }
 
-export function buildGymSeoMeta({ name, city, discipline, description } = {}) {
+export function buildGymSeoMeta({ name, city, discipline, disciplines = [], description } = {}) {
   const gymName = cleanSeoText(name) || 'Palestra';
   const cityText = cleanSeoText(city);
   const disciplineText = disciplineFallback(discipline);
+  const disciplineList = Array.isArray(disciplines) ? disciplines.map(cleanSeoText).filter(Boolean) : [];
+  const hasManyDisciplines = disciplineList.length >= 4;
+  const martialSignals = ['Boxe', 'MMA', 'Kickboxing', 'Brazilian Jiu Jitsu', 'Judo', 'Karate', 'Krav Maga', 'Muay Thai'];
+  const hasMartialCluster = disciplineList.filter((item) => martialSignals.includes(item)).length >= 2;
   const citySegment = cityText ? ` a ${cityText}` : '';
-  const title = trimAtWord(`${gymName}${citySegment} | ${disciplineText}, orari e contatti`, 68);
+  const titleTail = hasManyDisciplines
+    ? hasMartialCluster
+      ? `${disciplineText} e arti marziali`
+      : 'Corsi, orari e contatti'
+    : `${disciplineText}, orari e contatti`;
+  const title = trimAtWord(`${gymName}${citySegment} | ${titleTail}`, 68);
   const fallbackDescription = cityText
     ? `Scopri ${gymName} a ${cityText}: discipline, orari, contatti, sito ufficiale e informazioni utili per scegliere la palestra più adatta.`
     : `Scopri ${gymName}: discipline, orari, contatti, sito ufficiale e informazioni utili per scegliere la palestra più adatta.`;

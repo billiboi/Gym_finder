@@ -1,4 +1,4 @@
-﻿import { normalizeDisciplineLabel } from '$lib/disciplines';
+import { normalizeDisciplineLabel } from '$lib/disciplines';
 
 export function fixGymText(value) {
   let text = String(value || '');
@@ -454,13 +454,13 @@ const OFFICIAL_20TRAININGLAB_OVERRIDE = {
   infoCards: [
     {
       label: 'Formula',
-      value: 'EMS 20 min · Vaculab 30 min',
-      body: 'Il sito ufficiale presenta due format rapidi: EMS da 20 minuti e Vaculab da 30 minuti, entrambi costruiti per chi vuole allenarsi bene senza sedute molto lunghe.'
+      value: 'EMS 20 min · Vacu Training 30 min',
+      body: 'Il sito ufficiale presenta due format rapidi: EMS da 20 minuti e Vacu Training da 30 minuti, entrambi costruiti per chi vuole allenarsi bene senza sedute molto lunghe.'
     },
     {
       label: 'Metodo',
       value: 'EMS + Vacuum Terapia',
-      body: '20 Training Lab combina allenamento EMS con tuta dedicata e Vaculab con tapis roulant, infrarossi e ambiente sottovuoto.'
+      body: '20 Training Lab combina allenamento EMS con tuta dedicata e Vacu Training con tapis roulant, infrarossi e ambiente sottovuoto.'
     },
     {
       label: 'Supporto',
@@ -474,23 +474,23 @@ const OFFICIAL_20TRAININGLAB_OVERRIDE = {
     }
   ],
   presentation:
-    '20 Training Lab è un network fitness che il sito ufficiale presenta come soluzione rapida e personalizzata per il benessere, con allenamenti EMS e Vaculab costruiti per chi vuole ottimizzare il tempo senza rinunciare a un lavoro guidato da trainer qualificati.',
+    '20 Training Lab è un network fitness che il sito ufficiale presenta come soluzione rapida e personalizzata per il benessere, con allenamenti EMS e Vacu Training costruiti per chi vuole ottimizzare il tempo senza rinunciare a un lavoro guidato da trainer qualificati.',
   highlights: [
-    'La proposta ufficiale di 20 Training Lab ruota attorno a due format precisi: EMS, descritto come allenamento rapido da 20 minuti con tuta elettrostimolante, e Vaculab, percorso da 30 minuti con vacuum terapia e infrarossi.',
+    'La proposta ufficiale di 20 Training Lab ruota attorno a due format precisi: EMS, descritto come allenamento rapido da 20 minuti con tuta elettrostimolante, e Vacu Training, percorso da 30 minuti con vacuum terapia e infrarossi.',
     'Il brand non si presenta come palestra tradizionale, ma come metodo centrato sulla qualità del tempo. Questo è un dettaglio importante per chi cerca una struttura adatta a routine fitte o allenamenti molto efficienti.',
     'Nella sezione EMS il sito collega il metodo a obiettivi come tonificazione, riduzione massa grassa, contrasto alla cellulite, beneficio posturale e supporto contro la sarcopenia. La scheda diventa quindi più leggibile per chi confronta obiettivi concreti, non solo marchi.',
-    'La sezione Vaculab mette in evidenza dimagrimento localizzato, drenaggio, lavoro sul microcircolo e tonificazione di gambe, glutei e addome. In pratica, la differenza rispetto a un centro fitness standard sta anche nella combinazione di tecnologie e protocolli dedicati.'
+    'La sezione Vacu Training mette in evidenza dimagrimento localizzato, drenaggio, lavoro sul microcircolo e tonificazione di gambe, glutei e addome. In pratica, la differenza rispetto a un centro fitness standard sta anche nella combinazione di tecnologie e protocolli dedicati.'
   ],
   faqItems: [
     {
       question: 'Che tipo di centro è 20 Training Lab secondo il sito ufficiale?',
       answer:
-        'Il sito ufficiale presenta 20 Training Lab come network dedicato a EMS e Vaculab, con allenamenti brevi, personalizzati e guidati da trainer qualificati.'
+        'Il sito ufficiale presenta 20 Training Lab come network dedicato a EMS e Vacu Training, con allenamenti brevi, personalizzati e guidati da trainer qualificati.'
     },
     {
       question: 'Quanto durano le sessioni in 20 Training Lab?',
       answer:
-        'La home ufficiale parla di sessioni EMS da 20 minuti e di allenamenti Vaculab da 30 minuti, pensati per offrire un lavoro mirato in poco tempo.'
+        'La home ufficiale parla di sessioni EMS da 20 minuti e di allenamenti Vacu Training da 30 minuti, pensati per offrire un lavoro mirato in poco tempo.'
     },
     {
       question: 'Quali obiettivi vengono messi in evidenza da 20 Training Lab?',
@@ -721,15 +721,15 @@ const OFFICIAL_GYM_OVERRIDES = {
   },
   'Body Work Lugano - EMS e Vacu Gym': {
     sourceUrl: 'https://bodyworklugano.ch/',
-    seoTitle: 'Body Work Lugano: EMS, Vacu Gym e orari',
+    seoTitle: 'Body Work Lugano: EMS, Vacu Training e orari',
     seoDescription:
-      'Scopri Body Work Lugano - EMS e Vacu Gym: EMS, Vacu Gym, criosauna, prova gratuita, parcheggi riservati e orari ufficiali del centro.',
+      'Scopri Body Work Lugano - EMS e Vacu Training: EMS, Vacu Training, criosauna, prova gratuita, parcheggi riservati e orari ufficiali del centro.',
     website: 'https://bodyworklugano.ch/',
     monthlyPrice: 'Prova gratuita',
     infoCards: [
       {
         label: 'Metodo',
-        value: 'EMS · Vacu Gym · Criosauna',
+        value: 'EMS · Vacu Training · Criosauna',
         body: 'Il sito ufficiale presenta Body Work come centro dedicato a tecnologie rapide e mirate per fitness, benessere e longevità.'
       },
       {
@@ -738,7 +738,7 @@ const OFFICIAL_GYM_OVERRIDES = {
         body: 'La pagina ufficiale spiega che le sessioni EMS puntano a stimolare fino al 90% della contrazione muscolare in tempi molto brevi.'
       },
       {
-        label: 'Vacu Gym',
+        label: 'Vacu Training',
         value: '30 minuti',
         body: 'La proposta unisce tapis roulant, sottovuoto ed effetto termico per lavorare su metabolismo, circolazione e tonicità.'
       },
@@ -749,18 +749,18 @@ const OFFICIAL_GYM_OVERRIDES = {
       }
     ],
     presentation:
-      'Body Work Lugano è un centro fitness a Lugano che il sito ufficiale presenta come struttura specializzata in EMS, Vacu Gym e criosauna, con percorsi personalizzati pensati per chi cerca risultati rapidi e allenamenti seguiti senza la logica della palestra tradizionale.',
+      'Body Work Lugano è un centro fitness a Lugano che il sito ufficiale presenta come struttura specializzata in EMS, Vacu Training e criosauna, con percorsi personalizzati pensati per chi cerca risultati rapidi e allenamenti seguiti senza la logica della palestra tradizionale.',
     highlights: [
       'Il sito ufficiale parla di una nuova frontiera del fitness a Lugano, con un posizionamento molto chiaro: sessioni brevi, tecnologie specifiche e supporto professionale invece di frequenza libera da palestra generalista.',
-      'Tra le proposte messe in evidenza compaiono allenamento EMS, Vacu Gym e criosauna. Questo rende subito leggibile la differenza rispetto a un centro fitness classico e aiuta chi cerca un format più mirato e time-efficient.',
-      'La pagina dedicata all’EMS insiste su sessioni da 20 minuti, mentre il Vacu Gym viene presentato come trattamento da 30 minuti orientato a metabolismo, circolazione e contrasto a cellulite e ritenzione idrica.',
+      'Tra le proposte messe in evidenza compaiono allenamento EMS, Vacu Training e criosauna. Questo rende subito leggibile la differenza rispetto a un centro fitness classico e aiuta chi cerca un format più mirato e time-efficient.',
+      'La pagina dedicata all’EMS insiste su sessioni da 20 minuti, mentre il Vacu Training viene presentato come trattamento da 30 minuti orientato a metabolismo, circolazione e contrasto a cellulite e ritenzione idrica.',
       'Il sito ufficiale segnala anche prova gratuita, parcheggi riservati davanti al centro, consigli alimentari gratuiti e riconoscimento Qualitop: elementi pratici utili per chi sta confrontando opzioni a Lugano.'
     ],
     faqItems: [
       {
         question: 'Che tipo di centro è Body Work Lugano secondo il sito ufficiale?',
         answer:
-          'Il sito ufficiale presenta Body Work Lugano come centro specializzato in EMS, Vacu Gym e criosauna, con percorsi personalizzati orientati a benessere, fitness e longevità.'
+          'Il sito ufficiale presenta Body Work Lugano come centro specializzato in EMS, Vacu Training e criosauna, con percorsi personalizzati orientati a benessere, fitness e longevità.'
       },
       {
         question: 'Quanto dura una sessione EMS a Body Work Lugano?',
