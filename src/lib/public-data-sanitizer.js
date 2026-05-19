@@ -1,6 +1,6 @@
 const CONTAMINATED_PUBLIC_GYM_FIXES = {
   'csv-165': {
-    reason: 'Rimossi dati CrossFit Varese dalla scheda Curling Club Chiasso.',
+    reason: 'Campi editoriali oscurati dopo audit qualità dati.',
     fields: [
       'description',
       'official_source_url',
@@ -16,7 +16,7 @@ const CONTAMINATED_PUBLIC_GYM_FIXES = {
     ]
   },
   'csv-413': {
-    reason: 'Rimossi dati Good Life Academy dalla scheda Old School Fighting Lugano.',
+    reason: 'Campi editoriali oscurati dopo audit qualità dati.',
     fields: [
       'website',
       'description',
@@ -33,7 +33,7 @@ const CONTAMINATED_PUBLIC_GYM_FIXES = {
     ]
   },
   'csv-542': {
-    reason: 'Rimossi dati SMASH X3 dalla scheda Societ Federale di Ginnastica Chiasso.',
+    reason: 'Campi editoriali oscurati dopo audit qualità dati.',
     fields: [
       'description',
       'official_source_url',
@@ -49,7 +49,7 @@ const CONTAMINATED_PUBLIC_GYM_FIXES = {
     ]
   },
   'csv-173': {
-    reason: 'Rimossi dati De Nittis Choy Lay Fut dalla scheda DeaYoga.',
+    reason: 'Campi editoriali oscurati dopo audit qualità dati.',
     fields: [
       'description',
       'official_source_url',
@@ -65,7 +65,7 @@ const CONTAMINATED_PUBLIC_GYM_FIXES = {
     ]
   },
   'csv-364': {
-    reason: 'Rimossi dati MADDYFIT dalla scheda Mangrove Academy.',
+    reason: 'Campi editoriali oscurati dopo audit qualità dati.',
     fields: [
       'description',
       'official_source_url',
@@ -81,7 +81,7 @@ const CONTAMINATED_PUBLIC_GYM_FIXES = {
     ]
   },
   'csv-194': {
-    reason: 'Rimossi dati Emotion Fitness dalla scheda Endless Will - Margherita Montes.',
+    reason: 'Campi editoriali oscurati dopo audit qualità dati.',
     fields: [
       'description',
       'official_source_url',
@@ -97,7 +97,7 @@ const CONTAMINATED_PUBLIC_GYM_FIXES = {
     ]
   },
   'csv-606': {
-    reason: 'Rimossi dati TC Lugano 1903 dalla scheda Team Kimura Ticino.',
+    reason: 'Campi editoriali oscurati dopo audit qualità dati.',
     fields: [
       'description',
       'official_source_url',
