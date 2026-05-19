@@ -11,7 +11,13 @@
       return { ...item, value: data?.catalogTotalGyms ? String(data.catalogTotalGyms) : item.value };
     }
     if (item.key === 'discipline_total') {
-      return { ...item, value: data?.catalogTotalDisciplines ? `${data.catalogTotalDisciplines}+` : item.value };
+      return { ...item, value: data?.catalogTotalDisciplines ? String(data.catalogTotalDisciplines) : item.value };
+    }
+    if (item.key === 'zone_total') {
+      return { ...item, value: data?.catalogZonesAvailable ? String(data.catalogZonesAvailable) : item.value };
+    }
+    if (item.key === 'curated_pages') {
+      return { ...item, value: data?.catalogCuratedPages ? String(data.catalogCuratedPages) : item.value };
     }
     return item;
   });

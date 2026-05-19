@@ -93,10 +93,10 @@
   }
 
   function hoursForCard(value) {
-    const hours = displayName(value) || 'Da verificare';
+    const hours = displayName(value) || 'Orari da confermare';
     return hours
       .split('|')
-      .map((part) => part.trim())
+      .map((part) => (part.trim() === 'Orari da verificare' || part.trim() === 'Orari n/d' ? 'Orari da confermare' : part.trim()))
       .filter(Boolean);
   }
 
@@ -197,6 +197,8 @@
   $: catalogGymCount = data?.catalogTotalGyms || gyms.length || totalGyms || 0;
   $: catalogGymLabel = catalogGymCount ? `${catalogGymCount}` : '500+';
   $: catalogDisciplineCount = data?.catalogTotalDisciplines || disciplineCount || 0;
+  $: catalogZoneCount = data?.catalogZonesAvailable || 0;
+  $: catalogCuratedPageCount = data?.catalogCuratedPages || 0;
   $: resultsCountLabel = !hasActiveFilters && !catalogHydrated ? catalogGymLabel : String(filteredGyms.length);
 
   if (Array.isArray(data?.initialGyms)) {
@@ -629,9 +631,9 @@
           <p class="mt-3 flex flex-wrap items-center gap-2 text-sm font-bold text-emerald-900">
             <span>{catalogGymLabel} palestre</span>
             <span aria-hidden="true">&bull;</span>
-            <span>{catalogDisciplineCount} discipline</span>
+            <span>{catalogDisciplineCount} discipline pubbliche</span>
             <span aria-hidden="true">&bull;</span>
-            <span>dati aggiornati</span>
+            <span>{catalogZoneCount} zone</span>
           </p>
           <div class="mt-5 flex flex-wrap gap-3 sc-hero-actions">
             <a
@@ -704,10 +706,14 @@
           {/each}
         </div>
 
-        <div class="mt-5 grid gap-3 border-t border-emerald-900/10 pt-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div class="mt-5 grid gap-3 border-t border-emerald-900/10 pt-4 sm:grid-cols-2 xl:grid-cols-5">
           <div class="rounded-2xl bg-emerald-950 px-4 py-4 text-white">
             <p class="text-2xl font-black leading-none">{catalogGymLabel}</p>
-            <p class="mt-2 text-sm font-bold leading-5 text-emerald-50">palestre nel catalogo attivo</p>
+            <p class="mt-2 text-sm font-bold leading-5 text-emerald-50">schede attive</p>
+          </div>
+          <div class="rounded-2xl bg-emerald-50/70 px-4 py-4">
+            <p class="text-sm font-black uppercase tracking-[0.18em] text-emerald-800">{catalogCuratedPageCount}</p>
+            <p class="mt-2 text-sm font-bold leading-5 text-slate-800">pagine curate</p>
           </div>
           {#each trustBenefitCards as benefit}
             <div class="rounded-2xl bg-emerald-50/70 px-4 py-4">
@@ -1029,7 +1035,7 @@
         {@const hasWebsite = Boolean(websiteLink)}
         {@const verified = isVerifiedGym(gym)}
         {@const premium = isPremiumGym(gym)}
-        {@const openLabel = gym.is_open_now === true ? 'Aperta ora' : gym.is_open_now === false ? 'Chiusa ora' : 'Orari n/d'}
+        {@const openLabel = gym.is_open_now === true ? 'Aperta ora' : gym.is_open_now === false ? 'Chiusa ora' : 'Orari da confermare'}
         {@const openClass = gym.is_open_now === true ? 'sc-status-pill--open' : gym.is_open_now === false ? 'sc-status-pill--closed' : 'sc-status-pill--muted'}
         {@const hours = hoursForCard(gym.hours_info)}
         {@const priceLabel = priceForCard(gym)}

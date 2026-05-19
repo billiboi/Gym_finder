@@ -58,7 +58,8 @@
       ? { src: imageAsset, candidates: [imageAsset], fallback: imageAsset }
       : imageAsset;
   $: imageSrc = imageMeta.src;
-  $: hoursInfo = officialOverride?.hoursInfo || fixGymText(gym?.hours_info) || 'Orari da verificare';
+  $: rawHoursInfo = officialOverride?.hoursInfo || fixGymText(gym?.hours_info);
+  $: hoursInfo = !rawHoursInfo || rawHoursInfo === 'Orari da verificare' || rawHoursInfo === 'Orari n/d' ? 'Orari da confermare' : rawHoursInfo;
   $: hoursRows = weeklyHoursRows(hoursInfo);
   $: alwaysOpen = isAlwaysOpen(hoursInfo);
   $: address = officialOverride?.address || formatAddressForDisplay(gym);

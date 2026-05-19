@@ -10,7 +10,9 @@ export async function load() {
   return {
     catalogTotalGyms: stats.activeGyms,
     catalogTotalRecords: stats.totalRecords,
-    catalogTotalDisciplines: stats.canonicalDisciplines,
-    catalogCuratedDisciplines: stats.curatedDisciplines
+    catalogTotalDisciplines: stats.publicCanonicalDisciplines,
+    catalogCuratedDisciplines: stats.curatedDisciplinePages,
+    catalogZonesAvailable: stats.zonesAvailable,
+    catalogCuratedPages: stats.curatedPages
   };
 }

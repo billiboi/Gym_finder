@@ -1,5 +1,6 @@
 import { publicDisciplineFilterOptions } from '$lib/disciplines';
 import { canonicalizeDiscipline } from '$lib/discipline-taxonomy';
+import { buildSeoDisciplineEntries, buildSeoLocationEntries } from '$lib/seo-directory';
 
 export function disciplineValuesForGyms(gyms) {
   return (gyms || []).flatMap((gym) =>
@@ -24,12 +25,21 @@ export function buildCatalogStats({ allGyms = [], activeGyms = [] } = {}) {
   }
 
   const publicDisciplineOptions = publicDisciplineFilterOptions(activeCanonicalNames);
+  const publicDisciplineEntries = buildSeoDisciplineEntries(activeGyms);
+  const publicLocationEntries = buildSeoLocationEntries(activeGyms);
+  const curatedDisciplinePages = publicDisciplineEntries.filter((entry) => entry.featured).length;
+  const curatedZonePages = publicLocationEntries.filter((entry) => entry.featured).length;
 
   return {
     totalRecords: allGyms.length,
     activeGyms: activeGyms.length,
     canonicalDisciplines: activeCanonicalSlugs.size,
+    publicCanonicalDisciplines: publicDisciplineEntries.length,
     curatedDisciplines: publicDisciplineOptions.length,
+    curatedDisciplinePages,
+    zonesAvailable: publicLocationEntries.length,
+    curatedZonePages,
+    curatedPages: curatedDisciplinePages + curatedZonePages,
     publicDisciplineOptions
   };
 }

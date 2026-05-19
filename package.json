@@ -24,6 +24,7 @@
     "descriptions:audit": "bun scripts/generate-gym-descriptions.ts --mode=audit --env-file=.env.staging.local",
     "descriptions:generate:dry": "bun scripts/generate-gym-descriptions.ts --mode=dry-run --env-file=.env.staging.local",
     "descriptions:apply": "bun scripts/generate-gym-descriptions.ts --mode=apply --env-file=.env.staging.local",
+    "seo:legacy-redirects": "bun scripts/report-legacy-gym-redirects.mjs",
     "clean:data": "bun run scripts/clean-data-control-chars.mjs",
     "sync:gyms:staging": "bun scripts/sync-supabase-gyms.mjs --env-file=.env.staging.local",
     "sync:gyms:prod": "bun scripts/sync-supabase-gyms.mjs --env-file=.env.vercel.production.check"

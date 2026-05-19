@@ -29,6 +29,10 @@
     count,
     href: `/zone/${slugifySeoName(city)}`
   }));
+  const publicHoursLabel = (value) => {
+    const label = String(value || '').trim();
+    return !label || label === 'Orari da verificare' || label === 'Orari n/d' ? 'Orari da confermare' : label;
+  };
   const hasContactSignal = (gym) => Boolean(String(gym.phone || '').trim() || String(gym.website || '').trim());
   const faqItems = [
     {
@@ -310,7 +314,7 @@
                 {gym.public_description_short || 'Descrizione in verifica editoriale'}
               </p>
               <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Indirizzo:</strong> {[gym.address, gym.city].filter(Boolean).join(', ') || 'Indirizzo non disponibile'}</p>
-              <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Orari:</strong> {gym.hours_info || 'Orari da verificare'}</p>
+              <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Orari:</strong> {publicHoursLabel(gym.hours_info)}</p>
               <div class="flex flex-wrap gap-2 text-xs font-bold sc-card-signal-list">
                 <span class={`rounded-full px-2.5 py-1 ${hasContactSignal(gym) ? 'sc-card-signal--ok' : 'sc-card-signal--muted'}`}>
                   {hasContactSignal(gym) ? 'Contatti disponibili' : 'Contatti da verificare'}

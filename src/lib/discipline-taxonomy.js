@@ -39,7 +39,7 @@ const DISCIPLINE_DEFINITIONS = [
     name: 'EMS Training',
     slug: 'ems-training',
     description: 'Allenamento con elettrostimolazione muscolare.',
-    aliases: ['Ems', 'EMS', 'Elettrostimolazione']
+    aliases: ['Ems', 'EMS', 'Ems Fitness', 'EMS Fitness', 'Elettrostimolazione']
   },
   {
     name: 'Cross Training',
@@ -285,7 +285,10 @@ export const EXCLUDED_DISCIPLINE_ALIASES = new Set([
   'vacu gym',
   'vacufit',
   'vaculab',
-  'vacu training'
+  'vacu training',
+  'vaculife',
+  'vaculab training',
+  'vacu fitness'
 ]);
 
 function titleCase(value) {

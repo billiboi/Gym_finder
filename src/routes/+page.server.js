@@ -14,8 +14,10 @@ export async function load() {
     initialGyms: gyms.slice(0, INITIAL_GYM_LIMIT).map(publicClientGym),
     catalogTotalGyms: stats.activeGyms,
     catalogTotalRecords: stats.totalRecords,
-    catalogTotalDisciplines: stats.canonicalDisciplines,
-    catalogCuratedDisciplines: stats.curatedDisciplines,
+    catalogTotalDisciplines: stats.publicCanonicalDisciplines,
+    catalogCuratedDisciplines: stats.curatedDisciplinePages,
+    catalogZonesAvailable: stats.zonesAvailable,
+    catalogCuratedPages: stats.curatedPages,
     initialDisciplines: stats.publicDisciplineOptions
   };
 }

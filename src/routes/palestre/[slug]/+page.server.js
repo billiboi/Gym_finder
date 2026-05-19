@@ -1,4 +1,5 @@
 import { error, redirect } from '@sveltejs/kit';
+import { isArchivedGym } from '$lib/admin/gyms';
 import { readGyms } from '$lib/server/gym-store';
 import { cityLabelForGym, isIndexableGym, legacySlugifyGym, primaryDisciplineForGym, slugifyGym } from '$lib/gym-detail';
 import { seoLocationForGym } from '$lib/seo-locations';
@@ -25,7 +26,14 @@ export async function load({ params }) {
   const legacyGym = gym ? null : gyms.find((item) => legacySlugifyGym(item) === params.slug || item?._legacy_slug === params.slug);
 
   if (legacyGym) {
+    if (isArchivedGym(legacyGym)) {
+      throw error(410, 'Scheda rimossa');
+    }
     throw redirect(301, `/palestre/${slugifyGym(legacyGym)}`);
+  }
+
+  if (gym && isArchivedGym(gym)) {
+    throw error(410, 'Scheda rimossa');
   }
 
   if (!gym || !isIndexableGym(gym)) {

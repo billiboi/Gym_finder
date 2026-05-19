@@ -26,16 +26,33 @@ function isBrowsableLocationName(name) {
 
 const LOWERCASE_LOCATION_WORDS = new Set(['al', 'alla', 'alle', 'con', 'di', 'del', 'della', 'dei', 'e']);
 
+function capitalizeLocationSegment(segment) {
+  const lower = segment.toLocaleLowerCase('it');
+  if (!lower) return '';
+  return lower.charAt(0).toLocaleUpperCase('it') + lower.slice(1);
+}
+
+function normalizeLocationPart(part, index) {
+  const lower = part.toLocaleLowerCase('it');
+  if (index > 0 && LOWERCASE_LOCATION_WORDS.has(lower)) return lower;
+
+  return lower
+    .split('-')
+    .map((hyphenPart) =>
+      hyphenPart
+        .split("'")
+        .map(capitalizeLocationSegment)
+        .join("'")
+    )
+    .join('-');
+}
+
 export function normalizeSeoLocationName(name) {
   return String(name || '')
     .trim()
     .replace(/\s+/g, ' ')
     .split(' ')
-    .map((part, index) => {
-      const lower = part.toLocaleLowerCase('it');
-      if (index > 0 && LOWERCASE_LOCATION_WORDS.has(lower)) return lower;
-      return lower.charAt(0).toLocaleUpperCase('it') + lower.slice(1);
-    })
+    .map(normalizeLocationPart)
     .join(' ');
 }
 

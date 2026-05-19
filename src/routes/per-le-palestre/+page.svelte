@@ -43,9 +43,10 @@
   ];
 
   $: proofItems = [
-    { value: data?.catalogTotalGyms ? String(data.catalogTotalGyms) : '680+', label: 'schede palestra nel catalogo' },
-    { value: data?.catalogTotalDisciplines ? `${data.catalogTotalDisciplines}+` : '57+', label: 'discipline organizzate' },
-    { value: 'SEO', label: 'pagine per zone, discipline e schede' }
+    { value: data?.catalogTotalGyms ? String(data.catalogTotalGyms) : '542', label: 'schede attive' },
+    { value: data?.catalogTotalDisciplines ? String(data.catalogTotalDisciplines) : '23', label: 'discipline pubbliche canoniche' },
+    { value: data?.catalogZonesAvailable ? String(data.catalogZonesAvailable) : '80+', label: 'zone disponibili' },
+    { value: data?.catalogCuratedPages ? String(data.catalogCuratedPages) : '20+', label: 'pagine curate' }
   ];
 
   const faqItems = [

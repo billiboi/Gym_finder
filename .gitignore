@@ -22,4 +22,5 @@ data/enrichment-*.json
 data/supabase-*.json
 data/description-*.json
 data/description-*.csv
+data/legacy-gym-redirect-report-*.json
 static/preview.png

@@ -18,9 +18,10 @@ export const TRUST_BADGES = [
 ];
 
 export const BRAND_PROOF_ITEMS = [
-  { key: 'catalog_total', value: '680+', label: 'schede nel catalogo attivo' },
-  { key: 'discipline_total', value: '57+', label: 'discipline normalizzate' },
-  { value: 'Manuale', label: 'controllo sulle richieste proprietario' }
+  { key: 'catalog_total', value: '542', label: 'schede attive' },
+  { key: 'discipline_total', value: '23', label: 'discipline pubbliche canoniche' },
+  { key: 'zone_total', value: '80+', label: 'zone disponibili' },
+  { key: 'curated_pages', value: '20+', label: 'pagine curate' }
 ];
 
 export const VERIFICATION_STEPS = [
