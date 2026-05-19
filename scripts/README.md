@@ -34,6 +34,9 @@ These scripts support data import, normalization, inspection, and cleanup workfl
 - `sync-reviewed-enrichment-batch.mjs`
   Dry-runs or applies a reviewed JSON batch by immutable gym `id`. Use `--batch=content/enrichment/<file>.json`; requires `--apply` to write.
 
+- `generate-gym-descriptions.ts`
+  Audits and generates safe public gym descriptions. Default commands use staging. `audit` and `dry-run` never write. `apply` requires `--confirm-apply`, and production-like targets require the additional `--allow-production` flag after a reviewed backup and dry-run.
+
 - `clean-palestre-dataset.cjs`
   Cleans the main CSV dataset, removes noisy records, and restores discipline labels.
 
