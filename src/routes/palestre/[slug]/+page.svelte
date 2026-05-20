@@ -38,7 +38,14 @@
   }
 
   $: ({ gym, relatedGyms = [], relatedLocation, relatedDiscipline } = data);
-  $: officialOverride = officialGymOverride(gym);
+  $: publicDataQuarantine = Boolean(
+    gym?.needs_review ||
+      gym?.description_needs_review ||
+      gym?.descrizione_needs_review ||
+      gym?.weekly_hours?._needs_review ||
+      gym?.weekly_hours?._public_data_quarantine
+  );
+  $: officialOverride = publicDataQuarantine ? null : officialGymOverride(gym);
   $: disciplines = disciplineListForGym(gym);
   $: isVerified = isVerifiedGym(gym);
   $: isPremium = isPremiumGym(gym);
@@ -70,7 +77,7 @@
   $: officialMonthlyPrice = fixGymText(gym?.price_info) || officialOverride?.monthlyPrice || '';
   $: priceSourceUrl = fixGymText(gym?.price_source_url) || officialSourceUrl;
   $: officialSocialLinks = officialOverride?.socialLinks || [];
-  $: hasOfficialData = Boolean(officialMonthlyPrice || officialSourceUrl || officialEmail || officialSocialLinks.length);
+  $: hasOfficialData = !publicDataQuarantine && Boolean(officialMonthlyPrice || officialSourceUrl || officialEmail || officialSocialLinks.length);
   $: phone = fixGymText(gym?.phone) || 'Non disponibile';
   $: website = officialOverride?.website || fixGymText(gym?.website) || officialSourceUrl;
   $: hasPhone = phone && phone !== 'Non disponibile';
@@ -92,6 +99,7 @@
   });
   $: seoTitle = officialOverride?.seoTitle ? appendSiteName(officialOverride.seoTitle) : fallbackGymSeo.title;
   $: seoDescription = officialOverride?.seoDescription || fallbackGymSeo.description;
+  $: quarantineNotice = publicDataQuarantine ? 'Alcuni dettagli sono in fase di verifica.' : '';
   $: claimHref = `/rivendica-scheda?gym=${encodeURIComponent(fixGymText(gym?.name))}&url=${encodeURIComponent(pageUrl)}&reason=${encodeURIComponent('Rivendicazione scheda')}&gym_id=${encodeURIComponent(gym?.id || '')}`;
   $: trackingPayload = gymTrackingPayload({ ...gym, slug: data.gymSlug, discipline: primaryDiscipline, city: cityLabel });
 
@@ -262,6 +270,11 @@
             </div>
 
             <p class="text-sm leading-7 text-slate-600 sm:text-[0.98rem] sc-detail-copy">{presentation}</p>
+            {#if quarantineNotice}
+              <p class="rounded-2xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-900">
+                {quarantineNotice}
+              </p>
+            {/if}
 
             {#if officialScheduleCards.length}
               <div class="grid gap-2 sm:grid-cols-3">

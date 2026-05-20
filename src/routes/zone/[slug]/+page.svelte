@@ -3,6 +3,7 @@
   import { slugifySeoName } from '$lib/seo-directory';
   import { absoluteUrl, SITE_NAME, jsonLdScript } from '$lib/site';
   import { buildLocationSeoMeta } from '$lib/seo-meta';
+  import { formatCount } from '$lib/text-format';
 
   export let data;
 
@@ -77,7 +78,7 @@
   const faqItems = [
     {
       question: `Che cosa trovo nella pagina ${location.title}?`,
-      answer: `La pagina raccoglie ${totalGyms} schede pubbliche collegate a ${location.name}. Serve a vedere in un colpo solo quali strutture del catalogo ricadono davvero in quest'area.`
+      answer: `La pagina raccoglie ${formatCount(totalGyms, 'scheda pubblica', 'schede pubbliche')} collegate a ${location.name}. Serve a vedere in un colpo solo quali strutture del catalogo ricadono davvero in quest'area.`
     },
     {
       question: `Quali discipline sono più presenti a ${location.name}?`,
@@ -197,7 +198,7 @@
       <h1 class="mt-2 text-3xl font-bold text-slate-900 sm:text-5xl">{location.title}</h1>
       <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-600 sm:text-base">{location.description}</p>
       <div class="mt-5 flex flex-wrap gap-2">
-        <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">{gyms.length} schede disponibili</span>
+        <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">{formatCount(gyms.length, 'scheda disponibile', 'schede disponibili')}</span>
         {#each disciplineLinks as discipline}
           <a href={discipline.href} class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold transition hover:-translate-y-0.5 hover:shadow-sm">{discipline.name}</a>
         {/each}
@@ -234,7 +235,7 @@
               <span class="sr-only">Apri le palestre a {item.city}</span>
               <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">{item.city}</p>
               <p class="mt-2 text-2xl font-bold text-slate-900">{item.count}</p>
-              <p class="mt-1 text-sm font-semibold text-slate-600">{item.count === 1 ? 'scheda mappata' : 'schede mappate'}</p>
+              <p class="mt-1 text-sm font-semibold text-slate-600">{formatCount(item.count, 'scheda mappata', 'schede mappate')}</p>
             </a>
           {/each}
         </div>
@@ -287,7 +288,7 @@
       {:else}
         {#each visibleGyms as gym, i}
           {@const image = imageMetaForGym(gym)}
-          {@const disciplinePreview = disciplinePreviewForGym(gym, 4)}
+          {@const disciplinePreview = disciplinePreviewForGym(gym, 3)}
           {@const verified = isVerifiedGym(gym)}
           {@const premium = isPremiumGym(gym)}
           <article class="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl sc-card sc-gym-card" style={`animation-delay:${i * 20}ms`}>

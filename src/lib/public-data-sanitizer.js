@@ -1,3 +1,5 @@
+import { safeFallbackDescription } from './gym-description.js';
+
 const CONTAMINATED_PUBLIC_GYM_FIXES = {
   'csv-165': {
     reason: 'Campi editoriali oscurati dopo audit qualità dati.',
@@ -127,6 +129,34 @@ const UNSAFE_EDITORIAL_FIELDS = [
   'enrichment_updated_at'
 ];
 
+const CITY_MISMATCH_FIELDS = [
+  'description',
+  'descrizione',
+  'descrizione_pubblica',
+  'descrizione_editoriale',
+  'descrizione_generata',
+  'editorial_summary',
+  'editorial_highlights',
+  'editorial_faq_items',
+  'meta_title',
+  'meta_description',
+  'price_info'
+];
+
+const KNOWN_LOCAL_CITIES = [
+  'Busto Arsizio',
+  'Gallarate',
+  'Varese',
+  'Rozzano',
+  'Chiasso',
+  'Lugano',
+  'Locarno',
+  'Bellinzona',
+  'Mendrisio',
+  'Massagno',
+  'Losone'
+];
+
 function hostForUrl(value) {
   try {
     const url = new URL(String(value || '').trim());
@@ -151,27 +181,103 @@ function emptyValueForField(field) {
   return '';
 }
 
-export function sanitizePublicGymData(gym) {
-  if (!gym) return gym;
+function clean(value) {
+  return String(value || '').replace(/\s+/g, ' ').trim();
+}
 
-  const fix = CONTAMINATED_PUBLIC_GYM_FIXES[String(gym.id || '')];
-  const mismatchReason = unsafeEditorialSourceReason(gym);
+function normalizeForMatch(value) {
+  return clean(value)
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+}
 
-  if (!fix && !mismatchReason) return gym;
+function stringifyPublicValue(value) {
+  if (Array.isArray(value)) {
+    return value
+      .map((item) => (typeof item === 'object' && item ? Object.values(item).join(' ') : item))
+      .join(' ');
+  }
 
+  if (value && typeof value === 'object') {
+    return Object.values(value).join(' ');
+  }
+
+  return clean(value);
+}
+
+function detectedCityMismatch(gym) {
+  const ownCity = normalizeForMatch(gym?.city || gym?.citta);
+  if (!ownCity) return '';
+
+  const text = CITY_MISMATCH_FIELDS.map((field) => stringifyPublicValue(gym?.[field])).join(' ');
+  const normalizedText = normalizeForMatch(text);
+  if (!normalizedText) return '';
+
+  const ownName = normalizeForMatch(gym?.name || gym?.nome);
+  const ownAddress = normalizeForMatch(gym?.address || gym?.indirizzo);
+
+  for (const city of KNOWN_LOCAL_CITIES) {
+    const normalizedCity = normalizeForMatch(city);
+    if (!normalizedCity || normalizedCity === ownCity) continue;
+    if (ownName.includes(normalizedCity) || ownAddress.includes(normalizedCity)) continue;
+    if (normalizedText.includes(normalizedCity)) {
+      return `Testo pubblico oscurato: cita ${city}, diverso dalla città scheda.`;
+    }
+  }
+
+  return '';
+}
+
+function quarantinePublicEditorialFields(gym, reason, fields = UNSAFE_EDITORIAL_FIELDS) {
   const sanitized = { ...gym };
-  const fields = fix?.fields || UNSAFE_EDITORIAL_FIELDS;
+  const safeDescription = safeFallbackDescription(gym);
 
   for (const field of fields) {
     sanitized[field] = emptyValueForField(field);
   }
 
+  sanitized.description = safeDescription;
+  sanitized.descrizione = safeDescription;
+  sanitized.descrizione_pubblica = safeDescription;
+  sanitized.descrizione_generata = '';
+  sanitized.descrizione_editoriale = '';
+  sanitized.descrizione_source = 'fallback_sicuro';
+  sanitized.descrizione_needs_review = true;
+  sanitized.needs_review = true;
+  sanitized.review_reason = reason;
+
   if (sanitized.weekly_hours && typeof sanitized.weekly_hours === 'object') {
     sanitized.weekly_hours = {
       ...sanitized.weekly_hours,
-      _public_data_quarantine: fix?.reason || mismatchReason
+      _public_data_quarantine: reason,
+      _needs_review: true
+    };
+  } else {
+    sanitized.weekly_hours = {
+      _public_data_quarantine: reason,
+      _needs_review: true
     };
   }
 
   return sanitized;
+}
+
+export function sanitizePublicGymData(gym) {
+  if (!gym) return gym;
+
+  const fix = CONTAMINATED_PUBLIC_GYM_FIXES[String(gym.id || '')];
+  const mismatchReason = unsafeEditorialSourceReason(gym);
+  const cityMismatchReason = detectedCityMismatch(gym);
+
+  if (cityMismatchReason) {
+    return quarantinePublicEditorialFields(gym, cityMismatchReason, [
+      ...new Set([...UNSAFE_EDITORIAL_FIELDS, ...CITY_MISMATCH_FIELDS])
+    ]);
+  }
+
+  if (!fix && !mismatchReason) return gym;
+
+  const fields = fix?.fields || UNSAFE_EDITORIAL_FIELDS;
+  return quarantinePublicEditorialFields(gym, fix?.reason || mismatchReason, fields);
 }

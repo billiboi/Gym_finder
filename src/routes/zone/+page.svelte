@@ -1,5 +1,6 @@
 <script>
   import { absoluteUrl, SITE_NAME, jsonLdScript } from '$lib/site';
+  import { formatCount } from '$lib/text-format';
 
   export let data;
 
@@ -69,7 +70,7 @@
             <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Landing curata</p>
             <h3 class="mt-2 text-lg font-bold text-slate-900">{location.name}</h3>
             <p class="mt-2 text-sm leading-7 text-slate-600">{location.description}</p>
-            <p class="mt-3 text-sm font-semibold text-emerald-800">{location.count} schede pubbliche</p>
+            <p class="mt-3 text-sm font-semibold text-emerald-800">{formatCount(location.count, 'scheda pubblica', 'schede pubbliche')}</p>
           </a>
         {/each}
       </div>
@@ -87,7 +88,7 @@
             <a href={`/zone/${location.slug}`} class="rounded-2xl border border-slate-200 bg-white/90 p-4 transition hover:-translate-y-0.5 hover:shadow-md">
               <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Zona</p>
               <h3 class="mt-2 text-lg font-bold text-slate-900">{location.name}</h3>
-              <p class="mt-3 text-sm font-semibold text-slate-700">{location.count} schede collegate</p>
+              <p class="mt-3 text-sm font-semibold text-slate-700">{formatCount(location.count, 'scheda collegata', 'schede collegate')}</p>
             </a>
           {/each}
         </div>

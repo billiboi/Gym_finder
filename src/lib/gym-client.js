@@ -1,8 +1,49 @@
 import { sanitizePublicGymData } from '$lib/public-data-sanitizer';
 import { pickPublicDescription, shortPublicDescription } from '$lib/gym-description';
+import { normalizeItalianCopy } from '$lib/text-format';
+
+const COPY_FIELDS = [
+  'description',
+  'public_description',
+  'descrizione',
+  'descrizione_owner',
+  'descrizione_editoriale',
+  'descrizione_generata',
+  'descrizione_pubblica',
+  'editorial_summary',
+  'hours_info',
+  'price_info'
+];
+
+function normalizeCopyValue(value) {
+  if (Array.isArray(value)) {
+    return value.map((item) => normalizeCopyValue(item));
+  }
+
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, entryValue]) => [key, normalizeCopyValue(entryValue)])
+    );
+  }
+
+  return typeof value === 'string' ? normalizeItalianCopy(value) : value;
+}
+
+function normalizePublicGymCopy(gym) {
+  const normalized = { ...gym };
+
+  for (const field of COPY_FIELDS) {
+    if (field in normalized) normalized[field] = normalizeCopyValue(normalized[field]);
+  }
+
+  normalized.editorial_highlights = normalizeCopyValue(normalized.editorial_highlights);
+  normalized.editorial_faq_items = normalizeCopyValue(normalized.editorial_faq_items);
+
+  return normalized;
+}
 
 export function publicClientGym(gym) {
-  const safeGym = sanitizePublicGymData(gym);
+  const safeGym = normalizePublicGymCopy(sanitizePublicGymData(gym));
   const pickedDescription = pickPublicDescription(safeGym);
 
   return {
@@ -22,6 +63,8 @@ export function publicClientGym(gym) {
     description_source: pickedDescription.source,
     description_quality_score: pickedDescription.qualityScore,
     description_needs_review: pickedDescription.needsReview,
+    needs_review: safeGym.needs_review,
+    review_reason: safeGym.review_reason,
     latitude: safeGym.latitude,
     longitude: safeGym.longitude,
     price_info: safeGym.price_info,

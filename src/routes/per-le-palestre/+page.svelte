@@ -183,7 +183,7 @@
           <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Pricing</p>
           <h2 class="mt-2 text-3xl font-bold text-slate-950">Scegli il livello giusto per la tua palestra</h2>
         </div>
-        <p class="max-w-sm text-sm leading-7 text-slate-600">I prezzi premium vengono confermati dopo audit: niente promesse vaghe, prima guardiamo scheda, zona e obiettivo.</p>
+        <p class="max-w-sm text-sm leading-7 text-slate-600">Prima di proporre un’opzione premium controlliamo la scheda, la zona e l’obiettivo, così evitiamo promesse generiche.</p>
       </div>
 
       <div class="mt-5 grid gap-4 lg:grid-cols-3">

@@ -1027,7 +1027,7 @@
     {:else}
       {#each visibleGyms as gym, i}
         {@const image = resolveImageSource(gym)}
-        {@const disciplinePreview = disciplinePreviewForGym(gym, 4)}
+        {@const disciplinePreview = disciplinePreviewForGym(gym, 3)}
         {@const phone = displayName(gym.phone)}
         {@const phoneLink = phoneHref(gym.phone)}
         {@const websiteLink = websiteHref(gym.website)}
@@ -1121,14 +1121,16 @@
                 {/if}
               </div>
 
-              <div class="flex flex-wrap gap-2 text-xs font-bold sc-card-signal-list">
-                <span class={`rounded-full px-2.5 py-1 ${phoneLink ? 'sc-card-signal--ok' : 'sc-card-signal--muted'}`}>
-                  {phoneLink ? 'Telefono disponibile' : 'Telefono da verificare'}
-                </span>
-                <span class={`rounded-full px-2.5 py-1 ${hasWebsite ? 'sc-card-signal--ok' : 'sc-card-signal--muted'}`}>
-                  {hasWebsite ? 'Sito disponibile' : 'Sito non ancora disponibile'}
-                </span>
-              </div>
+              {#if phoneLink || hasWebsite}
+                <div class="flex flex-wrap gap-2 text-xs font-bold sc-card-signal-list">
+                  {#if phoneLink}
+                    <span class="rounded-full px-2.5 py-1 sc-card-signal--ok">Telefono disponibile</span>
+                  {/if}
+                  {#if hasWebsite}
+                    <span class="rounded-full px-2.5 py-1 sc-card-signal--ok">Sito disponibile</span>
+                  {/if}
+                </div>
+              {/if}
             </div>
 
             <div class="grid gap-2 border-t border-slate-200 pt-3 sm:grid-cols-2">

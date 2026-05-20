@@ -160,10 +160,10 @@ export function safeFallbackDescription(gym) {
   const discipline = primaryDiscipline(gym);
 
   if (city) {
-    return `${name} è una struttura a ${city} collegata a ${discipline}. Le informazioni pubblicate aiutano a verificare indirizzo, orari e contatti disponibili.`;
+    return `${name} è una struttura sportiva a ${city} collegata a ${discipline}. Le informazioni disponibili includono indirizzo, orari e contatti; alcuni dettagli specifici potrebbero richiedere verifica.`;
   }
 
-  return `${name} è una struttura collegata a ${discipline}. Alcuni dettagli sono ancora da verificare prima di pubblicare una descrizione più completa.`;
+  return `${name} è una struttura sportiva collegata a ${discipline}. Le informazioni disponibili includono i dati principali della scheda; alcuni dettagli specifici potrebbero richiedere verifica.`;
 }
 
 export function pickPublicDescription(gym, context = {}) {

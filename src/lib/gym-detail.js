@@ -1,5 +1,6 @@
 import { normalizeDisciplineLabel } from '$lib/disciplines';
 import { pickPublicDescription } from '$lib/gym-description';
+import { normalizeItalianCopy } from '$lib/text-format';
 
 export function fixGymText(value) {
   let text = String(value || '');
@@ -17,7 +18,7 @@ export function fixGymText(value) {
     text = text.split(from).join(to);
   }
 
-  return text.replace(/\s+/g, ' ').trim();
+  return normalizeItalianCopy(text.replace(/\s+/g, ' ').trim());
 }
 
 function inferredDisciplinesFromName(name) {
@@ -93,12 +94,20 @@ export function isPremiumGym(gym) {
   return Boolean(gym?.is_premium || gym?.weekly_hours?._is_premium);
 }
 
-export function disciplinePreviewForGym(gym, max = 3) {
+export function disciplinePreviewForGym(gym, max = 3, preferredDiscipline = '') {
   const list = disciplineListForGym(gym);
+  const preferred = normalizeDisciplineLabel(preferredDiscipline);
+  const ordered =
+    preferred && list.includes(preferred)
+      ? [preferred, ...list.filter((label) => label !== preferred)]
+      : list;
+  const visibleCount = Math.max(1, Number(max) || 3);
+  const visible = ordered.slice(0, visibleCount);
+
   return {
-    primary: list[0] || 'Fitness',
-    secondary: list.slice(1),
-    remaining: 0
+    primary: visible[0] || 'Fitness',
+    secondary: visible.slice(1),
+    remaining: Math.max(0, ordered.length - visible.length)
   };
 }
 
