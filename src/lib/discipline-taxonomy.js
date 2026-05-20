@@ -320,6 +320,8 @@ export function slugifyDiscipline(value) {
     .replace(/^-+|-+$/g, '');
 }
 
+export const PUBLIC_DISABLED_DISCIPLINE_SLUGS = new Set(['arti-marziali', 'chanbara', 'golf', 'hockey']);
+
 export const DISCIPLINE_MASTER = DISCIPLINE_DEFINITIONS.map((definition, index) => ({
   id: definition.slug,
   ordine: index + 1,
@@ -429,6 +431,12 @@ export function normalizeDisciplinesWithAliases(values, fallback = []) {
 
 export function getDisciplineBySlug(slug) {
   return slugIndex.get(slugifyDiscipline(slug)) || null;
+}
+
+export function isPublicDisciplineSlug(slug) {
+  const canonical = getDisciplineBySlug(slug);
+  const normalized = canonical?.slug || slugifyDiscipline(slug);
+  return Boolean(normalized && !PUBLIC_DISABLED_DISCIPLINE_SLUGS.has(normalized));
 }
 
 export function isDisciplineAliasSlug(slug) {

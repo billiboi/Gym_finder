@@ -1,5 +1,5 @@
 import { dedupeDisciplines } from '$lib/disciplines';
-import { DISCIPLINE_MASTER } from '$lib/discipline-taxonomy';
+import { DISCIPLINE_MASTER, isPublicDisciplineSlug } from '$lib/discipline-taxonomy';
 import { isIndexableGym } from '$lib/gym-detail';
 import { SEO_DISCIPLINES, gymsForSeoDiscipline } from '$lib/seo-disciplines';
 import { SEO_LOCATIONS, gymsForSeoLocation } from '$lib/seo-locations';
@@ -114,7 +114,7 @@ export function buildSeoLocationEntries(gyms, { includeLowCount = true } = {}) {
 export function buildSeoDisciplineEntries(gyms, { includeLowCount = true } = {}) {
   const indexableGyms = gyms.filter((gym) => isIndexableGym(gym));
   const seoBySlug = new Map(SEO_DISCIPLINES.map((discipline) => [discipline.slug, discipline]));
-  const canonical = DISCIPLINE_MASTER.map((discipline) => {
+  const canonical = DISCIPLINE_MASTER.filter((discipline) => isPublicDisciplineSlug(discipline.slug)).map((discipline) => {
     const seo = seoBySlug.get(discipline.slug);
     return {
       name: discipline.name,

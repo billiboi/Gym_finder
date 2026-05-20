@@ -4,11 +4,21 @@ import { publicClientGym } from '$lib/gym-client';
 import { readGyms } from '$lib/server/gym-store';
 import { getSeoDiscipline, gymsForSeoDiscipline } from '$lib/seo-disciplines';
 import { relatedGuidesForDiscipline } from '$lib/editorial';
-import { canonicalSlugForDisciplineSlug, getDisciplineBySlug, isDisciplineAliasSlug } from '$lib/discipline-taxonomy';
+import {
+  canonicalSlugForDisciplineSlug,
+  getDisciplineBySlug,
+  isDisciplineAliasSlug,
+  isPublicDisciplineSlug
+} from '$lib/discipline-taxonomy';
 
 export async function load({ params }) {
+  const canonicalSlug = canonicalSlugForDisciplineSlug(params.slug) || params.slug;
+  if (!isPublicDisciplineSlug(canonicalSlug)) {
+    throw error(410, 'Disciplina rimossa');
+  }
+
   if (isDisciplineAliasSlug(params.slug)) {
-    throw redirect(301, `/discipline/${canonicalSlugForDisciplineSlug(params.slug)}`);
+    throw redirect(301, `/discipline/${canonicalSlug}`);
   }
 
   const gyms = await readGyms();

@@ -1,6 +1,6 @@
 import { SITE_NAME } from '$lib/site';
 
-const HOME_TITLE = 'Trova Palestre Vicino a Te | Fitness, Boxe, Yoga e Arti Marziali';
+const HOME_TITLE = 'Trova Palestre Vicino a Te | Fitness, Boxe, Yoga e Pilates';
 const HOME_DESCRIPTION =
   'Scopri palestre, corsi e discipline vicino a te. Confronta orari, contatti, sedi e attività disponibili nella tua zona.';
 

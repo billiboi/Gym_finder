@@ -11,7 +11,7 @@
   const pageTypes = [
     {
       name: 'Homepage',
-      pattern: 'Trova Palestre Vicino a Te | Fitness, Boxe, Yoga e Arti Marziali',
+      pattern: 'Trova Palestre Vicino a Te | Fitness, Boxe, Yoga e Pilates',
       check: 'Query generiche tipo palestra vicino a me, palestre, corsi fitness.'
     },
     {

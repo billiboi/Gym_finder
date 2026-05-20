@@ -6,7 +6,7 @@
   const { featuredDisciplines = [], extraDisciplines = [], totalDisciplines = 0 } = data;
   const pageUrl = absoluteUrl('/discipline');
   const title = `Discipline sportive e attività | ${SITE_NAME}`;
-  const description = `Esplora discipline come fitness, Pilates, nuoto, boxe e arti marziali e apri le pagine dedicate del catalogo Palestre in Zona.`;
+  const description = `Esplora discipline come fitness, Pilates, nuoto, boxe e yoga e apri le pagine dedicate del catalogo Palestre in Zona.`;
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
@@ -46,7 +46,7 @@
       <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Discipline sportive</p>
       <h1 class="mt-2 text-3xl font-bold text-slate-900 sm:text-5xl">Sfoglia tutte le discipline</h1>
       <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-600 sm:text-base">
-        Qui trovi le discipline presenti nel catalogo, così puoi aprire subito la pagina giusta per fitness, Pilates, nuoto, boxe o arti marziali.
+        Qui trovi le discipline presenti nel catalogo, così puoi aprire subito la pagina giusta per fitness, Pilates, nuoto, boxe o yoga.
       </p>
       <div class="mt-5 flex flex-wrap gap-2">
         <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">{totalDisciplines} discipline disponibili</span>
