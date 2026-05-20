@@ -171,7 +171,7 @@
     </div>
   </section>
 
-  <section class="sticky top-24 z-20 mt-5 rounded-3xl border border-white/80 bg-white/90 p-4 shadow-lg backdrop-blur-sm">
+  <section class="mt-5 rounded-3xl border border-white/80 bg-white/90 p-4 shadow-lg backdrop-blur-sm">
     <div class="grid gap-3 xl:grid-cols-[minmax(0,1fr)_240px_280px] xl:items-end">
       <div class="max-h-48 overflow-auto pr-1">
         <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
