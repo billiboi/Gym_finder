@@ -33,6 +33,7 @@ const args = new Map(
 const envFile = args.get('--env-file') || '.env.staging.local';
 const table = args.get('--table') || process.env.SUPABASE_GYMS_TABLE || 'gyms';
 const includeArchived = args.get('--include-archived') !== '0';
+const allowProductionRead = args.has('--allow-production-read');
 const stamp = new Date().toISOString().replace(/[:.]/g, '-');
 const jsonOut = args.get('--json-out') || `data/audit-gym-contamination-${stamp}.json`;
 const csvOut = args.get('--csv-out') || `data/audit-gym-contamination-${stamp}.csv`;
@@ -142,6 +143,10 @@ function ensureStagingTarget(supabaseUrl: string) {
   const envName = String(process.env.SUPABASE_ENV || '').toLowerCase();
   const targetEnv = String(process.env.VERCEL_TARGET_ENV || process.env.VERCEL_ENV || '').toLowerCase();
   const url = String(supabaseUrl || '').toLowerCase();
+  if (allowProductionRead) {
+    console.warn('[audit-gym-contamination] production read esplicitamente consentita: nessuna scrittura verra eseguita.');
+    return;
+  }
   if (envName !== 'staging' || targetEnv === 'production' || url.includes('prod')) {
     throw new Error('Audit bloccato: usa solo .env.staging.local / SUPABASE_ENV=staging per questa fase.');
   }
