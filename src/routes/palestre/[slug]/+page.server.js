@@ -6,6 +6,10 @@ import { seoLocationForGym } from '$lib/seo-locations';
 import { seoDisciplineForGym } from '$lib/seo-disciplines';
 import { sanitizePublicGymData } from '$lib/public-data-sanitizer';
 
+const LEGACY_SLUG_REDIRECTS = {
+  'urban-fitness-varese-csv-633': 'urban-fitness-varese'
+};
+
 function slugifyName(name) {
   return String(name || '')
     .toLowerCase()
@@ -23,6 +27,18 @@ function publicDetailGym(gym) {
 export async function load({ params }) {
   const gyms = await readGyms();
   let gym = gyms.find((item) => slugifyGym(item) === params.slug);
+  const legacyTargetSlug = LEGACY_SLUG_REDIRECTS[params.slug];
+
+  if (!gym && legacyTargetSlug) {
+    const legacyTarget = gyms.find((item) => slugifyGym(item) === legacyTargetSlug);
+    if (legacyTarget) {
+      if (isArchivedGym(legacyTarget)) {
+        throw error(410, 'Scheda rimossa');
+      }
+      throw redirect(301, `/palestre/${slugifyGym(legacyTarget)}`);
+    }
+  }
+
   const legacyGym = gym ? null : gyms.find((item) => legacySlugifyGym(item) === params.slug || item?._legacy_slug === params.slug);
 
   if (legacyGym) {
