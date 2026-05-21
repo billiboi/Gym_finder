@@ -37,6 +37,9 @@ These scripts support data import, normalization, inspection, and cleanup workfl
 - `generate-gym-descriptions.ts`
   Audits and generates safe public gym descriptions. Default commands use staging. `audit` and `dry-run` never write. `apply` requires `--confirm-apply`, and production-like targets require the additional `--allow-production` flag after a reviewed backup and dry-run.
 
+- `audit-gym-contamination.ts`, `fix-gym-contamination-preview.ts`, `apply-gym-contamination-fixes.ts`
+  Audit possible public data contamination, generate a non-destructive fix preview, and apply only additive review fields after confirmation. Default commands use staging. Run `supabase/migrations/20260521_001_gym_contamination_audit_fields.sql` before apply if the target schema does not have the audit fields.
+
 - `clean-palestre-dataset.cjs`
   Cleans the main CSV dataset, removes noisy records, and restores discipline labels.
 

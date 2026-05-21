@@ -154,16 +154,25 @@ export function isUnsafePublicDescription(gym, description, context = {}) {
   );
 }
 
-export function safeFallbackDescription(gym) {
+export function getSafePublicDescription(gym) {
   const name = safeName(gym);
   const city = safeCity(gym);
   const discipline = primaryDiscipline(gym);
+  const address = safeAddress(gym);
 
-  if (city) {
-    return `${name} è una struttura sportiva a ${city} collegata a ${discipline}. Le informazioni disponibili includono indirizzo, orari e contatti; alcuni dettagli specifici potrebbero richiedere verifica.`;
+  if (city && address) {
+    return `${name} è una struttura sportiva a ${city}, in ${address}, collegata a ${discipline || 'palestra'}. Le informazioni disponibili aiutano a verificare indirizzo, orari e contatti; alcuni dettagli specifici potrebbero richiedere ulteriore conferma.`;
   }
 
-  return `${name} è una struttura sportiva collegata a ${discipline}. Le informazioni disponibili includono i dati principali della scheda; alcuni dettagli specifici potrebbero richiedere verifica.`;
+  if (city) {
+    return `${name} è una struttura sportiva a ${city} collegata a ${discipline || 'palestra'}. Le informazioni disponibili aiutano a verificare indirizzo, orari e contatti; alcuni dettagli specifici potrebbero richiedere ulteriore conferma.`;
+  }
+
+  return `${name} è una struttura sportiva collegata a ${discipline || 'palestra'}. Le informazioni disponibili includono i dati principali della scheda; alcuni dettagli specifici potrebbero richiedere ulteriore conferma.`;
+}
+
+export function safeFallbackDescription(gym) {
+  return getSafePublicDescription(gym);
 }
 
 export function pickPublicDescription(gym, context = {}) {

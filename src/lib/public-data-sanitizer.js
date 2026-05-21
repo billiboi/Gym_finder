@@ -1,4 +1,4 @@
-import { safeFallbackDescription } from './gym-description.js';
+import { getSafePublicDescription } from './gym-description.js';
 
 const CONTAMINATED_PUBLIC_GYM_FIXES = {
   'csv-165': {
@@ -231,7 +231,7 @@ function detectedCityMismatch(gym) {
 
 function quarantinePublicEditorialFields(gym, reason, fields = UNSAFE_EDITORIAL_FIELDS) {
   const sanitized = { ...gym };
-  const safeDescription = safeFallbackDescription(gym);
+  const safeDescription = getSafePublicDescription(gym);
 
   for (const field of fields) {
     sanitized[field] = emptyValueForField(field);
