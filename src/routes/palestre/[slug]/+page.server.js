@@ -24,6 +24,17 @@ function publicDetailGym(gym) {
   return publicGym;
 }
 
+function isPublicReviewGym(gym) {
+  return Boolean(
+    gym?.needs_review ||
+      gym?.descrizione_needs_review ||
+      gym?.description_needs_review ||
+      gym?.data_quality_flags?.length ||
+      gym?.weekly_hours?._needs_review ||
+      gym?.weekly_hours?._public_data_quarantine
+  );
+}
+
 export async function load({ params }) {
   const gyms = await readGyms();
   let gym = gyms.find((item) => slugifyGym(item) === params.slug);
@@ -56,21 +67,24 @@ export async function load({ params }) {
     throw error(404, 'Palestra non trovata');
   }
 
-  const primaryDiscipline = primaryDisciplineForGym(gym);
+  const publicGym = publicDetailGym(gym);
+  const primaryDiscipline = primaryDisciplineForGym(publicGym);
   const gymCity = String(cityLabelForGym(gym) || '').trim().toLowerCase();
-  const relatedGyms = gyms
-    .filter((item) => item.id !== gym.id)
-    .filter((item) => isIndexableGym(item))
-    .map((item) => {
-      const sameDiscipline = primaryDisciplineForGym(item) === primaryDiscipline;
-      const sameCity = String(cityLabelForGym(item) || '').trim().toLowerCase() === gymCity;
-      const score = (sameDiscipline ? 2 : 0) + (sameCity ? 3 : 0);
-      return { item, score };
-    })
-    .filter(({ score }) => score > 0)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 4)
-    .map(({ item }) => item);
+  const relatedGyms = isPublicReviewGym(publicGym)
+    ? []
+    : gyms
+        .filter((item) => item.id !== gym.id)
+        .filter((item) => isIndexableGym(item))
+        .map((item) => {
+          const sameDiscipline = primaryDisciplineForGym(item) === primaryDiscipline;
+          const sameCity = String(cityLabelForGym(item) || '').trim().toLowerCase() === gymCity;
+          const score = (sameDiscipline ? 2 : 0) + (sameCity ? 3 : 0);
+          return { item, score };
+        })
+        .filter(({ score }) => score > 0)
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 4)
+        .map(({ item }) => item);
 
   const dynamicLocation = gymCity
     ? {
@@ -86,7 +100,7 @@ export async function load({ params }) {
     : null;
 
   return {
-    gym: publicDetailGym(gym),
+    gym: publicGym,
     gymSlug: slugifyGym(gym),
     relatedGyms: relatedGyms.map(publicDetailGym),
     relatedLocation: seoLocationForGym(gym) || dynamicLocation,

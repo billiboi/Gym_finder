@@ -1,6 +1,94 @@
 import { getSafePublicDescription } from './gym-description.js';
 
 const CONTAMINATED_PUBLIC_GYM_FIXES = {
+  'csv-210': {
+    reason: 'Scheda con possibile contaminazione tra sedi First Studio.',
+    fields: [
+      'description',
+      'descrizione',
+      'descrizione_pubblica',
+      'descrizione_editoriale',
+      'descrizione_generata',
+      'official_source_url',
+      'editorial_summary',
+      'editorial_highlights',
+      'editorial_faq_items',
+      'meta_title',
+      'meta_description',
+      'price_info',
+      'price_source_url',
+      'price_updated_at',
+      'enrichment_status',
+      'enrichment_notes',
+      'enrichment_updated_at'
+    ]
+  },
+  'csv-496': {
+    reason: 'Scheda con possibile contaminazione tra sedi PTROOM.',
+    fields: [
+      'description',
+      'descrizione',
+      'descrizione_pubblica',
+      'descrizione_editoriale',
+      'descrizione_generata',
+      'official_source_url',
+      'editorial_summary',
+      'editorial_highlights',
+      'editorial_faq_items',
+      'meta_title',
+      'meta_description',
+      'price_info',
+      'price_source_url',
+      'price_updated_at',
+      'enrichment_status',
+      'enrichment_notes',
+      'enrichment_updated_at'
+    ]
+  },
+  'csv-497': {
+    reason: 'Scheda con possibile contaminazione tra sedi PTROOM.',
+    fields: [
+      'description',
+      'descrizione',
+      'descrizione_pubblica',
+      'descrizione_editoriale',
+      'descrizione_generata',
+      'official_source_url',
+      'editorial_summary',
+      'editorial_highlights',
+      'editorial_faq_items',
+      'meta_title',
+      'meta_description',
+      'price_info',
+      'price_source_url',
+      'price_updated_at',
+      'enrichment_status',
+      'enrichment_notes',
+      'enrichment_updated_at'
+    ]
+  },
+  'csv-499': {
+    reason: 'Scheda con possibile contaminazione tra sedi PTROOM.',
+    fields: [
+      'description',
+      'descrizione',
+      'descrizione_pubblica',
+      'descrizione_editoriale',
+      'descrizione_generata',
+      'official_source_url',
+      'editorial_summary',
+      'editorial_highlights',
+      'editorial_faq_items',
+      'meta_title',
+      'meta_description',
+      'price_info',
+      'price_source_url',
+      'price_updated_at',
+      'enrichment_status',
+      'enrichment_notes',
+      'enrichment_updated_at'
+    ]
+  },
   'csv-165': {
     reason: 'Campi editoriali oscurati dopo audit qualità dati.',
     fields: [
@@ -232,6 +320,16 @@ function detectedCityMismatch(gym) {
 function quarantinePublicEditorialFields(gym, reason, fields = UNSAFE_EDITORIAL_FIELDS) {
   const sanitized = { ...gym };
   const safeDescription = clean(gym?.safe_public_description) || getSafePublicDescription(gym);
+  const publicReason = 'Alcuni dettagli della scheda sono in fase di verifica.';
+  const publicFlag = reason
+    ? [
+        {
+          type: 'public_data_quarantine',
+          severity: 'high',
+          reason: publicReason
+        }
+      ]
+    : [];
 
   for (const field of fields) {
     sanitized[field] = emptyValueForField(field);
@@ -245,17 +343,18 @@ function quarantinePublicEditorialFields(gym, reason, fields = UNSAFE_EDITORIAL_
   sanitized.descrizione_source = 'fallback_sicuro';
   sanitized.descrizione_needs_review = true;
   sanitized.needs_review = true;
-  sanitized.review_reason = reason;
+  sanitized.review_reason = publicReason;
+  sanitized.data_quality_flags = publicFlag;
 
   if (sanitized.weekly_hours && typeof sanitized.weekly_hours === 'object') {
     sanitized.weekly_hours = {
       ...sanitized.weekly_hours,
-      _public_data_quarantine: reason,
+      _public_data_quarantine: publicReason,
       _needs_review: true
     };
   } else {
     sanitized.weekly_hours = {
-      _public_data_quarantine: reason,
+      _public_data_quarantine: publicReason,
       _needs_review: true
     };
   }
