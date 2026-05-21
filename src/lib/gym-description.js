@@ -176,6 +176,24 @@ export function safeFallbackDescription(gym) {
 }
 
 export function pickPublicDescription(gym, context = {}) {
+  const flaggedForReview = Boolean(
+    gym?.needs_review ||
+      gym?.data_quality_flags?.length ||
+      gym?.weekly_hours?._needs_review ||
+      gym?.weekly_hours?._public_data_quarantine
+  );
+  const safePublicDescription = clean(gym?.safe_public_description);
+
+  if (flaggedForReview) {
+    const fallback = safePublicDescription || safeFallbackDescription(gym) || DEFAULT_DESCRIPTION;
+    return {
+      text: fallback,
+      source: 'fallback_sicuro',
+      qualityScore: scoreDescription(gym, fallback, context),
+      needsReview: true
+    };
+  }
+
   const explicitPublicDescription = clean(gym?.descrizione_pubblica);
   if (explicitPublicDescription && !isUnsafePublicDescription(gym, explicitPublicDescription, context)) {
     return {

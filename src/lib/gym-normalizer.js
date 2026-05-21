@@ -33,7 +33,12 @@ export const GYM_CANONICAL_FIELDS = [
   'descrizione_pubblica',
   'descrizione_source',
   'descrizione_quality_score',
-  'descrizione_needs_review'
+  'descrizione_needs_review',
+  'data_quality_flags',
+  'needs_review',
+  'review_reason',
+  'last_data_audit_at',
+  'safe_public_description'
 ];
 
 export const GYM_LEGACY_FIELDS = [
@@ -240,6 +245,11 @@ export function normalizeGym(gym, fallbackId = '') {
     descrizione_source: clean(firstValue(gym, ['descrizione_source'])),
     descrizione_quality_score: Number(firstValue(gym, ['descrizione_quality_score'], 0)) || 0,
     descrizione_needs_review: toBoolean(firstValue(gym, ['descrizione_needs_review'], false)),
+    data_quality_flags: Array.isArray(gym?.data_quality_flags) ? gym.data_quality_flags : [],
+    needs_review: toBoolean(firstValue(gym, ['needs_review'], false)),
+    review_reason: clean(firstValue(gym, ['review_reason'])),
+    last_data_audit_at: firstValue(gym, ['last_data_audit_at'], null) || null,
+    safe_public_description: clean(firstValue(gym, ['safe_public_description'])),
     weekly_hours: {
       ...weeklyHours,
       _verified: isVerified,

@@ -660,7 +660,12 @@ function adminUpdateRecord(gym, availableColumns) {
     'descrizione_pubblica',
     'descrizione_source',
     'descrizione_quality_score',
-    'descrizione_needs_review'
+    'descrizione_needs_review',
+    'data_quality_flags',
+    'needs_review',
+    'review_reason',
+    'last_data_audit_at',
+    'safe_public_description'
   ];
 
   for (const column of italianColumns) {
