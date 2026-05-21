@@ -48,7 +48,13 @@ async function hasRecentBackup() {
 
 function ensureApplyAllowed(supabaseUrl: string) {
   const envName = String(process.env.SUPABASE_ENV || '').toLowerCase();
-  const looksProduction = envName === 'production' || envName === 'prod' || supabaseUrl.toLowerCase().includes('prod');
+  const targetEnv = String(process.env.VERCEL_TARGET_ENV || process.env.VERCEL_ENV || '').toLowerCase();
+  const looksProduction =
+    envName === 'production' ||
+    envName === 'prod' ||
+    targetEnv === 'production' ||
+    targetEnv === 'prod' ||
+    supabaseUrl.toLowerCase().includes('prod');
   if (!confirmApply) throw new Error('Apply bloccato: aggiungi --confirm-apply dopo aver controllato il preview.');
   if (looksProduction && !allowProduction) throw new Error('Apply production bloccato: richiede --allow-production esplicito.');
   if (!looksProduction && envName !== 'staging') throw new Error('Apply bloccato: usa SUPABASE_ENV=staging per default.');
