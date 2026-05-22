@@ -11,6 +11,8 @@ const PROMOTION_PATTERN =
 const GENERIC_PATTERN =
   /^(palestra|palestra fitness|centro fitness|struttura sportiva|fitness)$/i;
 
+const CAP_AS_LOCATION_PATTERN = /\b(?:a|di|in)\s+\d{4,5}\b/i;
+
 const MARTIAL_DISCIPLINES = new Set([
   'Aikido',
   'Arti Marziali',
@@ -192,6 +194,9 @@ export function descriptionIssues(gym, description, context = {}) {
   if (text && PROMOTION_PATTERN.test(text) && !gym?.price_verified && !gym?.weekly_hours?._price_verified) {
     issues.push('unverified_commercial_data');
   }
+  if (text && CAP_AS_LOCATION_PATTERN.test(text)) {
+    issues.push('cap_as_location');
+  }
   if (text && name && !containsText(text, name)) {
     issues.push('missing_name');
   }
@@ -215,6 +220,7 @@ export function isUnsafePublicDescription(gym, description, context = {}) {
       'missing',
       'too_short',
       'too_generic',
+      'cap_as_location',
       'unverified_commercial_data',
       'mentions_other_gym',
       'mentions_other_city'
@@ -254,7 +260,10 @@ export function pickPublicDescription(gym, context = {}) {
   const safePublicDescription = clean(gym?.safe_public_description);
 
   if (flaggedForReview) {
-    const fallback = safePublicDescription || safeFallbackDescription(gym, context) || DEFAULT_DESCRIPTION;
+    const fallback =
+      safePublicDescription && !isUnsafePublicDescription(gym, safePublicDescription, context)
+        ? safePublicDescription
+        : safeFallbackDescription(gym, context) || DEFAULT_DESCRIPTION;
     return {
       text: fallback,
       source: 'fallback_sicuro',
