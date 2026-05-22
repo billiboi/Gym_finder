@@ -1,4 +1,5 @@
 import { normalizeDisciplineLabel } from './disciplines.js';
+import { publicCityForGym } from './location-quality.js';
 import { normalizeItalianCopy } from './text-format.js';
 
 const DEFAULT_DESCRIPTION =
@@ -99,7 +100,7 @@ function contextualDiscipline(gym, context = {}) {
 }
 
 function safeCity(gym) {
-  return clean(gym?.citta || gym?.city);
+  return publicCityForGym(gym) || clean(gym?.citta || gym?.city);
 }
 
 function safeAddress(gym) {
