@@ -25,6 +25,13 @@
     }
   };
   const structuredDataScript = jsonLdScript(structuredData);
+
+  function shortDescription(value, maxLength = 120) {
+    const text = String(value || '').replace(/\s+/g, ' ').trim();
+    if (!text || text.length <= maxLength) return text;
+    const slice = text.slice(0, maxLength - 1);
+    return `${slice.slice(0, slice.lastIndexOf(' ') > 60 ? slice.lastIndexOf(' ') : slice.length).trim()}…`;
+  }
 </script>
 
 <svelte:head>
@@ -79,11 +86,17 @@
 
       <div class="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {#each featuredDisciplines as discipline}
-          <a href={`/discipline/${discipline.slug}`} class="rounded-2xl border border-slate-200 bg-white/90 p-4 transition hover:-translate-y-0.5 hover:shadow-md">
-            <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Landing curata</p>
+          <a href={`/discipline/${discipline.slug}`} class="flex min-h-full flex-col rounded-2xl border border-slate-200 bg-white/90 p-4 transition hover:-translate-y-0.5 hover:shadow-md">
+            <div class="flex items-start justify-between gap-3">
+              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Landing curata</p>
+              <span class="shrink-0 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-900">{discipline.count}</span>
+            </div>
             <h3 class="mt-2 text-lg font-bold text-slate-900">{discipline.name}</h3>
-            <p class="mt-2 text-sm leading-7 text-slate-600">{discipline.description}</p>
-            <p class="mt-3 text-sm font-semibold text-emerald-800">{formatCount(discipline.count, 'scheda pubblica', 'schede pubbliche')}</p>
+            <p class="mt-2 text-sm leading-6 text-slate-600">{shortDescription(discipline.description)}</p>
+            <div class="mt-auto flex items-center justify-between gap-3 pt-4">
+              <span class="text-sm font-semibold text-emerald-800">{formatCount(discipline.count, 'scheda pubblica', 'schede pubbliche')}</span>
+              <span class="inline-flex min-h-[2.35rem] items-center rounded-xl bg-slate-900 px-3 text-sm font-bold text-white">Apri</span>
+            </div>
           </a>
         {/each}
       </div>
@@ -98,10 +111,17 @@
 
         <div class="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
           {#each extraDisciplines as discipline}
-            <a href={`/discipline/${discipline.slug}`} class="rounded-2xl border border-slate-200 bg-white/90 p-4 transition hover:-translate-y-0.5 hover:shadow-md">
-              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Disciplina</p>
+            <a href={`/discipline/${discipline.slug}`} class="flex min-h-full flex-col rounded-2xl border border-slate-200 bg-white/90 p-4 transition hover:-translate-y-0.5 hover:shadow-md">
+              <div class="flex items-start justify-between gap-3">
+                <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Disciplina</p>
+                <span class="shrink-0 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-700">{discipline.count}</span>
+              </div>
               <h3 class="mt-2 text-lg font-bold text-slate-900">{discipline.name}</h3>
-              <p class="mt-3 text-sm font-semibold text-slate-700">{formatCount(discipline.count, 'scheda collegata', 'schede collegate')}</p>
+              <p class="mt-2 text-sm leading-6 text-slate-600">{shortDescription(discipline.description || `Schede pubbliche collegate a ${discipline.name}.`)}</p>
+              <div class="mt-auto flex items-center justify-between gap-3 pt-4">
+                <span class="text-sm font-semibold text-slate-700">{formatCount(discipline.count, 'scheda collegata', 'schede collegate')}</span>
+                <span class="inline-flex min-h-[2.35rem] items-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-slate-900">Apri</span>
+              </div>
             </a>
           {/each}
         </div>

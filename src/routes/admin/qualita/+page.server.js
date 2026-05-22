@@ -2,6 +2,7 @@ import { fail, redirect } from '@sveltejs/kit';
 import { gymHref, slugifyGym } from '$lib/gym-detail';
 import { adminErrorMessage, adminGymView, archiveGym as archiveGymRecord, hasGenericDiscipline, hoursNeedReview, isArchivedGym } from '$lib/admin/gyms';
 import { dedupeDisciplines, normalizeDisciplineField } from '$lib/disciplines';
+import { isCapLike, isSuspiciousZoneName } from '$lib/location-quality';
 import { writeAdminAuditLog } from '$lib/server/admin-audit-store';
 import { readClaimRequests } from '$lib/server/claim-request-store';
 import { canWriteSupabase, readGyms, writeGymRecords } from '$lib/server/gym-store';
@@ -80,17 +81,8 @@ function hasPlaceholderHours(gym) {
   return !hours || /orari da verificare|da verificare|non disponibili|n\/d/i.test(hours);
 }
 
-function isCapLike(value) {
-  return /^\d{4,5}$/.test(clean(value));
-}
-
 function hasSuspiciousCity(gym) {
-  const city = clean(gym?.city || gym?.citta);
-  if (!city) return true;
-  if (isCapLike(city)) return true;
-  if (city.length > 42) return true;
-  if (/[|/\\]/.test(city)) return true;
-  return false;
+  return isSuspiciousZoneName(gym?.city || gym?.citta);
 }
 
 function hasContaminatedData(gym) {
@@ -139,6 +131,7 @@ function addressQualityIssues(gym) {
   const issues = {
     shortAddress: false,
     entranceOnlyAddress: false,
+    addressOnlyCity: false,
     addressWithoutStreet: false,
     addressWithoutNumber: false,
     addressDescriptionMismatch: false
@@ -157,6 +150,7 @@ function addressQualityIssues(gym) {
 
   issues.shortAddress = address.length < 8;
   issues.entranceOnlyAddress = /\bingresso\s+da\b/i.test(address);
+  issues.addressOnlyCity = Boolean(city && foldedAddress === fold(city));
   issues.addressWithoutStreet = !streetWords.test(address);
   issues.addressWithoutNumber = streetWords.test(address) && !/\d/.test(address);
   issues.addressDescriptionMismatch =
@@ -209,6 +203,7 @@ function qualityFlags(gym, slugCounts, claimIndex) {
     claimApproved: Boolean(claim && claim.status === 'approved'),
     contaminatedData: hasContaminatedData(gym),
     suspiciousCity: hasSuspiciousCity(gym),
+    suspiciousZone: hasSuspiciousCity(gym),
     capAsCity: isCapLike(gym?.city || gym?.citta),
     needsReview: Boolean(gym?.needs_review || gym?.descrizione_needs_review || gym?.description_needs_review),
     safeFallback: hasSafeFallbackDescription(gym),
@@ -216,6 +211,7 @@ function qualityFlags(gym, slugCounts, claimIndex) {
     incompleteAddress: Object.values(addressIssues).some(Boolean),
     shortAddress: addressIssues.shortAddress,
     entranceOnlyAddress: addressIssues.entranceOnlyAddress,
+    addressOnlyCity: addressIssues.addressOnlyCity,
     addressWithoutStreet: addressIssues.addressWithoutStreet,
     addressWithoutNumber: addressIssues.addressWithoutNumber,
     addressDescriptionMismatch: addressIssues.addressDescriptionMismatch
@@ -316,13 +312,15 @@ function issueLabels(flags) {
     flags.unverified ? 'Non verificata' : '',
     flags.claimPending ? 'Claim pending' : '',
     flags.contaminatedData ? 'Dati sospetti' : '',
-    flags.suspiciousCity ? 'Città sospetta' : '',
+    flags.suspiciousCity && !flags.suspiciousZone ? 'Città sospetta' : '',
+    flags.suspiciousZone ? 'Zona sospetta' : '',
     flags.capAsCity ? 'CAP usato come città' : '',
     flags.needsReview ? 'Da revisionare' : '',
     flags.safeFallback ? 'Fallback sicuro' : '',
     flags.genericDescription ? 'Descrizione generica' : '',
     flags.shortAddress ? 'Indirizzo troppo corto' : '',
     flags.entranceOnlyAddress ? 'Indirizzo contiene ingresso da' : '',
+    flags.addressOnlyCity ? 'Indirizzo solo città' : '',
     flags.addressWithoutStreet ? 'Indirizzo senza via' : '',
     flags.addressWithoutNumber ? 'Indirizzo senza numero civico' : '',
     flags.addressDescriptionMismatch ? 'Indirizzo incoerente con descrizione' : ''
@@ -419,6 +417,7 @@ export async function load({ url }) {
     highQuality: items.filter((item) => item.data_quality_score > 70).length,
     contaminatedData: items.filter((item) => item.qualityFlags.contaminatedData).length,
     suspiciousCity: items.filter((item) => item.qualityFlags.suspiciousCity).length,
+    suspiciousZone: items.filter((item) => item.qualityFlags.suspiciousZone).length,
     capAsCity: items.filter((item) => item.qualityFlags.capAsCity).length,
     needsReview: items.filter((item) => item.qualityFlags.needsReview).length,
     safeFallback: items.filter((item) => item.qualityFlags.safeFallback).length,

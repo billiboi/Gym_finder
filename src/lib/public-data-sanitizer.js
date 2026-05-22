@@ -369,7 +369,7 @@ export function sanitizePublicGymData(gym) {
   const mismatchReason = unsafeEditorialSourceReason(gym);
   const cityMismatchReason = detectedCityMismatch(gym);
   const flaggedReason = gym?.needs_review
-    ? clean(gym?.review_reason) || 'Scheda marcata come da revisionare dopo audit qualità dati.'
+    ? clean(gym?.review_reason) || 'Scheda marcata come da revisionare dopo verifica qualità dati.'
     : '';
 
   if (cityMismatchReason) {

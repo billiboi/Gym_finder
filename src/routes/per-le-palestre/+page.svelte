@@ -25,7 +25,7 @@
       name: 'Scheda premium',
       kicker: 'Visibilità',
       price: 'Su richiesta',
-      period: 'dopo audit scheda',
+      period: 'dopo verifica della scheda',
       description: 'Per rendere la scheda più competitiva nelle ricerche locali.',
       features: ['Prezzi e descrizione curati', 'CTA più forti verso contatto', 'Priorità editoriale controllata'],
       cta: 'Richiedi premium',
@@ -148,7 +148,7 @@
           <div class="mt-6 flex flex-wrap gap-3">
             <a
               href="#lead"
-              on:click={() => trackPartnerEvent({ posizione: 'hero', cta: 'richiedi_audit' })}
+              on:click={() => trackPartnerEvent({ posizione: 'hero', cta: 'richiedi_verifica' })}
               class="inline-flex min-h-[3rem] items-center justify-center rounded-xl bg-slate-900 px-5 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
             >
               Richiedi contatto

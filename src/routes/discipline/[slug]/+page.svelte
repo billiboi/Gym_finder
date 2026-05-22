@@ -1,5 +1,6 @@
 <script>
   import { disciplinePreviewForGym, gymHref, imageForGym, isPremiumGym, isVerifiedGym } from '$lib/gym-detail';
+  import { publicCityForGym } from '$lib/location-quality';
   import { slugifySeoName } from '$lib/seo-directory';
   import { absoluteUrl, SITE_NAME, jsonLdScript } from '$lib/site';
   import { editorialGuideHref } from '$lib/editorial';
@@ -17,7 +18,7 @@
   const isIndexableLanding = gyms.length >= 2;
   const cityStats = [...gyms
     .reduce((map, gym) => {
-      const city = String(gym.city || '').trim();
+      const city = publicCityForGym(gym);
       if (!city) return map;
       map.set(city, (map.get(city) || 0) + 1);
       return map;

@@ -60,6 +60,40 @@
     return /^https?:\/\//i.test(url) ? url : '';
   }
 
+  function hostFor(value) {
+    const url = publicUrl(value);
+    if (!url) return '';
+    try {
+      return new URL(url).hostname.replace(/^www\./, '');
+    } catch {
+      return '';
+    }
+  }
+
+  function sourceMatchesWebsite(source, websiteValue) {
+    const sourceHost = hostFor(source);
+    const websiteHost = hostFor(websiteValue);
+    return Boolean(
+      sourceHost &&
+        websiteHost &&
+        (sourceHost === websiteHost || sourceHost.endsWith(`.${websiteHost}`) || websiteHost.endsWith(`.${sourceHost}`))
+    );
+  }
+
+  function commercialInfoIsSafe(gymValue, overrideValue) {
+    const checkedAt = fixGymText(gymValue?.commercial_info_last_checked_at || overrideValue?.commercialInfoLastCheckedAt);
+    const verified = Boolean(gymValue?.verified_commercial_info || overrideValue?.verifiedCommercialInfo);
+    const source = gymValue?.source_url || gymValue?.official_source_url || gymValue?.price_source_url || overrideValue?.sourceUrl;
+    const websiteValue = gymValue?.website || gymValue?.sito || overrideValue?.website;
+    return Boolean(verified && checkedAt && sourceMatchesWebsite(source, websiteValue));
+  }
+
+  function hasCommercialText(card) {
+    return /prezz|promo|offert|scont|chf|eur|euro|€|\d+\s*(?:chf|eur|euro)/i.test(
+      [card?.label, card?.value, card?.body].map((value) => fixGymText(value)).join(' ')
+    );
+  }
+
   $: ({ gym, relatedGyms = [], relatedLocation, relatedDiscipline } = data);
   $: publicDataQuarantine = Boolean(
     gym?.needs_review ||
@@ -80,7 +114,9 @@
   $: hasEditorialContent = Boolean(editorialSummary || editorialHighlights.length);
   $: presentation = officialPresentation || editorialSummary || buildGymPresentation(gym);
   $: seoHighlights = officialHighlights.length || editorialHighlights.length ? (officialHighlights.length ? officialHighlights : editorialHighlights) : buildGymSeoHighlights(gym);
-  $: officialInfoCards = textCardArray(officialOverride?.infoCards);
+  $: officialInfoCards = textCardArray(officialOverride?.infoCards).filter(
+    (card) => hasSafeCommercialInfo || !hasCommercialText(card)
+  );
   $: officialScheduleCards = textCardArray(officialOverride?.scheduleCards);
   $: officialFaqItems = faqArray(officialOverride?.faqItems);
   $: cityLabel = cityLabelForGym(gym);
@@ -99,7 +135,8 @@
   $: isIndexable = isIndexableGym(gym);
   $: officialSourceUrl = officialOverride?.sourceUrl || fixGymText(gym?.official_source_url) || '';
   $: officialEmail = officialOverride?.email || '';
-  $: officialMonthlyPrice = fixGymText(gym?.price_info) || fixGymText(officialOverride?.monthlyPrice) || '';
+  $: hasSafeCommercialInfo = commercialInfoIsSafe(gym, officialOverride);
+  $: officialMonthlyPrice = hasSafeCommercialInfo ? fixGymText(gym?.price_info) || fixGymText(officialOverride?.monthlyPrice) || '' : '';
   $: priceSourceUrl = fixGymText(gym?.price_source_url) || officialSourceUrl;
   $: officialSocialLinks = officialOverride?.socialLinks || [];
   $: hasOfficialData = !publicDataQuarantine && Boolean(officialMonthlyPrice || officialSourceUrl || officialEmail || officialSocialLinks.length);

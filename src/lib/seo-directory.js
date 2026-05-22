@@ -1,6 +1,7 @@
 import { dedupeDisciplines } from '$lib/disciplines';
 import { DISCIPLINE_MASTER, isPublicDisciplineSlug } from '$lib/discipline-taxonomy';
 import { isIndexableGym } from '$lib/gym-detail';
+import { isSuspiciousZoneName, publicCityForGym } from '$lib/location-quality';
 import { SEO_DISCIPLINES, gymsForSeoDiscipline } from '$lib/seo-disciplines';
 import { SEO_LOCATIONS, gymsForSeoLocation } from '$lib/seo-locations';
 
@@ -18,7 +19,7 @@ export function slugifySeoName(name) {
 function isBrowsableLocationName(name) {
   const value = String(name || '').trim();
   if (!value) return false;
-  if (/^\d/.test(value)) return false;
+  if (isSuspiciousZoneName(value)) return false;
   if (/[\\/|]/.test(value)) return false;
   if (value.length > 40) return false;
   return true;
@@ -77,7 +78,7 @@ export function buildSeoLocationEntries(gyms, { includeLowCount = true } = {}) {
   const cityCounts = new Map();
 
   for (const gym of indexableGyms) {
-    const city = normalizeSeoLocationName(gym?.city || '');
+    const city = normalizeSeoLocationName(publicCityForGym(gym));
     if (!city || !isBrowsableLocationName(city)) continue;
     const slug = slugifySeoName(city);
     const current = cityCounts.get(slug) || { name: city, count: 0 };

@@ -1,5 +1,6 @@
 import { sanitizePublicGymData } from '$lib/public-data-sanitizer';
 import { pickPublicDescription, shortPublicDescription } from '$lib/gym-description';
+import { publicCityForGym } from '$lib/location-quality';
 import { normalizeItalianCopy } from '$lib/text-format';
 
 const COPY_FIELDS = [
@@ -85,6 +86,7 @@ export function publicClientGym(gym) {
   const safeGym = normalizePublicGymCopy(sanitizePublicGymData(gym));
   const pickedDescription = pickPublicDescription(safeGym);
   const hasSafeCommercialInfo = commercialInfoIsSafe(safeGym);
+  const publicCity = publicCityForGym(safeGym);
 
   return {
     id: safeGym.id,
@@ -93,7 +95,7 @@ export function publicClientGym(gym) {
     discipline: safeGym.discipline,
     disciplines: safeGym.disciplines,
     address: safeGym.address,
-    city: safeGym.city,
+    city: publicCity,
     phone: safeGym.phone,
     hours_info: safeGym.hours_info,
     website: safeGym.website,

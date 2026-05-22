@@ -4,9 +4,9 @@
 
   const filters = [
     { id: 'all', label: 'Tutte', countKey: 'all' },
-    { id: 'lowQuality', label: 'Qualita sotto 40', countKey: 'lowQuality' },
-    { id: 'mediumQuality', label: 'Qualita 40-70', countKey: 'mediumQuality' },
-    { id: 'highQuality', label: 'Qualita sopra 70', countKey: 'highQuality' },
+    { id: 'lowQuality', label: 'Qualità sotto 40', countKey: 'lowQuality' },
+    { id: 'mediumQuality', label: 'Qualità 40-70', countKey: 'mediumQuality' },
+    { id: 'highQuality', label: 'Qualità sopra 70', countKey: 'highQuality' },
     { id: 'noPhone', label: 'Senza telefono', countKey: 'noPhone' },
     { id: 'noWebsite', label: 'Senza sito', countKey: 'noWebsite' },
     { id: 'noDescription', label: 'Senza descrizione', countKey: 'noDescription' },
@@ -23,8 +23,9 @@
     { id: 'needsReview', label: 'Da revisionare', countKey: 'needsReview' },
     { id: 'genericDescription', label: 'Descrizione generica', countKey: 'genericDescription' },
     { id: 'incompleteAddress', label: 'Indirizzo incompleto', countKey: 'incompleteAddress' },
-    { id: 'suspiciousCity', label: 'Citta sospetta', countKey: 'suspiciousCity' },
-    { id: 'capAsCity', label: 'CAP come citta', countKey: 'capAsCity' },
+    { id: 'suspiciousZone', label: 'Zona sospetta', countKey: 'suspiciousZone' },
+    { id: 'suspiciousCity', label: 'Città sospetta', countKey: 'suspiciousCity' },
+    { id: 'capAsCity', label: 'CAP come città', countKey: 'capAsCity' },
     { id: 'duplicateSlug', label: 'Slug duplicato', countKey: 'duplicateSlug' }
   ];
 
@@ -32,10 +33,10 @@
     { id: 'quality-asc', label: 'Qualità più bassa' },
     { id: 'quality-desc', label: 'Qualità più alta' },
     { id: 'updated-desc', label: 'Aggiornate di recente' },
-    { id: 'city-asc', label: 'Citta' },
+    { id: 'city-asc', label: 'Città' },
     { id: 'discipline-asc', label: 'Disciplina' },
     { id: 'claim-first', label: 'Claim pending' },
-    { id: 'issues-desc', label: 'Piu incomplete' }
+    { id: 'issues-desc', label: 'Più incomplete' }
   ];
 
   let activeFilter = 'lowQuality';
@@ -94,7 +95,7 @@
   <section class="rounded-3xl border border-white/80 bg-white/85 p-5 shadow-xl backdrop-blur-sm sm:p-7">
     <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
       <div class="max-w-3xl">
-        <p class="text-xs font-bold uppercase tracking-[0.22em] text-emerald-800">Qualita schede</p>
+        <p class="text-xs font-bold uppercase tracking-[0.22em] text-emerald-800">Qualità schede</p>
         <h1 class="mt-2 text-3xl font-bold text-slate-900 sm:text-4xl">Dashboard qualità</h1>
         <p class="mt-2 text-sm leading-6 text-slate-600">
           Prioritizza schede deboli, claim aperti e dati incompleti. Le azioni di scrittura sono singole, confermate e usano soft-delete quando archiviano.
@@ -115,7 +116,7 @@
     {/if}
     {#if data.merged}
       <div class="mt-5 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold text-emerald-800">
-        Merge completato: la scheda duplicata e stata archiviata, non eliminata.
+        Merge completato: la scheda duplicata è stata archiviata, non eliminata.
       </div>
     {/if}
     {#if data.normalized}
@@ -237,7 +238,7 @@
                 {#each group.gyms as gym}
                   <div class="rounded-xl bg-white p-3 text-sm">
                     <p class="font-bold text-slate-900">{gym.name}</p>
-                    <p class="text-slate-600">{gym.city || 'Citta non indicata'} - {gym.address_display || 'Indirizzo non disponibile'}</p>
+                    <p class="text-slate-600">{gym.city || 'Città non indicata'} - {gym.address_display || 'Indirizzo non disponibile'}</p>
                   </div>
                 {/each}
               </div>
@@ -302,7 +303,7 @@
                   <input type="checkbox" bind:group={selectedNormalizationIds} value={candidate.id} class="mt-1" />
                   <span>
                     <strong class="block text-slate-900">{candidate.name}</strong>
-                    <span class="text-slate-600">{candidate.city || 'Citta non indicata'}</span>
+                    <span class="text-slate-600">{candidate.city || 'Città non indicata'}</span>
                   </span>
                 </span>
                 <span class="rounded-xl bg-slate-50 px-3 py-2 text-slate-700">
@@ -355,7 +356,7 @@
                 <div class={`h-full ${scoreClass(gym.data_quality_score)}`} style={`width: ${Math.max(4, gym.data_quality_score)}%`}></div>
               </div>
 
-              <p class="mt-3 text-sm text-slate-600">{gym.discipline || 'Disciplina non indicata'} - {gym.city || 'Citta non indicata'}</p>
+              <p class="mt-3 text-sm text-slate-600">{gym.discipline || 'Disciplina non indicata'} - {gym.city || 'Città non indicata'}</p>
               <p class="mt-1 text-sm text-slate-700">{gym.address_display || 'Indirizzo non disponibile'}</p>
 
               <div class="mt-3 flex flex-wrap gap-2">

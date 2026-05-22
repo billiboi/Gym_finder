@@ -110,6 +110,59 @@ function safeName(gym) {
   return clean(gym?.nome || gym?.name || 'Questa struttura');
 }
 
+function addressPhrase(address) {
+  return address ? `, in ${address}` : '';
+}
+
+function cityPhrase(city) {
+  return city ? ` a ${city}` : '';
+}
+
+function fallbackDescriptionByCategory(gym, context = {}) {
+  const name = safeName(gym);
+  const city = safeCity(gym);
+  const address = safeAddress(gym);
+  const disciplines = disciplineList(gym);
+  const discipline = contextualDiscipline(gym, context) || 'palestra';
+  const folded = disciplines.map(stripDiacritics);
+  const isMultidiscipline = disciplines.length >= 4;
+  const isPersonalTraining = folded.some((item) => item.includes('personal training'));
+  const isMartial = disciplines.some((item) => MARTIAL_DISCIPLINES.has(item));
+  const isMindBody = folded.some((item) => item.includes('yoga') || item.includes('pilates'));
+  const isSwimming = folded.some((item) => item.includes('nuoto') || item.includes('swimming'));
+  const isFitness = folded.some((item) => item.includes('fitness') || item.includes('functional') || item.includes('cross training'));
+
+  if (context.currentDiscipline) {
+    return `${name} è una struttura sportiva${cityPhrase(city)}${addressPhrase(address)}, collegata a ${discipline}. Le informazioni disponibili aiutano a verificare indirizzo, orari e contatti.`;
+  }
+
+  if (isMultidiscipline) {
+    return `${name} è una struttura sportiva${cityPhrase(city)}${addressPhrase(address)} con attività fitness, corsi e discipline collegate. La scheda raccoglie dati utili per controllare contatti, orari e posizione.`;
+  }
+
+  if (isPersonalTraining) {
+    return `${name} è una struttura${cityPhrase(city)}${addressPhrase(address)} collegata al personal training. La scheda aiuta a verificare indirizzo, orari e contatti prima di approfondire.`;
+  }
+
+  if (isMartial) {
+    return `${name} è una realtà sportiva${cityPhrase(city)}${addressPhrase(address)} legata ad arti marziali e sport da combattimento. La scheda raccoglie dati utili su indirizzo, orari e contatti.`;
+  }
+
+  if (isMindBody) {
+    return `${name} è una struttura${cityPhrase(city)}${addressPhrase(address)} collegata ad attività come yoga, Pilates o discipline corpo-mente. Le informazioni disponibili aiutano a verificare contatti e orari.`;
+  }
+
+  if (isSwimming) {
+    return `${name} è una struttura sportiva${cityPhrase(city)}${addressPhrase(address)} collegata al nuoto. La scheda raccoglie i dati disponibili per controllare posizione, orari e contatti.`;
+  }
+
+  if (isFitness) {
+    return `${name} è una palestra${cityPhrase(city)}${addressPhrase(address)} collegata ad attività fitness. Le informazioni disponibili aiutano a confrontare indirizzo, orari e contatti.`;
+  }
+
+  return `${name} è una struttura sportiva${cityPhrase(city)}${addressPhrase(address)} collegata a ${discipline}. Le informazioni disponibili includono i dati principali della scheda; alcuni dettagli potrebbero richiedere ulteriore conferma.`;
+}
+
 function isOwnerDescriptionApproved(gym) {
   return Boolean(
     gym?.descrizione_owner_approved ||
@@ -169,20 +222,7 @@ export function isUnsafePublicDescription(gym, description, context = {}) {
 }
 
 export function getSafePublicDescription(gym, context = {}) {
-  const name = safeName(gym);
-  const city = safeCity(gym);
-  const discipline = contextualDiscipline(gym, context);
-  const address = safeAddress(gym);
-
-  if (city && address) {
-    return cleanPublicCopy(`${name} è una struttura sportiva a ${city}, in ${address}, collegata a ${discipline || 'palestra'}. Le informazioni disponibili aiutano a verificare indirizzo, orari e contatti; alcuni dettagli specifici potrebbero richiedere ulteriore conferma.`);
-  }
-
-  if (city) {
-    return cleanPublicCopy(`${name} è una struttura sportiva a ${city} collegata a ${discipline || 'palestra'}. Le informazioni disponibili aiutano a verificare indirizzo, orari e contatti; alcuni dettagli specifici potrebbero richiedere ulteriore conferma.`);
-  }
-
-  return cleanPublicCopy(`${name} è una struttura sportiva collegata a ${discipline || 'palestra'}. Le informazioni disponibili includono i dati principali della scheda; alcuni dettagli specifici potrebbero richiedere ulteriore conferma.`);
+  return cleanPublicCopy(fallbackDescriptionByCategory(gym, context));
 }
 
 export function safeFallbackDescription(gym, context = {}) {

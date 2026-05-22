@@ -1,5 +1,6 @@
 <script>
   import { disciplinePreviewForGym, gymHref, imageForGym, isPremiumGym, isVerifiedGym } from '$lib/gym-detail';
+  import { publicCityForGym } from '$lib/location-quality';
   import { slugifySeoName } from '$lib/seo-directory';
   import { absoluteUrl, SITE_NAME, jsonLdScript } from '$lib/site';
   import { buildLocationSeoMeta } from '$lib/seo-meta';
@@ -21,7 +22,7 @@
   const disciplineSummary = topDisciplines.join(', ');
   $: cityStats = [...gyms
     .reduce((map, gym) => {
-      const city = String(gym.city || '').trim() || location.name;
+      const city = publicCityForGym(gym) || location.name;
       map.set(city, (map.get(city) || 0) + 1);
       return map;
     }, new Map())
