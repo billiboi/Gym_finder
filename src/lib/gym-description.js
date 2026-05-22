@@ -84,6 +84,15 @@ function primaryDiscipline(gym) {
   return disciplineList(gym)[0] || 'Fitness';
 }
 
+function contextualDiscipline(gym, context = {}) {
+  const currentDiscipline = normalizeDisciplineLabel(context.currentDiscipline || '');
+  const disciplines = disciplineList(gym);
+  if (currentDiscipline && disciplines.includes(currentDiscipline)) {
+    return currentDiscipline;
+  }
+  return disciplines[0] || 'Fitness';
+}
+
 function safeCity(gym) {
   return clean(gym?.citta || gym?.city);
 }
@@ -154,10 +163,10 @@ export function isUnsafePublicDescription(gym, description, context = {}) {
   );
 }
 
-export function getSafePublicDescription(gym) {
+export function getSafePublicDescription(gym, context = {}) {
   const name = safeName(gym);
   const city = safeCity(gym);
-  const discipline = primaryDiscipline(gym);
+  const discipline = contextualDiscipline(gym, context);
   const address = safeAddress(gym);
 
   if (city && address) {
@@ -171,8 +180,22 @@ export function getSafePublicDescription(gym) {
   return `${name} è una struttura sportiva collegata a ${discipline || 'palestra'}. Le informazioni disponibili includono i dati principali della scheda; alcuni dettagli specifici potrebbero richiedere ulteriore conferma.`;
 }
 
-export function safeFallbackDescription(gym) {
-  return getSafePublicDescription(gym);
+export function safeFallbackDescription(gym, context = {}) {
+  return getSafePublicDescription(gym, context);
+}
+
+export function contextualCardDescription(gym, currentDiscipline = '', maxLength = 180) {
+  const normalizedCurrent = normalizeDisciplineLabel(currentDiscipline);
+  const disciplines = disciplineList(gym);
+  const context = normalizedCurrent && disciplines.includes(normalizedCurrent)
+    ? { currentDiscipline: normalizedCurrent }
+    : {};
+
+  if (context.currentDiscipline) {
+    return trimDescription(getSafePublicDescription(gym, context), maxLength);
+  }
+
+  return shortPublicDescription(gym, maxLength);
 }
 
 export function pickPublicDescription(gym, context = {}) {
@@ -185,7 +208,7 @@ export function pickPublicDescription(gym, context = {}) {
   const safePublicDescription = clean(gym?.safe_public_description);
 
   if (flaggedForReview) {
-    const fallback = safePublicDescription || safeFallbackDescription(gym) || DEFAULT_DESCRIPTION;
+    const fallback = safePublicDescription || safeFallbackDescription(gym, context) || DEFAULT_DESCRIPTION;
     return {
       text: fallback,
       source: 'fallback_sicuro',
@@ -236,7 +259,7 @@ export function pickPublicDescription(gym, context = {}) {
     }
   }
 
-  const fallback = safeFallbackDescription(gym) || DEFAULT_DESCRIPTION;
+  const fallback = safeFallbackDescription(gym, context) || DEFAULT_DESCRIPTION;
   return {
     text: fallback,
     source: 'fallback_sicuro',
@@ -247,6 +270,11 @@ export function pickPublicDescription(gym, context = {}) {
 
 export function shortPublicDescription(gym, maxLength = 180, context = {}) {
   const picked = pickPublicDescription(gym, context).text;
+  return trimDescription(picked, maxLength);
+}
+
+function trimDescription(description, maxLength = 180) {
+  const picked = description;
   const text = clean(picked).replace(PROMOTION_PATTERN, '').replace(/\s+/g, ' ').trim();
   if (!text) return DEFAULT_DESCRIPTION;
   if (text.length <= maxLength) return text;

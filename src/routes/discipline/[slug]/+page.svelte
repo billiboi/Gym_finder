@@ -5,6 +5,7 @@
   import { editorialGuideHref } from '$lib/editorial';
   import { buildDisciplineSeoMeta } from '$lib/seo-meta';
   import { formatCount } from '$lib/text-format';
+  import { contextualCardDescription } from '$lib/gym-description';
 
   export let data;
 
@@ -268,6 +269,7 @@
         {#each gyms as gym, i}
           {@const image = imageMetaForGym(gym)}
           {@const disciplinePreview = disciplinePreviewForGym(gym, 3, discipline.name)}
+          {@const cardDescription = contextualCardDescription(gym, discipline.name)}
           {@const verified = isVerifiedGym(gym)}
           {@const premium = isPremiumGym(gym)}
           <article class="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl sc-card sc-gym-card" style={`animation-delay:${i * 20}ms`}>
@@ -312,7 +314,7 @@
                 </div>
               </div>
               <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm leading-6 text-slate-700">
-                {gym.public_description_short || 'Descrizione in verifica editoriale'}
+                {cardDescription || 'Descrizione in verifica editoriale'}
               </p>
               <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Indirizzo:</strong> {[gym.address, gym.city].filter(Boolean).join(', ') || 'Indirizzo non disponibile'}</p>
               <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Orari:</strong> {publicHoursLabel(gym.hours_info)}</p>
