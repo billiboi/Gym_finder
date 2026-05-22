@@ -34,7 +34,15 @@
     const label = String(value || '').trim();
     return !label || label === 'Orari da verificare' || label === 'Orari n/d' ? 'Orari da confermare' : label;
   };
-  const hasContactSignal = (gym) => Boolean(String(gym.phone || '').trim() || String(gym.website || '').trim());
+  const hasPhoneSignal = (gym) => Boolean(String(gym.phone || '').replace(/[^\d+]/g, ''));
+  const hasWebsiteSignal = (gym) => /^https?:\/\//i.test(String(gym.website || '').trim());
+  const hasContactSignal = (gym) => hasPhoneSignal(gym) || hasWebsiteSignal(gym);
+  const contactInfoRows = (gym) => {
+    const rows = [];
+    if (!hasPhoneSignal(gym)) rows.push('Telefono da verificare');
+    if (!hasWebsiteSignal(gym)) rows.push('Sito non ancora disponibile');
+    return rows;
+  };
   const faqItems = [
     {
       question: `Che cosa trovo nella pagina ${discipline.title}?`,
@@ -268,6 +276,7 @@
         {#each gyms as gym, i}
           {@const image = imageMetaForGym(gym)}
           {@const disciplinePreview = disciplinePreviewForGym(gym, 3, discipline.name)}
+          {@const missingContactRows = contactInfoRows(gym)}
           {@const verified = isVerifiedGym(gym)}
           {@const premium = isPremiumGym(gym)}
           <article class="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl sc-card sc-gym-card" style={`animation-delay:${i * 20}ms`}>
@@ -300,7 +309,7 @@
                       <span class="rounded-full px-2.5 py-1 text-[11px] font-semibold sc-discipline-chip">{label}</span>
                     {/each}
                     {#if disciplinePreview.remaining}
-                      <span class="rounded-full px-2.5 py-1 text-[11px] font-semibold sc-discipline-chip sc-discipline-chip--muted">+{disciplinePreview.remaining}</span>
+                      <span class="rounded-full px-2.5 py-1 text-[11px] font-semibold sc-discipline-chip sc-discipline-chip--muted">+{disciplinePreview.remaining} altre</span>
                     {/if}
                   {/if}
                   {#if verified}
@@ -316,6 +325,11 @@
               </p>
               <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Indirizzo:</strong> {[gym.address, gym.city].filter(Boolean).join(', ') || 'Indirizzo non disponibile'}</p>
               <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Orari:</strong> {publicHoursLabel(gym.hours_info)}</p>
+              {#if missingContactRows.length}
+                <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700">
+                  <strong>Contatti:</strong> {missingContactRows.join(' · ')}
+                </p>
+              {/if}
               <div class="flex flex-wrap gap-2 text-xs font-bold sc-card-signal-list">
                 <span class={`rounded-full px-2.5 py-1 ${hasContactSignal(gym) ? 'sc-card-signal--ok' : 'sc-card-signal--muted'}`}>
                   {hasContactSignal(gym) ? 'Contatti disponibili' : 'Contatti da verificare'}

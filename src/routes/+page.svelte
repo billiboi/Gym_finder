@@ -87,6 +87,13 @@
     return /^https?:\/\//i.test(url) ? url : '';
   }
 
+  function contactInfoRows(phoneLink, websiteLink) {
+    const rows = [];
+    if (!phoneLink) rows.push('Telefono da verificare');
+    if (!websiteLink) rows.push('Sito non ancora disponibile');
+    return rows;
+  }
+
   function directionsHref(gym) {
     const target = displayName([gym?.address, gym?.city].filter(Boolean).join(', '));
     return target ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(target)}` : '';
@@ -94,10 +101,11 @@
 
   function hoursForCard(value) {
     const hours = displayName(value) || 'Orari da confermare';
-    return hours
+    const parts = hours
       .split('|')
       .map((part) => (part.trim() === 'Orari da verificare' || part.trim() === 'Orari n/d' ? 'Orari da confermare' : part.trim()))
       .filter(Boolean);
+    return [...new Set(parts)];
   }
 
   function priceForCard(gym) {
@@ -1032,10 +1040,12 @@
         {@const phoneLink = phoneHref(gym.phone)}
         {@const websiteLink = websiteHref(gym.website)}
         {@const directionsLink = directionsHref(gym)}
+        {@const missingContactRows = contactInfoRows(phoneLink, websiteLink)}
         {@const hasWebsite = Boolean(websiteLink)}
         {@const verified = isVerifiedGym(gym)}
         {@const premium = isPremiumGym(gym)}
-        {@const openLabel = gym.is_open_now === true ? 'Aperta ora' : gym.is_open_now === false ? 'Chiusa ora' : 'Orari da confermare'}
+        {@const hasOpenState = gym.is_open_now === true || gym.is_open_now === false}
+        {@const openLabel = gym.is_open_now === true ? 'Aperta ora' : 'Chiusa ora'}
         {@const openClass = gym.is_open_now === true ? 'sc-status-pill--open' : gym.is_open_now === false ? 'sc-status-pill--closed' : 'sc-status-pill--muted'}
         {@const hours = hoursForCard(gym.hours_info)}
         {@const priceLabel = priceForCard(gym)}
@@ -1067,7 +1077,9 @@
                   </a>
                 </h3>
                 <div class="flex flex-wrap gap-2 text-xs font-semibold text-slate-600">
-                  <span class={`rounded-full px-2.5 py-1 font-bold ${openClass}`}>{openLabel}</span>
+                  {#if hasOpenState}
+                    <span class={`rounded-full px-2.5 py-1 font-bold ${openClass}`}>{openLabel}</span>
+                  {/if}
                   {#if gym.distance_km !== null && gym.distance_km !== undefined}
                     <span class="rounded-full bg-slate-100 px-2.5 py-1">{gym.distance_km} km</span>
                   {/if}
@@ -1090,7 +1102,7 @@
                       <span class="rounded-full px-2.5 py-1 text-[11px] font-semibold sc-discipline-chip">{label}</span>
                     {/each}
                     {#if disciplinePreview.remaining}
-                      <span class="rounded-full px-2.5 py-1 text-[11px] font-semibold sc-discipline-chip sc-discipline-chip--muted">+{disciplinePreview.remaining}</span>
+                      <span class="rounded-full px-2.5 py-1 text-[11px] font-semibold sc-discipline-chip sc-discipline-chip--muted">+{disciplinePreview.remaining} altre</span>
                     {/if}
                   {/if}
                 </div>
@@ -1113,6 +1125,16 @@
                     {/each}
                   </strong>
                 </p>
+                {#if missingContactRows.length}
+                  <p>
+                    <span>Contatti</span>
+                    <strong>
+                      {#each missingContactRows as label}
+                        <em>{label}</em>
+                      {/each}
+                    </strong>
+                  </p>
+                {/if}
                 {#if priceLabel}
                   <p class="sc-gym-card-price">
                     <span>Prezzo verificato</span>
@@ -1137,14 +1159,10 @@
               <div class="contents">
                 {#if phoneLink}
                   <a href={phoneLink} class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-slate-900 transition hover:bg-slate-50" on:click={() => trackEvent('click_telefono', gymTrackingPayload(gym))}>Chiama</a>
-                {:else}
-                  <span class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl border border-slate-200 bg-slate-50 px-3 text-center text-sm font-bold text-slate-500">Telefono da verificare</span>
                 {/if}
               </div>
               {#if websiteLink}
                 <a href={websiteLink} target="_blank" rel="noreferrer" class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-slate-900 transition hover:bg-slate-50" on:click={() => trackEvent('click_sito', gymTrackingPayload(gym))}>Apri sito</a>
-              {:else}
-                <span class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl border border-slate-200 bg-slate-50 px-3 text-center text-sm font-bold text-slate-500">Sito non ancora disponibile</span>
               {/if}
               {#if directionsLink}
                 <a href={directionsLink} target="_blank" rel="noreferrer" class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-slate-900 transition hover:bg-slate-50" on:click={() => trackEvent('click_indicazioni', gymTrackingPayload(gym))}>Indicazioni</a>
