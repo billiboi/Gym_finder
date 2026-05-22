@@ -1,4 +1,5 @@
 import { normalizeDisciplineLabel } from './disciplines.js';
+import { normalizeItalianCopy } from './text-format.js';
 
 const DEFAULT_DESCRIPTION =
   'Scheda in aggiornamento: sono disponibili i dati principali per identificare la struttura, con alcuni dettagli ancora da verificare.';
@@ -30,6 +31,10 @@ const MARTIAL_DISCIPLINES = new Set([
 
 function clean(value) {
   return String(value ?? '').replace(/\s+/g, ' ').trim();
+}
+
+function cleanPublicCopy(value) {
+  return normalizeItalianCopy(clean(value));
 }
 
 function stripDiacritics(value) {
@@ -170,14 +175,14 @@ export function getSafePublicDescription(gym, context = {}) {
   const address = safeAddress(gym);
 
   if (city && address) {
-    return `${name} è una struttura sportiva a ${city}, in ${address}, collegata a ${discipline || 'palestra'}. Le informazioni disponibili aiutano a verificare indirizzo, orari e contatti; alcuni dettagli specifici potrebbero richiedere ulteriore conferma.`;
+    return cleanPublicCopy(`${name} è una struttura sportiva a ${city}, in ${address}, collegata a ${discipline || 'palestra'}. Le informazioni disponibili aiutano a verificare indirizzo, orari e contatti; alcuni dettagli specifici potrebbero richiedere ulteriore conferma.`);
   }
 
   if (city) {
-    return `${name} è una struttura sportiva a ${city} collegata a ${discipline || 'palestra'}. Le informazioni disponibili aiutano a verificare indirizzo, orari e contatti; alcuni dettagli specifici potrebbero richiedere ulteriore conferma.`;
+    return cleanPublicCopy(`${name} è una struttura sportiva a ${city} collegata a ${discipline || 'palestra'}. Le informazioni disponibili aiutano a verificare indirizzo, orari e contatti; alcuni dettagli specifici potrebbero richiedere ulteriore conferma.`);
   }
 
-  return `${name} è una struttura sportiva collegata a ${discipline || 'palestra'}. Le informazioni disponibili includono i dati principali della scheda; alcuni dettagli specifici potrebbero richiedere ulteriore conferma.`;
+  return cleanPublicCopy(`${name} è una struttura sportiva collegata a ${discipline || 'palestra'}. Le informazioni disponibili includono i dati principali della scheda; alcuni dettagli specifici potrebbero richiedere ulteriore conferma.`);
 }
 
 export function safeFallbackDescription(gym, context = {}) {
@@ -275,8 +280,8 @@ export function shortPublicDescription(gym, maxLength = 180, context = {}) {
 
 function trimDescription(description, maxLength = 180) {
   const picked = description;
-  const text = clean(picked).replace(PROMOTION_PATTERN, '').replace(/\s+/g, ' ').trim();
-  if (!text) return DEFAULT_DESCRIPTION;
+  const text = cleanPublicCopy(clean(picked).replace(PROMOTION_PATTERN, '').replace(/\s+/g, ' ').trim());
+  if (!text) return cleanPublicCopy(DEFAULT_DESCRIPTION);
   if (text.length <= maxLength) return text;
   const slice = text.slice(0, maxLength - 1);
   return `${slice.slice(0, slice.lastIndexOf(' ') > 80 ? slice.lastIndexOf(' ') : slice.length).trim()}…`;

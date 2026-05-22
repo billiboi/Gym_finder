@@ -63,7 +63,7 @@
         Come controlliamo aggiornamenti, fonti e richieste sulle schede
       </h1>
       <p class="mt-4 max-w-3xl text-base leading-8 text-slate-600">
-        La fiducia non nasce da un badge messo a caso. Nasce da un processo leggibile: chi chiede la modifica, quale dato cambia, da dove arriva l informazione e quando viene pubblicata.
+        La fiducia non nasce da un badge messo a caso. Nasce da un processo leggibile: chi chiede la modifica, quale dato cambia, da dove arriva l’informazione e quando viene pubblicata.
       </p>
       <div class="mt-6 flex flex-wrap gap-3">
         <a href="/rivendica-scheda" class="inline-flex min-h-[3rem] items-center justify-center rounded-xl bg-slate-900 px-5 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">Richiedi verifica</a>

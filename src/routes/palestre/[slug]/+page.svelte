@@ -32,6 +32,29 @@
     return value.map((item) => fixGymText(item)).filter(Boolean);
   }
 
+  function textCardArray(value) {
+    if (!Array.isArray(value)) return [];
+    return value
+      .map((card) => ({
+        ...card,
+        label: fixGymText(card?.label),
+        value: fixGymText(card?.value),
+        body: fixGymText(card?.body)
+      }))
+      .filter((card) => card.label || card.value || card.body);
+  }
+
+  function faqArray(value) {
+    if (!Array.isArray(value)) return [];
+    return value
+      .map((item) => ({
+        ...item,
+        question: fixGymText(item?.question),
+        answer: fixGymText(item?.answer)
+      }))
+      .filter((item) => item.question && item.answer);
+  }
+
   function publicUrl(value) {
     const url = fixGymText(value);
     return /^https?:\/\//i.test(url) ? url : '';
@@ -52,12 +75,14 @@
   $: primaryDiscipline = primaryDisciplineForGym(gym);
   $: editorialSummary = fixGymText(gym?.editorial_summary);
   $: editorialHighlights = textArray(gym?.editorial_highlights);
+  $: officialPresentation = fixGymText(officialOverride?.presentation);
+  $: officialHighlights = textArray(officialOverride?.highlights);
   $: hasEditorialContent = Boolean(editorialSummary || editorialHighlights.length);
-  $: presentation = officialOverride?.presentation || editorialSummary || buildGymPresentation(gym);
-  $: seoHighlights = officialOverride?.highlights || editorialHighlights.length ? (officialOverride?.highlights || editorialHighlights) : buildGymSeoHighlights(gym);
-  $: officialInfoCards = officialOverride?.infoCards || [];
-  $: officialScheduleCards = officialOverride?.scheduleCards || [];
-  $: officialFaqItems = officialOverride?.faqItems || [];
+  $: presentation = officialPresentation || editorialSummary || buildGymPresentation(gym);
+  $: seoHighlights = officialHighlights.length || editorialHighlights.length ? (officialHighlights.length ? officialHighlights : editorialHighlights) : buildGymSeoHighlights(gym);
+  $: officialInfoCards = textCardArray(officialOverride?.infoCards);
+  $: officialScheduleCards = textCardArray(officialOverride?.scheduleCards);
+  $: officialFaqItems = faqArray(officialOverride?.faqItems);
   $: cityLabel = cityLabelForGym(gym);
   $: imageAsset = imageForGym(gym);
   $: imageMeta =
@@ -65,7 +90,7 @@
       ? { src: imageAsset, candidates: [imageAsset], fallback: imageAsset }
       : imageAsset;
   $: imageSrc = imageMeta.src;
-  $: rawHoursInfo = officialOverride?.hoursInfo || fixGymText(gym?.hours_info);
+  $: rawHoursInfo = fixGymText(officialOverride?.hoursInfo) || fixGymText(gym?.hours_info);
   $: hoursInfo = !rawHoursInfo || rawHoursInfo === 'Orari da verificare' || rawHoursInfo === 'Orari n/d' ? 'Orari da confermare' : rawHoursInfo;
   $: hoursRows = weeklyHoursRows(hoursInfo);
   $: alwaysOpen = isAlwaysOpen(hoursInfo);
@@ -74,7 +99,7 @@
   $: isIndexable = isIndexableGym(gym);
   $: officialSourceUrl = officialOverride?.sourceUrl || fixGymText(gym?.official_source_url) || '';
   $: officialEmail = officialOverride?.email || '';
-  $: officialMonthlyPrice = fixGymText(gym?.price_info) || officialOverride?.monthlyPrice || '';
+  $: officialMonthlyPrice = fixGymText(gym?.price_info) || fixGymText(officialOverride?.monthlyPrice) || '';
   $: priceSourceUrl = fixGymText(gym?.price_source_url) || officialSourceUrl;
   $: officialSocialLinks = officialOverride?.socialLinks || [];
   $: hasOfficialData = !publicDataQuarantine && Boolean(officialMonthlyPrice || officialSourceUrl || officialEmail || officialSocialLinks.length);
@@ -97,8 +122,8 @@
     disciplines,
     description: presentation
   });
-  $: seoTitle = officialOverride?.seoTitle ? appendSiteName(officialOverride.seoTitle) : fallbackGymSeo.title;
-  $: seoDescription = officialOverride?.seoDescription || fallbackGymSeo.description;
+  $: seoTitle = officialOverride?.seoTitle ? appendSiteName(fixGymText(officialOverride.seoTitle)) : fallbackGymSeo.title;
+  $: seoDescription = fixGymText(officialOverride?.seoDescription) || fallbackGymSeo.description;
   $: quarantineNotice = publicDataQuarantine ? 'Alcuni dettagli sono in fase di verifica.' : '';
   $: claimHref = `/rivendica-scheda?gym=${encodeURIComponent(fixGymText(gym?.name))}&url=${encodeURIComponent(pageUrl)}&reason=${encodeURIComponent('Rivendicazione scheda')}&gym_id=${encodeURIComponent(gym?.id || '')}`;
   $: trackingPayload = gymTrackingPayload({ ...gym, slug: data.gymSlug, discipline: primaryDiscipline, city: cityLabel });
