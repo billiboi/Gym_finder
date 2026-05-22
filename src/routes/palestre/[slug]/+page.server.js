@@ -10,6 +10,11 @@ const LEGACY_SLUG_REDIRECTS = {
   'urban-fitness-varese-csv-633': 'urban-fitness-varese'
 };
 
+function legacyCsvBaseSlug(slug) {
+  const match = String(slug || '').match(/^(.*)-csv-\d+$/);
+  return match?.[1] || '';
+}
+
 function slugifyName(name) {
   return String(name || '')
     .toLowerCase()
@@ -43,17 +48,28 @@ export async function load({ params }) {
   if (!gym && legacyTargetSlug) {
     const legacyTarget = gyms.find((item) => slugifyGym(item) === legacyTargetSlug);
     if (legacyTarget) {
-      if (isArchivedGym(legacyTarget)) {
+      if (isArchivedGym(legacyTarget) || !isIndexableGym(legacyTarget)) {
         throw error(410, 'Scheda rimossa');
       }
       throw redirect(301, `/palestre/${slugifyGym(legacyTarget)}`);
     }
   }
 
+  const legacyBaseSlug = gym ? '' : legacyCsvBaseSlug(params.slug);
+  if (!gym && legacyBaseSlug) {
+    const legacyBaseTarget = gyms.find((item) => slugifyGym(item) === legacyBaseSlug);
+    if (legacyBaseTarget) {
+      if (isArchivedGym(legacyBaseTarget) || !isIndexableGym(legacyBaseTarget)) {
+        throw error(410, 'Scheda rimossa');
+      }
+      throw redirect(301, `/palestre/${slugifyGym(legacyBaseTarget)}`);
+    }
+  }
+
   const legacyGym = gym ? null : gyms.find((item) => legacySlugifyGym(item) === params.slug || item?._legacy_slug === params.slug);
 
   if (legacyGym) {
-    if (isArchivedGym(legacyGym)) {
+    if (isArchivedGym(legacyGym) || !isIndexableGym(legacyGym)) {
       throw error(410, 'Scheda rimossa');
     }
     throw redirect(301, `/palestre/${slugifyGym(legacyGym)}`);
