@@ -19,6 +19,10 @@
     { id: 'unverified', label: 'Non verificata', countKey: 'unverified' },
     { id: 'claimPending', label: 'Claim pending', countKey: 'claimPending' },
     { id: 'contaminatedData', label: 'Dati sospetti', countKey: 'contaminatedData' },
+    { id: 'safeFallback', label: 'Fallback sicuro', countKey: 'safeFallback' },
+    { id: 'needsReview', label: 'Da revisionare', countKey: 'needsReview' },
+    { id: 'genericDescription', label: 'Descrizione generica', countKey: 'genericDescription' },
+    { id: 'incompleteAddress', label: 'Indirizzo incompleto', countKey: 'incompleteAddress' },
     { id: 'suspiciousCity', label: 'Citta sospetta', countKey: 'suspiciousCity' },
     { id: 'capAsCity', label: 'CAP come citta', countKey: 'capAsCity' },
     { id: 'duplicateSlug', label: 'Slug duplicato', countKey: 'duplicateSlug' }

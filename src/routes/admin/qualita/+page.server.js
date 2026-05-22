@@ -109,6 +109,63 @@ function hasContaminatedData(gym) {
   );
 }
 
+function descriptionText(gym) {
+  return clean(
+    gym?.description ||
+      gym?.descrizione ||
+      gym?.descrizione_pubblica ||
+      gym?.descrizione_editoriale ||
+      gym?.descrizione_generata ||
+      gym?.editorial_summary
+  );
+}
+
+function hasSafeFallbackDescription(gym) {
+  const source = clean(gym?.descrizione_source || gym?.description_source);
+  return Boolean(clean(gym?.safe_public_description) || source === 'fallback_sicuro');
+}
+
+function hasGenericDescription(gym) {
+  const text = fold(descriptionText(gym));
+  if (!text) return false;
+  if (/^(palestra|palestra fitness|centro fitness|struttura sportiva|fitness)$/.test(text)) return true;
+  return text.length < 120 && /\b(palestra|fitness|struttura sportiva)\b/.test(text);
+}
+
+function addressQualityIssues(gym) {
+  const address = clean(gym?.address || gym?.indirizzo);
+  const city = clean(gym?.city || gym?.citta);
+  const description = descriptionText(gym);
+  const issues = {
+    shortAddress: false,
+    entranceOnlyAddress: false,
+    addressWithoutStreet: false,
+    addressWithoutNumber: false,
+    addressDescriptionMismatch: false
+  };
+
+  if (!address) return issues;
+
+  const foldedAddress = fold(address);
+  const foldedDescription = fold(description);
+  const streetWords = /\b(via|viale|piazza|corso|largo|strada|vicolo|contrada|salita|rue|route|avenue|place|strasse)\b/i;
+  const ownStreet = foldedAddress
+    .replace(fold(city), '')
+    .replace(/\b\d+[a-z]?\b/g, '')
+    .replace(/\b(italia|svizzera|suisse|schweiz)\b/g, '')
+    .trim();
+
+  issues.shortAddress = address.length < 8;
+  issues.entranceOnlyAddress = /\bingresso\s+da\b/i.test(address);
+  issues.addressWithoutStreet = !streetWords.test(address);
+  issues.addressWithoutNumber = streetWords.test(address) && !/\d/.test(address);
+  issues.addressDescriptionMismatch =
+    Boolean(description && streetWords.test(description) && ownStreet.length >= 5) &&
+    !foldedDescription.includes(ownStreet.split(' ').slice(0, 3).join(' '));
+
+  return issues;
+}
+
 function claimForGym(gym, claimIndex) {
   const id = clean(gym?.id);
   const slug = slugifyGym(gym);
@@ -129,6 +186,7 @@ function qualityFlags(gym, slugCounts, claimIndex) {
   const noDisciplines = disciplines.length === 0;
   const genericDiscipline = hasGenericDiscipline(gym);
   const disciplineNeedsReview = noDisciplines || genericDiscipline || needsDisciplineNormalization(gym);
+  const addressIssues = addressQualityIssues(gym);
 
   return {
     noName: !clean(gym?.name || gym?.nome),
@@ -151,7 +209,16 @@ function qualityFlags(gym, slugCounts, claimIndex) {
     claimApproved: Boolean(claim && claim.status === 'approved'),
     contaminatedData: hasContaminatedData(gym),
     suspiciousCity: hasSuspiciousCity(gym),
-    capAsCity: isCapLike(gym?.city || gym?.citta)
+    capAsCity: isCapLike(gym?.city || gym?.citta),
+    needsReview: Boolean(gym?.needs_review || gym?.descrizione_needs_review || gym?.description_needs_review),
+    safeFallback: hasSafeFallbackDescription(gym),
+    genericDescription: hasGenericDescription(gym),
+    incompleteAddress: Object.values(addressIssues).some(Boolean),
+    shortAddress: addressIssues.shortAddress,
+    entranceOnlyAddress: addressIssues.entranceOnlyAddress,
+    addressWithoutStreet: addressIssues.addressWithoutStreet,
+    addressWithoutNumber: addressIssues.addressWithoutNumber,
+    addressDescriptionMismatch: addressIssues.addressDescriptionMismatch
   };
 }
 
@@ -250,7 +317,15 @@ function issueLabels(flags) {
     flags.claimPending ? 'Claim pending' : '',
     flags.contaminatedData ? 'Dati sospetti' : '',
     flags.suspiciousCity ? 'Città sospetta' : '',
-    flags.capAsCity ? 'CAP usato come città' : ''
+    flags.capAsCity ? 'CAP usato come città' : '',
+    flags.needsReview ? 'Da revisionare' : '',
+    flags.safeFallback ? 'Fallback sicuro' : '',
+    flags.genericDescription ? 'Descrizione generica' : '',
+    flags.shortAddress ? 'Indirizzo troppo corto' : '',
+    flags.entranceOnlyAddress ? 'Indirizzo contiene ingresso da' : '',
+    flags.addressWithoutStreet ? 'Indirizzo senza via' : '',
+    flags.addressWithoutNumber ? 'Indirizzo senza numero civico' : '',
+    flags.addressDescriptionMismatch ? 'Indirizzo incoerente con descrizione' : ''
   ].filter(Boolean);
 }
 
@@ -345,6 +420,10 @@ export async function load({ url }) {
     contaminatedData: items.filter((item) => item.qualityFlags.contaminatedData).length,
     suspiciousCity: items.filter((item) => item.qualityFlags.suspiciousCity).length,
     capAsCity: items.filter((item) => item.qualityFlags.capAsCity).length,
+    needsReview: items.filter((item) => item.qualityFlags.needsReview).length,
+    safeFallback: items.filter((item) => item.qualityFlags.safeFallback).length,
+    genericDescription: items.filter((item) => item.qualityFlags.genericDescription).length,
+    incompleteAddress: items.filter((item) => item.qualityFlags.incompleteAddress).length,
     probableDuplicateGroups: duplicateGroups.length,
     disciplineNormalization: visibleGyms.filter((gym) => needsDisciplineNormalization(gym)).length
   };

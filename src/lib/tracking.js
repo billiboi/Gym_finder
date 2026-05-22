@@ -29,16 +29,22 @@ export function trackEvent(eventName, payload = {}) {
     timestamp: new Date().toISOString()
   };
 
-  if (typeof window.gtag === 'function') {
-    window.gtag('event', eventName, eventPayload);
-  } else if (Array.isArray(window.dataLayer)) {
-    window.dataLayer.push({
-      event: eventName,
-      ...eventPayload
-    });
-  }
+  try {
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', eventName, eventPayload);
+    } else if (Array.isArray(window.dataLayer)) {
+      window.dataLayer.push({
+        event: eventName,
+        ...eventPayload
+      });
+    }
 
-  if (dev) {
-    console.info('[tracking]', eventName, eventPayload);
+    if (dev) {
+      console.info('[tracking]', eventName, eventPayload);
+    }
+  } catch (error) {
+    if (dev) {
+      console.warn('[tracking] evento non inviato', eventName, error);
+    }
   }
 }

@@ -1,7 +1,7 @@
 <script>
   import { onDestroy, onMount } from 'svelte';
   import { dedupeDisciplines, normalizeDisciplineLabel, publicDisciplineFilterOptions } from '$lib/disciplines';
-  import { disciplinePreviewForGym, gymHref, imageForGym, isPremiumGym, isVerifiedGym, officialGymOverride } from '$lib/gym-detail';
+  import { disciplinePreviewForGym, gymHref, imageForGym, isPremiumGym, isVerifiedGym } from '$lib/gym-detail';
   import { isGymOpenNow } from '$lib/hours';
   import { SITE_DESCRIPTION, SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
   import { buildHomepageSeoMeta } from '$lib/seo-meta';
@@ -101,12 +101,30 @@
   }
 
   function priceForCard(gym) {
+    const commercialInfoVerified = Boolean(gym?.verified_commercial_info);
+    const commercialInfoCheckedAt = Boolean(displayName(gym?.commercial_info_last_checked_at));
+    const sourceUrl = websiteHref(gym?.source_url || gym?.official_source_url || gym?.price_source_url);
+    const websiteUrl = websiteHref(gym?.website);
+    const sourceMatchesWebsite =
+      sourceUrl && websiteUrl
+        ? (() => {
+            try {
+              const sourceHost = new URL(sourceUrl).hostname.replace(/^www\./, '');
+              const websiteHost = new URL(websiteUrl).hostname.replace(/^www\./, '');
+              return sourceHost === websiteHost || sourceHost.endsWith(`.${websiteHost}`) || websiteHost.endsWith(`.${sourceHost}`);
+            } catch {
+              return false;
+            }
+          })()
+        : false;
+
+    if (!commercialInfoVerified || !commercialInfoCheckedAt || !sourceMatchesWebsite) return '';
+
     const price = (
       displayName(gym?.price_info) ||
       displayName(gym?.price) ||
       displayName(gym?.monthly_price) ||
-      displayName(gym?.monthlyPrice) ||
-      displayName(officialGymOverride(gym)?.monthlyPrice)
+      displayName(gym?.monthlyPrice)
     );
 
     if (!price) return '';
@@ -727,9 +745,9 @@
       <aside class="flex flex-col justify-between bg-emerald-950 p-4 text-white sm:p-5 lg:p-6">
         <div>
           <p class="text-xs font-bold uppercase tracking-[0.22em] text-emerald-100">Per le palestre</p>
-          <h2 class="mt-2 text-2xl font-bold leading-tight">Vuoi più richieste dalla tua zona?</h2>
+          <h2 class="mt-2 text-2xl font-bold leading-tight">Gestisci gratuitamente la scheda della tua palestra</h2>
           <p class="mt-3 text-sm leading-6 text-emerald-50">
-            Metti in evidenza corsi, contatti e informazioni aggiornate quando una persona sta scegliendo dove allenarsi.
+            Aggiorna contatti, orari e discipline senza obblighi pubblicitari. Le opzioni premium sono facoltative e vengono valutate solo su richiesta.
           </p>
         </div>
         <a href="/per-le-palestre" class="mt-5 inline-flex min-h-[2.75rem] items-center justify-center rounded-xl bg-white px-4 text-sm font-bold text-emerald-950 transition hover:bg-emerald-50">

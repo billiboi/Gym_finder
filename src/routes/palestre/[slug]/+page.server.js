@@ -103,7 +103,7 @@ export async function load({ params }) {
     gym: publicGym,
     gymSlug: slugifyGym(gym),
     relatedGyms: relatedGyms.map(publicDetailGym),
-    relatedLocation: seoLocationForGym(gym) || dynamicLocation,
+    relatedLocation: dynamicLocation || seoLocationForGym(gym),
     relatedDiscipline: seoDisciplineForGym(gym) || dynamicDiscipline
   };
 }
