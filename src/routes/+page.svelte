@@ -1035,8 +1035,8 @@
         {@const hasWebsite = Boolean(websiteLink)}
         {@const verified = isVerifiedGym(gym)}
         {@const premium = isPremiumGym(gym)}
-        {@const openLabel = gym.is_open_now === true ? 'Aperta ora' : gym.is_open_now === false ? 'Chiusa ora' : 'Orari da confermare'}
-        {@const openClass = gym.is_open_now === true ? 'sc-status-pill--open' : gym.is_open_now === false ? 'sc-status-pill--closed' : 'sc-status-pill--muted'}
+        {@const openLabel = gym.is_open_now === true ? 'Aperta ora' : gym.is_open_now === false ? 'Chiusa ora' : ''}
+        {@const openClass = gym.is_open_now === true ? 'sc-status-pill--open' : 'sc-status-pill--closed'}
         {@const hours = hoursForCard(gym.hours_info)}
         {@const priceLabel = priceForCard(gym)}
         <article
@@ -1067,7 +1067,9 @@
                   </a>
                 </h3>
                 <div class="flex flex-wrap gap-2 text-xs font-semibold text-slate-600">
-                  <span class={`rounded-full px-2.5 py-1 font-bold ${openClass}`}>{openLabel}</span>
+                  {#if openLabel}
+                    <span class={`rounded-full px-2.5 py-1 font-bold ${openClass}`}>{openLabel}</span>
+                  {/if}
                   {#if gym.distance_km !== null && gym.distance_km !== undefined}
                     <span class="rounded-full bg-slate-100 px-2.5 py-1">{gym.distance_km} km</span>
                   {/if}
@@ -1090,7 +1092,7 @@
                       <span class="rounded-full px-2.5 py-1 text-[11px] font-semibold sc-discipline-chip">{label}</span>
                     {/each}
                     {#if disciplinePreview.remaining}
-                      <span class="rounded-full px-2.5 py-1 text-[11px] font-semibold sc-discipline-chip sc-discipline-chip--muted">+{disciplinePreview.remaining}</span>
+                      <span class="rounded-full px-2.5 py-1 text-[11px] font-semibold sc-discipline-chip sc-discipline-chip--muted">+{disciplinePreview.remaining} altre</span>
                     {/if}
                   {/if}
                 </div>
