@@ -245,6 +245,13 @@ const KNOWN_LOCAL_CITIES = [
   'Losone'
 ];
 
+const KNOWN_SUSPICIOUS_ADDRESSES = [
+  'Via Torino 48',
+  'Viale G. Borri 78',
+  'Viale Giovan Battista Borri 78',
+  'Via Vincenzo Vela 5'
+];
+
 function hostForUrl(value) {
   try {
     const url = new URL(String(value || '').trim());
@@ -294,6 +301,35 @@ function stringifyPublicValue(value) {
   return clean(value);
 }
 
+function valuesFromPublicBlock(value) {
+  if (Array.isArray(value)) return value.flatMap((item) => valuesFromPublicBlock(item));
+  if (value && typeof value === 'object') return Object.values(value).flatMap((item) => valuesFromPublicBlock(item));
+  return [clean(value)].filter(Boolean);
+}
+
+function urlValuesFromPublicBlock(value) {
+  return valuesFromPublicBlock(value).filter((item) => /^https?:\/\//i.test(item));
+}
+
+function streetKey(value) {
+  const normalized = normalizeForMatch(value)
+    .replace(/\b\d{4,5}\b/g, ' ')
+    .replace(/\b\d+[a-z]?\b/g, ' ')
+    .replace(/\b(italia|svizzera|ch|co|va|ti)\b/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  const match = normalized.match(/\b(via|viale|piazza|corso|strada)\s+([a-z0-9.' -]{3,80})/);
+  if (!match) return '';
+  return `${match[1]} ${match[2]}`
+    .replace(/\b(ingresso|da|presso|c\/o)\b/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function blockTextForValidation(value) {
+  return valuesFromPublicBlock(value).join(' ');
+}
+
 function detectedCityMismatch(gym) {
   const ownCity = normalizeForMatch(gym?.city || gym?.citta);
   if (!ownCity) return '';
@@ -315,6 +351,68 @@ function detectedCityMismatch(gym) {
   }
 
   return '';
+}
+
+export function publicGymBlockIssue(gym, block) {
+  const text = blockTextForValidation(block);
+  const normalizedText = normalizeForMatch(text);
+  if (!normalizedText) return '';
+
+  const ownCity = normalizeForMatch(gym?.city || gym?.citta);
+  const ownName = normalizeForMatch(gym?.name || gym?.nome);
+  const ownAddress = normalizeForMatch(gym?.address || gym?.indirizzo);
+  const ownStreetKey = streetKey(gym?.address || gym?.indirizzo);
+  const websiteHost = hostForUrl(gym?.website || gym?.sito);
+
+  for (const city of KNOWN_LOCAL_CITIES) {
+    const normalizedCity = normalizeForMatch(city);
+    if (!normalizedCity || normalizedCity === ownCity) continue;
+    if (ownName.includes(normalizedCity) || ownAddress.includes(normalizedCity)) continue;
+    if (normalizedText.includes(normalizedCity)) return 'city_mismatch';
+  }
+
+  for (const address of KNOWN_SUSPICIOUS_ADDRESSES) {
+    const normalizedAddress = normalizeForMatch(address);
+    if (!normalizedAddress || ownAddress.includes(normalizedAddress)) continue;
+    if (normalizedText.includes(normalizedAddress)) return 'address_mismatch';
+  }
+
+  const blockStreetKey = streetKey(text);
+  if (blockStreetKey && ownStreetKey && blockStreetKey !== ownStreetKey && !ownStreetKey.includes(blockStreetKey)) {
+    return 'address_mismatch';
+  }
+
+  if (/\b(sede|studio|club)\s+di\s+/i.test(text)) {
+    for (const city of KNOWN_LOCAL_CITIES) {
+      const normalizedCity = normalizeForMatch(city);
+      if (!normalizedCity || normalizedCity === ownCity) continue;
+      if (normalizedText.includes(`sede di ${normalizedCity}`)) return 'branch_mismatch';
+    }
+  }
+
+  const sourceName = clean(block?.source_name || block?.sourceName || block?.fonte_ufficiale || block?.source);
+  if (sourceName) {
+    const normalizedSourceName = normalizeForMatch(sourceName);
+    const sourceTokens = normalizedSourceName.split(/\s+/).filter((token) => token.length > 3);
+    const nameHasToken = sourceTokens.some((token) => ownName.includes(token));
+    const sourceHasToken = normalizeForMatch(gym?.sito || gym?.website).includes(normalizedSourceName);
+    if (sourceTokens.length && !nameHasToken && !sourceHasToken) return 'source_name_mismatch';
+  }
+
+  for (const url of urlValuesFromPublicBlock(block)) {
+    const sourceHost = hostForUrl(url);
+    if (websiteHost && sourceHost && sourceHost !== websiteHost) return 'source_url_mismatch';
+  }
+
+  return '';
+}
+
+export function isSafePublicGymBlock(gym, block) {
+  return !publicGymBlockIssue(gym, block);
+}
+
+export function filterSafePublicGymBlocks(gym, blocks = []) {
+  return Array.isArray(blocks) ? blocks.filter((block) => isSafePublicGymBlock(gym, block)) : [];
 }
 
 function quarantinePublicEditorialFields(gym, reason, fields = UNSAFE_EDITORIAL_FIELDS) {

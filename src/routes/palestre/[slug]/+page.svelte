@@ -19,6 +19,7 @@
   import { SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
   import { appendSiteName, buildGymSeoMeta } from '$lib/seo-meta';
   import { gymTrackingPayload, trackEvent } from '$lib/tracking';
+  import { filterSafePublicGymBlocks, isSafePublicGymBlock } from '$lib/public-data-sanitizer';
 
   export let data;
 
@@ -54,10 +55,12 @@
   $: editorialHighlights = textArray(gym?.editorial_highlights);
   $: hasEditorialContent = Boolean(editorialSummary || editorialHighlights.length);
   $: presentation = officialOverride?.presentation || editorialSummary || buildGymPresentation(gym);
-  $: seoHighlights = officialOverride?.highlights || editorialHighlights.length ? (officialOverride?.highlights || editorialHighlights) : buildGymSeoHighlights(gym);
-  $: officialInfoCards = officialOverride?.infoCards || [];
-  $: officialScheduleCards = officialOverride?.scheduleCards || [];
-  $: officialFaqItems = officialOverride?.faqItems || [];
+  $: rawSeoHighlights =
+    officialOverride?.highlights || editorialHighlights.length ? officialOverride?.highlights || editorialHighlights : buildGymSeoHighlights(gym);
+  $: seoHighlights = publicDataQuarantine ? [] : filterSafePublicGymBlocks(gym, rawSeoHighlights);
+  $: officialInfoCards = filterSafePublicGymBlocks(gym, officialOverride?.infoCards || []);
+  $: officialScheduleCards = filterSafePublicGymBlocks(gym, officialOverride?.scheduleCards || []);
+  $: officialFaqItems = filterSafePublicGymBlocks(gym, officialOverride?.faqItems || []);
   $: cityLabel = cityLabelForGym(gym);
   $: imageAsset = imageForGym(gym);
   $: imageMeta =
@@ -72,9 +75,11 @@
   $: address = officialOverride?.address || formatAddressForDisplay(gym);
   $: structuredAddress = structuredAddressForGym(gym);
   $: isIndexable = isIndexableGym(gym);
-  $: officialSourceUrl = officialOverride?.sourceUrl || fixGymText(gym?.official_source_url) || '';
+  $: rawOfficialSourceUrl = officialOverride?.sourceUrl || fixGymText(gym?.official_source_url) || '';
+  $: officialSourceUrl = rawOfficialSourceUrl && isSafePublicGymBlock(gym, rawOfficialSourceUrl) ? rawOfficialSourceUrl : '';
   $: officialEmail = officialOverride?.email || '';
-  $: officialMonthlyPrice = fixGymText(gym?.price_info) || officialOverride?.monthlyPrice || '';
+  $: rawOfficialMonthlyPrice = fixGymText(gym?.price_info) || officialOverride?.monthlyPrice || '';
+  $: officialMonthlyPrice = rawOfficialMonthlyPrice && isSafePublicGymBlock(gym, rawOfficialMonthlyPrice) ? rawOfficialMonthlyPrice : '';
   $: priceSourceUrl = fixGymText(gym?.price_source_url) || officialSourceUrl;
   $: officialSocialLinks = officialOverride?.socialLinks || [];
   $: hasOfficialData = !publicDataQuarantine && Boolean(officialMonthlyPrice || officialSourceUrl || officialEmail || officialSocialLinks.length);
@@ -469,19 +474,25 @@
             </div>
           </section>
         {/if}
-        <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sc-detail-section sm:p-5">
-          <div class="max-w-4xl">
-            <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Verifiche rapide</p>
-            <h2 class="mt-2 text-2xl font-bold text-slate-900">Cosa puoi capire prima di contattare la struttura</h2>
-            <div class="mt-4 grid gap-3">
-              {#each seoHighlights as highlight}
-                <div class="rounded-2xl border border-slate-200 bg-white/90 p-4 sc-detail-card">
-                  <p class="text-sm leading-7 text-slate-700 sm:text-base">{highlight}</p>
-                </div>
-              {/each}
+        {#if seoHighlights.length}
+          <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sc-detail-section sm:p-5">
+            <div class="max-w-4xl">
+              <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Verifiche rapide</p>
+              <h2 class="mt-2 text-2xl font-bold text-slate-900">Cosa puoi capire prima di contattare la struttura</h2>
+              <div class="mt-4 grid gap-3">
+                {#each seoHighlights as highlight}
+                  <div class="rounded-2xl border border-slate-200 bg-white/90 p-4 sc-detail-card">
+                    <p class="text-sm leading-7 text-slate-700 sm:text-base">{highlight}</p>
+                  </div>
+                {/each}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        {:else if quarantineNotice}
+          <p class="rounded-3xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-900 shadow-sm">
+            {quarantineNotice}
+          </p>
+        {/if}
 
         {#if relatedDiscipline || relatedLocation}
           <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sc-detail-section sm:p-5">
