@@ -1141,35 +1141,29 @@
                 {/if}
               </div>
 
-              {#if phoneLink || hasWebsite}
-                <div class="flex flex-wrap gap-2 text-xs font-bold sc-card-signal-list">
-                  {#if phoneLink}
-                    <span class="rounded-full px-2.5 py-1 sc-card-signal--ok">Telefono disponibile</span>
-                  {/if}
-                  {#if hasWebsite}
-                    <span class="rounded-full px-2.5 py-1 sc-card-signal--ok">Sito disponibile</span>
-                  {/if}
-                </div>
-              {/if}
+              <div class="flex flex-wrap gap-2 text-xs font-bold sc-card-signal-list">
+                {#if phoneLink}
+                  <span class="rounded-full px-2.5 py-1 sc-card-signal--ok">Telefono disponibile</span>
+                {:else}
+                  <span class="rounded-full px-2.5 py-1 sc-card-signal--muted">Telefono da verificare</span>
+                {/if}
+                {#if hasWebsite}
+                  <span class="rounded-full px-2.5 py-1 sc-card-signal--ok">Sito disponibile</span>
+                {:else}
+                  <span class="rounded-full px-2.5 py-1 sc-card-signal--muted">Sito non ancora disponibile</span>
+                {/if}
+              </div>
             </div>
 
             <div class="grid gap-2 border-t border-slate-200 pt-3 sm:grid-cols-2">
-              <div class="contents">
-                {#if phoneLink}
-                  <a href={phoneLink} class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-slate-900 transition hover:bg-slate-50" on:click={() => trackEvent('click_telefono', gymTrackingPayload(gym))}>Chiama</a>
-                {:else}
-                  <span class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl border border-slate-200 bg-slate-50 px-3 text-center text-sm font-bold text-slate-500">Telefono da verificare</span>
-                {/if}
-              </div>
+              {#if phoneLink}
+                <a href={phoneLink} class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-slate-900 transition hover:bg-slate-50" on:click={() => trackEvent('click_telefono', gymTrackingPayload(gym))}>Chiama</a>
+              {/if}
               {#if websiteLink}
                 <a href={websiteLink} target="_blank" rel="noreferrer" class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-slate-900 transition hover:bg-slate-50" on:click={() => trackEvent('click_sito', gymTrackingPayload(gym))}>Apri sito</a>
-              {:else}
-                <span class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl border border-slate-200 bg-slate-50 px-3 text-center text-sm font-bold text-slate-500">Sito non ancora disponibile</span>
               {/if}
               {#if directionsLink}
                 <a href={directionsLink} target="_blank" rel="noreferrer" class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-slate-900 transition hover:bg-slate-50" on:click={() => trackEvent('click_indicazioni', gymTrackingPayload(gym))}>Indicazioni</a>
-              {:else}
-                <span class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl border border-slate-200 bg-slate-50 px-3 text-center text-sm font-bold text-slate-500">Indirizzo da verificare</span>
               {/if}
                 <a
                   href={gymHref(gym)}

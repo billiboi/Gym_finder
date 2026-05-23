@@ -25,7 +25,7 @@
       name: 'Scheda premium',
       kicker: 'Visibilità',
       price: 'Su richiesta',
-      period: 'dopo verifica della scheda',
+      period: 'dopo aver controllato scheda, zona e obiettivo',
       description: 'Per rendere la scheda più competitiva nelle ricerche locali.',
       features: ['Prezzi e descrizione curati', 'CTA più forti verso contatto', 'Priorità editoriale controllata'],
       cta: 'Richiedi premium',

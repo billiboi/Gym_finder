@@ -90,7 +90,7 @@ const CONTAMINATED_PUBLIC_GYM_FIXES = {
     ]
   },
   'csv-165': {
-    reason: 'Campi editoriali oscurati dopo audit qualità dati.',
+    reason: 'Campi editoriali oscurati dopo verifica qualità dati.',
     fields: [
       'description',
       'official_source_url',
@@ -106,7 +106,7 @@ const CONTAMINATED_PUBLIC_GYM_FIXES = {
     ]
   },
   'csv-413': {
-    reason: 'Campi editoriali oscurati dopo audit qualità dati.',
+    reason: 'Campi editoriali oscurati dopo verifica qualità dati.',
     fields: [
       'website',
       'description',
@@ -123,7 +123,7 @@ const CONTAMINATED_PUBLIC_GYM_FIXES = {
     ]
   },
   'csv-542': {
-    reason: 'Campi editoriali oscurati dopo audit qualità dati.',
+    reason: 'Campi editoriali oscurati dopo verifica qualità dati.',
     fields: [
       'description',
       'official_source_url',
@@ -139,7 +139,7 @@ const CONTAMINATED_PUBLIC_GYM_FIXES = {
     ]
   },
   'csv-173': {
-    reason: 'Campi editoriali oscurati dopo audit qualità dati.',
+    reason: 'Campi editoriali oscurati dopo verifica qualità dati.',
     fields: [
       'description',
       'official_source_url',
@@ -155,7 +155,7 @@ const CONTAMINATED_PUBLIC_GYM_FIXES = {
     ]
   },
   'csv-364': {
-    reason: 'Campi editoriali oscurati dopo audit qualità dati.',
+    reason: 'Campi editoriali oscurati dopo verifica qualità dati.',
     fields: [
       'description',
       'official_source_url',
@@ -171,7 +171,7 @@ const CONTAMINATED_PUBLIC_GYM_FIXES = {
     ]
   },
   'csv-194': {
-    reason: 'Campi editoriali oscurati dopo audit qualità dati.',
+    reason: 'Campi editoriali oscurati dopo verifica qualità dati.',
     fields: [
       'description',
       'official_source_url',
@@ -187,7 +187,7 @@ const CONTAMINATED_PUBLIC_GYM_FIXES = {
     ]
   },
   'csv-606': {
-    reason: 'Campi editoriali oscurati dopo audit qualità dati.',
+    reason: 'Campi editoriali oscurati dopo verifica qualità dati.',
     fields: [
       'description',
       'official_source_url',
