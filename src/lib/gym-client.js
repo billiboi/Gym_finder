@@ -57,7 +57,7 @@ function hostFor(value) {
   }
 }
 
-function commercialInfoIsSafe(gym) {
+function commercialInfoHasOfficialTrace(gym) {
   const sourceHost = hostFor(gym?.source_url || gym?.official_source_url || gym?.price_source_url);
   const websiteHost = hostFor(gym?.website || gym?.sito);
   const sourceMatchesWebsite =
@@ -65,7 +65,7 @@ function commercialInfoIsSafe(gym) {
     websiteHost &&
     (sourceHost === websiteHost || sourceHost.endsWith(`.${websiteHost}`) || websiteHost.endsWith(`.${sourceHost}`));
 
-  return Boolean(gym?.verified_commercial_info && clean(gym?.commercial_info_last_checked_at) && sourceMatchesWebsite);
+  return Boolean(sourceHost && (sourceMatchesWebsite || !websiteHost));
 }
 
 function listingDescription(gym) {
@@ -85,7 +85,7 @@ function listingDescription(gym) {
 export function publicClientGym(gym) {
   const safeGym = normalizePublicGymCopy(sanitizePublicGymData(gym));
   const pickedDescription = pickPublicDescription(safeGym);
-  const hasSafeCommercialInfo = commercialInfoIsSafe(safeGym);
+  const hasSafeCommercialInfo = commercialInfoHasOfficialTrace(safeGym);
   const publicCity = publicCityForGym(safeGym);
 
   return {

@@ -217,6 +217,8 @@ const UNSAFE_EDITORIAL_FIELDS = [
   'enrichment_updated_at'
 ];
 
+const PRICE_FIELDS = ['price_info', 'price_source_url', 'price_updated_at'];
+
 const CITY_MISMATCH_FIELDS = [
   'description',
   'descrizione',
@@ -260,6 +262,26 @@ function unsafeEditorialSourceReason(gym) {
 
   if (!websiteHost || !sourceHost || websiteHost === sourceHost) return '';
   return `Fonte editoriale oscurata: dominio fonte ${sourceHost} diverso dal sito scheda ${websiteHost}.`;
+}
+
+function hostsMatch(left, right) {
+  return Boolean(left && right && (left === right || left.endsWith(`.${right}`) || right.endsWith(`.${left}`)));
+}
+
+function priceSourceIsSafe(gym) {
+  const priceText = clean(gym?.price_info);
+  const priceHost = hostForUrl(gym?.price_source_url);
+  const websiteHost = hostForUrl(gym?.website || gym?.sito);
+  const officialHost = hostForUrl(gym?.official_source_url || gym?.source_url);
+
+  if (!priceText || !priceHost) return false;
+  return hostsMatch(priceHost, websiteHost) || hostsMatch(priceHost, officialHost);
+}
+
+function reviewReasonBlocksPrice(reason) {
+  return /brand_mismatch|city_mismatch|source_domain_mismatch|address_mismatch|branch_mismatch|quick_check_city_mismatch/i.test(
+    clean(reason)
+  );
 }
 
 function emptyValueForField(field) {
@@ -379,9 +401,13 @@ export function sanitizePublicGymData(gym) {
   }
 
   if (flaggedReason) {
-    return quarantinePublicEditorialFields(gym, flaggedReason, [
-      ...new Set([...UNSAFE_EDITORIAL_FIELDS, ...CITY_MISMATCH_FIELDS])
-    ]);
+    const fields = [...new Set([...UNSAFE_EDITORIAL_FIELDS, ...CITY_MISMATCH_FIELDS])];
+    const shouldKeepPrice = priceSourceIsSafe(gym) && !reviewReasonBlocksPrice(flaggedReason);
+    return quarantinePublicEditorialFields(
+      gym,
+      flaggedReason,
+      shouldKeepPrice ? fields.filter((field) => !PRICE_FIELDS.includes(field)) : fields
+    );
   }
 
   if (!fix && !mismatchReason) return gym;
