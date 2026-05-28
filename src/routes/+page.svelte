@@ -1124,10 +1124,6 @@
 
               <div class="grid gap-2 text-sm leading-6 text-slate-700 sc-gym-card-facts">
                 <p>
-                  <span>Descrizione</span>
-                  <strong>{gym.public_description_short || 'Descrizione in verifica editoriale'}</strong>
-                </p>
-                <p>
                   <span>Indirizzo</span>
                   <strong>{formatAddressForDisplay(gym)}</strong>
                 </p>
