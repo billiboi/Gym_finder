@@ -118,7 +118,8 @@
           })()
         : false;
 
-    if (!commercialInfoVerified || !commercialInfoCheckedAt || !sourceMatchesWebsite) return '';
+    const hasOfficialTrace = Boolean(sourceUrl && (sourceMatchesWebsite || !websiteUrl));
+    if (!hasOfficialTrace) return null;
 
     const price = (
       displayName(gym?.price_info) ||
@@ -127,16 +128,21 @@
       displayName(gym?.monthlyPrice)
     );
 
-    if (!price) return '';
+    if (!price) return null;
     const hasSpecificAmount = /(\d|€|chf|eur|gratis|gratuit)/i.test(price);
-    if (!hasSpecificAmount) return '';
+    if (!hasSpecificAmount) return null;
 
     const firstPart = price.split(/[.;|]/).map((part) => part.trim()).find(Boolean) || price;
-    return firstPart.length > 96 ? `${firstPart.slice(0, 93).trim()}...` : firstPart;
+    const label = firstPart.length > 96 ? `${firstPart.slice(0, 93).trim()}...` : firstPart;
+    const verified = Boolean(commercialInfoVerified && commercialInfoCheckedAt && sourceMatchesWebsite);
+    return {
+      label,
+      sourceLabel: verified ? 'Prezzo verificato' : 'Da fonte ufficiale'
+    };
   }
 
   function hasCardPrice(gym) {
-    return Boolean(priceForCard(gym));
+    return Boolean(priceForCard(gym)?.label);
   }
 
   function formatAddressForDisplay(gym) {
@@ -1056,7 +1062,7 @@
         {@const openLabel = gym.is_open_now === true ? 'Aperta ora' : gym.is_open_now === false ? 'Chiusa ora' : ''}
         {@const openClass = gym.is_open_now === true ? 'sc-status-pill--open' : 'sc-status-pill--closed'}
         {@const hours = hoursForCard(gym.hours_info)}
-        {@const priceLabel = priceForCard(gym)}
+        {@const priceInfo = priceForCard(gym)}
         <article
           id={`gym-${gym.id}`}
           class="group flex h-full flex-col overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg sc-card sc-gym-card"
@@ -1133,10 +1139,10 @@
                     {/each}
                   </strong>
                 </p>
-                {#if priceLabel}
+                {#if priceInfo?.label}
                   <p class="sc-gym-card-price">
-                    <span>Prezzo verificato</span>
-                    <strong>{priceLabel}</strong>
+                    <span>{priceInfo.sourceLabel}</span>
+                    <strong>{priceInfo.label}</strong>
                   </p>
                 {/if}
               </div>
