@@ -58,7 +58,7 @@ function hostFor(value) {
 }
 
 function commercialInfoHasOfficialTrace(gym) {
-  const sourceHost = hostFor(gym?.source_url || gym?.official_source_url || gym?.price_source_url);
+  const sourceHost = hostFor(gym?.price_source_url || gym?.source_url || gym?.official_source_url);
   const websiteHost = hostFor(gym?.website || gym?.sito);
   const sourceMatchesWebsite =
     sourceHost &&
