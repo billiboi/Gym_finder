@@ -26,6 +26,8 @@
     "editorial:apply": "bun scripts/generate-editorial-descriptions.ts --mode=apply --env-file=.env.staging.local",
     "editorial:verify": "bun scripts/verify-editorial-descriptions.ts --env-file=.env.staging.local",
     "editorial:publish:candidates": "bun scripts/publish-editorial-candidates.ts --env-file=.env.staging.local",
+    "prices:reassign:dry": "bun scripts/preview-price-reassignment.ts --env-file=.env.staging.local",
+    "prices:reassign:apply": "bun scripts/apply-price-reassignment.ts --env-file=.env.staging.local",
     "descriptions:audit": "bun scripts/generate-gym-descriptions.ts --mode=audit --env-file=.env.staging.local",
     "descriptions:generate:dry": "bun scripts/generate-gym-descriptions.ts --mode=dry-run --env-file=.env.staging.local",
     "descriptions:apply": "bun scripts/generate-gym-descriptions.ts --mode=apply --env-file=.env.staging.local",
