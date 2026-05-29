@@ -398,8 +398,10 @@ export function sanitizePublicGymData(gym) {
     : '';
 
   if (cityMismatchReason) {
+    const fields = [...new Set([...UNSAFE_EDITORIAL_FIELDS, ...CITY_MISMATCH_FIELDS])];
+    const shouldKeepPrice = priceSourceMatchesWebsite(gym);
     return quarantinePublicEditorialFields(gym, cityMismatchReason, [
-      ...new Set([...UNSAFE_EDITORIAL_FIELDS, ...CITY_MISMATCH_FIELDS])
+      ...(shouldKeepPrice ? fields.filter((field) => !PRICE_FIELDS.includes(field)) : fields)
     ]);
   }
 
