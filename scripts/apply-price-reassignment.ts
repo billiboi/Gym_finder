@@ -15,8 +15,12 @@ const envFile = args.get('--env-file') || '.env.staging.local';
 const table = args.get('--table') || process.env.SUPABASE_GYMS_TABLE || 'gyms';
 const previewFile = args.get('--preview-file') || '';
 const confirmApply = args.has('--confirm-apply');
+const dryRun = args.has('--dry-run');
 const allowProduction = args.has('--allow-production');
 const allowSourceMismatch = args.has('--allow-source-mismatch');
+const replaceTargetContaminated = args.has('--replace-target-contaminated');
+const allowedRisk = (args.get('--risk') || 'medium').split(',').map((item) => clean(item));
+const maxUpdates = Number(args.get('--max-updates') || '0');
 const stamp = new Date().toISOString().replace(/[:.]/g, '-');
 const backupOut = args.get('--backup-out') || `data/price-reassignment-backup-${stamp}.json`;
 const logOut = args.get('--log-out') || `data/price-reassignment-apply-log-${stamp}.json`;
@@ -68,7 +72,7 @@ function ensureApplyAllowed(supabaseUrl: string) {
     targetEnv === 'prod' ||
     supabaseUrl.toLowerCase().includes('prod');
 
-  if (!confirmApply) throw new Error('Apply bloccato: aggiungi --confirm-apply dopo aver controllato il preview.');
+  if (!dryRun && !confirmApply) throw new Error('Apply bloccato: aggiungi --confirm-apply dopo aver controllato il preview.');
   if (looksProduction && !allowProduction) throw new Error('Apply production bloccato: richiede --allow-production esplicito.');
   if (!looksProduction && envName !== 'staging') throw new Error('Apply bloccato: usa SUPABASE_ENV=staging per default.');
 }
@@ -134,10 +138,16 @@ ensureApplyAllowed(supabaseUrl);
 const preview = JSON.parse(await readFile(previewFile, 'utf8'));
 const rows: PreviewRow[] = Array.isArray(preview.rows) ? preview.rows : [];
 const eligible = rows.filter(
-  (row) => row.action === 'move_to_target' && row.risk === 'medium' && clean(row.source_id) && clean(row.target_id)
+  (row) => row.action === 'move_to_target' && allowedRisk.includes(clean(row.risk)) && clean(row.source_id) && clean(row.target_id)
+);
+const selected = maxUpdates > 0 ? eligible.slice(0, maxUpdates) : eligible;
+const contaminatedSourceById = new Map(
+  rows
+    .filter((row) => clean(row.source_id) && ['move_to_target', 'clear_or_review', 'manual_review'].includes(clean(row.action)))
+    .map((row) => [clean(row.source_id), row])
 );
 
-const ids = [...new Set(eligible.flatMap((row) => [clean(row.source_id), clean(row.target_id)]))];
+const ids = [...new Set(selected.flatMap((row) => [clean(row.source_id), clean(row.target_id)]))];
 const currentRows = await fetchRowsByIds(supabaseUrl, serviceKey, ids);
 const byId = new Map(currentRows.map((row) => [clean(row.id), row]));
 
@@ -160,7 +170,7 @@ await writeFile(
 
 const results = [];
 
-for (const row of eligible) {
+for (const row of selected) {
   const sourceId = clean(row.source_id);
   const targetId = clean(row.target_id);
   const source = byId.get(sourceId);
@@ -176,7 +186,12 @@ for (const row of eligible) {
   const sourceCurrentPrice = clean(source.price_info);
   const targetCurrentPrice = clean(target.price_info);
   const sourceMatchesPreview = !sourceCurrentPrice || sourceCurrentPrice === proposedPrice;
-  const targetCanReceive = !targetCurrentPrice || targetCurrentPrice === proposedPrice;
+  const targetPreviewRow = contaminatedSourceById.get(targetId);
+  const targetHasPreviewContamination = Boolean(
+    targetPreviewRow && clean(targetPreviewRow.price_info) && clean(targetPreviewRow.price_info) === targetCurrentPrice
+  );
+  const targetCanReceive =
+    !targetCurrentPrice || targetCurrentPrice === proposedPrice || (replaceTargetContaminated && targetHasPreviewContamination);
 
   if (!sourceMatchesPreview && !allowSourceMismatch) {
     results.push({ source_id: sourceId, target_id: targetId, status: 'skipped', reason: 'source_price_differs_from_preview' });
@@ -196,7 +211,7 @@ for (const row of eligible) {
     commercial_info_last_checked_at: clean(target.commercial_info_last_checked_at || source.commercial_info_last_checked_at) || new Date().toISOString()
   });
 
-  await patchGym(supabaseUrl, serviceKey, targetId, targetPatch);
+  if (!dryRun) await patchGym(supabaseUrl, serviceKey, targetId, targetPatch);
 
   let sourcePatch: Record<string, any> | null = null;
   if (sourceCurrentPrice) {
@@ -211,7 +226,7 @@ for (const row of eligible) {
         `price_reassigned_to:${targetId}; fonte prezzo spostata alla scheda coerente`
       )
     });
-    await patchGym(supabaseUrl, serviceKey, sourceId, sourcePatch);
+    if (!dryRun) await patchGym(supabaseUrl, serviceKey, sourceId, sourcePatch);
   }
 
   results.push({
@@ -222,6 +237,7 @@ for (const row of eligible) {
     status: 'updated',
     moved_fields: PRICE_FIELDS,
     source_had_price: Boolean(sourceCurrentPrice),
+    replaced_target_contaminated_price: Boolean(targetCurrentPrice && targetHasPreviewContamination),
     target_patch: targetPatch,
     source_patch: sourcePatch
   });
@@ -236,7 +252,12 @@ await writeFile(
       table,
       preview_file: previewFile,
       backup_file: backupOut,
+      dry_run: dryRun,
       eligible_count: eligible.length,
+      selected_count: selected.length,
+      risk_filter: allowedRisk,
+      max_updates: maxUpdates,
+      replace_target_contaminated: replaceTargetContaminated,
       updated_count: results.filter((row) => row.status === 'updated').length,
       skipped_count: results.filter((row) => row.status === 'skipped').length,
       results
@@ -251,7 +272,12 @@ console.log(
     {
       backupOut,
       logOut,
+      dry_run: dryRun,
       eligible_count: eligible.length,
+      selected_count: selected.length,
+      risk_filter: allowedRisk,
+      max_updates: maxUpdates,
+      replace_target_contaminated: replaceTargetContaminated,
       updated_count: results.filter((row) => row.status === 'updated').length,
       skipped_count: results.filter((row) => row.status === 'skipped').length,
       skipped: results.filter((row) => row.status === 'skipped')
