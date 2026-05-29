@@ -74,12 +74,6 @@ function hostsMatch(left: string, right: string) {
   return Boolean(left && right && (left === right || left.endsWith(`.${right}`) || right.endsWith(`.${left}`)));
 }
 
-function reviewReasonBlocksPrice(reason: unknown) {
-  return /brand_mismatch|city_mismatch|source_domain_mismatch|address_mismatch|branch_mismatch|quick_check_city_mismatch/i.test(
-    clean(reason)
-  );
-}
-
 function priceSourceIsSafe(row: any) {
   const priceHost = hostForUrl(row.price_source_url);
   const websiteHost = hostForUrl(row.website || row.sito);
@@ -87,7 +81,15 @@ function priceSourceIsSafe(row: any) {
   return Boolean(clean(row.price_info) && priceHost && (hostsMatch(priceHost, websiteHost) || hostsMatch(priceHost, officialHost)));
 }
 
-const publishablePriced = priced.filter((row) => priceSourceIsSafe(row) && !reviewReasonBlocksPrice(row.review_reason));
+function priceSourceMatchesWebsite(row: any) {
+  const priceHost = hostForUrl(row.price_source_url);
+  const websiteHost = hostForUrl(row.website || row.sito);
+  return Boolean(clean(row.price_info) && priceHost && websiteHost && hostsMatch(priceHost, websiteHost));
+}
+
+const publishablePriced = priced.filter((row) =>
+  row.needs_review ? priceSourceMatchesWebsite(row) : priceSourceIsSafe(row)
+);
 
 console.log(
   JSON.stringify(

@@ -278,10 +278,13 @@ function priceSourceIsSafe(gym) {
   return hostsMatch(priceHost, websiteHost) || hostsMatch(priceHost, officialHost);
 }
 
-function reviewReasonBlocksPrice(reason) {
-  return /brand_mismatch|city_mismatch|source_domain_mismatch|address_mismatch|branch_mismatch|quick_check_city_mismatch/i.test(
-    clean(reason)
-  );
+function priceSourceMatchesWebsite(gym) {
+  const priceText = clean(gym?.price_info);
+  const priceHost = hostForUrl(gym?.price_source_url);
+  const websiteHost = hostForUrl(gym?.website || gym?.sito);
+
+  if (!priceText || !priceHost || !websiteHost) return false;
+  return hostsMatch(priceHost, websiteHost);
 }
 
 function emptyValueForField(field) {
@@ -402,7 +405,7 @@ export function sanitizePublicGymData(gym) {
 
   if (flaggedReason) {
     const fields = [...new Set([...UNSAFE_EDITORIAL_FIELDS, ...CITY_MISMATCH_FIELDS])];
-    const shouldKeepPrice = priceSourceIsSafe(gym) && !reviewReasonBlocksPrice(flaggedReason);
+    const shouldKeepPrice = priceSourceMatchesWebsite(gym);
     return quarantinePublicEditorialFields(
       gym,
       flaggedReason,
