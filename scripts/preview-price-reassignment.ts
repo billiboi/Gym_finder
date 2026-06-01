@@ -98,13 +98,19 @@ function priceSourceIsOwn(gym: Gym) {
   return Boolean(priceHost && domainEvidence(gym).some((host) => hostsMatch(priceHost, host)));
 }
 
+function priceSourceMatchesWebsite(gym: Gym) {
+  const priceHost = hostForUrl(gym.price_source_url);
+  const websiteHost = hostForUrl(gym.website || gym.sito);
+  return Boolean(priceHost && websiteHost && hostsMatch(priceHost, websiteHost));
+}
+
 function tokens(value: unknown) {
   return fold(value)
     .split(/[^a-z0-9]+/g)
     .filter((part) => part.length >= 4 && !['palestra', 'fitness', 'centro', 'studio', 'club', 'sport'].includes(part));
 }
 
-function scoreCandidate(source: Gym, target: Gym) {
+function scoreCandidate(source: Gym, target: Gym, context: { websiteHostCounts: Map<string, number> }) {
   if (source.id === target.id) return 0;
   const priceHost = hostForUrl(source.price_source_url);
   if (!priceHost) return 0;
@@ -112,6 +118,11 @@ function scoreCandidate(source: Gym, target: Gym) {
   let score = 0;
   const targetHosts = domainEvidence(target);
   if (targetHosts.some((host) => hostsMatch(priceHost, host))) score += 70;
+
+  const targetWebsiteHost = hostForUrl(target.website || target.sito);
+  const sourceWebsiteHost = hostForUrl(source.website || source.sito);
+  const targetWebsiteHostIsUnique = targetWebsiteHost && (context.websiteHostCounts.get(targetWebsiteHost) || 0) === 1;
+  if (targetWebsiteHostIsUnique && priceHost === targetWebsiteHost && priceHost !== sourceWebsiteHost) score += 15;
 
   const sourceUrlText = fold(source.price_source_url);
   const targetNameTokens = tokens(nameOf(target));
@@ -127,22 +138,30 @@ function scoreCandidate(source: Gym, target: Gym) {
   return score;
 }
 
-function classifyPrice(source: Gym, candidates: Gym[]) {
+function classifyPrice(source: Gym, candidates: Gym[], context: { websiteHostCounts: Map<string, number> }) {
   const hasPrice = Boolean(clean(source.price_info));
   const hasPriceSource = Boolean(hostForUrl(source.price_source_url));
   const ownSource = priceSourceIsOwn(source);
+  const ownWebsiteSource = priceSourceMatchesWebsite(source);
   const blockedReason = reviewReasonBlocksPrice(source.review_reason);
 
   if (!hasPrice) {
     return { action: 'manual_review' as Action, risk: 'medium', reason: 'Nessun prezzo da valutare.', target: null as Gym | null };
   }
 
-  if (hasPriceSource && ownSource && !blockedReason) {
-    return { action: 'keep' as Action, risk: 'low', reason: 'Fonte prezzo coerente con sito/fonte della scheda.', target: null as Gym | null };
+  if (hasPriceSource && (ownWebsiteSource || (ownSource && !blockedReason))) {
+    return {
+      action: 'keep' as Action,
+      risk: 'low',
+      reason: ownWebsiteSource
+        ? 'Fonte prezzo coerente con il sito della scheda.'
+        : 'Fonte prezzo coerente con fonte ufficiale della scheda.',
+      target: null as Gym | null
+    };
   }
 
   const ranked = candidates
-    .map((target) => ({ target, score: scoreCandidate(source, target) }))
+    .map((target) => ({ target, score: scoreCandidate(source, target, context) }))
     .filter((item) => item.score >= 70)
     .sort((a, b) => b.score - a.score);
 
@@ -195,9 +214,14 @@ if (!response.ok) throw new Error(`Lettura Supabase non riuscita (${response.sta
 const rows: Gym[] = await response.json();
 const active = rows.filter(activeGym);
 const priced = active.filter((gym) => clean(gym.price_info));
+const websiteHostCounts = active.reduce((acc, gym) => {
+  const host = hostForUrl(gym.website || gym.sito);
+  if (host) acc.set(host, (acc.get(host) || 0) + 1);
+  return acc;
+}, new Map<string, number>());
 
 const preview = priced.map((gym) => {
-  const result = classifyPrice(gym, active);
+  const result = classifyPrice(gym, active, { websiteHostCounts });
   return {
     source_id: clean(gym.id),
     source_slug: clean(gym.slug || gym._canonical_slug),
