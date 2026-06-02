@@ -108,7 +108,6 @@
   }
 
   function priceForCard(gym) {
-    return null;
     const commercialInfoVerified = Boolean(gym?.verified_commercial_info);
     const commercialInfoCheckedAt = Boolean(displayName(gym?.commercial_info_last_checked_at));
     const sourceUrl = websiteHref(gym?.source_url || gym?.official_source_url || gym?.price_source_url);
@@ -136,7 +135,8 @@
       displayName(gym?.monthlyPrice)
     );
 
-    if (!price) return null;
+    if (!price || price.length > 120) return null;
+    if (/\b(skip to|privacy|cookie|shopping_cart|password|registrati|area privata|tel\.|telefono|fax|p\.i\.|c\.f\.|societ[aà]|segreteria)\b/i.test(price)) return null;
     const hasSpecificAmount = /(\d|€|chf|eur|gratis|gratuit)/i.test(price);
     if (!hasSpecificAmount) return null;
 
