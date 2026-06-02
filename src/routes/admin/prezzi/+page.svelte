@@ -41,23 +41,6 @@
     return decisionLabels[value] || value || 'Da valutare';
   }
 
-  function splitUrls(value) {
-    return String(value || '')
-      .split('|')
-      .map((url) => url.trim())
-      .filter(Boolean)
-      .slice(0, 4);
-  }
-
-  function compactUrl(url) {
-    try {
-      const parsed = new URL(url);
-      return parsed.pathname === '/' ? parsed.hostname : parsed.pathname;
-    } catch {
-      return url;
-    }
-  }
-
   function riskClass(risk) {
     if (risk === 'high') return 'border-rose-200 bg-rose-50 text-rose-800';
     if (risk === 'medium') return 'border-amber-200 bg-amber-50 text-amber-800';
@@ -230,14 +213,14 @@
       </div>
 
       <div class="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-white">
-        <div class="hidden border-b border-slate-200 bg-slate-50 px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-slate-500 md:grid md:grid-cols-[0.55fr_1.2fr_0.9fr_1.4fr]">
+        <div class="hidden border-b border-slate-200 bg-slate-50 px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-slate-500 md:grid md:grid-cols-[0.55fr_1.2fr_0.9fr_1fr]">
           <span>Score</span>
           <span>Scheda</span>
-          <span>Sito</span>
-          <span>URL da controllare</span>
+          <span>Sito ufficiale</span>
+          <span>Prossimo passo</span>
         </div>
         {#each filteredCandidateRows as row}
-          <article class="grid gap-3 border-b border-slate-100 px-4 py-4 last:border-b-0 md:grid-cols-[0.55fr_1.2fr_0.9fr_1.4fr] md:items-start">
+          <article class="grid gap-3 border-b border-slate-100 px-4 py-4 last:border-b-0 md:grid-cols-[0.55fr_1.2fr_0.9fr_1fr] md:items-start">
             <div>
               <span class="rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-sm font-bold text-emerald-800">{row.priority_score}</span>
             </div>
@@ -253,10 +236,11 @@
                 Sito assente
               {/if}
             </div>
-            <div class="flex flex-wrap gap-2">
-              {#each splitUrls(row.suggested_price_urls) as url}
-                <a href={url} target="_blank" rel="noreferrer" class="rounded-lg bg-slate-50 px-2.5 py-1.5 text-xs font-semibold text-slate-700 ring-1 ring-slate-200 hover:bg-slate-100">{compactUrl(url)}</a>
-              {/each}
+            <div class="text-sm leading-6 text-slate-700">
+              <p>Analizza il sito reale con il batch discovery: il crawler segue i link interni trovati sulla homepage e produce snippet da revisionare.</p>
+              {#if row.website}
+                <a href={row.website} target="_blank" rel="noreferrer" class="mt-2 inline-flex rounded-lg bg-white px-3 py-1.5 text-sm font-semibold text-slate-800 ring-1 ring-slate-200 hover:bg-slate-50">Apri sito</a>
+              {/if}
             </div>
           </article>
         {/each}

@@ -18,9 +18,9 @@ const stamp = new Date().toISOString().replace(/[:.]/g, '-');
 const jsonOut = args.get('--json-out') || `data/official-price-page-discovery-${stamp}.json`;
 const csvOut = args.get('--csv-out') || `data/official-price-page-discovery-${stamp}.csv`;
 
-const PRICE_PATHS = ['prezzi', 'tariffe', 'abbonamenti', 'costi', 'pricing', 'iscrizioni', 'quote', 'shop'];
-const PRICE_TEXT_RE = /\b(chf|eur|euro|€|fr\.|prezz[io]|tariff[ae]|abbonament[io]|quota|quote|iscrizion[ei]|mensile|annuale)\b/i;
+const PRICE_TEXT_RE = /\b(chf|eur|euro|€|fr\.|prezz[io]|tariff[ae]|abbonament[io]|quota|quote|iscrizion[ei]|mensile|annuale|listino|costo|costi|membership)\b/i;
 const PRICE_AMOUNT_RE = /(?:chf|eur|euro|€|fr\.)\s*\d+|\d+\s*(?:chf|eur|euro|€|fr\.)/i;
+const LINK_HINT_RE = /\b(prezz[io]|tariff[ae]|abbonament[io]|quota|quote|iscrizion[ei]|costo|costi|membership|shop|corsi|orari)\b/i;
 
 function clean(value: unknown) {
   return String(value ?? '').replace(/\s+/g, ' ').trim();
@@ -29,15 +29,6 @@ function clean(value: unknown) {
 function hostForUrl(value: unknown) {
   try {
     return new URL(clean(value)).hostname.toLowerCase().replace(/^www\./, '');
-  } catch {
-    return '';
-  }
-}
-
-function baseUrl(value: unknown) {
-  try {
-    const url = new URL(clean(value));
-    return `${url.protocol}//${url.hostname}`;
   } catch {
     return '';
   }
@@ -71,14 +62,54 @@ function extractSnippet(text: string) {
   return normalized.slice(Math.max(0, index - 180), Math.min(normalized.length, index + 360));
 }
 
-function uniqueUrls(candidate: Candidate) {
+function sameHost(url: string, host: string) {
+  return hostForUrl(url) === host;
+}
+
+function absoluteUrl(href: string, base: string) {
+  try {
+    const url = new URL(href, base);
+    url.hash = '';
+    return url.toString();
+  } catch {
+    return '';
+  }
+}
+
+function extractInternalLinks(html: string, base: string) {
+  const host = hostForUrl(base);
+  const links = [];
+  const anchorRe = /<a\b[^>]*href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi;
+  let match;
+
+  while ((match = anchorRe.exec(html))) {
+    const url = absoluteUrl(match[1], base);
+    if (!url || !sameHost(url, host)) continue;
+    if (/\.(pdf|jpg|jpeg|png|webp|gif|zip|docx?|xlsx?)($|\?)/i.test(url)) continue;
+    const text = stripHtml(match[2]);
+    const combined = `${url} ${text}`;
+    const score = (PRICE_TEXT_RE.test(combined) ? 80 : 0) + (LINK_HINT_RE.test(combined) ? 20 : 0);
+    if (score <= 0) continue;
+    links.push({ url, score, text: clean(text) });
+  }
+
+  return links
+    .sort((a, b) => b.score - a.score || a.url.length - b.url.length)
+    .map((link) => link.url);
+}
+
+async function discoverUrls(candidate: Candidate) {
   const website = clean(candidate.website);
-  const root = baseUrl(website);
   const urls = new Set<string>();
   if (website) urls.add(website);
-  if (root) {
-    for (const pathPart of PRICE_PATHS) urls.add(`${root}/${pathPart}`);
+
+  const home = await fetchWithTimeout(website);
+  if (home.ok) {
+    const homeText = stripHtml(home.html);
+    if (PRICE_TEXT_RE.test(homeText) || PRICE_AMOUNT_RE.test(homeText)) urls.add(website);
+    for (const url of extractInternalLinks(home.html, website)) urls.add(url);
   }
+
   return [...urls].slice(0, maxUrlsPerSite);
 }
 
@@ -112,7 +143,7 @@ const selected = candidates.slice(0, limit);
 const rows = [];
 
 for (const candidate of selected) {
-  const urls = uniqueUrls(candidate);
+  const urls = await discoverUrls(candidate);
   let best: Record<string, any> | null = null;
 
   for (const url of urls) {

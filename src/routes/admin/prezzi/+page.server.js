@@ -66,18 +66,6 @@ function isOwnWebsite(website) {
   return !/(^|\.)((facebook|instagram|linkedin|youtube|google|maps|wa|whatsapp|tiktok)\.)/i.test(host);
 }
 
-function suggestedPriceUrls(website) {
-  try {
-    const url = new URL(website);
-    const origin = url.origin;
-    return ['prezzi', 'tariffe', 'abbonamenti', 'costi', 'iscrizioni', 'quote']
-      .map((segment) => `${origin}/${segment}`)
-      .join(' | ');
-  } catch {
-    return '';
-  }
-}
-
 function scorePriceCandidate(gym) {
   let score = 45;
   if (getGymCity(gym)) score += 10;
@@ -106,8 +94,7 @@ function buildLiveEnrichmentReport(activeGyms) {
         website_host: getWebsiteHost(website),
         needs_review: false,
         review_reason: '',
-        priority_score: priorityScore,
-        suggested_price_urls: suggestedPriceUrls(website)
+        priority_score: priorityScore
       };
     })
     .sort((a, b) => b.priority_score - a.priority_score || a.nome.localeCompare(b.nome, 'it'));
