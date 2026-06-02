@@ -1,7 +1,9 @@
+import { fail } from '@sveltejs/kit';
 import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
-import { readGyms } from '$lib/server/gym-store';
+import { canWriteSupabase, readGyms, writeGymRecords } from '$lib/server/gym-store';
 import { isArchivedGym } from '$lib/admin/gyms';
+import { writeAdminAuditLog } from '$lib/server/admin-audit-store';
 
 const DATA_DIR = path.resolve('data');
 const PRICE_TEXT_RE =
@@ -74,6 +76,11 @@ function getWebsiteHost(website) {
 
 function clean(value) {
   return String(value ?? '').replace(/\s+/g, ' ').trim();
+}
+
+function adminErrorMessage(err, fallback) {
+  const message = err?.message || fallback;
+  return String(message).replace(/\s+/g, ' ').trim();
 }
 
 function isOwnWebsite(website) {
@@ -241,6 +248,77 @@ function normalizePreviewRow(gym, best) {
   };
 }
 
+function isPlaceholderPrice(value) {
+  const text = clean(value).toLowerCase();
+  if (!text) return true;
+  if (/(^|\D)(0[,.]00|0)\s*(chf|eur|euro|€|fr\.)|\b(chf|eur|euro|€|fr\.)\s*0([,.]00)?\b/i.test(text)) return true;
+  return false;
+}
+
+function isWeakHours(value) {
+  const text = clean(value);
+  return !text || /orari da verificare/i.test(text);
+}
+
+function hasVerifiedEditorial(gym) {
+  const source = clean(gym.descrizione_source || gym.description_source).toLowerCase();
+  return Boolean(clean(gym.descrizione_owner) || /editoriale_verificata|owner|verificata/.test(source));
+}
+
+function buildAppliedGym(gym, row) {
+  const changed = { ...gym };
+  const weeklyHours = gym?.weekly_hours && typeof gym.weekly_hours === 'object' ? gym.weekly_hours : {};
+  const applied = [];
+  const sourceUrl = clean(row.source_url);
+
+  if (!hasPrice(gym) && sourceUrl && clean(row.proposed_price_info) && !isPlaceholderPrice(row.proposed_price_info)) {
+    changed.price_info = clean(row.proposed_price_info);
+    changed.price_source_url = sourceUrl;
+    changed.price_updated_at = new Date().toISOString();
+    changed.verified_commercial_info = false;
+    applied.push('price_info');
+  }
+
+  if (isWeakHours(gym.hours_info || gym.orari) && clean(row.proposed_hours_info)) {
+    changed.hours_info = clean(row.proposed_hours_info);
+    changed.orari = clean(row.proposed_hours_info);
+    applied.push('hours_info');
+  }
+
+  const editorialEvidence = clean(row.proposed_editorial_evidence || row.proposed_courses_info || row.proposed_contact_info);
+  if (editorialEvidence && !hasVerifiedEditorial(gym)) {
+    if (!clean(gym.editorial_summary)) {
+      changed.editorial_summary = editorialEvidence;
+      applied.push('editorial_summary');
+    }
+    if (!clean(gym.descrizione_generata)) {
+      changed.descrizione_generata = editorialEvidence;
+      changed.descrizione_source = 'enrichment_preview_admin';
+      changed.descrizione_needs_review = true;
+      applied.push('descrizione_generata');
+    }
+  }
+
+  changed.enrichment_status = applied.length ? 'preview_applied_needs_review' : gym.enrichment_status || 'pending';
+  changed.enrichment_updated_at = new Date().toISOString();
+  changed.enrichment_notes = [
+    clean(gym.enrichment_notes),
+    applied.length
+      ? `Preview contenuti applicata da admin: ${applied.join(', ')}. Fonte: ${sourceUrl || 'n/d'}`
+      : `Preview contenuti ignorata: nessun campo applicabile senza overwrite. Fonte: ${sourceUrl || 'n/d'}`
+  ]
+    .filter(Boolean)
+    .join('\n')
+    .slice(0, 2000);
+  changed.weekly_hours = {
+    ...weeklyHours,
+    _content_enrichment_source_url: sourceUrl || weeklyHours._content_enrichment_source_url || '',
+    _content_enrichment_topics: clean(row.extracted_topics)
+  };
+
+  return { changed, applied };
+}
+
 async function generatePreviewFromGyms(gyms, limit = 20) {
   const selected = gyms
     .filter((gym) => !isArchivedGym(gym))
@@ -388,5 +466,104 @@ export const actions = {
     const gyms = await readGyms().catch(() => []);
     const previewReport = await generatePreviewFromGyms(Array.isArray(gyms) ? gyms : [], limit);
     return { previewReport };
+  },
+
+  applySelected: async ({ request }) => {
+    if (!canWriteSupabase()) {
+      return fail(503, {
+        error: 'Apply bloccato: SUPABASE_SERVICE_ROLE_KEY non disponibile nell’ambiente corrente.'
+      });
+    }
+
+    const form = await request.formData();
+    const confirmText = clean(form.get('confirm_text'));
+    if (confirmText !== 'APPLICA') {
+      return fail(400, { error: 'Apply bloccato: scrivi APPLICA per confermare.' });
+    }
+
+    const selectedRows = form
+      .getAll('selected_rows')
+      .map((value) => {
+        try {
+          return JSON.parse(String(value || '{}'));
+        } catch {
+          return null;
+        }
+      })
+      .filter(Boolean);
+
+    if (!selectedRows.length) return fail(400, { error: 'Seleziona almeno una preview da applicare.' });
+
+    const gyms = await readGyms();
+    const byId = new Map(gyms.map((gym) => [clean(gym.id), gym]));
+    const changedRecords = [];
+    const auditRows = [];
+    const skipped = [];
+
+    for (const row of selectedRows) {
+      const id = clean(row.id);
+      const gym = byId.get(id);
+      if (!gym || isArchivedGym(gym)) {
+        skipped.push({ id, reason: 'scheda non trovata o archiviata' });
+        continue;
+      }
+
+      if (clean(row.nome) && clean(row.nome) !== getGymName(gym)) {
+        skipped.push({ id, reason: 'nome preview non coerente con scheda' });
+        continue;
+      }
+
+      const { changed, applied } = buildAppliedGym(gym, row);
+      if (!applied.length) {
+        skipped.push({ id, reason: 'nessun campo applicabile senza overwrite' });
+        continue;
+      }
+
+      changedRecords.push(changed);
+      auditRows.push({ before: gym, after: changed, applied });
+    }
+
+    if (!changedRecords.length) {
+      return fail(400, { error: 'Nessuna preview applicabile senza sovrascrivere dati esistenti.', skipped });
+    }
+
+    try {
+      await writeGymRecords(changedRecords);
+      await writeAdminAuditLog({
+        action: 'CONTENT_ENRICHMENT_APPLY_SELECTED',
+        recordId: changedRecords.map((gym) => gym.id).join(','),
+        beforeData: {
+          count: auditRows.length,
+          records: auditRows.map((row) => ({
+            id: row.before.id,
+            price_info: row.before.price_info,
+            hours_info: row.before.hours_info,
+            editorial_summary: row.before.editorial_summary,
+            descrizione_generata: row.before.descrizione_generata
+          }))
+        },
+        afterData: {
+          count: auditRows.length,
+          skipped,
+          records: auditRows.map((row) => ({
+            id: row.after.id,
+            applied: row.applied,
+            price_info: row.after.price_info,
+            hours_info: row.after.hours_info,
+            editorial_summary: row.after.editorial_summary,
+            descrizione_generata: row.after.descrizione_generata,
+            enrichment_status: row.after.enrichment_status
+          }))
+        }
+      }).catch(() => {});
+    } catch (err) {
+      return fail(500, { error: adminErrorMessage(err, 'Apply contenuti non riuscito.'), skipped });
+    }
+
+    return {
+      applied: changedRecords.length,
+      skipped,
+      message: `Applicate ${changedRecords.length} schede.`
+    };
   }
 };

@@ -125,6 +125,18 @@
       </div>
     {/if}
 
+    {#if form?.message}
+      <div class="mb-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-3 text-sm font-semibold text-emerald-900">
+        {form.message}
+      </div>
+    {/if}
+
+    {#if form?.error}
+      <div class="mb-4 rounded-2xl border border-rose-200 bg-rose-50 p-3 text-sm font-semibold text-rose-900">
+        {form.error}
+      </div>
+    {/if}
+
     <div class="flex flex-wrap gap-2" aria-label="Sezioni review prezzi">
       <button
         type="button"
@@ -282,12 +294,40 @@
     {/if}
 
     {#if tab === 'discovery'}
-      <div class="mt-4 grid gap-3">
+      <form method="POST" action="?/applySelected" class="mt-4 grid gap-3">
+        {#if discoveryRows.length}
+          <div class="rounded-2xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950">
+            <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+              <p>
+                Seleziona solo righe coerenti. L’apply scrive solo sulla stessa scheda e non sovrascrive prezzo, orari o descrizioni già valorizzate/verificate.
+              </p>
+              <div class="flex flex-wrap items-center gap-2">
+                <label class="text-sm font-bold" for="confirm_text">Conferma</label>
+                <input
+                  id="confirm_text"
+                  name="confirm_text"
+                  placeholder="APPLICA"
+                  class="w-28 rounded-lg border border-amber-200 bg-white px-3 py-2 text-sm font-bold text-slate-900"
+                />
+                <button type="submit" class="rounded-lg bg-emerald-800 px-4 py-2 text-sm font-bold text-white hover:bg-emerald-900">
+                  Applica selezionati
+                </button>
+              </div>
+            </div>
+          </div>
+        {/if}
+
         {#each discoveryRows as row}
           <article class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
             <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
               <div class="min-w-0">
                 <div class="flex flex-wrap items-center gap-2">
+                  {#if row.extracted_topics}
+                    <label class="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-2 py-1 text-xs font-bold text-slate-700">
+                      <input type="checkbox" name="selected_rows" value={JSON.stringify(row)} class="h-4 w-4 accent-emerald-800" />
+                      Applica
+                    </label>
+                  {/if}
                   <h2 class="font-bold text-slate-900">{row.nome}</h2>
                   <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs font-bold text-slate-700">score {row.score || 0}</span>
                 </div>
@@ -332,7 +372,7 @@
             Nessuna preview automatica disponibile. Esegui <code>bun run content:enrich:dry -- --limit=40</code> per generare proposte da review.
           </div>
         {/each}
-      </div>
+      </form>
     {/if}
   </section>
 </main>
