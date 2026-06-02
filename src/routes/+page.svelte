@@ -137,6 +137,13 @@
 
     if (!price || price.length > 120) return null;
     if (/\b(skip to|privacy|cookie|shopping_cart|password|registrati|area privata|tel\.|telefono|fax|p\.i\.|c\.f\.|societ[aà]|segreteria)\b/i.test(price)) return null;
+    if (/\b(secondo la pagina sede|nonstop gym|omyoga community)\b/i.test(price)) return null;
+
+    const ownCity = displayName(gym?.city).toLowerCase();
+    const knownCities = ['lugano', 'bellinzona', 'saronno', 'castellanza', 'tradate', 'locarno', 'muralto', 'gallarate', 'varese', 'arona', 'busto arsizio'];
+    const citedOtherCity = knownCities.find((city) => city !== ownCity && price.toLowerCase().includes(city));
+    if (citedOtherCity) return null;
+
     const hasSpecificAmount = /(\d|€|chf|eur|gratis|gratuit)/i.test(price);
     if (!hasSpecificAmount) return null;
 

@@ -68,6 +68,21 @@ function commercialInfoHasOfficialTrace(gym) {
   return Boolean(sourceHost && (sourceMatchesWebsite || !websiteHost));
 }
 
+function safeCommercialPrice(gym) {
+  const price = clean(gym?.price_info || gym?.price || gym?.monthly_price || gym?.monthlyPrice);
+  if (!price || price.length > 120) return '';
+  if (/\b(skip to|privacy|cookie|shopping_cart|password|registrati|area privata|tel\.|telefono|fax|p\.i\.|c\.f\.|societ[aà]|segreteria)\b/i.test(price)) return '';
+  if (/\b(secondo la pagina sede|nonstop gym|omyoga community)\b/i.test(price)) return '';
+  if (!/(\d|€|chf|eur|gratis|gratuit)/i.test(price)) return '';
+
+  const ownCity = clean(gym?.city || gym?.citta).toLowerCase();
+  const knownCities = ['lugano', 'bellinzona', 'saronno', 'castellanza', 'tradate', 'locarno', 'muralto', 'gallarate', 'varese', 'arona', 'busto arsizio'];
+  const citedOtherCity = knownCities.find((city) => city !== ownCity && price.toLowerCase().includes(city));
+  if (citedOtherCity) return '';
+
+  return price;
+}
+
 function listingDescription(gym) {
   const disciplines = Array.isArray(gym?.disciplines) ? gym.disciplines.filter(Boolean) : [];
   const city = clean(gym?.city);
@@ -86,6 +101,7 @@ export function publicClientGym(gym) {
   const safeGym = normalizePublicGymCopy(sanitizePublicGymData(gym));
   const pickedDescription = pickPublicDescription(safeGym);
   const hasSafeCommercialInfo = commercialInfoHasOfficialTrace(safeGym);
+  const safePrice = hasSafeCommercialInfo ? safeCommercialPrice(safeGym) : '';
   const publicCity = publicCityForGym(safeGym);
 
   return {
@@ -109,10 +125,10 @@ export function publicClientGym(gym) {
     review_reason: safeGym.review_reason,
     latitude: safeGym.latitude,
     longitude: safeGym.longitude,
-    price_info: hasSafeCommercialInfo ? safeGym.price_info : '',
-    price: hasSafeCommercialInfo ? safeGym.price : '',
-    monthly_price: hasSafeCommercialInfo ? safeGym.monthly_price : '',
-    monthlyPrice: hasSafeCommercialInfo ? safeGym.monthlyPrice : '',
+    price_info: safePrice,
+    price: safePrice,
+    monthly_price: safePrice,
+    monthlyPrice: safePrice,
     verified_commercial_info: Boolean(safeGym.verified_commercial_info),
     commercial_info_last_checked_at: safeGym.commercial_info_last_checked_at,
     source_url: safeGym.source_url,
