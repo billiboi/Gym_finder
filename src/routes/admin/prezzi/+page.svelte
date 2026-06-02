@@ -9,7 +9,7 @@
     nessuna_pagina_prezzi_trovata: 'Nessuna pagina trovata'
   };
 
-  let tab = 'residui';
+  let tab = data.reviewReport.hasReport ? 'residui' : 'candidati';
   let residualFilter = 'tutti';
   let candidateFilter = 'alta';
 
@@ -30,7 +30,7 @@
   $: discoveryRows = data.discoveryReport.rows || [];
 
   function formatDate(value) {
-    if (!value) return 'Report non disponibile';
+    if (!value) return 'Calcolato dal database live';
     return new Intl.DateTimeFormat('it-IT', {
       dateStyle: 'medium',
       timeStyle: 'short'
@@ -73,7 +73,7 @@
         <h1 class="mt-1 text-3xl font-bold text-slate-900 sm:text-4xl">Review prezzi</h1>
         <p class="mt-2 text-sm leading-6 text-slate-600">
           Coda operativa per chiudere i residui prezzo e scegliere le prossime schede da arricchire con fonti ufficiali.
-          Questa vista legge i report locali e non modifica il database.
+          Se i report locali non sono disponibili, la pagina calcola i candidati direttamente dalle schede live senza modificare il database.
         </p>
       </div>
 
@@ -87,7 +87,7 @@
       <div class="rounded-2xl border border-slate-200 bg-white p-4">
         <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Residui</p>
         <p class="mt-2 text-3xl font-bold text-slate-900">{data.reviewReport.summary.total || residualRows.length}</p>
-        <p class="mt-1 break-all text-sm text-slate-600">{data.reviewReport.filename || 'Nessun report generato'}</p>
+        <p class="mt-1 break-all text-sm text-slate-600">{data.reviewReport.filename || 'Report locale assente'}</p>
       </div>
       <div class="rounded-2xl border border-slate-200 bg-white p-4">
         <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Candidati</p>
@@ -102,7 +102,7 @@
       <div class="rounded-2xl border border-slate-200 bg-white p-4">
         <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Aggiornato</p>
         <p class="mt-2 text-base font-bold text-slate-900">{formatDate(data.reviewReport.generatedAt)}</p>
-        <p class="mt-1 text-sm text-slate-600">Ultima coda residui disponibile</p>
+        <p class="mt-1 text-sm text-slate-600">{data.reviewReport.hasReport ? 'Ultima coda residui disponibile' : 'Candidati calcolati live'}</p>
       </div>
     </div>
   </section>
@@ -195,7 +195,9 @@
             </div>
           </article>
         {:else}
-          <div class="rounded-2xl border border-dashed border-slate-300 p-8 text-center text-slate-500">Nessun residuo in questo filtro.</div>
+          <div class="rounded-2xl border border-dashed border-slate-300 p-8 text-center text-slate-500">
+            {data.reviewReport.hasReport ? 'Nessun residuo in questo filtro.' : 'Il report residui non è disponibile in deploy. Usa la sezione Candidati enrichment per lavorare sulle schede senza prezzo.'}
+          </div>
         {/each}
       </div>
     {/if}
@@ -219,7 +221,12 @@
             </button>
           {/each}
         </div>
-        <p class="text-sm text-slate-600">{filteredCandidateRows.length} candidate mostrate</p>
+        <p class="text-sm text-slate-600">
+          {filteredCandidateRows.length} candidate mostrate
+          {#if !data.enrichmentReport.hasReport}
+            · calcolate dal database live
+          {/if}
+        </p>
       </div>
 
       <div class="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-white">
