@@ -8,7 +8,9 @@
     review_pagina_prezzi: 'Pagina prezzi da verificare',
     nessuna_pagina_prezzi_trovata: 'Nessuna pagina trovata',
     review_prezzo_estratto: 'Prezzo estratto da rivedere',
-    nessun_prezzo_estratto: 'Nessun prezzo estratto'
+    nessun_prezzo_estratto: 'Nessun prezzo estratto',
+    review_contenuti_estratti: 'Contenuti estratti da rivedere',
+    nessun_contenuto_estratto: 'Nessun contenuto estratto'
   };
 
   let tab = data.reviewReport.hasReport ? 'residui' : 'candidati';
@@ -54,35 +56,35 @@
   <section class="rounded-3xl border border-white/80 bg-white/85 p-5 shadow-xl backdrop-blur-sm sm:p-7">
     <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
       <div class="max-w-3xl">
-        <p class="text-xs font-bold uppercase tracking-[0.22em] text-slate-500">Admin prezzi</p>
-        <h1 class="mt-1 text-3xl font-bold text-slate-900 sm:text-4xl">Review prezzi</h1>
+        <p class="text-xs font-bold uppercase tracking-[0.22em] text-slate-500">Admin enrichment</p>
+        <h1 class="mt-1 text-3xl font-bold text-slate-900 sm:text-4xl">Review contenuti scheda</h1>
         <p class="mt-2 text-sm leading-6 text-slate-600">
-          Coda operativa per chiudere i residui prezzo e scegliere le prossime schede da arricchire con fonti ufficiali.
-          Se i report locali non sono disponibili, la pagina calcola i candidati direttamente dalle schede live senza modificare il database.
+          Coda operativa per arricchire ogni scheda con informazioni specifiche dal sito ufficiale: editoriale, prezzi, abbonamenti, corsi, orari e contatti.
+          Le preview sono generate in dry-run e questa pagina non modifica il database.
         </p>
       </div>
 
       <div class="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">
-        <p><strong>{data.priceStats.withPrice}</strong> schede con prezzo live</p>
-        <p>{data.priceStats.withoutPrice} senza prezzo su {data.priceStats.activeGyms} attive</p>
+        <p><strong>{data.priceStats.activeGyms}</strong> schede attive</p>
+        <p>{data.priceStats.withoutPrice} senza prezzo · {data.priceStats.withoutDescription} senza descrizione</p>
       </div>
     </div>
 
     <div class="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
       <div class="rounded-2xl border border-slate-200 bg-white p-4">
-        <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Residui</p>
+        <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Residui prezzo</p>
         <p class="mt-2 text-3xl font-bold text-slate-900">{data.reviewReport.summary.total || residualRows.length}</p>
         <p class="mt-1 break-all text-sm text-slate-600">{data.reviewReport.filename || 'Report locale assente'}</p>
       </div>
       <div class="rounded-2xl border border-slate-200 bg-white p-4">
-        <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Candidati</p>
-        <p class="mt-2 text-3xl font-bold text-slate-900">{data.enrichmentReport.summary.without_price_with_own_website || candidateRows.length}</p>
+        <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Candidati contenuto</p>
+        <p class="mt-2 text-3xl font-bold text-slate-900">{data.enrichmentReport.summary.content_candidates || candidateRows.length}</p>
         <p class="mt-1 text-sm text-slate-600">{data.enrichmentReport.summary.high_priority || 0} ad alta priorità</p>
       </div>
       <div class="rounded-2xl border border-slate-200 bg-white p-4">
-        <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Discovery</p>
+        <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Preview</p>
         <p class="mt-2 text-3xl font-bold text-slate-900">{data.discoveryReport.summary.selected || discoveryRows.length}</p>
-        <p class="mt-1 text-sm text-slate-600">{data.discoveryReport.summary.extracted || 0} proposte estratte</p>
+        <p class="mt-1 text-sm text-slate-600">{data.discoveryReport.summary.extracted || 0} schede con evidenze</p>
       </div>
       <div class="rounded-2xl border border-slate-200 bg-white p-4">
         <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Aggiornato</p>
@@ -108,7 +110,7 @@
         class="sc-ui-pill px-3.5 py-2 text-sm"
         on:click={() => (tab = 'candidati')}
       >
-        Candidati enrichment
+        Candidati
       </button>
       <button
         type="button"
@@ -116,7 +118,7 @@
         class="sc-ui-pill px-3.5 py-2 text-sm"
         on:click={() => (tab = 'discovery')}
       >
-        Proposte estratte
+        Preview estratte
       </button>
     </div>
 
@@ -239,7 +241,7 @@
               {/if}
             </div>
             <div class="text-sm leading-6 text-slate-700">
-              <p>Analizza il sito reale con il batch discovery: il crawler segue i link interni trovati sulla homepage e produce snippet da revisionare.</p>
+              <p>Genera preview automatiche con <code>bun run content:enrich:dry -- --limit=40</code>. Il crawler segue link interni reali e separa prezzi, corsi, orari, contatti ed evidenze editoriali.</p>
               {#if row.website}
                 <a href={row.website} target="_blank" rel="noreferrer" class="mt-2 inline-flex rounded-lg bg-white px-3 py-1.5 text-sm font-semibold text-slate-800 ring-1 ring-slate-200 hover:bg-slate-50">Apri sito</a>
               {/if}
@@ -263,24 +265,41 @@
                 {#if row.source_url}
                   <a href={row.source_url} target="_blank" rel="noreferrer" class="mt-2 inline-flex break-all text-sm font-semibold text-blue-700 hover:text-blue-900">{row.source_url}</a>
                 {:else}
-                  <p class="mt-2 text-sm text-slate-500">Nessun prezzo estratto dal sito.</p>
+                  <p class="mt-2 text-sm text-slate-500">Nessun contenuto utile estratto dal sito.</p>
                 {/if}
-                {#if row.proposed_price_info}
-                  <p class="mt-3 rounded-2xl border border-slate-200 bg-slate-50 p-3 text-sm leading-6 text-slate-800">{row.proposed_price_info}</p>
+                {#if row.proposed_price_info || row.proposed_editorial_evidence || row.proposed_courses_info || row.proposed_hours_info}
+                  <div class="mt-3 grid gap-2">
+                    {#if row.proposed_price_info}
+                      <p class="rounded-2xl border border-slate-200 bg-slate-50 p-3 text-sm leading-6 text-slate-800"><strong>Prezzi/abbonamenti:</strong> {row.proposed_price_info}</p>
+                    {/if}
+                    {#if row.proposed_courses_info}
+                      <p class="rounded-2xl border border-slate-200 bg-slate-50 p-3 text-sm leading-6 text-slate-800"><strong>Corsi/discipline:</strong> {row.proposed_courses_info}</p>
+                    {/if}
+                    {#if row.proposed_hours_info}
+                      <p class="rounded-2xl border border-slate-200 bg-slate-50 p-3 text-sm leading-6 text-slate-800"><strong>Orari:</strong> {row.proposed_hours_info}</p>
+                    {/if}
+                    {#if row.proposed_contact_info}
+                      <p class="rounded-2xl border border-slate-200 bg-slate-50 p-3 text-sm leading-6 text-slate-800"><strong>Contatti/sede:</strong> {row.proposed_contact_info}</p>
+                    {/if}
+                    {#if row.proposed_editorial_evidence}
+                      <p class="rounded-2xl border border-slate-200 bg-slate-50 p-3 text-sm leading-6 text-slate-800"><strong>Evidenza editoriale:</strong> {row.proposed_editorial_evidence}</p>
+                    {/if}
+                  </div>
                 {:else if row.source_snippet}
                   <p class="mt-3 text-sm leading-6 text-slate-700">{row.source_snippet}</p>
                 {/if}
               </div>
               <div class="shrink-0 rounded-2xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700">
                 <p class="font-bold text-slate-900">{labelDecision(row.decisione_consigliata)}</p>
-                <p class="mt-1">Importi: {row.extracted_amounts || 'assenti'}</p>
+                <p class="mt-1">Topic: {row.extracted_topics || 'assenti'}</p>
+                <p>Importi: {row.extracted_amounts || 'assenti'}</p>
                 <p>Rischio: {row.risk || 'review'}</p>
               </div>
             </div>
           </article>
         {:else}
           <div class="rounded-2xl border border-dashed border-slate-300 p-8 text-center text-slate-500">
-            Nessuna preview automatica disponibile. Esegui <code>bun run prices:enrich:dry -- --limit=40</code> per generare proposte prezzo da review.
+            Nessuna preview automatica disponibile. Esegui <code>bun run content:enrich:dry -- --limit=40</code> per generare proposte da review.
           </div>
         {/each}
       </div>

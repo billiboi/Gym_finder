@@ -36,6 +36,10 @@ function hasPrice(gym) {
   return Boolean(String(gym.price_info || '').trim());
 }
 
+function hasDescription(gym) {
+  return Boolean(String(gym.description || gym.descrizione || gym.descrizione_editoriale || '').trim());
+}
+
 function getGymName(gym) {
   return gym.nome || gym.name || 'Senza nome';
 }
@@ -79,7 +83,7 @@ function scorePriceCandidate(gym) {
 
 function buildLiveEnrichmentReport(activeGyms) {
   const rows = activeGyms
-    .filter((gym) => !hasPrice(gym) && isOwnWebsite(gym.website || gym.sito || ''))
+    .filter((gym) => (!hasPrice(gym) || !hasDescription(gym)) && isOwnWebsite(gym.website || gym.sito || ''))
     .map((gym) => {
       const website = gym.website || gym.sito || '';
       const priorityScore = scorePriceCandidate(gym);
@@ -94,7 +98,9 @@ function buildLiveEnrichmentReport(activeGyms) {
         website_host: getWebsiteHost(website),
         needs_review: false,
         review_reason: '',
-        priority_score: priorityScore
+        priority_score: priorityScore,
+        needs_price: !hasPrice(gym),
+        needs_description: !hasDescription(gym)
       };
     })
     .sort((a, b) => b.priority_score - a.priority_score || a.nome.localeCompare(b.nome, 'it'));
@@ -104,7 +110,8 @@ function buildLiveEnrichmentReport(activeGyms) {
     generatedAt: new Date().toISOString(),
     hasReport: false,
     summary: {
-      without_price_with_own_website: rows.length,
+      without_price_with_own_website: rows.filter((row) => row.needs_price).length,
+      content_candidates: rows.length,
       high_priority: rows.filter((row) => Number(row.priority_score) >= 80).length,
       medium_priority: rows.filter((row) => Number(row.priority_score) >= 60 && Number(row.priority_score) < 80).length,
       low_priority: rows.filter((row) => Number(row.priority_score) < 60).length
@@ -114,21 +121,25 @@ function buildLiveEnrichmentReport(activeGyms) {
 }
 
 export async function load() {
-  const [reviewReport, enrichmentReport, discoveryReport, gyms] = await Promise.all([
+  const [reviewReport, enrichmentReport, contentPreviewReport, pricePreviewReport, gyms] = await Promise.all([
     readLatestReport('price-review-queue-'),
     readLatestReport('price-enrichment-candidates-'),
+    readLatestReport('content-enrichment-preview-'),
     readLatestReport('price-enrichment-preview-'),
     readGyms().catch(() => [])
   ]);
 
   const activeGyms = Array.isArray(gyms) ? gyms.filter((gym) => !isArchivedGym(gym)) : [];
   const liveEnrichmentReport = enrichmentReport.rows.length > 0 ? enrichmentReport : buildLiveEnrichmentReport(activeGyms);
+  const previewReport = contentPreviewReport.rows.length > 0 ? contentPreviewReport : pricePreviewReport;
 
   return {
     priceStats: {
       activeGyms: activeGyms.length,
       withPrice: activeGyms.filter(hasPrice).length,
-      withoutPrice: activeGyms.filter((gym) => !hasPrice(gym)).length
+      withoutPrice: activeGyms.filter((gym) => !hasPrice(gym)).length,
+      withDescription: activeGyms.filter(hasDescription).length,
+      withoutDescription: activeGyms.filter((gym) => !hasDescription(gym)).length
     },
     reviewReport: {
       ...reviewReport,
@@ -139,8 +150,8 @@ export async function load() {
       rows: liveEnrichmentReport.rows.slice(0, 200)
     },
     discoveryReport: {
-      ...discoveryReport,
-      rows: discoveryReport.rows.slice(0, 200)
+      ...previewReport,
+      rows: previewReport.rows.slice(0, 200)
     }
   };
 }

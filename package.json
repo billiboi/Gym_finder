@@ -32,6 +32,7 @@
     "prices:enrichment:candidates": "bun scripts/report-price-enrichment-candidates.ts --env-file=.env.staging.local",
     "prices:discover:official": "bun scripts/discover-official-price-pages.ts",
     "prices:enrich:dry": "bun scripts/generate-price-enrichment-preview.ts --env-file=.env.staging.local",
+    "content:enrich:dry": "bun scripts/generate-content-enrichment-preview.ts --env-file=.env.staging.local",
     "descriptions:audit": "bun scripts/generate-gym-descriptions.ts --mode=audit --env-file=.env.staging.local",
     "descriptions:generate:dry": "bun scripts/generate-gym-descriptions.ts --mode=dry-run --env-file=.env.staging.local",
     "descriptions:apply": "bun scripts/generate-gym-descriptions.ts --mode=apply --env-file=.env.staging.local",
