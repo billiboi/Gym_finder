@@ -1,5 +1,6 @@
 <script>
   export let data;
+  export let form;
 
   const decisionLabels = {
     review_target: 'Target da verificare',
@@ -31,7 +32,8 @@
     return true;
   });
 
-  $: discoveryRows = data.discoveryReport.rows || [];
+  $: activePreviewReport = form?.previewReport || data.discoveryReport;
+  $: discoveryRows = activePreviewReport.rows || [];
 
   function formatDate(value) {
     if (!value) return 'Calcolato dal database live';
@@ -83,8 +85,8 @@
       </div>
       <div class="rounded-2xl border border-slate-200 bg-white p-4">
         <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Preview</p>
-        <p class="mt-2 text-3xl font-bold text-slate-900">{data.discoveryReport.summary.selected || discoveryRows.length}</p>
-        <p class="mt-1 text-sm text-slate-600">{data.discoveryReport.summary.extracted || 0} schede con evidenze</p>
+        <p class="mt-2 text-3xl font-bold text-slate-900">{activePreviewReport.summary.selected || discoveryRows.length}</p>
+        <p class="mt-1 text-sm text-slate-600">{activePreviewReport.summary.extracted || 0} schede con evidenze</p>
       </div>
       <div class="rounded-2xl border border-slate-200 bg-white p-4">
         <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Aggiornato</p>
@@ -95,6 +97,34 @@
   </section>
 
   <section class="mt-5 rounded-3xl border border-white/80 bg-white/85 p-4 shadow-lg backdrop-blur-sm sm:p-5">
+    <form method="POST" action="?/generatePreview" class="mb-4 flex flex-col gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-3 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <p class="text-sm font-bold text-slate-900">Genera preview automatica</p>
+        <p class="text-sm text-slate-600">Fa scraping dei siti ufficiali e mostra qui le evidenze estratte. Nessuna modifica al database.</p>
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
+        <label class="text-sm font-semibold text-slate-700" for="limit">Schede</label>
+        <input
+          id="limit"
+          name="limit"
+          type="number"
+          min="1"
+          max="40"
+          value="20"
+          class="w-20 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-900"
+        />
+        <button type="submit" class="rounded-lg bg-emerald-800 px-4 py-2 text-sm font-bold text-white hover:bg-emerald-900">
+          Genera preview
+        </button>
+      </div>
+    </form>
+
+    {#if form?.previewReport}
+      <div class="mb-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-900">
+        Preview generata ora: {form.previewReport.summary.extracted} schede con evidenze su {form.previewReport.summary.selected}.
+      </div>
+    {/if}
+
     <div class="flex flex-wrap gap-2" aria-label="Sezioni review prezzi">
       <button
         type="button"
