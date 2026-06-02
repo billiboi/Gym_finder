@@ -6,7 +6,9 @@
     review_manuale: 'Review manuale',
     rimuovi_o_ricerca_fonte: 'Rimuovi o cerca fonte',
     review_pagina_prezzi: 'Pagina prezzi da verificare',
-    nessuna_pagina_prezzi_trovata: 'Nessuna pagina trovata'
+    nessuna_pagina_prezzi_trovata: 'Nessuna pagina trovata',
+    review_prezzo_estratto: 'Prezzo estratto da rivedere',
+    nessun_prezzo_estratto: 'Nessun prezzo estratto'
   };
 
   let tab = data.reviewReport.hasReport ? 'residui' : 'candidati';
@@ -80,7 +82,7 @@
       <div class="rounded-2xl border border-slate-200 bg-white p-4">
         <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Discovery</p>
         <p class="mt-2 text-3xl font-bold text-slate-900">{data.discoveryReport.summary.selected || discoveryRows.length}</p>
-        <p class="mt-1 text-sm text-slate-600">{data.discoveryReport.summary.found_price_page || 0} pagine prezzo trovate</p>
+        <p class="mt-1 text-sm text-slate-600">{data.discoveryReport.summary.extracted || 0} proposte estratte</p>
       </div>
       <div class="rounded-2xl border border-slate-200 bg-white p-4">
         <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Aggiornato</p>
@@ -114,7 +116,7 @@
         class="sc-ui-pill px-3.5 py-2 text-sm"
         on:click={() => (tab = 'discovery')}
       >
-        Discovery fonti
+        Proposte estratte
       </button>
     </div>
 
@@ -258,24 +260,28 @@
                   <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs font-bold text-slate-700">score {row.score || 0}</span>
                 </div>
                 <p class="mt-1 text-sm text-slate-600">{row.citta} · {row.disciplina}</p>
-                {#if row.candidate_url}
-                  <a href={row.candidate_url} target="_blank" rel="noreferrer" class="mt-2 inline-flex break-all text-sm font-semibold text-blue-700 hover:text-blue-900">{row.candidate_url}</a>
+                {#if row.source_url}
+                  <a href={row.source_url} target="_blank" rel="noreferrer" class="mt-2 inline-flex break-all text-sm font-semibold text-blue-700 hover:text-blue-900">{row.source_url}</a>
                 {:else}
-                  <p class="mt-2 text-sm text-slate-500">Nessuna pagina prezzo trovata nel mini-crawl.</p>
+                  <p class="mt-2 text-sm text-slate-500">Nessun prezzo estratto dal sito.</p>
                 {/if}
-                {#if row.snippet}
-                  <p class="mt-3 text-sm leading-6 text-slate-700">{row.snippet}</p>
+                {#if row.proposed_price_info}
+                  <p class="mt-3 rounded-2xl border border-slate-200 bg-slate-50 p-3 text-sm leading-6 text-slate-800">{row.proposed_price_info}</p>
+                {:else if row.source_snippet}
+                  <p class="mt-3 text-sm leading-6 text-slate-700">{row.source_snippet}</p>
                 {/if}
               </div>
               <div class="shrink-0 rounded-2xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700">
                 <p class="font-bold text-slate-900">{labelDecision(row.decisione_consigliata)}</p>
-                <p class="mt-1">Importo: {row.has_amount ? 'presente' : 'assente'}</p>
-                <p>Segnale prezzo: {row.has_price_signal ? 'sì' : 'no'}</p>
+                <p class="mt-1">Importi: {row.extracted_amounts || 'assenti'}</p>
+                <p>Rischio: {row.risk || 'review'}</p>
               </div>
             </div>
           </article>
         {:else}
-          <div class="rounded-2xl border border-dashed border-slate-300 p-8 text-center text-slate-500">Nessun report discovery disponibile.</div>
+          <div class="rounded-2xl border border-dashed border-slate-300 p-8 text-center text-slate-500">
+            Nessuna preview automatica disponibile. Esegui <code>bun run prices:enrich:dry -- --limit=40</code> per generare proposte prezzo da review.
+          </div>
         {/each}
       </div>
     {/if}

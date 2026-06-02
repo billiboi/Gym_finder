@@ -94,13 +94,6 @@ function hasOwnWebsite(gym: Gym) {
   );
 }
 
-function likelyPricePaths(gym: Gym) {
-  const website = clean(gym.website || gym.sito).replace(/\/$/, '');
-  if (!website) return [];
-  const paths = ['prezzi', 'tariffe', 'abbonamenti', 'costi', 'pricing', 'iscrizioni', 'quote', 'shop'];
-  return paths.map((item) => `${website}/${item}`);
-}
-
 function priorityScore(gym: Gym) {
   let score = 0;
   const discipline = fold(primaryDiscipline(gym));
@@ -141,8 +134,7 @@ const candidates = active
     website_host: hostForUrl(gym.website || gym.sito),
     needs_review: Boolean(gym.needs_review),
     review_reason: clean(gym.review_reason),
-    priority_score: priorityScore(gym),
-    suggested_price_urls: likelyPricePaths(gym).join(' | ')
+    priority_score: priorityScore(gym)
   }))
   .sort((a, b) => b.priority_score - a.priority_score || a.nome.localeCompare(b.nome, 'it'));
 
@@ -182,8 +174,7 @@ const header = [
   'website_host',
   'needs_review',
   'review_reason',
-  'priority_score',
-  'suggested_price_urls'
+  'priority_score'
 ];
 
 await writeFile(csvOut, [header.join(';'), ...candidates.map((row) => header.map((key) => csvCell(row[key as keyof typeof row])).join(';'))].join('\n'));

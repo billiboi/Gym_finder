@@ -117,7 +117,7 @@ export async function load() {
   const [reviewReport, enrichmentReport, discoveryReport, gyms] = await Promise.all([
     readLatestReport('price-review-queue-'),
     readLatestReport('price-enrichment-candidates-'),
-    readLatestReport('official-price-page-discovery-'),
+    readLatestReport('price-enrichment-preview-'),
     readGyms().catch(() => [])
   ]);
 
