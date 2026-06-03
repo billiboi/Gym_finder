@@ -39,6 +39,50 @@
     href: `/zone/${slugifySeoName(city)}`
   }));
   const hasContactSignal = (gym) => Boolean(String(gym.phone || '').trim() || String(gym.website || '').trim());
+  const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+  const coordinateNumber = (value) => {
+    const number = Number(value);
+    return Number.isFinite(number) ? number : null;
+  };
+  const isMappableGym = (gym) => coordinateNumber(gym?.latitude) !== null && coordinateNumber(gym?.longitude) !== null;
+  const boundsForGyms = (items) => {
+    const points = items
+      .map((gym) => ({ lat: coordinateNumber(gym?.latitude), lng: coordinateNumber(gym?.longitude) }))
+      .filter((point) => point.lat !== null && point.lng !== null);
+    if (!points.length) return null;
+
+    const lats = points.map((point) => point.lat);
+    const lngs = points.map((point) => point.lng);
+    let south = Math.min(...lats);
+    let north = Math.max(...lats);
+    let west = Math.min(...lngs);
+    let east = Math.max(...lngs);
+    const latSpread = Math.max(north - south, 0.012);
+    const lngSpread = Math.max(east - west, 0.014);
+
+    south -= Math.max(latSpread * 0.22, 0.006);
+    north += Math.max(latSpread * 0.22, 0.006);
+    west -= Math.max(lngSpread * 0.22, 0.007);
+    east += Math.max(lngSpread * 0.22, 0.007);
+
+    return { south, north, west, east };
+  };
+  $: mappableGyms = gyms.filter(isMappableGym);
+  $: zoneMapBounds = boundsForGyms(mappableGyms);
+  $: zoneMapHref = zoneMapBounds
+    ? `https://www.openstreetmap.org/export/embed.html?bbox=${zoneMapBounds.west}%2C${zoneMapBounds.south}%2C${zoneMapBounds.east}%2C${zoneMapBounds.north}&layer=mapnik`
+    : '';
+  $: zoneMapOpenHref = zoneMapBounds
+    ? `https://www.openstreetmap.org/?bbox=${zoneMapBounds.west}%2C${zoneMapBounds.south}%2C${zoneMapBounds.east}%2C${zoneMapBounds.north}`
+    : '';
+  function markerStyle(gym) {
+    if (!zoneMapBounds) return '';
+    const lat = coordinateNumber(gym?.latitude);
+    const lng = coordinateNumber(gym?.longitude);
+    const x = ((lng - zoneMapBounds.west) / (zoneMapBounds.east - zoneMapBounds.west)) * 100;
+    const y = (1 - (lat - zoneMapBounds.south) / (zoneMapBounds.north - zoneMapBounds.south)) * 100;
+    return `left:${clamp(x, 4, 96)}%;top:${clamp(y, 6, 94)}%;`;
+  }
   const publicHoursLabel = (value) => {
     const label = String(value || '').trim();
     return !label || label === 'Orari da verificare' || label === 'Orari n/d' ? 'Orari da confermare' : label;
@@ -82,14 +126,14 @@
       answer: `La pagina raccoglie ${formatCount(totalGyms, 'scheda pubblica', 'schede pubbliche')} collegate a ${location.name}. Serve a vedere in un colpo solo quali strutture del catalogo ricadono davvero in quest'area.`
     },
     {
-      question: `Quali discipline sono più presenti a ${location.name}?`,
+      question: `Quali discipline sono piu presenti a ${location.name}?`,
       answer: disciplineSummary
-        ? `In questo momento le discipline che emergono di più in questa zona sono ${disciplineSummary}.`
-        : `In questa zona il catalogo è ancora in crescita e la panoramica delle discipline si sta consolidando.`
+        ? `In questo momento le discipline che emergono di piu in questa zona sono ${disciplineSummary}.`
+        : `In questa zona il catalogo e ancora in crescita e la panoramica delle discipline si sta consolidando.`
     },
     {
       question: `Le schede di ${location.name} mostrano contatti e orari?`,
-      answer: `Sì. Quando disponibili, le schede mostrano indirizzo, orari e riferimenti per contattare la struttura o controllare il sito ufficiale.`
+      answer: `Si. Quando disponibili, le schede mostrano indirizzo, orari e riferimenti per contattare la struttura o controllare il sito ufficiale.`
     }
   ];
   const structuredData = {
@@ -193,8 +237,8 @@
 </svelte:head>
 
 <div class="min-h-screen w-full sc-page">
-  <main class="mx-auto w-full max-w-7xl px-4 pb-10 pt-4 sm:px-6 lg:px-8">
-    <section class="rounded-3xl border border-white/80 bg-white/80 p-5 shadow-xl backdrop-blur-sm sc-panel sm:p-7">
+  <main class="mx-auto flex w-full max-w-7xl flex-col px-4 pb-10 pt-4 sm:px-6 lg:px-8 sc-zone-page">
+    <section class="rounded-3xl border border-white/80 bg-white/80 p-5 shadow-xl backdrop-blur-sm sc-panel sm:p-7 sc-zone-hero">
       <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Landing locale</p>
       <h1 class="mt-2 text-3xl font-bold text-slate-900 sm:text-5xl">{location.title}</h1>
       <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-600 sm:text-base">{location.description}</p>
@@ -209,79 +253,58 @@
       </div>
     </section>
 
-    <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
-      <div class="max-w-4xl">
-        <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Panoramica della zona</p>
-        <h2 class="mt-1 text-2xl font-bold text-slate-900">Allenarsi a {location.name}: come leggere questa raccolta</h2>
-        <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
-          Questa landing raccoglie schede pubbliche legate a {location.name} e alle località vicine già presenti nel catalogo. In pratica, qui vedi subito quali strutture abbiamo già mappato in quest'area.
-        </p>
-        <p class="mt-4 text-sm leading-7 text-slate-600 sm:text-base">
-          In questo momento le discipline che emergono di più in zona sono <strong>{disciplineSummary || 'fitness e arti marziali'}</strong>.
-          Se vuoi allenarti con continuità, trovare una soluzione temporanea o orientarti dopo un trasferimento, da qui puoi aprire le schede complete e controllare contatti, orari e posizione.
-        </p>
+    <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-6 sc-zone-map-section" aria-labelledby="zone-map-title">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Mappa della zona</p>
+          <h2 id="zone-map-title" class="mt-1 text-2xl font-bold leading-tight text-slate-900">Palestre presenti a {location.name}</h2>
+        </div>
+        <div class="flex flex-wrap gap-2 text-xs font-bold">
+          <span class="rounded-full sc-filter-chip px-3 py-1">{formatCount(gyms.length, 'scheda', 'schede')}</span>
+          <span class="rounded-full sc-filter-chip px-3 py-1">{formatCount(mappableGyms.length, 'segnalino', 'segnalini')} in mappa</span>
+        </div>
       </div>
+
+      {#if zoneMapHref}
+        <div class="relative mt-4 h-[18rem] overflow-hidden rounded-2xl border border-slate-200 bg-white sc-zone-map sm:h-[24rem]">
+          <iframe
+            title={`Mappa palestre a ${location.name}`}
+            src={zoneMapHref}
+            class="h-full w-full"
+            loading="lazy"
+            width="1120"
+            height="384"
+          ></iframe>
+          <div class="pointer-events-none absolute inset-0">
+            {#each mappableGyms as gym, i}
+              <a
+                href={gymHref(gym)}
+                class="pointer-events-auto absolute grid h-8 w-8 -translate-x-1/2 -translate-y-full place-items-center rounded-full bg-slate-900 text-xs font-black text-white shadow-lg ring-2 ring-white transition hover:scale-110 focus-visible:scale-110 sc-zone-map-marker"
+                style={markerStyle(gym)}
+                aria-label={`Apri la scheda di ${gym.name}`}
+                title={gym.name}
+              >
+                {i + 1}
+              </a>
+            {/each}
+          </div>
+        </div>
+        <div class="mt-3 flex flex-col gap-2 sm:flex-row">
+          <a href={zoneMapOpenHref} target="_blank" rel="noreferrer" class="inline-flex min-h-[2.75rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-bold text-slate-900 transition hover:bg-slate-50">
+            Apri mappa grande
+          </a>
+          <a href="#palestre-zona" class="inline-flex min-h-[2.75rem] items-center justify-center rounded-xl bg-slate-900 px-4 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
+            Vai alle schede
+          </a>
+        </div>
+      {:else}
+        <div class="mt-4 rounded-2xl border border-dashed border-slate-300 bg-white/80 p-6 text-sm font-semibold text-slate-600">
+          Le coordinate delle palestre in questa zona sono ancora in verifica. Le schede disponibili sono subito sotto.
+        </div>
+      {/if}
     </section>
 
-    {#if cityStats.length}
-      <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sc-detail-section sm:p-7">
-        <div class="max-w-4xl">
-          <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Copertura locale</p>
-          <h2 class="mt-1 text-2xl font-bold text-slate-900">Comuni e aree più presenti nella raccolta</h2>
-        </div>
-
-        <div class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {#each cityLinks as item}
-            <a href={item.href} class="block rounded-2xl border border-slate-200 bg-white/90 p-4 transition hover:-translate-y-0.5 hover:shadow-md sc-detail-card">
-              <span class="sr-only">Apri le palestre a {item.city}</span>
-              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">{item.city}</p>
-              <p class="mt-2 text-2xl font-bold text-slate-900">{item.count}</p>
-              <p class="mt-1 text-sm font-semibold text-slate-600">{formatCount(item.count, 'scheda mappata', 'schede mappate')}</p>
-            </a>
-          {/each}
-        </div>
-      </section>
-    {/if}
-
-    {#if disciplineLinks.length}
-      <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
-        <div class="max-w-4xl">
-          <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Percorsi correlati</p>
-          <h2 class="mt-1 text-2xl font-bold text-slate-900">Discipline da confrontare in questa zona</h2>
-        </div>
-        <div class="mt-5 flex flex-wrap gap-2">
-          {#each disciplineLinks as discipline}
-            <a href={discipline.href} class="inline-flex min-h-[2.75rem] items-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-bold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50">
-              {discipline.name}
-            </a>
-          {/each}
-        </div>
-      </section>
-    {/if}
-
-    <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
-      <div class="max-w-4xl">
-        <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Come leggerla</p>
-        <h2 class="mt-1 text-2xl font-bold text-slate-900">Come usarla per scegliere meglio</h2>
-      </div>
-
-      <div class="mt-5 grid gap-3 md:grid-cols-3">
-        <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
-          <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Selezione</p>
-          <p class="mt-2 text-sm leading-7 text-slate-700">La pagina mette insieme solo schede già abbastanza curate, così eviti risultati troppo deboli o poco informativi.</p>
-        </div>
-        <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
-          <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Confronto rapido</p>
-          <p class="mt-2 text-sm leading-7 text-slate-700">Puoi confrontare più strutture della stessa area guardando indirizzo, discipline e orari prima di aprire il dettaglio completo.</p>
-        </div>
-        <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
-          <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Ricerca locale</p>
-          <p class="mt-2 text-sm leading-7 text-slate-700">Se sei in viaggio o ti sei appena trasferito, qui capisci subito quali opzioni abbiamo già censito in zona.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+    <section id="palestre-zona" class="mt-5 scroll-mt-24 grid gap-3 sm:grid-cols-2 xl:grid-cols-3 sc-zone-results" aria-label={`Palestre a ${location.name}`}>
       {#if gyms.length === 0}
         <div class="col-span-full rounded-2xl border border-dashed border-slate-300 bg-white/80 p-8 text-center shadow-sm">
           <p class="text-slate-600">Per questa zona non ci sono ancora abbastanza schede pubbliche curate.</p>
@@ -373,6 +396,78 @@
 
     <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
       <div class="max-w-4xl">
+        <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Panoramica della zona</p>
+        <h2 class="mt-1 text-2xl font-bold text-slate-900">Allenarsi a {location.name}: come leggere questa raccolta</h2>
+        <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
+          Mappa e card qui sopra mostrano le strutture disponibili a {location.name} prima del contesto editoriale. Da qui puoi passare alla scheda completa senza scorrere blocchi introduttivi.
+        </p>
+        <p class="mt-4 text-sm leading-7 text-slate-600 sm:text-base">
+          In questo momento le discipline che emergono di piu in zona sono <strong>{disciplineSummary || 'fitness e arti marziali'}</strong>.
+          Aprendo una scheda completa puoi controllare contatti, orari e posizione.
+        </p>
+      </div>
+    </section>
+
+    {#if cityStats.length}
+      <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sc-detail-section sm:p-7">
+        <div class="max-w-4xl">
+          <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Copertura locale</p>
+          <h2 class="mt-1 text-2xl font-bold text-slate-900">Comuni e aree piu presenti nella raccolta</h2>
+        </div>
+
+        <div class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {#each cityLinks as item}
+            <a href={item.href} class="block rounded-2xl border border-slate-200 bg-white/90 p-4 transition hover:-translate-y-0.5 hover:shadow-md sc-detail-card">
+              <span class="sr-only">Apri le palestre a {item.city}</span>
+              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">{item.city}</p>
+              <p class="mt-2 text-2xl font-bold text-slate-900">{item.count}</p>
+              <p class="mt-1 text-sm font-semibold text-slate-600">{formatCount(item.count, 'scheda mappata', 'schede mappate')}</p>
+            </a>
+          {/each}
+        </div>
+      </section>
+    {/if}
+
+    {#if disciplineLinks.length}
+      <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+        <div class="max-w-4xl">
+          <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Percorsi correlati</p>
+          <h2 class="mt-1 text-2xl font-bold text-slate-900">Discipline da confrontare in questa zona</h2>
+        </div>
+        <div class="mt-5 flex flex-wrap gap-2">
+          {#each disciplineLinks as discipline}
+            <a href={discipline.href} class="inline-flex min-h-[2.75rem] items-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-bold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50">
+              {discipline.name}
+            </a>
+          {/each}
+        </div>
+      </section>
+    {/if}
+
+    <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+      <div class="max-w-4xl">
+        <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Come leggerla</p>
+        <h2 class="mt-1 text-2xl font-bold text-slate-900">Come usarla per scegliere meglio</h2>
+      </div>
+
+      <div class="mt-5 grid gap-3 md:grid-cols-3">
+        <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
+          <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Selezione</p>
+          <p class="mt-2 text-sm leading-7 text-slate-700">La pagina mette insieme schede gia curate, cosi eviti risultati troppo deboli o poco informativi.</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
+          <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Confronto rapido</p>
+          <p class="mt-2 text-sm leading-7 text-slate-700">Puoi confrontare piu strutture della stessa area guardando indirizzo, discipline e orari prima di aprire il dettaglio completo.</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
+          <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Ricerca locale</p>
+          <p class="mt-2 text-sm leading-7 text-slate-700">Se sei in viaggio o ti sei appena trasferito, qui capisci quali opzioni abbiamo censito in zona.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+      <div class="max-w-4xl">
         <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Domande frequenti</p>
         <h2 class="mt-2 text-2xl font-bold text-slate-900">FAQ sulla zona {location.name}</h2>
       </div>
@@ -389,7 +484,38 @@
   </main>
 </div>
 
+<style>
+  .sc-zone-map {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.38),
+      0 14px 28px rgba(31, 54, 45, 0.08);
+  }
 
+  .sc-zone-map iframe {
+    border: 0;
+    pointer-events: none;
+  }
 
+  .sc-zone-map-marker {
+    z-index: 2;
+  }
 
+  .sc-zone-map-marker::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    width: 0.55rem;
+    height: 0.55rem;
+    background: #173129;
+    transform: translate(-50%, -55%) rotate(45deg);
+    z-index: -1;
+  }
 
+  @media (max-width: 640px) {
+    .sc-zone-map-marker {
+      height: 2.25rem;
+      width: 2.25rem;
+    }
+  }
+</style>
