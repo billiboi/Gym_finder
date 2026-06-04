@@ -5,7 +5,7 @@ import { dedupeDisciplines, normalizeDisciplineField } from '$lib/disciplines';
 import { isCapLike, isSuspiciousZoneName } from '$lib/location-quality';
 import { writeAdminAuditLog } from '$lib/server/admin-audit-store';
 import { readClaimRequests } from '$lib/server/claim-request-store';
-import { canWriteSupabase, readGyms, writeGymRecords } from '$lib/server/gym-store';
+import { canWriteSupabase, readGyms, updateGymRecord, writeGymRecords } from '$lib/server/gym-store';
 
 function clean(value) {
   return String(value ?? '').trim();
@@ -444,6 +444,7 @@ export async function load({ url }) {
     persistentWrites: canWriteSupabase(),
     merged: url.searchParams.get('merged') === '1',
     normalized: url.searchParams.get('normalized') === '1',
+    normalizedCount: Number(url.searchParams.get('normalized_count') || 0),
     verified: url.searchParams.get('verified') === '1',
     archived: url.searchParams.get('archived') === '1'
   };
@@ -542,7 +543,9 @@ export const actions = {
     if (!changed.length) return fail(400, { error: 'Nessuna normalizzazione applicabile alle schede selezionate.' });
 
     try {
-      await writeGymRecords(changed);
+      for (const gym of changed) {
+        await updateGymRecord(gym);
+      }
       await writeAdminAuditLog({
         action: 'QUALITY_NORMALIZE_DISCIPLINES',
         recordId: changed.map((gym) => gym.id).join(','),
@@ -562,7 +565,7 @@ export const actions = {
       return fail(500, { error: adminErrorMessage(err, 'Normalizzazione non riuscita.') });
     }
 
-    throw redirect(303, '/admin/qualita?normalized=1');
+    throw redirect(303, `/admin/qualita?normalized=1&normalized_count=${changed.length}`);
   },
 
   verifyGym: async ({ request }) => {

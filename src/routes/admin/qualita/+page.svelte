@@ -121,7 +121,7 @@
     {/if}
     {#if data.normalized}
       <div class="mt-5 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold text-emerald-800">
-        Discipline normalizzate sulle schede selezionate.
+        Discipline normalizzate: {data.normalizedCount || 0} schede aggiornate.
       </div>
     {/if}
     {#if data.verified}
