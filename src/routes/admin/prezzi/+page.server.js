@@ -230,6 +230,7 @@ function needsEnrichment(gym) {
 function normalizePreviewRow(gym, best) {
   const website = clean(gym.website || gym.sito || '');
   const fallbackReconciliation = best?.reconciliation || reconcileGymWithOfficialSource(gym, {});
+  const editorialPreview = best?.editorial_preview || generateGymEditorialPreview(gym, fallbackReconciliation);
   return {
     id: clean(gym.id),
     slug: clean(gym.slug || gym._canonical_slug),
@@ -248,7 +249,7 @@ function normalizePreviewRow(gym, best) {
     extracted_facts: best?.extracted_facts || {},
     extraction_warnings: best?.extraction_warnings || [],
     reconciliation: fallbackReconciliation,
-    editorial_preview: best?.editorial_preview || generateGymEditorialPreview(gym, fallbackReconciliation),
+    editorial_preview: editorialPreview,
     preview_mode: best ? 'fonte_ufficiale' : 'solo_dati_scheda',
     extracted_topics: best?.extracted_topics || '',
     extracted_amounts: best?.extracted_amounts || '',
@@ -258,7 +259,7 @@ function normalizePreviewRow(gym, best) {
     proposed_contact_info: best?.proposed_contact_info || '',
     proposed_editorial_evidence: best?.proposed_editorial_evidence || '',
     risk: best?.risk || 'none',
-    needs_review: true,
+    needs_review: Boolean(editorialPreview.needs_review || fallbackReconciliation.needs_review),
     decisione_consigliata: best?.decisione_consigliata || 'nessun_contenuto_estratto',
     score: best?.score || 0
   };
@@ -348,6 +349,8 @@ function buildLiveEnrichmentReport(activeGyms) {
     .map((gym) => {
       const website = gym.website || gym.sito || '';
       const priorityScore = scorePriceCandidate(gym);
+      const reconciliation = reconcileGymWithOfficialSource(gym, {});
+      const editorialPreview = generateGymEditorialPreview(gym, reconciliation);
       return {
         id: gym.id,
         slug: gym.slug || '',
@@ -363,8 +366,8 @@ function buildLiveEnrichmentReport(activeGyms) {
         needs_price: !hasPrice(gym),
         needs_description: !hasDescription(gym),
         preview_mode: 'solo_dati_scheda',
-        reconciliation: reconcileGymWithOfficialSource(gym, {}),
-        editorial_preview: generateGymEditorialPreview(gym, reconcileGymWithOfficialSource(gym, {})),
+        reconciliation,
+        editorial_preview: editorialPreview,
         decisione_consigliata: 'genera_preview_fonte_ufficiale',
         extracted_topics: '',
         extracted_amounts: '',

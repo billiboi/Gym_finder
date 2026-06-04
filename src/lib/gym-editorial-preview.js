@@ -25,7 +25,11 @@ function fieldRow(report, field) {
 
 function safeRows(report) {
   const rows = report?.editorial_eligible || report?.reconciliation?.editorial_eligible || [];
-  return rows.filter((row) => row.status !== 'conflict' && row.status !== 'official_unclear' && row.confidence !== 'low');
+  return rows.filter((row) => {
+    if (row.status === 'conflict' || row.status === 'official_unclear') return false;
+    if (row.status === 'app_only') return true;
+    return row.confidence !== 'low';
+  });
 }
 
 function safeRow(report, field) {
@@ -74,11 +78,19 @@ function detectTemplate(gym, discipline) {
 }
 
 function hasConflict(report) {
-  return Boolean((report?.conflicts || report?.reconciliation?.conflicts || []).length || report?.needs_review || report?.reconciliation?.needs_review);
+  return Boolean((report?.conflicts || report?.reconciliation?.conflicts || []).length);
+}
+
+function hasUnclearOfficialData(report) {
+  const rows = report?.rows || report?.reconciliation?.rows || [];
+  return rows.some((row) => row.status === 'official_unclear');
 }
 
 function sourceUseful(report) {
-  return ['descrizione', 'storia', 'discipline', 'telefono', 'email', 'indirizzo', 'sito'].some((field) => safeRow(report, field));
+  return ['descrizione', 'storia', 'discipline', 'telefono', 'email', 'indirizzo', 'sito'].some((field) => {
+    const row = safeRow(report, field);
+    return row && (row.status === 'confirmed' || row.status === 'new_from_official');
+  });
 }
 
 function decideLevel(gym, report, data) {
@@ -230,6 +242,13 @@ function qualityScore(level, data, report, usedFacts) {
   return Math.max(30, Math.min(96, score));
 }
 
+function needsManualReview(report, score, usedFacts) {
+  if (hasConflict(report)) return true;
+  if (hasUnclearOfficialData(report) && score < 65) return true;
+  if (usedFacts.length < 2) return true;
+  return false;
+}
+
 function sanitizeCopy(text) {
   return clean(text).replace(FORBIDDEN_COPY_RE, '').replace(/\s+([,.])/g, '$1').replace(/\s{2,}/g, ' ');
 }
@@ -291,7 +310,7 @@ export function generateGymEditorialPreview(gym, reconciliationReport = {}) {
     livello: level,
     livello_label: LEVEL_LABELS[level],
     quality_score: score,
-    needs_review: hasConflict(reconciliationReport) || level === 'C' || score < 70,
+    needs_review: needsManualReview(reconciliationReport, score, usedFacts),
     used_facts: usedFacts,
     excluded_facts: excludedFacts,
     warnings: [...new Set(warnings.map(clean).filter(Boolean))]
