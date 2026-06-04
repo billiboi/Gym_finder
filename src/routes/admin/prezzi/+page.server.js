@@ -2,6 +2,9 @@ import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { readGyms } from '$lib/server/gym-store';
 import { isArchivedGym } from '$lib/admin/gyms';
+import { analyzeOfficialScrape } from '$lib/official-scrape-cleaner.js';
+import { reconcileGymWithOfficialSource } from '$lib/official-reconciliation.js';
+import { generateGymEditorialPreview } from '$lib/gym-editorial-preview.js';
 
 const DATA_DIR = path.resolve('data');
 const PRICE_TEXT_RE =
@@ -74,6 +77,12 @@ function getWebsiteHost(website) {
 
 function clean(value) {
   return String(value ?? '').replace(/\s+/g, ' ').trim();
+}
+
+function truncate(value, max = 6000) {
+  const text = clean(value);
+  if (text.length <= max) return text;
+  return `${text.slice(0, max).trim()} [...]`;
 }
 
 function isOwnWebsite(website) {
@@ -195,6 +204,10 @@ async function fetchHtml(url, timeoutMs = 5000) {
   }
 }
 
+function wait(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 async function discoverPages(website) {
   const urls = new Set();
   if (website) urls.add(website);
@@ -216,6 +229,7 @@ function needsEnrichment(gym) {
 
 function normalizePreviewRow(gym, best) {
   const website = clean(gym.website || gym.sito || '');
+  const fallbackReconciliation = best?.reconciliation || reconcileGymWithOfficialSource(gym, {});
   return {
     id: clean(gym.id),
     slug: clean(gym.slug || gym._canonical_slug),
@@ -227,6 +241,15 @@ function normalizePreviewRow(gym, best) {
     website_host: getWebsiteHost(website),
     source_url: best?.source_url || '',
     source_title: best?.source_title || '',
+    source_fetched_at: best?.source_fetched_at || '',
+    raw_official_text: best?.raw_official_text || '',
+    clean_official_text: best?.clean_official_text || '',
+    extracted_sections: best?.extracted_sections || {},
+    extracted_facts: best?.extracted_facts || {},
+    extraction_warnings: best?.extraction_warnings || [],
+    reconciliation: fallbackReconciliation,
+    editorial_preview: best?.editorial_preview || generateGymEditorialPreview(gym, fallbackReconciliation),
+    preview_mode: best ? 'fonte_ufficiale' : 'solo_dati_scheda',
     extracted_topics: best?.extracted_topics || '',
     extracted_amounts: best?.extracted_amounts || '',
     proposed_price_info: best?.proposed_price_info || '',
@@ -254,14 +277,27 @@ async function generatePreviewFromGyms(gyms, limit = 20) {
     let best = null;
 
     for (const url of pages) {
+      await wait(1200);
       const result = await fetchHtml(url);
       if (!result.ok) continue;
-      const summary = summarizeText(stripHtml(result.html));
+      const rawText = stripHtml(result.html);
+      const officialAnalysis = analyzeOfficialScrape(rawText);
+      const reconciliation = reconcileGymWithOfficialSource(gym, { ...officialAnalysis, source_url: url, website });
+      const editorialPreview = generateGymEditorialPreview(gym, reconciliation);
+      const summary = summarizeText(officialAnalysis.clean_text);
       if (!summary.topics.length) continue;
       const score = summary.topics.length * 25 + summary.amounts.length * 15 + (url !== website ? 10 : 0);
       const row = {
         source_url: url,
         source_title: extractTitle(result.html),
+        source_fetched_at: new Date().toISOString(),
+        raw_official_text: truncate(rawText),
+        clean_official_text: truncate(officialAnalysis.clean_text),
+        extracted_sections: officialAnalysis.sections,
+        extracted_facts: officialAnalysis.facts,
+        extraction_warnings: officialAnalysis.warnings,
+        reconciliation,
+        editorial_preview: editorialPreview,
         extracted_topics: summary.topics.join(' | '),
         extracted_amounts: summary.amounts.join(' | '),
         proposed_price_info: summary.proposed_price_info,
@@ -269,7 +305,7 @@ async function generatePreviewFromGyms(gyms, limit = 20) {
         proposed_hours_info: summary.proposed_hours_info,
         proposed_contact_info: summary.proposed_contact_info,
         proposed_editorial_evidence: (summary.proposed_courses_info || summary.proposed_contact_info || summary.proposed_hours_info).slice(0, 650),
-        risk: summary.amounts.length > 5 ? 'medium' : 'low',
+        risk: summary.amounts.length > 5 || officialAnalysis.warnings.length ? 'medium' : 'low',
         decisione_consigliata: 'review_contenuti_estratti',
         score
       };
@@ -325,7 +361,15 @@ function buildLiveEnrichmentReport(activeGyms) {
         review_reason: '',
         priority_score: priorityScore,
         needs_price: !hasPrice(gym),
-        needs_description: !hasDescription(gym)
+        needs_description: !hasDescription(gym),
+        preview_mode: 'solo_dati_scheda',
+        reconciliation: reconcileGymWithOfficialSource(gym, {}),
+        editorial_preview: generateGymEditorialPreview(gym, reconcileGymWithOfficialSource(gym, {})),
+        decisione_consigliata: 'genera_preview_fonte_ufficiale',
+        extracted_topics: '',
+        extracted_amounts: '',
+        source_url: '',
+        risk: 'review'
       };
     })
     .sort((a, b) => b.priority_score - a.priority_score || a.nome.localeCompare(b.nome, 'it'));

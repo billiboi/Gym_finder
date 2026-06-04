@@ -17,6 +17,7 @@
   let tab = data.reviewReport.hasReport ? 'residui' : 'candidati';
   let residualFilter = 'tutti';
   let candidateFilter = 'alta';
+  let editorialDecisions = {};
 
   $: residualRows = data.reviewReport.rows || [];
   $: filteredResidualRows = residualRows.filter((row) => {
@@ -34,6 +35,9 @@
 
   $: activePreviewReport = form?.previewReport || data.discoveryReport;
   $: discoveryRows = activePreviewReport.rows || [];
+  $: previewRows = discoveryRows.length ? discoveryRows : candidateRows.filter((row) => row.editorial_preview?.descrizione_breve).slice(0, 50);
+  $: previewUsesOfficialSource = discoveryRows.length > 0;
+  $: if (form?.previewReport && tab !== 'discovery') tab = 'discovery';
 
   function formatDate(value) {
     if (!value) return 'Calcolato dal database live';
@@ -51,6 +55,80 @@
     if (risk === 'high') return 'border-rose-200 bg-rose-50 text-rose-800';
     if (risk === 'medium') return 'border-amber-200 bg-amber-50 text-amber-800';
     return 'border-emerald-200 bg-emerald-50 text-emerald-800';
+  }
+
+  function sectionEntries(sections) {
+    return Object.entries(sections || {}).filter(([, section]) => section?.text);
+  }
+
+  function factEntries(facts) {
+    return Object.entries(facts || {}).filter(([, items]) => Array.isArray(items) && items.length);
+  }
+
+  function factLabel(key) {
+    return (
+      {
+        phones_found: 'Telefoni',
+        emails_found: 'Email',
+        addresses_found: 'Indirizzi',
+        disciplines_found: 'Discipline',
+        schedules_found: 'Orari',
+        prices_found: 'Prezzi',
+        people_found: 'Persone',
+        organization_history: 'Storia organizzazione',
+        source_highlights: 'Evidenze fonte'
+      }[key] || key
+    );
+  }
+
+  function sectionLabel(key) {
+    return (
+      {
+        chi_siamo: 'Chi siamo',
+        storia: 'Storia',
+        corsi: 'Corsi',
+        discipline: 'Discipline',
+        orari: 'Orari',
+        prezzi: 'Prezzi',
+        contatti: 'Contatti',
+        indirizzo: 'Indirizzo',
+        staff: 'Staff',
+        eventi: 'Eventi',
+        note: 'Note'
+      }[key] || key
+    );
+  }
+
+  function reconciliationRows(row) {
+    return row.reconciliation?.rows || [];
+  }
+
+  function editorialPreview(row) {
+    return row.editorial_preview || {};
+  }
+
+  function levelClass(level) {
+    if (level === 'A') return 'border-emerald-200 bg-emerald-50 text-emerald-900';
+    if (level === 'B') return 'border-amber-200 bg-amber-50 text-amber-900';
+    return 'border-slate-200 bg-slate-100 text-slate-800';
+  }
+
+  function reviewBadge(preview, row) {
+    if (row.reconciliation?.conflicts?.length) return 'conflitti: non pubblicare';
+    if (preview.needs_review) return 'richiede controllo manuale';
+    if (preview.livello === 'A') return 'pronto per revisione';
+    if (preview.livello === 'B') return 'buono, controllare dettagli';
+    return 'fallback sicuro';
+  }
+
+  function setEditorialDecision(row, decision) {
+    editorialDecisions = { ...editorialDecisions, [row.id || row.slug || row.nome]: decision };
+  }
+
+  async function copyText(value) {
+    const text = String(value || '').trim();
+    if (!text || typeof navigator === 'undefined' || !navigator.clipboard) return;
+    await navigator.clipboard.writeText(text);
   }
 </script>
 
@@ -85,8 +163,8 @@
       </div>
       <div class="rounded-2xl border border-slate-200 bg-white p-4">
         <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Preview</p>
-        <p class="mt-2 text-3xl font-bold text-slate-900">{activePreviewReport.summary.selected || discoveryRows.length}</p>
-        <p class="mt-1 text-sm text-slate-600">{activePreviewReport.summary.extracted || 0} schede con evidenze</p>
+        <p class="mt-2 text-3xl font-bold text-slate-900">{activePreviewReport.summary.selected || previewRows.length}</p>
+        <p class="mt-1 text-sm text-slate-600">{activePreviewReport.summary.extracted || (previewUsesOfficialSource ? 0 : 'fallback sicuri')}</p>
       </div>
       <div class="rounded-2xl border border-slate-200 bg-white p-4">
         <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Aggiornato</p>
@@ -283,7 +361,13 @@
 
     {#if tab === 'discovery'}
       <div class="mt-4 grid gap-3">
-        {#each discoveryRows as row}
+        {#if !previewUsesOfficialSource && previewRows.length}
+          <div class="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-950">
+            <p class="font-bold">Preview editoriali fallback</p>
+            <p class="mt-1">Queste anteprime usano solo i dati gia presenti in scheda. Premi “Genera preview” per ottenere riconciliazione, fonte ufficiale, fatti estratti e proposta editoriale completa.</p>
+          </div>
+        {/if}
+        {#each previewRows as row}
           <article class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
             <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
               <div class="min-w-0">
@@ -294,11 +378,214 @@
                 <p class="mt-1 text-sm text-slate-600">{row.citta} · {row.disciplina}</p>
                 {#if row.source_url}
                   <a href={row.source_url} target="_blank" rel="noreferrer" class="mt-2 inline-flex break-all text-sm font-semibold text-blue-700 hover:text-blue-900">{row.source_url}</a>
+                {:else if row.preview_mode === 'solo_dati_scheda'}
+                  <p class="mt-2 text-sm font-semibold text-amber-800">Preview fallback: fonte ufficiale non ancora analizzata in questa pagina.</p>
                 {:else}
                   <p class="mt-2 text-sm text-slate-500">Nessun contenuto utile estratto dal sito.</p>
                 {/if}
-                {#if row.proposed_price_info || row.proposed_editorial_evidence || row.proposed_courses_info || row.proposed_hours_info}
+                {#if editorialPreview(row).descrizione_breve || row.proposed_price_info || row.proposed_editorial_evidence || row.proposed_courses_info || row.proposed_hours_info}
                   <div class="mt-3 grid gap-2">
+                    {#if editorialPreview(row).descrizione_breve}
+                      <div class="rounded-2xl border border-emerald-200 bg-white p-4 text-sm leading-6 text-slate-800 shadow-sm">
+                        <div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                          <div>
+                            <p class="text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">Anteprima editoriale proposta</p>
+                            <h3 class="mt-1 text-lg font-bold text-slate-950">{row.nome}</h3>
+                          </div>
+                          <div class="flex flex-wrap gap-2">
+                            <span class={`rounded-full border px-2.5 py-1 text-xs font-bold ${levelClass(editorialPreview(row).livello)}`}>
+                              Livello {editorialPreview(row).livello || 'C'}: {editorialPreview(row).livello_label || 'fallback sicuro'}
+                            </span>
+                            <span class="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-bold text-slate-700">
+                              quality score {editorialPreview(row).quality_score || 0}
+                            </span>
+                            <span class={`rounded-full border px-2.5 py-1 text-xs font-bold ${row.reconciliation?.conflicts?.length || editorialPreview(row).needs_review ? 'border-rose-200 bg-rose-50 text-rose-800' : 'border-emerald-200 bg-emerald-50 text-emerald-800'}`}>
+                              {reviewBadge(editorialPreview(row), row)}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div class="mt-4 grid gap-3 lg:grid-cols-2">
+                          <div class="rounded-xl border border-slate-200 bg-slate-50 p-3">
+                            <p class="font-bold text-slate-950">Descrizione breve proposta</p>
+                            <p class="mt-2">{editorialPreview(row).descrizione_breve}</p>
+                          </div>
+                          <div class="rounded-xl border border-slate-200 bg-slate-50 p-3">
+                            <p class="font-bold text-slate-950">Descrizione lunga proposta</p>
+                            <p class="mt-2">{editorialPreview(row).descrizione_lunga}</p>
+                          </div>
+                        </div>
+
+                        {#if editorialPreview(row).faq?.length}
+                          <div class="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-3">
+                            <p class="font-bold text-slate-950">FAQ proposte</p>
+                            <div class="mt-2 grid gap-2">
+                              {#each editorialPreview(row).faq as faq}
+                                <div>
+                                  <p class="font-semibold text-slate-900">{faq.question}</p>
+                                  <p class="text-slate-700">{faq.answer}</p>
+                                </div>
+                              {/each}
+                            </div>
+                          </div>
+                        {/if}
+
+                        <div class="mt-3 grid gap-3 lg:grid-cols-2">
+                          <div class="rounded-xl border border-slate-200 bg-slate-50 p-3">
+                            <p class="font-bold text-slate-950">Dati usati</p>
+                            {#if editorialPreview(row).used_facts?.length}
+                              <ul class="mt-2 space-y-1">
+                                {#each editorialPreview(row).used_facts as fact}
+                                  <li><strong>{fact.label}:</strong> {fact.value} <span class="text-xs text-slate-500">({fact.status}, {fact.confidence})</span></li>
+                                {/each}
+                              </ul>
+                            {:else}
+                              <p class="mt-2 text-slate-600">Nessun dato sicuro disponibile.</p>
+                            {/if}
+                          </div>
+                          <div class="rounded-xl border border-slate-200 bg-slate-50 p-3">
+                            <p class="font-bold text-slate-950">Dati esclusi</p>
+                            {#if editorialPreview(row).excluded_facts?.length}
+                              <ul class="mt-2 space-y-1">
+                                {#each editorialPreview(row).excluded_facts as fact}
+                                  <li><strong>{fact.label}:</strong> {fact.value || 'non trovato'} <span class="text-xs text-slate-500">({fact.status}, {fact.confidence})</span></li>
+                                {/each}
+                              </ul>
+                            {:else}
+                              <p class="mt-2 text-slate-600">Nessun dato escluso.</p>
+                            {/if}
+                          </div>
+                        </div>
+
+                        {#if editorialPreview(row).warnings?.length}
+                          <div class="mt-3 rounded-xl border border-amber-200 bg-amber-50 p-3 text-amber-900">
+                            <p class="font-bold">Warning</p>
+                            <ul class="mt-1 space-y-1">
+                              {#each editorialPreview(row).warnings as warning}
+                                <li>{warning}</li>
+                              {/each}
+                            </ul>
+                          </div>
+                        {/if}
+
+                        <div class="mt-4 flex flex-wrap gap-2">
+                          <button type="button" class="rounded-lg bg-emerald-800 px-3 py-2 text-sm font-bold text-white hover:bg-emerald-900" on:click={() => setEditorialDecision(row, 'approva_breve')}>Approva descrizione breve</button>
+                          <button type="button" class="rounded-lg bg-emerald-800 px-3 py-2 text-sm font-bold text-white hover:bg-emerald-900" on:click={() => setEditorialDecision(row, 'approva_lunga')}>Approva descrizione lunga</button>
+                          <button type="button" class="rounded-lg bg-white px-3 py-2 text-sm font-bold text-slate-800 ring-1 ring-slate-200 hover:bg-slate-50" on:click={() => copyText(`${editorialPreview(row).descrizione_breve}\n\n${editorialPreview(row).descrizione_lunga}`)}>Copia testo</button>
+                          <button type="button" class="rounded-lg bg-white px-3 py-2 text-sm font-bold text-slate-800 ring-1 ring-slate-200 hover:bg-slate-50" on:click={() => setEditorialDecision(row, 'modifica_manuale')}>Modifica manualmente</button>
+                          <button type="button" class="rounded-lg bg-white px-3 py-2 text-sm font-bold text-rose-800 ring-1 ring-rose-200 hover:bg-rose-50" on:click={() => setEditorialDecision(row, 'rifiuta')}>Rifiuta preview</button>
+                          <button type="button" class="rounded-lg bg-white px-3 py-2 text-sm font-bold text-amber-800 ring-1 ring-amber-200 hover:bg-amber-50" on:click={() => setEditorialDecision(row, 'da_revisionare')}>Segna da revisionare</button>
+                        </div>
+                        {#if editorialDecisions[row.id || row.slug || row.nome]}
+                          <p class="mt-3 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-bold text-slate-700">
+                            Stato locale preview: {editorialDecisions[row.id || row.slug || row.nome]}. Nessuna pubblicazione automatica.
+                          </p>
+                        {/if}
+                      </div>
+                    {/if}
+                    {#if row.raw_official_text}
+                      <details class="rounded-2xl border border-slate-200 bg-slate-50 p-3 text-sm leading-6 text-slate-800">
+                        <summary class="cursor-pointer font-bold text-slate-900">Testo grezzo</summary>
+                        <p class="mt-2 whitespace-pre-wrap break-words">{row.raw_official_text}</p>
+                      </details>
+                    {/if}
+                    {#if row.clean_official_text}
+                      <div class="rounded-2xl border border-emerald-200 bg-emerald-50 p-3 text-sm leading-6 text-emerald-950">
+                        <p class="font-bold text-emerald-950">Testo pulito</p>
+                        <p class="mt-2 whitespace-pre-wrap break-words">{row.clean_official_text}</p>
+                      </div>
+                    {/if}
+                    {#if sectionEntries(row.extracted_sections).length}
+                      <div class="rounded-2xl border border-slate-200 bg-white p-3 text-sm leading-6 text-slate-800">
+                        <p class="font-bold text-slate-950">Sezioni rilevate</p>
+                        <div class="mt-2 grid gap-2">
+                          {#each sectionEntries(row.extracted_sections) as [key, section]}
+                            <div class="rounded-xl border border-slate-200 bg-slate-50 p-3">
+                              <div class="flex flex-wrap items-center justify-between gap-2">
+                                <p class="font-bold text-slate-900">{sectionLabel(key)}</p>
+                                <span class="rounded-full border border-slate-200 bg-white px-2 py-0.5 text-xs font-bold text-slate-600">{section.confidence}</span>
+                              </div>
+                              <p class="mt-1 whitespace-pre-wrap break-words">{section.text}</p>
+                              {#if section.warnings?.length}
+                                <p class="mt-2 text-xs font-semibold text-amber-800">{section.warnings.join(' · ')}</p>
+                              {/if}
+                            </div>
+                          {/each}
+                        </div>
+                      </div>
+                    {/if}
+                    {#if factEntries(row.extracted_facts).length}
+                      <div class="rounded-2xl border border-slate-200 bg-white p-3 text-sm leading-6 text-slate-800">
+                        <p class="font-bold text-slate-950">Fatti estratti</p>
+                        <div class="mt-2 grid gap-2">
+                          {#each factEntries(row.extracted_facts) as [key, items]}
+                            <div class="rounded-xl border border-slate-200 bg-slate-50 p-3">
+                              <p class="font-bold text-slate-900">{factLabel(key)}</p>
+                              <ul class="mt-1 space-y-1">
+                                {#each items as item}
+                                  <li class="break-words">
+                                    {item.value}
+                                    <span class="text-xs font-semibold text-slate-500">({sectionLabel(item.source_section)}, {item.confidence})</span>
+                                    {#if item.warning}
+                                      <span class="text-xs font-semibold text-amber-800"> {item.warning}</span>
+                                    {/if}
+                                  </li>
+                                {/each}
+                              </ul>
+                            </div>
+                          {/each}
+                        </div>
+                      </div>
+                    {/if}
+                    {#if row.extraction_warnings?.length}
+                      <div class="rounded-2xl border border-amber-200 bg-amber-50 p-3 text-sm leading-6 text-amber-900">
+                        <p class="font-bold">Avvisi</p>
+                        <ul class="mt-1 space-y-1">
+                          {#each row.extraction_warnings as warning}
+                            <li>{warning}</li>
+                          {/each}
+                        </ul>
+                      </div>
+                    {/if}
+                    {#if reconciliationRows(row).length}
+                      <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white text-sm text-slate-800">
+                        <div class="border-b border-slate-200 bg-slate-50 px-3 py-2">
+                          <p class="font-bold text-slate-950">Confronto scheda / fonte ufficiale</p>
+                          <p class="mt-1 text-xs font-semibold text-slate-600">
+                            Confidenza generale: {row.reconciliation.overall_confidence || 'low'}
+                            {#if row.reconciliation.needs_review}
+                              · review manuale richiesta
+                            {/if}
+                          </p>
+                        </div>
+                        <div class="overflow-x-auto">
+                          <table class="min-w-full divide-y divide-slate-200">
+                            <thead class="bg-slate-50 text-left text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
+                              <tr>
+                                <th class="px-3 py-2">Campo</th>
+                                <th class="px-3 py-2">Valore scheda</th>
+                                <th class="px-3 py-2">Valore fonte ufficiale</th>
+                                <th class="px-3 py-2">Esito</th>
+                                <th class="px-3 py-2">Azione suggerita</th>
+                                <th class="px-3 py-2">Confidenza</th>
+                              </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                              {#each reconciliationRows(row) as item}
+                                <tr>
+                                  <td class="px-3 py-2 font-bold text-slate-900">{item.field_label || item.field}</td>
+                                  <td class="max-w-[16rem] px-3 py-2 align-top">{item.app_value || 'vuoto'}</td>
+                                  <td class="max-w-[18rem] px-3 py-2 align-top">{item.official_value || 'non trovato'}</td>
+                                  <td class="px-3 py-2 align-top">{item.status_label || item.status}</td>
+                                  <td class="px-3 py-2 align-top">{item.suggested_action_label || item.suggested_action}</td>
+                                  <td class="px-3 py-2 align-top">{item.confidence}</td>
+                                </tr>
+                              {/each}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    {/if}
                     {#if row.proposed_price_info}
                       <p class="rounded-2xl border border-slate-200 bg-slate-50 p-3 text-sm leading-6 text-slate-800"><strong>Prezzi/abbonamenti:</strong> {row.proposed_price_info}</p>
                     {/if}
@@ -324,12 +611,15 @@
                 <p class="mt-1">Topic: {row.extracted_topics || 'assenti'}</p>
                 <p>Importi: {row.extracted_amounts || 'assenti'}</p>
                 <p>Rischio: {row.risk || 'review'}</p>
+                {#if row.preview_mode === 'solo_dati_scheda'}
+                  <p class="mt-2 font-semibold text-amber-800">Solo dati scheda</p>
+                {/if}
               </div>
             </div>
           </article>
         {:else}
           <div class="rounded-2xl border border-dashed border-slate-300 p-8 text-center text-slate-500">
-            Nessuna preview automatica disponibile. Esegui <code>bun run content:enrich:dry -- --limit=40</code> per generare proposte da review.
+            Nessuna preview disponibile. Usa il pulsante “Genera preview” per analizzare i siti ufficiali direttamente da questa pagina.
           </div>
         {/each}
       </div>
