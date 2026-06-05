@@ -68,7 +68,11 @@
       if (sortMode === 'issues-desc') return Number(right.issueCount || 0) - Number(left.issueCount || 0);
       return Number(left.data_quality_score || 0) - Number(right.data_quality_score || 0);
     });
-  $: selectedNormalizationValue = selectedNormalizationIds.join(',');
+  $: normalizationDisabledMessage = !data.persistentWrites
+    ? 'Scrittura persistente non disponibile in questo ambiente.'
+    : selectedNormalizationIds.length === 0
+      ? 'Seleziona almeno una scheda da normalizzare.'
+      : 'Scrivi NORMALIZZA e premi il pulsante. Il server controllera la conferma.';
 
   function filterButtonClass(filterId) {
     const base =
@@ -295,12 +299,11 @@
         </p>
       {:else}
         <form method="POST" action="?/normalizeDisciplines" class="mt-4 grid gap-4">
-          <input type="hidden" name="ids" value={selectedNormalizationValue} />
           <div class="max-h-[38rem] overflow-auto rounded-2xl border border-slate-200">
             {#each data.disciplineNormalizationCandidates as candidate}
               <label class="grid cursor-pointer gap-2 border-b border-slate-100 bg-white p-3 text-sm last:border-b-0 hover:bg-slate-50">
                 <span class="flex items-start gap-2">
-                  <input type="checkbox" bind:group={selectedNormalizationIds} value={candidate.id} class="mt-1" />
+                  <input type="checkbox" name="ids" bind:group={selectedNormalizationIds} value={candidate.id} class="mt-1" />
                   <span>
                     <strong class="block text-slate-900">{candidate.name}</strong>
                     <span class="text-slate-600">{candidate.city || 'Città non indicata'}</span>
@@ -315,15 +318,18 @@
 
           <label class="grid gap-1 text-sm font-semibold text-slate-800">
             Scrivi NORMALIZZA per confermare
-            <input name="confirm_text" class="rounded-xl border border-slate-200 bg-white px-3 py-2" autocomplete="off" required disabled={!data.persistentWrites || selectedNormalizationIds.length === 0} />
+            <input name="confirm_text" class="rounded-xl border border-slate-200 bg-white px-3 py-2" autocomplete="off" required disabled={!data.persistentWrites} />
           </label>
           <button
             type="submit"
             class="w-fit rounded-xl bg-emerald-700 px-4 py-2 text-sm font-bold text-white hover:bg-emerald-800 disabled:cursor-not-allowed disabled:bg-slate-300"
-            disabled={!data.persistentWrites || selectedNormalizationIds.length === 0}
+            disabled={!data.persistentWrites}
           >
             Normalizza selezionate
           </button>
+          {#if normalizationDisabledMessage}
+            <p class="text-sm font-semibold text-slate-600">{normalizationDisabledMessage}</p>
+          {/if}
         </form>
       {/if}
     </div>

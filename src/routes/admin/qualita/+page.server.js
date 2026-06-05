@@ -471,7 +471,7 @@ export const actions = {
       return fail(400, { error: 'Merge bloccato: scrivi UNISCI per confermare.' });
     }
 
-    const gyms = await readGyms();
+    const gyms = await readGyms({ fresh: true });
     const primary = gyms.find((gym) => gym.id === keepId);
     const secondary = gyms.find((gym) => gym.id === archiveId);
 
@@ -507,8 +507,9 @@ export const actions = {
     }
 
     const form = await request.formData();
-    const ids = clean(form.get('ids'))
-      .split(',')
+    const ids = form
+      .getAll('ids')
+      .flatMap((value) => clean(value).split(','))
       .map((id) => clean(id))
       .filter(Boolean);
     const confirmText = clean(form.get('confirm_text'));
@@ -519,7 +520,7 @@ export const actions = {
     }
 
     const selected = new Set(ids);
-    const gyms = await readGyms();
+    const gyms = await readGyms({ fresh: true });
     const changed = gyms
       .filter((gym) => selected.has(clean(gym.id)) && !isArchivedGym(gym) && needsDisciplineNormalization(gym))
       .map((gym) => {

@@ -39,6 +39,10 @@ function setRuntimeGyms(gyms) {
   );
 }
 
+function clearRuntimeGyms() {
+  delete globalThis[RUNTIME_CACHE_KEY];
+}
+
 const CSV_HEADERS = [
   'nome palestra',
   'discipline',
@@ -598,6 +602,8 @@ async function upsertGymsInSupabase(gyms) {
       throw new Error(`Supabase insert failed (${insResponse.status}). ${details}`.trim());
     }
   }
+
+  clearRuntimeGyms();
 }
 
 function supabasePayloadDetails(payload) {
@@ -735,6 +741,8 @@ export async function updateGymRecord(gym) {
     throw new Error(`Aggiornamento Supabase non riuscito: nessuna scheda trovata con ${filter.column}=${filter.value}.`);
   }
 
+  clearRuntimeGyms();
+
   return Array.isArray(responsePayload) ? responsePayload.map((row, index) => normalizeGymRecord(row, normalized.id || `db-${index + 1}`)) : [];
 }
 
@@ -754,10 +762,14 @@ export async function writeGymRecords(gyms) {
   await upsertGymsInSupabase(normalized);
 }
 
-export async function readGyms() {
-  const runtimeGyms = getRuntimeGyms();
-  if (runtimeGyms && runtimeGyms.length > 0) {
-    return withCanonicalGymSlugs(runtimeGyms);
+export async function readGyms(options = {}) {
+  const fresh = Boolean(options?.fresh);
+
+  if (!fresh) {
+    const runtimeGyms = getRuntimeGyms();
+    if (runtimeGyms && runtimeGyms.length > 0) {
+      return withCanonicalGymSlugs(runtimeGyms);
+    }
   }
 
   if (hasSupabaseRead) {
