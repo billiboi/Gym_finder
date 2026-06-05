@@ -76,7 +76,7 @@ function detectTemplate(gym, discipline) {
   if (/\b(judo|karate|taekwondo|kung fu|kungfu|boxe|kickboxing|muay thai|mma|krav maga|wing chun|aikido|bjj|arti marziali|difesa personale)\b/.test(text)) {
     return 'arti_marziali';
   }
-  if (/\b(fitness|palestra|funzionale|calisthenics)\b/.test(text)) return 'fitness';
+  if (/\b(fitness|palestra|funzionale|calisthenics|ems)\b/.test(text)) return 'fitness';
   return 'scheda_povera';
 }
 
@@ -116,19 +116,57 @@ function sentence(parts) {
   return clean(parts.filter(Boolean).join(' ')).replace(/\s+([,.])/g, '$1');
 }
 
+function significantDisciplineTokens(discipline) {
+  return [
+    ...new Set(
+      fold(discipline)
+        .split(/[^a-z0-9]+/i)
+        .map(clean)
+        .filter((token) => token.length >= 3)
+        .filter((token) => !['training', 'fitness', 'sport', 'sportiva', 'attivita', 'corsi', 'corso'].includes(token))
+    )
+  ];
+}
+
+function nameContainsDiscipline(data) {
+  const name = fold(data.name);
+  return significantDisciplineTokens(data.discipline).some((token) => new RegExp(`\\b${token}\\b`, 'i').test(name));
+}
+
+function countTokenMentions(text, token) {
+  const matches = fold(text).match(new RegExp(`\\b${token}\\b`, 'gi'));
+  return matches ? matches.length : 0;
+}
+
+function wouldOverRepeat(baseText, nextText, data, max = 2) {
+  if (!nextText) return false;
+  return significantDisciplineTokens(data.discipline).some((token) => countTokenMentions(`${baseText} ${nextText}`, token) > max);
+}
+
+function joinWithoutKeywordEcho(parts, data, maxMentions = 2) {
+  const accepted = [];
+  for (const part of parts.map(clean).filter(Boolean)) {
+    const current = sentence(accepted);
+    if (wouldOverRepeat(current, part, data, maxMentions)) continue;
+    accepted.push(part);
+  }
+  return sentence(accepted);
+}
+
 function templateIntro(kind, level, data) {
   const { name, city, discipline } = data;
   const place = city ? ` a ${city}` : '';
+  const hasDisciplineInName = nameContainsDiscipline(data);
   if (level === 'C') {
     const fallbackVariants = {
-      arti_marziali: `${name} e' una scuola di ${discipline}${place}.`,
-      fitness: `${name} e' una palestra${place} collegata a ${discipline}.`,
+      arti_marziali: hasDisciplineInName ? `${name} e' una scuola${place}.` : `${name} e' una scuola di ${discipline}${place}.`,
+      fitness: hasDisciplineInName ? `${name} e' una palestra${place}.` : `${name} e' una palestra${place} collegata a ${discipline}.`,
       crossfit: `${name} e' un box CrossFit${place}.`,
-      yoga_pilates: `${name} e' uno spazio${place} dedicato a ${discipline}.`,
+      yoga_pilates: hasDisciplineInName ? `${name} e' uno spazio${place}.` : `${name} e' uno spazio${place} dedicato a ${discipline}.`,
       personal_training: `${name} e' uno studio di personal training${place}.`,
-      multidisciplina: `${name} e' una struttura multidisciplina${place}.`,
-      catena_sede: `${name} e' una sede sportiva${place} collegata a ${discipline}.`,
-      scheda_povera: `${name} e' una struttura sportiva${place} collegata a ${discipline}.`
+      multidisciplina: hasDisciplineInName ? `${name} e' una struttura sportiva${place}.` : `${name} e' una struttura multidisciplina${place}.`,
+      catena_sede: hasDisciplineInName ? `${name} e' una sede sportiva${place}.` : `${name} e' una sede sportiva${place} collegata a ${discipline}.`,
+      scheda_povera: hasDisciplineInName ? `${name} e' una struttura sportiva${place}.` : `${name} e' una struttura sportiva${place} collegata a ${discipline}.`
     };
     return fallbackVariants[kind] || fallbackVariants.scheda_povera;
   }
@@ -136,33 +174,33 @@ function templateIntro(kind, level, data) {
   const variants = {
     arti_marziali:
       level === 'A'
-        ? `${name} e' una scuola di ${discipline} a ${city}.`
-        : `${name} e' una scuola di ${discipline} a ${city}.`,
+        ? hasDisciplineInName ? `${name} e' una scuola a ${city}.` : `${name} e' una scuola di ${discipline} a ${city}.`
+        : hasDisciplineInName ? `${name} e' una scuola a ${city}.` : `${name} e' una scuola di ${discipline} a ${city}.`,
     fitness:
       level === 'A'
-        ? `${name} e' una palestra a ${city} con attivita legate a ${discipline}.`
-        : `${name} e' una struttura sportiva di ${city} collegata a ${discipline}.`,
+        ? hasDisciplineInName ? `${name} e' una palestra a ${city}.` : `${name} e' una palestra a ${city} con attivita legate a ${discipline}.`
+        : hasDisciplineInName ? `${name} e' una struttura sportiva di ${city}.` : `${name} e' una struttura sportiva di ${city} collegata a ${discipline}.`,
     crossfit:
       level === 'A'
         ? `${name} e' un box CrossFit a ${city}.`
         : `${name} e' una realta di ${city} dedicata a CrossFit e allenamento funzionale.`,
     yoga_pilates:
       level === 'A'
-        ? `${name} e' uno spazio a ${city} dedicato a ${discipline}.`
-        : `${name} e' una struttura di ${city} collegata a percorsi di ${discipline}.`,
+        ? hasDisciplineInName ? `${name} e' uno spazio a ${city}.` : `${name} e' uno spazio a ${city} dedicato a ${discipline}.`
+        : hasDisciplineInName ? `${name} e' una struttura di ${city}.` : `${name} e' una struttura di ${city} collegata a percorsi di ${discipline}.`,
     personal_training:
       level === 'A'
         ? `${name} e' uno studio di personal training a ${city}.`
         : `${name} e' uno studio di ${city} collegato al personal training.`,
     multidisciplina:
       level === 'A'
-        ? `${name} e' una struttura multidisciplina a ${city}.`
-        : `${name} propone a ${city} attivita collegate a ${discipline}.`,
+        ? hasDisciplineInName ? `${name} e' una struttura sportiva a ${city}.` : `${name} e' una struttura multidisciplina a ${city}.`
+        : hasDisciplineInName ? `${name} propone attivita sportive a ${city}.` : `${name} propone a ${city} attivita collegate a ${discipline}.`,
     catena_sede:
       level === 'A'
-        ? `${name} e' una sede a ${city} collegata a ${discipline}.`
-        : `${name} e' una sede sportiva di ${city} con attivita legate a ${discipline}.`,
-    scheda_povera: `${name} e' una struttura sportiva${place} collegata a ${discipline}.`
+        ? hasDisciplineInName ? `${name} e' una sede a ${city}.` : `${name} e' una sede a ${city} collegata a ${discipline}.`
+        : hasDisciplineInName ? `${name} e' una sede sportiva di ${city}.` : `${name} e' una sede sportiva di ${city} con attivita legate a ${discipline}.`,
+    scheda_povera: hasDisciplineInName ? `${name} e' una struttura sportiva${place}.` : `${name} e' una struttura sportiva${place} collegata a ${discipline}.`
   };
   return variants[kind] || variants.scheda_povera;
 }
@@ -170,18 +208,21 @@ function templateIntro(kind, level, data) {
 function userFitSentence(kind, data) {
   const discipline = data.discipline;
   const lowerDiscipline = fold(discipline);
+  const hasDisciplineInName = nameContainsDiscipline(data);
   const variants = {
     arti_marziali:
-      lowerDiscipline.includes('kung')
-        ? 'La struttura e\' indicata per chi cerca corsi di arti marziali cinesi nella zona.'
-        : `La struttura e' indicata per chi cerca corsi di ${discipline} nella zona.`,
-    fitness: `E' un riferimento locale per chi cerca attivita di ${discipline}.`,
+      hasDisciplineInName
+        ? 'La struttura e\' indicata per chi cerca una scuola tecnica nella zona.'
+        : lowerDiscipline.includes('kung')
+          ? 'La struttura e\' indicata per chi cerca corsi di arti marziali cinesi nella zona.'
+          : `La struttura e' indicata per chi cerca corsi di ${discipline} nella zona.`,
+    fitness: hasDisciplineInName ? 'Sono indicati sede e recapito per il primo contatto.' : `E' un riferimento locale per chi cerca attivita di ${discipline}.`,
     crossfit: 'E\' pensata per chi cerca classi CrossFit o allenamento funzionale nella zona.',
-    yoga_pilates: `E' indicata per chi vuole orientarsi tra percorsi di ${discipline}.`,
+    yoga_pilates: hasDisciplineInName ? 'E\' indicata per orientarsi tra percorsi e contatti dello studio.' : `E' indicata per chi vuole orientarsi tra percorsi di ${discipline}.`,
     personal_training: 'E\' una soluzione da valutare per percorsi seguiti e allenamento individuale.',
     multidisciplina: `E' utile per chi cerca piu attivita sportive nello stesso contesto.`,
-    catena_sede: `E' una sede da valutare per chi cerca attivita legate a ${discipline}.`,
-    scheda_povera: `E' un riferimento locale per chi cerca ${discipline}.`
+    catena_sede: hasDisciplineInName ? 'E\' una sede da valutare per posizione e contatti.' : `E' una sede da valutare per chi cerca attivita legate a ${discipline}.`,
+    scheda_povera: hasDisciplineInName ? 'E\' un riferimento locale da verificare prima del contatto.' : `E' un riferimento locale per chi cerca ${discipline}.`
   };
   return variants[kind] || variants.scheda_povera;
 }
@@ -189,7 +230,7 @@ function userFitSentence(kind, data) {
 function addressSentence(data) {
   if (!data.address) return '';
   const cityPart = data.city && !fold(data.address).includes(fold(data.city)) ? `, a ${data.city}` : '';
-  return `${data.name} si trova in ${data.address}${cityPart}.`;
+  return `La sede si trova in ${data.address}${cityPart}.`;
 }
 
 function contactSentence(data) {
@@ -218,15 +259,15 @@ function buildShort(kind, level, data) {
     return templateIntro(kind, level, data);
   }
   if (level === 'A') {
-    return sentence([
+    return joinWithoutKeywordEcho([
       templateIntro(kind, level, data),
       userFitSentence(kind, data)
-    ]);
+    ], data);
   }
-  return sentence([
+  return joinWithoutKeywordEcho([
     templateIntro(kind, level, data),
     data.address || data.contact.value ? '' : userFitSentence(kind, data)
-  ]);
+  ], data);
 }
 
 function buildLong(kind, level, data) {
@@ -236,19 +277,19 @@ function buildLong(kind, level, data) {
   const courseHint = userFitSentence(kind, data);
 
   if (level === 'C') {
-    return sentence([
+    return joinWithoutKeywordEcho([
       buildShort(kind, level, data),
       address,
       contact
-    ]);
+    ], data);
   }
 
-  return sentence([
+  return joinWithoutKeywordEcho([
     buildShort(kind, level, data),
     address,
     contact,
     history || courseHint
-  ]);
+  ], data);
 }
 
 function pushFaq(faq, question, answer, sourceFields) {

@@ -116,6 +116,30 @@ const completePreview = previewFor(
 );
 assert(['A', 'B'].includes(completePreview.livello));
 
+const emsPreview = generateGymEditorialPreview(
+  {
+    nome: 'Body Work Lugano - EMS e Vacu Gym',
+    citta: 'Lugano',
+    indirizzo: 'Via Tesserete 65',
+    telefono: '+41 76 707 75 47',
+    disciplines: ['EMS Training'],
+    descrizione:
+      "Body Work Lugano - EMS e Vacu Gym e' una palestra a Lugano con attivita legate a EMS Training. E' un riferimento locale per chi cerca attivita di EMS Training."
+  },
+  reconcileGymFacts(
+    {
+      nome: 'Body Work Lugano - EMS e Vacu Gym',
+      citta: 'Lugano',
+      indirizzo: 'Via Tesserete 65',
+      telefono: '+41 76 707 75 47',
+      disciplines: ['EMS Training']
+    },
+    {}
+  )
+);
+assert(countMatches(emsPreview.descrizione_lunga, /\bEMS\b/gi) <= 2);
+assert(!emsPreview.descrizione_lunga.includes('chi cerca attivita di EMS Training'));
+
 const poorGym = { nome: 'Palestra Essenziale', citta: 'Como', disciplines: ['Fitness'] };
 const poorPreview = generateGymEditorialPreview(poorGym, reconcileGymFacts(poorGym, {}));
 assert.equal(poorPreview.livello, 'C');
@@ -147,6 +171,10 @@ const conflictReconciliation = reconcileGymFacts(
 const conflictPreview = generateGymEditorialPreview({ ...baierGym, telefono: '0331 999999' }, conflictReconciliation.used_facts, conflictReconciliation.excluded_facts);
 assert.equal(conflictPreview.livello, 'C');
 assert(conflictPreview.excluded_facts.some((fact) => fact.field === 'telefono'));
+
+function countMatches(text, pattern) {
+  return [...String(text || '').matchAll(pattern)].length;
+}
 
 console.log(
   JSON.stringify(

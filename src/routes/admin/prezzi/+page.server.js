@@ -1,6 +1,7 @@
+import { fail } from '@sveltejs/kit';
 import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
-import { readGyms } from '$lib/server/gym-store';
+import { canWriteSupabase, readGyms, updateGymRecord } from '$lib/server/gym-store';
 import { isArchivedGym } from '$lib/admin/gyms';
 import { analyzeOfficialHtmlPages, discoverOfficialLinks } from '$lib/official-structured-scraper.js';
 import { reconcileGymFacts } from '$lib/official-reconciliation.js';
@@ -77,6 +78,72 @@ function getWebsiteHost(website) {
 
 function clean(value) {
   return String(value ?? '').replace(/\s+/g, ' ').trim();
+}
+
+function parseJsonPayload(value) {
+  try {
+    const parsed = JSON.parse(String(value || '{}'));
+    return parsed && typeof parsed === 'object' ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+function normalizeFaqItems(items) {
+  return (Array.isArray(items) ? items : [])
+    .map((item) => ({
+      question: clean(item?.question),
+      answer: clean(item?.answer)
+    }))
+    .filter((item) => item.question && item.answer)
+    .slice(0, 5);
+}
+
+function appendAdminNote(existing, note) {
+  const current = clean(existing);
+  const next = clean(note);
+  if (!current) return next;
+  if (!next) return current;
+  return `${current}\n${next}`.slice(0, 4000);
+}
+
+function hasBlockingConflict(row) {
+  return Boolean(row?.reconciliation?.conflicts?.length);
+}
+
+function approvalPatchFor(gym, row, approvalType) {
+  const preview = row?.editorial_preview || {};
+  const shortText = clean(preview.descrizione_breve);
+  const longText = clean(preview.descrizione_lunga);
+  const now = new Date().toISOString();
+  const source = clean(row.source_url || row.website || gym.sito || gym.website);
+  const sourceLabel = `admin_editorial_preview:${approvalType}:${now}`;
+  const auditNote = `Editoriale approvato in admin (${approvalType}) il ${now}. Livello ${clean(preview.livello) || 'n/d'}, quality score ${Number(preview.quality_score || 0)}. Fonte: ${source || 'solo dati scheda'}.`;
+
+  const patch = {
+    descrizione_source: sourceLabel,
+    descrizione_quality_score: Number(preview.quality_score || 0) || 0,
+    descrizione_needs_review: false,
+    enrichment_status: 'published',
+    enrichment_updated_at: now,
+    enrichment_notes: appendAdminNote(gym.enrichment_notes, auditNote),
+    official_source_url: source || gym.official_source_url || ''
+  };
+
+  if (approvalType === 'breve' || approvalType === 'tutto') {
+    patch.editorial_summary = shortText;
+  }
+
+  if (approvalType === 'lunga' || approvalType === 'tutto') {
+    patch.descrizione_editoriale = longText;
+    patch.descrizione_pubblica = longText;
+  }
+
+  if (approvalType === 'tutto') {
+    patch.editorial_faq_items = normalizeFaqItems(preview.faq);
+  }
+
+  return patch;
 }
 
 function truncate(value, max = 6000) {
@@ -439,5 +506,76 @@ export const actions = {
     const gyms = await readGyms().catch(() => []);
     const previewReport = await generatePreviewFromGyms(Array.isArray(gyms) ? gyms : [], limit);
     return { previewReport };
+  },
+  approveEditorial: async ({ request }) => {
+    if (!canWriteSupabase()) {
+      return fail(503, {
+        error:
+          'Pubblicazione bloccata: questa azione deve scrivere su Supabase production, ma SUPABASE_SERVICE_ROLE_KEY non e disponibile.'
+      });
+    }
+
+    const form = await request.formData();
+    const approvalType = clean(form.get('approval_type'));
+    const row = parseJsonPayload(form.get('preview_payload'));
+    const gymId = clean(row.id || form.get('gym_id'));
+
+    if (!['breve', 'lunga', 'tutto'].includes(approvalType)) {
+      return fail(400, { error: 'Tipo approvazione non valido.' });
+    }
+
+    if (!gymId) {
+      return fail(400, { error: 'Scheda non identificata: impossibile pubblicare la preview.' });
+    }
+
+    if (hasBlockingConflict(row)) {
+      return fail(400, {
+        error: 'Pubblicazione bloccata: la preview contiene conflitti nel confronto scheda/fonte.'
+      });
+    }
+
+    const preview = row.editorial_preview || {};
+    if ((approvalType === 'breve' || approvalType === 'tutto') && !clean(preview.descrizione_breve)) {
+      return fail(400, { error: 'Descrizione breve assente.' });
+    }
+    if ((approvalType === 'lunga' || approvalType === 'tutto') && !clean(preview.descrizione_lunga)) {
+      return fail(400, { error: 'Descrizione lunga assente.' });
+    }
+
+    const gyms = await readGyms({ fresh: true }).catch(() => []);
+    const gym = Array.isArray(gyms)
+      ? gyms.find((item) => clean(item.id) === gymId || clean(item.slug || item._canonical_slug) === gymId)
+      : null;
+
+    if (!gym) {
+      return fail(404, { error: 'Scheda non trovata in produzione.' });
+    }
+
+    const patch = approvalPatchFor(gym, row, approvalType);
+    try {
+      await updateGymRecord({
+        ...gym,
+        ...patch
+      });
+    } catch (err) {
+      return fail(500, {
+        error: err?.message || 'Errore durante la pubblicazione della preview.'
+      });
+    }
+
+    return {
+      editorialPublished: {
+        gym_id: gym.id,
+        nome: getGymName(gym),
+        approval_type: approvalType,
+        updated_fields: Object.keys(patch),
+        message:
+          approvalType === 'breve'
+            ? 'Descrizione breve approvata e pubblicata.'
+            : approvalType === 'lunga'
+              ? 'Descrizione lunga approvata e pubblicata.'
+              : 'Descrizione breve, lunga e FAQ approvate e pubblicate.'
+      }
+    };
   }
 };

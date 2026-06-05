@@ -144,6 +144,20 @@
     editorialDecisions = { ...editorialDecisions, [row.id || row.slug || row.nome]: decision };
   }
 
+  function previewPayload(row) {
+    return JSON.stringify({
+      id: row.id,
+      slug: row.slug,
+      nome: row.nome,
+      website: row.website,
+      source_url: row.source_url,
+      reconciliation: {
+        conflicts: row.reconciliation?.conflicts || []
+      },
+      editorial_preview: editorialPreview(row)
+    });
+  }
+
   async function copyText(value) {
     const text = String(value || '').trim();
     if (!text || typeof navigator === 'undefined' || !navigator.clipboard) return;
@@ -219,6 +233,19 @@
     {#if form?.previewReport}
       <div class="mb-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-900">
         Preview generata ora: {form.previewReport.summary.extracted} schede con evidenze su {form.previewReport.summary.selected}.
+      </div>
+    {/if}
+
+    {#if form?.editorialPublished}
+      <div class="mb-4 rounded-2xl border border-emerald-300 bg-emerald-50 p-3 text-sm text-emerald-950">
+        <p class="font-bold">{form.editorialPublished.message}</p>
+        <p class="mt-1">{form.editorialPublished.nome} aggiornata in produzione.</p>
+      </div>
+    {/if}
+
+    {#if form?.error}
+      <div class="mb-4 rounded-2xl border border-rose-200 bg-rose-50 p-3 text-sm font-semibold text-rose-900">
+        {form.error}
       </div>
     {/if}
 
@@ -488,8 +515,30 @@
                         {/if}
 
                         <div class="mt-4 flex flex-wrap gap-2">
-                          <button type="button" class="rounded-lg bg-emerald-800 px-3 py-2 text-sm font-bold text-white hover:bg-emerald-900" on:click={() => setEditorialDecision(row, 'approva_breve')}>Approva descrizione breve</button>
-                          <button type="button" class="rounded-lg bg-emerald-800 px-3 py-2 text-sm font-bold text-white hover:bg-emerald-900" on:click={() => setEditorialDecision(row, 'approva_lunga')}>Approva descrizione lunga</button>
+                          {#if row.reconciliation?.conflicts?.length}
+                            <p class="w-full rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm font-bold text-rose-900">
+                              Conflitti rilevati: pubblicazione diretta bloccata.
+                            </p>
+                          {:else}
+                            <form method="POST" action="?/approveEditorial">
+                              <input type="hidden" name="gym_id" value={row.id || row.slug} />
+                              <input type="hidden" name="approval_type" value="breve" />
+                              <input type="hidden" name="preview_payload" value={previewPayload(row)} />
+                              <button type="submit" class="rounded-lg bg-emerald-800 px-3 py-2 text-sm font-bold text-white hover:bg-emerald-900">Approva descrizione breve</button>
+                            </form>
+                            <form method="POST" action="?/approveEditorial">
+                              <input type="hidden" name="gym_id" value={row.id || row.slug} />
+                              <input type="hidden" name="approval_type" value="lunga" />
+                              <input type="hidden" name="preview_payload" value={previewPayload(row)} />
+                              <button type="submit" class="rounded-lg bg-emerald-800 px-3 py-2 text-sm font-bold text-white hover:bg-emerald-900">Approva descrizione lunga</button>
+                            </form>
+                            <form method="POST" action="?/approveEditorial">
+                              <input type="hidden" name="gym_id" value={row.id || row.slug} />
+                              <input type="hidden" name="approval_type" value="tutto" />
+                              <input type="hidden" name="preview_payload" value={previewPayload(row)} />
+                              <button type="submit" class="rounded-lg bg-teal-800 px-3 py-2 text-sm font-bold text-white hover:bg-teal-900">Approva tutto e pubblica</button>
+                            </form>
+                          {/if}
                           <button type="button" class="rounded-lg bg-white px-3 py-2 text-sm font-bold text-slate-800 ring-1 ring-slate-200 hover:bg-slate-50" on:click={() => copyText(`${editorialPreview(row).descrizione_breve}\n\n${editorialPreview(row).descrizione_lunga}`)}>Copia testo</button>
                           <button type="button" class="rounded-lg bg-white px-3 py-2 text-sm font-bold text-slate-800 ring-1 ring-slate-200 hover:bg-slate-50" on:click={() => setEditorialDecision(row, 'modifica_manuale')}>Modifica manualmente</button>
                           <button type="button" class="rounded-lg bg-white px-3 py-2 text-sm font-bold text-rose-800 ring-1 ring-rose-200 hover:bg-rose-50" on:click={() => setEditorialDecision(row, 'rifiuta')}>Rifiuta preview</button>

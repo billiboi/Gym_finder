@@ -674,7 +674,22 @@ function adminUpdateRecord(gym, availableColumns) {
     'needs_review',
     'review_reason',
     'last_data_audit_at',
-    'safe_public_description'
+    'safe_public_description',
+    'official_source_url',
+    'editorial_summary',
+    'editorial_highlights',
+    'editorial_faq_items',
+    'price_info',
+    'price_source_url',
+    'price_updated_at',
+    'verified_commercial_info',
+    'commercial_info_last_checked_at',
+    'source_url',
+    'enrichment_status',
+    'enrichment_notes',
+    'enrichment_updated_at',
+    'social_links',
+    'data_verified_at'
   ];
 
   for (const column of italianColumns) {
