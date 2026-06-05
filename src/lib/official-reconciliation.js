@@ -87,11 +87,24 @@ function valuesFromFacts(facts, key) {
   return items.map((item) => clean(item?.value || item)).filter(Boolean);
 }
 
-function confidenceFromFacts(facts, key) {
-  const items = Array.isArray(facts?.[key]) ? facts[key] : [];
+function structuredItems(factsJson, key, predicate = () => true) {
+  const items = Array.isArray(factsJson?.[key]) ? factsJson[key] : [];
+  return items.filter((item) => item && predicate(item)).map((item) => ({ ...item, value: clean(item.value || item) })).filter((item) => item.value);
+}
+
+function structuredValues(factsJson, key, predicate) {
+  return structuredItems(factsJson, key, predicate).map((item) => item.value);
+}
+
+function confidenceFromItems(items) {
   if (items.some((item) => item?.confidence === 'high')) return 'high';
   if (items.some((item) => item?.confidence === 'medium')) return 'medium';
   return items.length ? 'low' : 'low';
+}
+
+function confidenceFromFacts(facts, key) {
+  const items = Array.isArray(facts?.[key]) ? facts[key] : [];
+  return confidenceFromItems(items);
 }
 
 function appValue(gym, keys) {
@@ -132,6 +145,19 @@ function officialText(facts) {
   );
 }
 
+function schemaOrgText(factsJson) {
+  return structuredValues(factsJson, 'schema_org').join(' ');
+}
+
+function officialStructuredText(factsJson) {
+  return [
+    schemaOrgText(factsJson),
+    ...structuredValues(factsJson, 'about'),
+    ...structuredValues(factsJson, 'courses'),
+    ...structuredValues(factsJson, 'addresses')
+  ].join(' ');
+}
+
 function hasIncompatibleCity(value, gym) {
   const appCity = appValue(gym, ['citta', 'city']);
   if (!appCity || !value) return false;
@@ -152,6 +178,20 @@ function suspiciousOfficialValue(value, gym, field) {
   }
   if (field === 'prezzi' && PROMO_PRICE_RE.test(text)) return 'Prezzo o promozione non abbastanza stabile per uso automatico.';
   return '';
+}
+
+function hasSevereFactWarning(item, field) {
+  const warning = clean(item?.warning);
+  if (!warning) return false;
+  if (/menu|footer|privacy|cookie|copyright|altra palestra|altro centro|citta incompatibile|fonte ambigua|promozione|non abbastanza stabile/i.test(warning)) {
+    return true;
+  }
+  if (field === 'prezzi') return true;
+  return false;
+}
+
+function usableStructuredItems(factsJson, key, field, predicate = () => true) {
+  return structuredItems(factsJson, key, predicate).filter((item) => item.confidence !== 'low' && !hasSevereFactWarning(item, field));
 }
 
 function compareValues(field, app, official, confidence, gym, options = {}) {
@@ -202,6 +242,53 @@ function row(field, app_value, official_value, status, confidence, suggested_act
   };
 }
 
+function rowWithFacts(field, app_value, official_value, status, confidence, suggested_action, reason, source_facts = []) {
+  return { ...row(field, app_value, official_value, status, confidence, suggested_action, reason), source_facts };
+}
+
+function compareStructuredValues(field, app, items, gym, options = {}) {
+  const appText = clean(app);
+  const officialTextValue = firstOrJoined([...new Set(items.map((item) => item.value))], options.maxValues || 5);
+  const confidence = confidenceFromItems(items);
+  const sourceFacts = items;
+  const officialHadContent = Boolean(options.officialHadContent);
+  const suspicious = suspiciousOfficialValue(officialTextValue, gym, field);
+
+  if (!appText && !officialTextValue) {
+    return rowWithFacts(field, '', '', 'not_found', 'low', 'ignore', 'Dato assente sia nella scheda sia nei facts strutturati.', sourceFacts);
+  }
+
+  if (officialTextValue && (suspicious || items.some((item) => hasSevereFactWarning(item, field)))) {
+    return rowWithFacts(
+      field,
+      appText,
+      officialTextValue,
+      'official_unclear',
+      'low',
+      'needs_manual_review',
+      suspicious || 'Uno o piu facts hanno warning grave o non sono abbastanza affidabili.',
+      sourceFacts
+    );
+  }
+
+  if (!appText && officialTextValue) {
+    const status = confidence === 'low' ? 'official_unclear' : 'new_from_official';
+    const action = confidence === 'low' ? 'needs_manual_review' : options.editorialOnly ? 'use_for_editorial' : 'suggest_update';
+    return rowWithFacts(field, '', officialTextValue, status, confidence, action, 'Fact strutturato presente nella fonte ufficiale e assente nella scheda.', sourceFacts);
+  }
+
+  if (appText && !officialTextValue) {
+    return rowWithFacts(field, appText, '', 'app_only', officialHadContent ? 'medium' : 'low', 'keep_app', 'Dato presente nella scheda e non contraddetto dai facts ufficiali.', sourceFacts);
+  }
+
+  const matched = options.matcher ? options.matcher(appText, officialTextValue) : tokenOverlap(appText, officialTextValue) >= 0.72;
+  if (matched) {
+    return rowWithFacts(field, appText, officialTextValue, 'confirmed', confidence === 'low' ? 'medium' : confidence, 'keep_app', 'Dato scheda e fact ufficiale risultano compatibili.', sourceFacts);
+  }
+
+  return rowWithFacts(field, appText, officialTextValue, 'conflict', 'medium', 'needs_manual_review', 'Dato scheda e fact ufficiale non coincidono.', sourceFacts);
+}
+
 function firstOrJoined(values, max = 3) {
   return values.slice(0, max).join(' | ');
 }
@@ -214,9 +301,127 @@ function eligibleForEditorial(item) {
   if (item.status === 'conflict' || item.status === 'official_unclear') return false;
   if (item.status === 'app_only') return true;
   if (item.confidence === 'low') return false;
+  if ((item.source_facts || []).some((fact) => hasSevereFactWarning(fact, item.field))) return false;
   if (item.status === 'confirmed') return true;
   if (item.status === 'new_from_official' && confidenceRank(item.confidence) >= 2) return true;
   return false;
+}
+
+function asEditorialFact(item) {
+  return {
+    field: item.field,
+    label: item.field_label || FIELD_LABELS[item.field] || item.field,
+    value: item.app_value || item.official_value,
+    app_value: item.app_value,
+    official_value: item.official_value,
+    status: item.status,
+    status_label: item.status_label,
+    confidence: item.confidence,
+    suggested_action: item.suggested_action,
+    reason: item.reason,
+    source_facts: item.source_facts || []
+  };
+}
+
+function finalizeReconciliation(rows, warnings = []) {
+  const confirmed = rows.filter((item) => item.status === 'confirmed');
+  const suggested = rows.filter((item) => item.status === 'new_from_official' && item.suggested_action === 'suggest_update');
+  const conflicts = rows.filter((item) => item.status === 'conflict');
+  const excluded = rows.filter((item) => !eligibleForEditorial(item));
+  const editorialEligible = rows.filter(eligibleForEditorial);
+  const needsReview = conflicts.length > 0 || rows.some((item) => item.status === 'official_unclear');
+  const averageConfidence =
+    rows.reduce((sum, item) => sum + confidenceRank(item.confidence), 0) / Math.max(rows.filter((item) => item.status !== 'not_found').length, 1);
+  const overallConfidence = averageConfidence >= 2.5 && !needsReview ? 'high' : averageConfidence >= 1.6 ? 'medium' : 'low';
+
+  return {
+    rows,
+    confirmed,
+    suggested,
+    conflicts,
+    excluded,
+    editorial_eligible: editorialEligible,
+    used_facts: editorialEligible.map(asEditorialFact),
+    excluded_facts: excluded.map(asEditorialFact),
+    needs_review: needsReview,
+    overall_confidence: overallConfidence,
+    warnings: [
+      ...warnings,
+      ...(conflicts.length ? ['Sono presenti conflitti: non generare editoriale prima della review.'] : []),
+      ...(rows.some((item) => item.status === 'official_unclear') ? ['Alcuni facts ufficiali sono poco chiari o hanno warning gravi.'] : [])
+    ]
+  };
+}
+
+export function reconcileGymFacts(gym, factsJson = {}) {
+  const officialHadContent = Boolean(Object.entries(factsJson || {}).some(([, value]) => Array.isArray(value) && value.length));
+  const structuredText = officialStructuredText(factsJson);
+  const schemaText = schemaOrgText(factsJson);
+  const appName = appValue(gym, ['nome', 'name']);
+  const appCity = appValue(gym, ['citta', 'city']);
+  const contacts = usableStructuredItems(factsJson, 'contacts', 'telefono');
+  const phones = contacts.filter((item) => item.type === 'phone');
+  const emails = usableStructuredItems(factsJson, 'contacts', 'email', (item) => item.type === 'email');
+  const addresses = usableStructuredItems(factsJson, 'addresses', 'indirizzo').filter((item) => item.source_section !== 'iframe_google_maps');
+  const courses = usableStructuredItems(factsJson, 'courses', 'discipline');
+  const schedules = usableStructuredItems(factsJson, 'schedules', 'orari');
+  const prices = usableStructuredItems(factsJson, 'prices', 'prezzi');
+  const about = usableStructuredItems(factsJson, 'about', 'storia');
+  const social = usableStructuredItems(factsJson, 'social_links', 'social');
+  const officialWebsite = clean(factsJson?.source_url || factsJson?.website || '');
+
+  const rows = [
+    compareStructuredValues('nome', appName, appName && schemaText.includes(appName) ? [{ value: appName, confidence: 'medium', source_section: 'schema_org' }] : [], gym, {
+      officialHadContent,
+      matcher: (app, official) => tokenOverlap(app, official) >= 0.85
+    }),
+    compareStructuredValues('citta', appCity, appCity && structuredText.includes(appCity) ? [{ value: appCity, confidence: 'medium', source_section: 'facts_json' }] : [], gym, {
+      officialHadContent,
+      matcher: (app, official) => normalizeText(app) === normalizeText(official)
+    }),
+    compareStructuredValues('indirizzo', appValue(gym, ['indirizzo', 'address']), addresses, gym, {
+      officialHadContent,
+      matcher: (app, official) => tokenOverlap(app, official) >= 0.6
+    }),
+    compareStructuredValues('telefono', appValue(gym, ['telefono', 'phone']), phones, gym, {
+      officialHadContent,
+      matcher: (app, official) => {
+        const left = normalizePhone(app);
+        const right = normalizePhone(official);
+        return Boolean(left && right && (left.endsWith(right) || right.endsWith(left) || left === right));
+      }
+    }),
+    compareStructuredValues('email', appValue(gym, ['email', 'mail']), emails, gym, {
+      officialHadContent,
+      matcher: (app, official) => fold(app) === fold(official) || fold(official).split('|').map(clean).includes(fold(app))
+    }),
+    compareStructuredValues('sito', appValue(gym, ['sito', 'website']), officialWebsite ? [{ value: officialWebsite, confidence: 'high', source_section: 'source_url' }] : [], gym, {
+      officialHadContent,
+      matcher: (app, official) => normalizeHost(app) === normalizeHost(official)
+    }),
+    compareStructuredValues('discipline', appDisciplines(gym), courses, gym, {
+      officialHadContent,
+      maxValues: 8,
+      matcher: (app, official) => tokenOverlap(app, official) >= 0.45
+    }),
+    compareStructuredValues('orari', appValue(gym, ['orari', 'hours_info', 'opening_hours']), schedules, gym, {
+      officialHadContent,
+      matcher: (app, official) => tokenOverlap(app, official) >= 0.45
+    }),
+    compareStructuredValues('prezzi', appValue(gym, ['price_info', 'prezzi']), prices, gym, {
+      officialHadContent
+    }),
+    compareStructuredValues('storia', '', about, gym, {
+      officialHadContent,
+      editorialOnly: true
+    }),
+    compareStructuredValues('social', appSocial(gym), social, gym, {
+      officialHadContent,
+      matcher: (app, official) => normalizeHost(app) === normalizeHost(official) || tokenOverlap(app, official) >= 0.55
+    })
+  ];
+
+  return finalizeReconciliation(rows, factsJson?.warnings || []);
 }
 
 export function reconcileGymWithOfficialSource(gym, officialFacts = {}) {
@@ -294,31 +499,7 @@ export function reconcileGymWithOfficialSource(gym, officialFacts = {}) {
     })
   ];
 
-  const confirmed = rows.filter((item) => item.status === 'confirmed');
-  const suggested = rows.filter((item) => item.status === 'new_from_official' && item.suggested_action === 'suggest_update');
-  const conflicts = rows.filter((item) => item.status === 'conflict');
-  const excluded = rows.filter((item) => !eligibleForEditorial(item));
-  const editorialEligible = rows.filter(eligibleForEditorial);
-  const needsReview = conflicts.length > 0 || rows.some((item) => item.status === 'official_unclear');
-  const averageConfidence =
-    rows.reduce((sum, item) => sum + confidenceRank(item.confidence), 0) / Math.max(rows.filter((item) => item.status !== 'not_found').length, 1);
-  const overallConfidence = averageConfidence >= 2.5 && !needsReview ? 'high' : averageConfidence >= 1.6 ? 'medium' : 'low';
-
-  return {
-    rows,
-    confirmed,
-    suggested,
-    conflicts,
-    excluded,
-    editorial_eligible: editorialEligible,
-    needs_review: needsReview,
-    overall_confidence: overallConfidence,
-    warnings: [
-      ...(officialFacts?.warnings || []),
-      ...(rows.some((item) => item.status === 'conflict') ? ['Sono presenti conflitti: non generare editoriale prima della review.'] : []),
-      ...(rows.some((item) => item.status === 'official_unclear') ? ['Alcuni dati ufficiali sono poco chiari o rumorosi.'] : [])
-    ]
-  };
+  return finalizeReconciliation(rows, officialFacts?.warnings || []);
 }
 
 export { ACTION_LABELS, FIELD_LABELS, STATUS_LABELS };

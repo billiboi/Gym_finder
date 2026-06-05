@@ -62,7 +62,7 @@
   }
 
   function factEntries(facts) {
-    return Object.entries(facts || {}).filter(([, items]) => Array.isArray(items) && items.length);
+    return Object.entries(facts || {}).filter(([key, items]) => key !== 'warnings' && Array.isArray(items) && items.length);
   }
 
   function factLabel(key) {
@@ -76,7 +76,16 @@
         prices_found: 'Prezzi',
         people_found: 'Persone',
         organization_history: 'Storia organizzazione',
-        source_highlights: 'Evidenze fonte'
+        source_highlights: 'Evidenze fonte',
+        contacts: 'Contatti',
+        addresses: 'Indirizzi',
+        courses: 'Corsi e discipline',
+        schedules: 'Orari',
+        prices: 'Prezzi',
+        about: 'Chi siamo',
+        social_links: 'Social',
+        images: 'Immagini',
+        schema_org: 'Schema.org'
       }[key] || key
     );
   }
@@ -94,7 +103,17 @@
         indirizzo: 'Indirizzo',
         staff: 'Staff',
         eventi: 'Eventi',
-        note: 'Note'
+        note: 'Note',
+        tel: 'Telefono link',
+        mailto: 'Email link',
+        testo: 'Testo pagina',
+        table: 'Tabella',
+        corsi_discipline: 'Corsi/discipline',
+        iframe_google_maps: 'Google Maps',
+        open_graph: 'Open Graph',
+        schema_org: 'Schema.org',
+        social_link: 'Social',
+        immagine: 'Immagine'
       }[key] || key
     );
   }
@@ -483,6 +502,32 @@
                         {/if}
                       </div>
                     {/if}
+                    {#if row.pages_scraped?.length || row.confidence_score}
+                      <div class="rounded-2xl border border-blue-200 bg-blue-50 p-3 text-sm leading-6 text-blue-950">
+                        <div class="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+                          <div>
+                            <p class="font-bold">Pagine analizzate</p>
+                            {#if row.pages_scraped?.length}
+                              <ul class="mt-1 space-y-1">
+                                {#each row.pages_scraped as page}
+                                  <li class="break-words">
+                                    <a href={page.url} target="_blank" rel="noreferrer" class="font-semibold text-blue-800 hover:text-blue-950">{page.title || page.url}</a>
+                                    {#if page.fetched_at}
+                                      <span class="text-xs text-blue-700"> · {formatDate(page.fetched_at)}</span>
+                                    {/if}
+                                  </li>
+                                {/each}
+                              </ul>
+                            {:else}
+                              <p class="mt-1">Nessuna pagina ufficiale analizzata.</p>
+                            {/if}
+                          </div>
+                          <span class="inline-flex w-fit rounded-full border border-blue-200 bg-white px-2.5 py-1 text-xs font-bold text-blue-800">
+                            Confidenza estrazione {row.confidence_score || 0}/100
+                          </span>
+                        </div>
+                      </div>
+                    {/if}
                     {#if row.raw_official_text}
                       <details class="rounded-2xl border border-slate-200 bg-slate-50 p-3 text-sm leading-6 text-slate-800">
                         <summary class="cursor-pointer font-bold text-slate-900">Testo grezzo</summary>
@@ -526,6 +571,9 @@
                                   <li class="break-words">
                                     {item.value}
                                     <span class="text-xs font-semibold text-slate-500">({sectionLabel(item.source_section)}, {item.confidence})</span>
+                                    {#if item.source_url}
+                                      <a href={item.source_url} target="_blank" rel="noreferrer" class="ml-1 text-xs font-semibold text-blue-700 hover:text-blue-900">fonte</a>
+                                    {/if}
                                     {#if item.warning}
                                       <span class="text-xs font-semibold text-amber-800"> {item.warning}</span>
                                     {/if}

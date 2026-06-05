@@ -2,8 +2,8 @@ import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { readGyms } from '$lib/server/gym-store';
 import { isArchivedGym } from '$lib/admin/gyms';
-import { analyzeOfficialScrape } from '$lib/official-scrape-cleaner.js';
-import { reconcileGymWithOfficialSource } from '$lib/official-reconciliation.js';
+import { analyzeOfficialHtmlPages, discoverOfficialLinks } from '$lib/official-structured-scraper.js';
+import { reconcileGymFacts } from '$lib/official-reconciliation.js';
 import { generateGymEditorialPreview } from '$lib/gym-editorial-preview.js';
 
 const DATA_DIR = path.resolve('data');
@@ -209,13 +209,9 @@ function wait(ms) {
 }
 
 async function discoverPages(website) {
-  const urls = new Set();
-  if (website) urls.add(website);
   const home = await fetchHtml(website);
-  if (home.ok) {
-    for (const url of extractInternalLinks(home.html, website)) urls.add(url);
-  }
-  return [...urls].slice(0, 4);
+  if (!home.ok) return website ? [website] : [];
+  return discoverOfficialLinks(home.html, website, 8);
 }
 
 function needsEnrichment(gym) {
@@ -229,7 +225,7 @@ function needsEnrichment(gym) {
 
 function normalizePreviewRow(gym, best) {
   const website = clean(gym.website || gym.sito || '');
-  const fallbackReconciliation = best?.reconciliation || reconcileGymWithOfficialSource(gym, {});
+  const fallbackReconciliation = best?.reconciliation || reconcileGymFacts(gym, {});
   const editorialPreview = best?.editorial_preview || generateGymEditorialPreview(gym, fallbackReconciliation);
   return {
     id: clean(gym.id),
@@ -243,10 +239,13 @@ function normalizePreviewRow(gym, best) {
     source_url: best?.source_url || '',
     source_title: best?.source_title || '',
     source_fetched_at: best?.source_fetched_at || '',
+    pages_scraped: best?.pages_scraped || [],
+    confidence_score: best?.confidence_score || 0,
     raw_official_text: best?.raw_official_text || '',
     clean_official_text: best?.clean_official_text || '',
     extracted_sections: best?.extracted_sections || {},
     extracted_facts: best?.extracted_facts || {},
+    legacy_facts: best?.legacy_facts || {},
     extraction_warnings: best?.extraction_warnings || [],
     reconciliation: fallbackReconciliation,
     editorial_preview: editorialPreview,
@@ -275,27 +274,33 @@ async function generatePreviewFromGyms(gyms, limit = 20) {
   for (const gym of selected) {
     const website = clean(gym.website || gym.sito || '');
     const pages = await discoverPages(website);
-    let best = null;
+    const scrapedPages = [];
 
     for (const url of pages) {
       await wait(1200);
       const result = await fetchHtml(url);
       if (!result.ok) continue;
-      const rawText = stripHtml(result.html);
-      const officialAnalysis = analyzeOfficialScrape(rawText);
-      const reconciliation = reconcileGymWithOfficialSource(gym, { ...officialAnalysis, source_url: url, website });
+      scrapedPages.push({ url, html: result.html, fetched_at: new Date().toISOString() });
+    }
+
+    let best = null;
+    if (scrapedPages.length) {
+      const officialAnalysis = analyzeOfficialHtmlPages(scrapedPages);
+      const reconciliation = reconcileGymFacts(gym, { ...officialAnalysis.facts_json, source_url: website, website });
       const editorialPreview = generateGymEditorialPreview(gym, reconciliation);
       const summary = summarizeText(officialAnalysis.clean_text);
-      if (!summary.topics.length) continue;
-      const score = summary.topics.length * 25 + summary.amounts.length * 15 + (url !== website ? 10 : 0);
-      const row = {
-        source_url: url,
-        source_title: extractTitle(result.html),
-        source_fetched_at: new Date().toISOString(),
-        raw_official_text: truncate(rawText),
+      const score = officialAnalysis.confidence_score + summary.topics.length * 10 + summary.amounts.length * 8;
+      best = {
+        source_url: scrapedPages[0]?.url || website,
+        source_title: officialAnalysis.pages_scraped?.[0]?.title || '',
+        source_fetched_at: scrapedPages[0]?.fetched_at || new Date().toISOString(),
+        pages_scraped: officialAnalysis.pages_scraped,
+        raw_official_text: truncate(officialAnalysis.raw_text),
         clean_official_text: truncate(officialAnalysis.clean_text),
-        extracted_sections: officialAnalysis.sections,
-        extracted_facts: officialAnalysis.facts,
+        extracted_sections: officialAnalysis.sections_json,
+        extracted_facts: officialAnalysis.facts_json,
+        legacy_facts: officialAnalysis.facts,
+        confidence_score: officialAnalysis.confidence_score,
         extraction_warnings: officialAnalysis.warnings,
         reconciliation,
         editorial_preview: editorialPreview,
@@ -310,7 +315,6 @@ async function generatePreviewFromGyms(gyms, limit = 20) {
         decisione_consigliata: 'review_contenuti_estratti',
         score
       };
-      if (!best || row.score > Number(best.score || 0)) best = row;
     }
 
     rows.push(normalizePreviewRow(gym, best));
@@ -349,7 +353,7 @@ function buildLiveEnrichmentReport(activeGyms) {
     .map((gym) => {
       const website = gym.website || gym.sito || '';
       const priorityScore = scorePriceCandidate(gym);
-      const reconciliation = reconcileGymWithOfficialSource(gym, {});
+      const reconciliation = reconcileGymFacts(gym, {});
       const editorialPreview = generateGymEditorialPreview(gym, reconciliation);
       return {
         id: gym.id,

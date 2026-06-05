@@ -1,5 +1,8 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { analyzeOfficialHtmlPages, discoverOfficialLinks } from '../src/lib/official-structured-scraper.js';
+import { reconcileGymFacts } from '../src/lib/official-reconciliation.js';
+import { generateGymEditorialPreview } from '../src/lib/gym-editorial-preview.js';
 
 type Gym = Record<string, any>;
 
@@ -13,8 +16,9 @@ const args = new Map(
 const envFile = args.get('--env-file') || '.env.staging.local';
 const table = args.get('--table') || process.env.SUPABASE_GYMS_TABLE || 'gyms';
 const limit = Number(args.get('--limit') || '40');
-const maxPagesPerSite = Number(args.get('--max-pages-per-site') || '6');
+const maxPagesPerSite = Math.min(Number(args.get('--max-pages-per-site') || '8'), 8);
 const timeoutMs = Number(args.get('--timeout-ms') || '5500');
+const delayMs = Number(args.get('--delay-ms') || '1200');
 const stamp = new Date().toISOString().replace(/[:.]/g, '-');
 const jsonOut = args.get('--json-out') || `data/content-enrichment-preview-${stamp}.json`;
 const csvOut = args.get('--csv-out') || `data/content-enrichment-preview-${stamp}.csv`;
@@ -30,6 +34,12 @@ const LINK_HINT_RE = /\b(prezz[io]|tariff[ae]|abbonament[io]|quota|quote|iscrizi
 
 function clean(value: unknown) {
   return String(value ?? '').replace(/\s+/g, ' ').trim();
+}
+
+function truncate(value: unknown, max = 6000) {
+  const text = clean(value);
+  if (text.length <= max) return text;
+  return `${text.slice(0, max).trim()} [...]`;
 }
 
 function fold(value: unknown) {
@@ -214,14 +224,14 @@ async function fetchWithTimeout(url: string) {
   }
 }
 
+function wait(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 async function discoverPages(website: string) {
-  const urls = new Set<string>();
-  if (website) urls.add(website);
   const home = await fetchWithTimeout(website);
-  if (home.ok) {
-    for (const url of extractInternalLinks(home.html, website)) urls.add(url);
-  }
-  return [...urls].slice(0, maxPagesPerSite);
+  if (!home.ok) return website ? [website] : [];
+  return discoverOfficialLinks(home.html, website, maxPagesPerSite);
 }
 
 function summarizePage(text: string) {
@@ -272,17 +282,24 @@ const rows = [];
 for (const gym of candidates) {
   const website = clean(gym.website || gym.sito);
   const pages = await discoverPages(website);
+  const scrapedPages: Record<string, any>[] = [];
   let best: Record<string, any> | null = null;
 
   for (const url of pages) {
+    if (delayMs > 0) await wait(delayMs);
     const result = await fetchWithTimeout(url);
     if (!result.ok) continue;
-    const text = stripHtml(result.html);
-    const summary = summarizePage(text);
-    if (!summary.topics.length) continue;
+    scrapedPages.push({ url, html: result.html, fetched_at: new Date().toISOString() });
+  }
 
-    const score = summary.topics.length * 25 + summary.amounts.length * 15 + (url !== website ? 10 : 0);
-    const row = {
+  if (scrapedPages.length) {
+    const officialAnalysis = analyzeOfficialHtmlPages(scrapedPages);
+    const reconciliation = reconcileGymFacts(gym, { ...officialAnalysis.facts_json, source_url: website, website });
+    const editorialPreview = generateGymEditorialPreview(gym, reconciliation);
+    const summary = summarizePage(officialAnalysis.clean_text);
+    if (summary.topics.length || editorialPreview.used_facts.length) {
+      const score = officialAnalysis.confidence_score + summary.topics.length * 10 + summary.amounts.length * 8;
+      const row = {
       id: clean(gym.id),
       slug: clean(gym.slug || gym._canonical_slug),
       nome: nameOf(gym),
@@ -291,8 +308,18 @@ for (const gym of candidates) {
       disciplina: primaryDiscipline(gym),
       website,
       website_host: hostForUrl(website),
-      source_url: url,
-      source_title: extractTitle(result.html),
+      source_url: scrapedPages[0]?.url || website,
+      source_title: officialAnalysis.pages_scraped?.[0]?.title || '',
+      source_fetched_at: scrapedPages[0]?.fetched_at || new Date().toISOString(),
+      pages_scraped: officialAnalysis.pages_scraped,
+      raw_official_text: truncate(officialAnalysis.raw_text),
+      clean_official_text: truncate(officialAnalysis.clean_text),
+      extracted_sections: officialAnalysis.sections_json,
+      extracted_facts: officialAnalysis.facts_json,
+      confidence_score: officialAnalysis.confidence_score,
+      extraction_warnings: officialAnalysis.warnings,
+      reconciliation,
+      editorial_preview: editorialPreview,
       extracted_topics: summary.topics.join(' | '),
       extracted_amounts: summary.amounts.join(' | '),
       proposed_price_info: summary.priceSnippet.slice(0, 650),
@@ -300,13 +327,14 @@ for (const gym of candidates) {
       proposed_hours_info: summary.hoursSnippet.slice(0, 650),
       proposed_contact_info: summary.contactSnippet.slice(0, 650),
       proposed_editorial_evidence: (summary.coursesSnippet || summary.contactSnippet || summary.hoursSnippet).slice(0, 650),
-      risk: summary.amounts.length > 5 ? 'medium' : 'low',
+      risk: summary.amounts.length > 5 || officialAnalysis.warnings.length ? 'medium' : 'low',
       needs_review: true,
       decisione_consigliata: 'review_contenuti_estratti',
       score
-    };
+      };
 
-    if (!best || Number(row.score) > Number(best.score || 0)) best = row;
+      if (!best || Number(row.score) > Number(best.score || 0)) best = row;
+    }
   }
 
   rows.push(
@@ -321,6 +349,14 @@ for (const gym of candidates) {
       website_host: hostForUrl(website),
       source_url: '',
       source_title: '',
+      source_fetched_at: '',
+      raw_official_text: '',
+      clean_official_text: '',
+      extracted_sections: {},
+      extracted_facts: {},
+      extraction_warnings: ['Nessun contenuto utile estratto dal sito ufficiale.'],
+      reconciliation: reconcileGymFacts(gym, {}),
+      editorial_preview: generateGymEditorialPreview(gym, reconcileGymFacts(gym, {})),
       extracted_topics: '',
       extracted_amounts: '',
       proposed_price_info: '',
@@ -359,8 +395,11 @@ const header = [
   'disciplina',
   'website',
   'source_url',
+  'source_fetched_at',
   'extracted_topics',
   'extracted_amounts',
+  'clean_official_text',
+  'extraction_warnings',
   'proposed_price_info',
   'proposed_courses_info',
   'proposed_hours_info',

@@ -7,6 +7,8 @@ const LEVEL_LABELS = {
 const FORBIDDEN_COPY_RE =
   /\b(miglior[ei]?|leader|professionisti qualificati|esperienza unica|a 360 gradi|nel mondo moderno|eccellenza|top|imperdibile)\b/i;
 const PRICE_OR_PROMO_RE = /\b(prezz[io]|tariff[ae]|abbonament[io]|quota|chf|eur|euro|gratis|promo|promozione|offerta|sconto)\b/i;
+const PROCESS_COPY_RE =
+  /\b(la scheda|questa scheda|preview|testo prudente|fallback sicuro|dati non confermati|informazioni disponibili|verifica diretta|ricavat[io] dal sito ufficiale|fonte ufficiale|raccoglie|segnala)\b/i;
 
 function clean(value) {
   return String(value ?? '').replace(/\s+/g, ' ').trim();
@@ -33,7 +35,8 @@ function safeRows(report) {
 }
 
 function safeRow(report, field) {
-  return safeRows(report).find((row) => row.field === field) || null;
+  const aliases = field === 'discipline' ? ['discipline', 'discipline', 'disciplines'] : [field];
+  return safeRows(report).find((row) => aliases.includes(row.field)) || null;
 }
 
 function valueFor(gym, report, field, keys = []) {
@@ -70,7 +73,7 @@ function detectTemplate(gym, discipline) {
   if (/\b(yoga|pilates)\b/.test(text)) return 'yoga_pilates';
   if (/\b(personal|personal training|trainer)\b/.test(text)) return 'personal_training';
   if (/\b(fitactive|activ fitness|anytime|mcfit|20 training lab|nonstopgym)\b/.test(text)) return 'catena_sede';
-  if (/\b(judo|karate|taekwondo|boxe|kickboxing|muay thai|mma|krav maga|wing chun|aikido|bjj|arti marziali|difesa personale)\b/.test(text)) {
+  if (/\b(judo|karate|taekwondo|kung fu|kungfu|boxe|kickboxing|muay thai|mma|krav maga|wing chun|aikido|bjj|arti marziali|difesa personale)\b/.test(text)) {
     return 'arti_marziali';
   }
   if (/\b(fitness|palestra|funzionale|calisthenics)\b/.test(text)) return 'fitness';
@@ -87,18 +90,25 @@ function hasUnclearOfficialData(report) {
 }
 
 function sourceUseful(report) {
-  return ['descrizione', 'storia', 'discipline', 'telefono', 'email', 'indirizzo', 'sito'].some((field) => {
+  return ['descrizione', 'storia', 'discipline', 'telefono', 'email', 'indirizzo', 'orari'].some((field) => {
     const row = safeRow(report, field);
     return row && (row.status === 'confirmed' || row.status === 'new_from_official');
   });
 }
 
+function appDescription(gym) {
+  return clean(gym?.descrizione_pubblica || gym?.descrizione_editoriale || gym?.descrizione_generata || gym?.descrizione || gym?.description);
+}
+
 function decideLevel(gym, report, data) {
   const completeCore = Boolean(data.name && data.city && data.address && data.discipline && data.contact.value);
-  const hasMaterial = Boolean(data.history || safeRow(report, 'descrizione') || safeRow(report, 'discipline'));
+  const usableCore = Boolean(data.name && data.city && data.discipline);
+  const hasUsefulAppDetail = Boolean(data.address || data.contact.value || appDescription(gym));
+  const hasMaterial = Boolean(appDescription(gym) || data.history || safeRow(report, 'descrizione') || safeRow(report, 'discipline'));
   if (hasConflict(report)) return 'C';
-  if (completeCore && sourceUseful(report) && hasMaterial) return 'A';
-  if (data.name && data.city && data.discipline && sourceUseful(report)) return 'B';
+  if (completeCore && hasMaterial) return 'A';
+  if (completeCore) return 'B';
+  if (usableCore && (hasUsefulAppDetail || sourceUseful(report))) return 'B';
   return 'C';
 }
 
@@ -108,15 +118,26 @@ function sentence(parts) {
 
 function templateIntro(kind, level, data) {
   const { name, city, discipline } = data;
+  const place = city ? ` a ${city}` : '';
   if (level === 'C') {
-    return `${name} e' una scheda sportiva presente a ${city || 'citta da verificare'} e collegata a ${discipline}.`;
+    const fallbackVariants = {
+      arti_marziali: `${name} e' una scuola di ${discipline}${place}.`,
+      fitness: `${name} e' una palestra${place} collegata a ${discipline}.`,
+      crossfit: `${name} e' un box CrossFit${place}.`,
+      yoga_pilates: `${name} e' uno spazio${place} dedicato a ${discipline}.`,
+      personal_training: `${name} e' uno studio di personal training${place}.`,
+      multidisciplina: `${name} e' una struttura multidisciplina${place}.`,
+      catena_sede: `${name} e' una sede sportiva${place} collegata a ${discipline}.`,
+      scheda_povera: `${name} e' una struttura sportiva${place} collegata a ${discipline}.`
+    };
+    return fallbackVariants[kind] || fallbackVariants.scheda_povera;
   }
 
   const variants = {
     arti_marziali:
       level === 'A'
         ? `${name} e' una scuola di ${discipline} a ${city}.`
-        : `${name} e' una realta sportiva di ${city} dedicata a ${discipline}.`,
+        : `${name} e' una scuola di ${discipline} a ${city}.`,
     fitness:
       level === 'A'
         ? `${name} e' una palestra a ${city} con attivita legate a ${discipline}.`
@@ -132,50 +153,93 @@ function templateIntro(kind, level, data) {
     personal_training:
       level === 'A'
         ? `${name} e' uno studio di personal training a ${city}.`
-        : `${name} e' una scheda di ${city} collegata al personal training.`,
+        : `${name} e' uno studio di ${city} collegato al personal training.`,
     multidisciplina:
       level === 'A'
         ? `${name} e' una struttura multidisciplina a ${city}.`
-        : `${name} raccoglie a ${city} attivita collegate a ${discipline}.`,
+        : `${name} propone a ${city} attivita collegate a ${discipline}.`,
     catena_sede:
       level === 'A'
         ? `${name} e' una sede a ${city} collegata a ${discipline}.`
         : `${name} e' una sede sportiva di ${city} con attivita legate a ${discipline}.`,
-    scheda_povera: `${name} e' una scheda sportiva presente a ${city || 'citta da verificare'} e collegata a ${discipline}.`
+    scheda_povera: `${name} e' una struttura sportiva${place} collegata a ${discipline}.`
   };
   return variants[kind] || variants.scheda_povera;
 }
 
+function userFitSentence(kind, data) {
+  const discipline = data.discipline;
+  const lowerDiscipline = fold(discipline);
+  const variants = {
+    arti_marziali:
+      lowerDiscipline.includes('kung')
+        ? 'La struttura e\' indicata per chi cerca corsi di arti marziali cinesi nella zona.'
+        : `La struttura e' indicata per chi cerca corsi di ${discipline} nella zona.`,
+    fitness: `E' un riferimento locale per chi cerca attivita di ${discipline}.`,
+    crossfit: 'E\' pensata per chi cerca classi CrossFit o allenamento funzionale nella zona.',
+    yoga_pilates: `E' indicata per chi vuole orientarsi tra percorsi di ${discipline}.`,
+    personal_training: 'E\' una soluzione da valutare per percorsi seguiti e allenamento individuale.',
+    multidisciplina: `E' utile per chi cerca piu attivita sportive nello stesso contesto.`,
+    catena_sede: `E' una sede da valutare per chi cerca attivita legate a ${discipline}.`,
+    scheda_povera: `E' un riferimento locale per chi cerca ${discipline}.`
+  };
+  return variants[kind] || variants.scheda_povera;
+}
+
+function addressSentence(data) {
+  if (!data.address) return '';
+  const cityPart = data.city && !fold(data.address).includes(fold(data.city)) ? `, a ${data.city}` : '';
+  return `${data.name} si trova in ${data.address}${cityPart}.`;
+}
+
+function contactSentence(data) {
+  if (!data.contact.value) return '';
+  if (data.contact.label === 'telefono') return `Per informazioni e contatti e' disponibile il telefono ${data.contact.value}.`;
+  if (data.contact.label === 'sito ufficiale') return `Per approfondire e' disponibile il sito ${data.contact.value}.`;
+  return '';
+}
+
+function sourceContextSentence(data) {
+  const raw = clean(data.history || data.sourceDescription);
+  if (!raw || PROCESS_COPY_RE.test(raw)) return '';
+  const chunks = raw
+    .replace(/([.!?])\s+/g, '$1|')
+    .split(/\s*\|\s*/)
+    .map(clean)
+    .filter((chunk) => chunk.length >= 45 && chunk.length <= 220)
+    .filter((chunk) => !PROCESS_COPY_RE.test(chunk));
+  const preferred =
+    chunks.find((chunk) => /\b(corsi|corso|attivita|allenament|nasce|scuola|studio|box)\b/i.test(chunk)) || chunks[0] || '';
+  return preferred.replace(/[.!?]*$/, '.');
+}
+
 function buildShort(kind, level, data) {
   if (level === 'C') {
-    return sentence([
-      templateIntro(kind, level, data),
-      'Le informazioni disponibili permettono di identificare la struttura, mentre alcuni dettagli possono richiedere verifica diretta.'
-    ]);
+    return templateIntro(kind, level, data);
   }
   if (level === 'A') {
     return sentence([
       templateIntro(kind, level, data),
-      'La scheda raccoglie sede, contatti e dati ricavati dal sito ufficiale per aiutare chi consulta la scheda a valutare la struttura prima del contatto.'
+      userFitSentence(kind, data)
     ]);
   }
   return sentence([
     templateIntro(kind, level, data),
-    'Dalle informazioni sicure emergono riferimenti utili per chi cerca corsi o attivita nella zona.'
+    data.address || data.contact.value ? '' : userFitSentence(kind, data)
   ]);
 }
 
 function buildLong(kind, level, data) {
-  const address = data.address ? `La sede indicata e' ${data.address}.` : '';
-  const contact = data.contact.value ? `Per il contatto, la scheda segnala ${data.contact.label}.` : '';
-  const history = data.history ? `Dalla fonte ufficiale emerge: ${data.history}` : '';
-  const courseHint = data.sourceDescription ? `La fonte ufficiale cita contenuti collegati a corsi, attivita o presentazione della struttura.` : '';
+  const address = addressSentence(data);
+  const contact = contactSentence(data);
+  const history = sourceContextSentence(data);
+  const courseHint = userFitSentence(kind, data);
 
   if (level === 'C') {
     return sentence([
       buildShort(kind, level, data),
       address,
-      'La preview usa un testo prudente per evitare dati non confermati.'
+      contact
     ]);
   }
 
@@ -183,8 +247,7 @@ function buildLong(kind, level, data) {
     buildShort(kind, level, data),
     address,
     contact,
-    history || courseHint,
-    'I dati non confermati o ambigui restano esclusi dalla proposta editoriale.'
+    history || courseHint
   ]);
 }
 
@@ -205,13 +268,17 @@ function buildFaq(data, report) {
     );
   }
   if (data.contact.value) {
-    pushFaq(faq, `Come posso contattare ${data.name}?`, `La scheda segnala ${data.contact.label}: ${data.contact.value}.`, [data.contact.label === 'telefono' ? 'telefono' : 'sito']);
+    const answer =
+      data.contact.label === 'telefono'
+        ? `Puoi contattare ${data.name} al numero ${data.contact.value}.`
+        : `Puoi approfondire tramite il sito ${data.contact.value}.`;
+    pushFaq(faq, `Come posso contattare ${data.name}?`, answer, [data.contact.label === 'telefono' ? 'telefono' : 'sito']);
   }
   if (safeRow(report, 'descrizione') || safeRow(report, 'storia')) {
     pushFaq(
       faq,
       'Il sito ufficiale indica corsi o attivita?',
-      'La fonte ufficiale contiene informazioni utili sulla struttura o sulle attivita, da usare come base per review editoriale.',
+      `${data.name} presenta informazioni collegate alla struttura o alle attivita proposte.`,
       ['descrizione', 'storia']
     );
   }
@@ -228,7 +295,30 @@ function asUsedFact(row) {
     value: row.app_value || row.official_value,
     status: row.status,
     confidence: row.confidence,
-    reason: row.reason
+    reason: row.reason,
+    source_facts: row.source_facts || []
+  };
+}
+
+function reportFromFactLists(usedFacts = [], excludedFacts = []) {
+  const rows = [...usedFacts, ...excludedFacts].map((fact) => ({
+    field: fact.field,
+    field_label: fact.label || fact.field_label || fact.field,
+    app_value: fact.app_value || '',
+    official_value: fact.official_value || '',
+    status: fact.status,
+    confidence: fact.confidence,
+    reason: fact.reason || '',
+    source_facts: fact.source_facts || []
+  }));
+  return {
+    rows,
+    editorial_eligible: usedFacts,
+    used_facts: usedFacts,
+    excluded: excludedFacts,
+    excluded_facts: excludedFacts,
+    conflicts: rows.filter((row) => row.status === 'conflict'),
+    warnings: []
   };
 }
 
@@ -250,10 +340,25 @@ function needsManualReview(report, score, usedFacts) {
 }
 
 function sanitizeCopy(text) {
-  return clean(text).replace(FORBIDDEN_COPY_RE, '').replace(/\s+([,.])/g, '$1').replace(/\s{2,}/g, ' ');
+  return clean(text)
+    .replace(FORBIDDEN_COPY_RE, '')
+    .replace(/\bLa scheda segnala\b/gi, '')
+    .replace(/\bLa scheda raccoglie\b/gi, '')
+    .replace(/\bDalla scheda emerge:?\b/gi, '')
+    .replace(/\bDalla fonte ufficiale emerge:?\b/gi, '')
+    .replace(/\bfonte ufficiale\b/gi, '')
+    .replace(/\bpreview\b/gi, '')
+    .replace(/\btesto prudente\b/gi, '')
+    .replace(/\binformazioni disponibili\b/gi, 'riferimenti presenti')
+    .replace(/\s+([,.])/g, '$1')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
 }
 
-export function generateGymEditorialPreview(gym, reconciliationReport = {}) {
+export function generateGymEditorialPreview(gym, reconciliationReport = {}, explicitExcludedFacts = null) {
+  if (Array.isArray(reconciliationReport)) {
+    reconciliationReport = reportFromFactLists(reconciliationReport, Array.isArray(explicitExcludedFacts) ? explicitExcludedFacts : []);
+  }
   const name = valueFor(gym, reconciliationReport, 'nome', ['nome', 'name']) || 'Questa struttura';
   const city = valueFor(gym, reconciliationReport, 'citta', ['citta', 'city']);
   const address = valueFor(gym, reconciliationReport, 'indirizzo', ['indirizzo', 'address']);
@@ -261,28 +366,38 @@ export function generateGymEditorialPreview(gym, reconciliationReport = {}) {
   const contact = contactOf(gym, reconciliationReport);
   const historyRow = safeRow(reconciliationReport, 'storia');
   const descriptionRow = safeRow(reconciliationReport, 'descrizione');
+  const officialRows = safeRows(reconciliationReport).filter((row) => row.status === 'confirmed' || row.status === 'new_from_official');
+  const appTextMaterial = appDescription(gym);
   const data = {
     name,
     city,
     address,
     discipline,
     contact,
-    history: clean(historyRow?.official_value || historyRow?.app_value).slice(0, 260),
-    sourceDescription: clean(descriptionRow?.official_value || descriptionRow?.app_value).slice(0, 260)
+    history: clean(historyRow?.official_value || historyRow?.app_value || appTextMaterial).slice(0, 260),
+    sourceDescription: clean(descriptionRow?.official_value || descriptionRow?.app_value || appTextMaterial).slice(0, 260),
+    hasOfficialFacts: officialRows.length > 0
   };
 
   const kind = detectTemplate(gym, discipline);
   const level = decideLevel(gym, reconciliationReport, data);
-  const usedRows = safeRows(reconciliationReport).filter((row) => {
+  const usedRows = (Array.isArray(reconciliationReport?.used_facts) ? reconciliationReport.used_facts : safeRows(reconciliationReport)).filter((row) => {
     if (row.field === 'prezzi' && PRICE_OR_PROMO_RE.test(`${row.app_value} ${row.official_value}`)) return false;
     return ['nome', 'citta', 'indirizzo', 'telefono', 'email', 'sito', 'discipline', 'orari', 'descrizione', 'storia', 'staff', 'social'].includes(row.field);
   });
-  const usedFacts = usedRows.map(asUsedFact);
+  const usedFacts = usedRows.map((row) => (row.label && row.value ? row : asUsedFact(row)));
   const excludedRows = [
-    ...(reconciliationReport?.excluded || reconciliationReport?.reconciliation?.excluded || []),
+    ...(reconciliationReport?.excluded_facts || reconciliationReport?.excluded || reconciliationReport?.reconciliation?.excluded || []),
     ...safeRows(reconciliationReport).filter((row) => row.field === 'prezzi' && PRICE_OR_PROMO_RE.test(`${row.app_value} ${row.official_value}`))
   ];
-  const excludedFacts = [...new Map(excludedRows.map((row) => [`${row.field}:${row.status}:${row.official_value || row.app_value}`, asUsedFact(row)])).values()];
+  const excludedFacts = [
+    ...new Map(
+      excludedRows.map((row) => {
+        const item = row.label && row.value ? row : asUsedFact(row);
+        return [`${item.field}:${item.status}:${item.official_value || item.app_value || item.value}`, item];
+      })
+    ).values()
+  ];
   const warnings = [
     ...(reconciliationReport?.warnings || []),
     ...(hasConflict(reconciliationReport) ? ['Conflitti presenti: non pubblicare senza review manuale.'] : []),
