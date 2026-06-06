@@ -23,7 +23,13 @@ function readableAuditError(status, details) {
     .join(' ');
 }
 
-export async function readAdminAuditLog({ limit = 30 } = {}) {
+function boundedNumber(value, fallback, { min = 0, max = Number.POSITIVE_INFINITY } = {}) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return fallback;
+  return Math.min(Math.max(Math.trunc(number), min), max);
+}
+
+export async function readAdminAuditLogList({ limit = 30, offset = 0 } = {}) {
   if (!SUPABASE_URL || !SUPABASE_KEY) {
     return {
       entries: [],
@@ -31,11 +37,13 @@ export async function readAdminAuditLog({ limit = 30 } = {}) {
     };
   }
 
-  const safeLimit = Math.min(Math.max(Number(limit) || 30, 1), 100);
+  const safeLimit = boundedNumber(limit, 30, { min: 1, max: 100 });
+  const safeOffset = boundedNumber(offset, 0, { min: 0 });
   const params = new URLSearchParams({
-    select: 'id,created_at,actor,action,table_name,record_id,before_data,after_data',
+    select: 'id,created_at,actor,action,table_name,record_id',
     order: 'created_at.desc',
-    limit: String(safeLimit)
+    limit: String(safeLimit),
+    offset: String(safeOffset)
   });
 
   const response = await fetch(`${supabaseBaseUrl()}/rest/v1/admin_audit_log?${params}`, {
@@ -62,6 +70,53 @@ export async function readAdminAuditLog({ limit = 30 } = {}) {
     entries: Array.isArray(payload) ? payload : [],
     error: ''
   };
+}
+
+export async function readAdminAuditLogEntry(id) {
+  if (!SUPABASE_URL || !SUPABASE_KEY) {
+    return {
+      entry: null,
+      error: 'Audit log non disponibile: variabili Supabase server-side mancanti.'
+    };
+  }
+
+  const cleanId = String(id || '').trim();
+  if (!cleanId) return { entry: null, error: 'ID audit log mancante.' };
+
+  const params = new URLSearchParams({
+    select: 'id,created_at,actor,action,table_name,record_id,before_data,after_data',
+    id: `eq.${cleanId}`,
+    limit: '1'
+  });
+
+  const response = await fetch(`${supabaseBaseUrl()}/rest/v1/admin_audit_log?${params}`, {
+    headers: supabaseHeaders()
+  });
+
+  if (!response.ok) {
+    let details = '';
+    try {
+      const payload = await response.json();
+      details = [payload?.message, payload?.details, payload?.hint].filter(Boolean).join(' ');
+    } catch {
+      details = await response.text().catch(() => '');
+    }
+
+    return {
+      entry: null,
+      error: readableAuditError(response.status, details)
+    };
+  }
+
+  const payload = await response.json();
+  return {
+    entry: Array.isArray(payload) && payload.length ? payload[0] : null,
+    error: ''
+  };
+}
+
+export async function readAdminAuditLog(options = {}) {
+  return readAdminAuditLogList(options);
 }
 
 export async function writeAdminAuditLog({ actor = 'admin', action, tableName = 'gyms', recordId, beforeData, afterData }) {

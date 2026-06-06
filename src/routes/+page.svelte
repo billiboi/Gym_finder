@@ -14,6 +14,7 @@
   const CLIENT_CACHE_TTL = 5 * 60 * 1000;
   const INITIAL_VISIBLE_LIMIT = 24;
   const LOAD_MORE_STEP = 24;
+  const API_GYM_LIMIT = 24;
 
   const popularSearches = [
     { label: 'Palestre a Varese', href: '/zone/varese' },
@@ -202,7 +203,8 @@
   let searchDebounceTimer = null;
   let scheduledSearchValue = '';
   let visibleLimit = INITIAL_VISIBLE_LIMIT;
-  let catalogHydrated = Array.isArray(data?.initialGyms) && data.initialGyms.length >= (data?.catalogTotalGyms || 0);
+  let remoteHasMoreGyms = Boolean(data?.initialHasMoreGyms);
+  let catalogHydrated = !remoteHasMoreGyms;
   let backgroundCatalogLoading = false;
 
   $: {
@@ -216,8 +218,11 @@
   filteredGyms = filterClientGyms(gyms);
 }
   $: visibleGyms = filteredGyms.slice(0, visibleLimit);
-  $: hasMoreVisibleGyms = filteredGyms.length > visibleGyms.length;
+  $: hasMoreVisibleGyms = filteredGyms.length > visibleGyms.length || remoteHasMoreGyms;
   $: totalGyms = filteredGyms.length;
+  $: nextGymsLabel = remoteHasMoreGyms && filteredGyms.length <= visibleGyms.length
+    ? LOAD_MORE_STEP
+    : Math.min(LOAD_MORE_STEP, Math.max(0, filteredGyms.length - visibleGyms.length));
   $: disciplineCount = disciplines.length;
   $: locationReady = Boolean(userLocation);
   $: isBootstrapping = loadingGyms || loadingDisciplines;
@@ -443,6 +448,12 @@
       stato_apertura: filterOpenState,
       risultati_visibili: filteredGyms.length
     });
+    if (searchInput.trim() || filterDiscipline.trim()) {
+      catalogHydrated = false;
+      remoteHasMoreGyms = true;
+      visibleLimit = INITIAL_VISIBLE_LIMIT;
+      void loadGyms({ reset: true });
+    }
   }
 
   function focusSearchBox() {
@@ -493,19 +504,33 @@
     }, 140);
   }
 
-  async function loadGyms() {
+  async function loadGyms({ reset = false } = {}) {
     if (catalogHydrated || backgroundCatalogLoading) return;
     backgroundCatalogLoading = true;
     try {
-      const res = await fetch('/api/gyms');
+      const params = new URLSearchParams({
+        limit: String(API_GYM_LIMIT),
+        offset: String(reset ? 0 : gyms.length)
+      });
+      if (filterText.trim()) params.set('q', filterText.trim());
+      if (filterDiscipline.trim()) params.set('discipline', filterDiscipline.trim());
+      const res = await fetch(`/api/gyms?${params.toString()}`);
       if (res.ok) {
         const data = await res.json();
-        if (Array.isArray(data)) {
-          gyms = data;
-          catalogHydrated = true;
+        const items = Array.isArray(data) ? data : Array.isArray(data?.items) ? data.items : [];
+        if (items.length) {
+          const byId = new Map(reset ? [] : gyms.map((gym) => [gym.id, gym]));
+          for (const gym of items) {
+            if (gym?.id) byId.set(gym.id, gym);
+          }
+          gyms = [...byId.values()];
+          remoteHasMoreGyms = Boolean(data?.hasMore);
+          catalogHydrated = !remoteHasMoreGyms;
           backgroundCatalogLoading = false;
           return;
         }
+        remoteHasMoreGyms = false;
+        catalogHydrated = true;
       }
     } catch {
       // Keep the server-rendered initial slice if hydration fails.
@@ -581,15 +606,11 @@
     try {
       const cached = JSON.parse(sessionStorage.getItem(CLIENT_CACHE_KEY) || 'null');
       if (!cached || Date.now() - cached.cachedAt > CLIENT_CACHE_TTL) return false;
-      if (Array.isArray(cached.gyms) && cached.gyms.length) {
-        gyms = cached.gyms;
-        catalogHydrated = true;
-      }
       if (Array.isArray(cached.disciplines) && cached.disciplines.length) {
         disciplines = publicDisciplineFilterOptions(cached.disciplines);
         loadingDisciplines = false;
       }
-      return catalogHydrated;
+      return false;
     } catch {
       return false;
     }
@@ -601,7 +622,6 @@
         CLIENT_CACHE_KEY,
         JSON.stringify({
           cachedAt: Date.now(),
-          gyms,
           disciplines
         })
       );
@@ -612,8 +632,8 @@
 
   function scheduleCatalogHydration() {
     const hydrate = async () => {
-      await Promise.all([loadGyms(), loadDisciplines()]);
-      if (catalogHydrated) writeCachedCatalog();
+      await loadDisciplines();
+      writeCachedCatalog();
     };
 
     if ('requestIdleCallback' in window) {
@@ -624,7 +644,12 @@
     window.setTimeout(hydrate, 900);
   }
 
-  function showMoreGyms() {
+  async function showMoreGyms() {
+    if (filteredGyms.length > visibleGyms.length) {
+      visibleLimit += LOAD_MORE_STEP;
+      return;
+    }
+    await loadGyms();
     visibleLimit += LOAD_MORE_STEP;
   }
 
@@ -1202,7 +1227,7 @@
         class="inline-flex min-h-[2.9rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-5 text-sm font-bold text-slate-900 transition hover:bg-slate-50"
         on:click={showMoreGyms}
       >
-        Mostra altre {Math.min(LOAD_MORE_STEP, filteredGyms.length - visibleGyms.length)} palestre
+        {backgroundCatalogLoading ? 'Caricamento...' : `Mostra altre ${nextGymsLabel} palestre`}
       </button>
     </div>
   {/if}

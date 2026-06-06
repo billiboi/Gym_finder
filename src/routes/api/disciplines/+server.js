@@ -1,7 +1,27 @@
 import { json } from '@sveltejs/kit';
-import { dedupeDisciplines, normalizeDisciplineLabel, publicDisciplineFilterOptions } from '$lib/disciplines';
-import { isArchivedGym } from '$lib/admin/gyms';
-import { readGyms } from '$lib/server/gym-store';
+import { normalizeDisciplineLabel, publicDisciplineFilterOptions } from '$lib/disciplines';
+
+const SUPABASE_URL = process.env.SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL || '';
+const SUPABASE_READ_KEY =
+  process.env.SUPABASE_ANON_KEY ||
+  process.env.PUBLIC_SUPABASE_ANON_KEY ||
+  process.env.SUPABASE_SERVICE_ROLE_KEY ||
+  process.env.SUPABASE_KEY ||
+  '';
+const SUPABASE_GYMS_TABLE = process.env.SUPABASE_GYMS_TABLE || 'gyms';
+const hasSupabaseRead = Boolean(SUPABASE_URL && SUPABASE_READ_KEY);
+const DISCIPLINE_SELECT = ['discipline', 'disciplines', 'deleted_at'];
+
+function supabaseBaseUrl() {
+  return SUPABASE_URL.replace(/\/$/, '');
+}
+
+function supabaseHeaders() {
+  return {
+    apikey: SUPABASE_READ_KEY,
+    Authorization: `Bearer ${SUPABASE_READ_KEY}`
+  };
+}
 
 function splitCsvLine(line, delimiter = ',') {
   const out = [];
@@ -60,6 +80,25 @@ function disciplinesFromGyms(gyms) {
   return publicDisciplineFilterOptions(set);
 }
 
+async function readDisciplineRows() {
+  if (!hasSupabaseRead) return null;
+
+  const params = [
+    `select=${encodeURIComponent(DISCIPLINE_SELECT.join(','))}`,
+    'deleted_at=is.null',
+    'limit=5000'
+  ];
+  const response = await fetch(`${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?${params.join('&')}`, {
+    method: 'GET',
+    headers: supabaseHeaders()
+  });
+
+  if (!response.ok) return null;
+
+  const data = await response.json();
+  return Array.isArray(data) ? data : [];
+}
+
 function parseDisciplines(csvText) {
   const lines = String(csvText || '')
     .replace(/^\uFEFF/, '')
@@ -94,9 +133,9 @@ function parseDisciplines(csvText) {
 
 export async function GET({ fetch }) {
   try {
-    const gyms = await readGyms();
+    const gyms = await readDisciplineRows();
     if (Array.isArray(gyms) && gyms.length > 0) {
-      return json(disciplinesFromGyms(gyms.filter((gym) => !isArchivedGym(gym))), {
+      return json(disciplinesFromGyms(gyms), {
         headers: {
           'Cache-Control': 'public, max-age=300, stale-while-revalidate=1800'
         }

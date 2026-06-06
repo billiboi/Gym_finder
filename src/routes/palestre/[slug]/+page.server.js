@@ -1,14 +1,350 @@
 import { error, redirect } from '@sveltejs/kit';
 import { isArchivedGym } from '$lib/admin/gyms';
-import { readGyms } from '$lib/server/gym-store';
+import { readPublicGymListing } from '$lib/server/gym-store';
 import { cityLabelForGym, isIndexableGym, legacySlugifyGym, primaryDisciplineForGym, slugifyGym } from '$lib/gym-detail';
+import { publicListingGym } from '$lib/gym-client';
+import { normalizeGym } from '$lib/gym-normalizer';
 import { seoLocationForGym } from '$lib/seo-locations';
 import { seoDisciplineForGym } from '$lib/seo-disciplines';
 import { sanitizePublicGymData } from '$lib/public-data-sanitizer';
 
+const SUPABASE_URL = process.env.SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL || '';
+const SUPABASE_READ_KEY =
+  process.env.SUPABASE_ANON_KEY ||
+  process.env.PUBLIC_SUPABASE_ANON_KEY ||
+  process.env.SUPABASE_SERVICE_ROLE_KEY ||
+  process.env.SUPABASE_KEY ||
+  '';
+const SUPABASE_GYMS_TABLE = process.env.SUPABASE_GYMS_TABLE || 'gyms';
+const hasSupabaseRead = Boolean(SUPABASE_URL && SUPABASE_READ_KEY);
+
 const LEGACY_SLUG_REDIRECTS = {
   'urban-fitness-varese-csv-633': 'urban-fitness-varese'
 };
+
+const DETAIL_GYM_COLUMNS = [
+  'id',
+  'slug',
+  'nome',
+  'name',
+  'indirizzo',
+  'address',
+  'citta',
+  'city',
+  'provincia',
+  'regione',
+  'telefono',
+  'phone',
+  'email',
+  'sito',
+  'website',
+  'descrizione',
+  'description',
+  'descrizione_owner',
+  'descrizione_editoriale',
+  'descrizione_generata',
+  'descrizione_pubblica',
+  'descrizione_source',
+  'descrizione_quality_score',
+  'descrizione_needs_review',
+  'safe_public_description',
+  'discipline',
+  'disciplines',
+  'discipline_aliases',
+  'discipline_canonical_slugs',
+  'orari',
+  'hours_info',
+  'weekly_hours',
+  'lat',
+  'lng',
+  'latitude',
+  'longitude',
+  'image_url',
+  'is_verified',
+  'verified',
+  'is_premium',
+  'priority_score',
+  'deleted_at',
+  'updated_at',
+  'data_quality_flags',
+  'needs_review',
+  'review_reason',
+  'last_data_audit_at',
+  'official_source_url',
+  'editorial_summary',
+  'editorial_highlights',
+  'editorial_faq_items',
+  'price_info',
+  'price_source_url',
+  'price_updated_at',
+  'verified_commercial_info',
+  'commercial_info_last_checked_at',
+  'source_url',
+  'enrichment_status',
+  'enrichment_updated_at',
+  'social_links',
+  'data_verified_at'
+];
+
+const RELATED_GYM_COLUMNS = [
+  'id',
+  'slug',
+  'nome',
+  'name',
+  'indirizzo',
+  'address',
+  'citta',
+  'city',
+  'telefono',
+  'phone',
+  'sito',
+  'website',
+  'discipline',
+  'disciplines',
+  'orari',
+  'hours_info',
+  'lat',
+  'lng',
+  'latitude',
+  'longitude',
+  'image_url',
+  'is_verified',
+  'verified',
+  'is_premium',
+  'priority_score',
+  'deleted_at',
+  'updated_at'
+];
+
+function supabaseBaseUrl() {
+  return SUPABASE_URL.replace(/\/$/, '');
+}
+
+function supabaseHeaders() {
+  return {
+    apikey: SUPABASE_READ_KEY,
+    Authorization: `Bearer ${SUPABASE_READ_KEY}`
+  };
+}
+
+function slugPart(value) {
+  return String(value || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+function baseGymSlug(gym) {
+  return slugPart(gym?.name || gym?.nome) || 'palestra';
+}
+
+function joinSlugParts(parts) {
+  return parts.filter(Boolean).join('-').replace(/-{2,}/g, '-').replace(/^-+|-+$/g, '') || 'palestra';
+}
+
+function withCanonicalGymSlugs(gyms) {
+  const normalized = gyms.map((gym) => ({ ...gym }));
+  const groups = new Map();
+
+  for (const gym of normalized) {
+    const base = baseGymSlug(gym);
+    if (!groups.has(base)) groups.set(base, []);
+    groups.get(base).push(gym);
+  }
+
+  const used = new Set();
+
+  for (const [base, group] of groups) {
+    const duplicateGroup = group.length > 1;
+
+    group.forEach((gym, index) => {
+      const city = slugPart(gym?.city || gym?.citta);
+      const street = slugPart(String(gym?.address || gym?.indirizzo || '').split(',')[0]);
+      const cityPart = city && !base.includes(city) ? city : '';
+      const candidates = duplicateGroup
+        ? [joinSlugParts([base, cityPart]), joinSlugParts([base, cityPart, street]), joinSlugParts([base, street])].filter(
+            (value, candidateIndex, list) => value && list.indexOf(value) === candidateIndex
+          )
+        : [base];
+      let slug = candidates.find((candidate) => !used.has(candidate));
+
+      if (!slug) {
+        const fallbackBase = candidates[candidates.length - 1] || base;
+        let suffix = index + 1;
+        do {
+          slug = `${fallbackBase}-${suffix}`;
+          suffix += 1;
+        } while (used.has(slug));
+      }
+
+      used.add(slug);
+      gym._canonical_slug = slug;
+      gym._legacy_slug = gym?.id ? `${base}-${String(gym.id).trim()}` : base;
+    });
+  }
+
+  return normalized;
+}
+
+function normalizeRows(rows, fallbackPrefix = 'db') {
+  return withCanonicalGymSlugs(
+    rows.map((row, index) => normalizeGym(row, row?.id || `${fallbackPrefix}-${index + 1}`))
+  );
+}
+
+function safeLike(value) {
+  return String(value || '')
+    .replace(/[%*,()]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+async function fetchGymRows(columns, params) {
+  if (!hasSupabaseRead) return [];
+
+  const url = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?select=${encodeURIComponent(columns.join(','))}&${params.join('&')}`;
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: supabaseHeaders()
+  });
+
+  if (!response.ok) {
+    throw new Error(`Supabase gym read failed (${response.status})`);
+  }
+
+  const data = await response.json();
+  return Array.isArray(data) ? data : [];
+}
+
+function legacyIdFromSlug(slug) {
+  const match = String(slug || '').match(/(?:^|-)(csv-[a-z0-9-]+|\d+)$/i);
+  return match?.[1] || '';
+}
+
+function slugSearchTerms(slug) {
+  return [
+    ...new Set(
+      String(slug || '')
+        .replace(/-(?:csv-[a-z0-9-]+|\d+)$/i, '')
+        .split('-')
+        .map(safeLike)
+        .filter((term) => term.length >= 3 || /^\d+$/.test(term))
+    )
+  ].slice(0, 4);
+}
+
+async function findGymCandidate(slug) {
+  if (!hasSupabaseRead) {
+    const terms = slugSearchTerms(slug);
+    for (const term of terms) {
+      const result = await readPublicGymListing({ limit: 100, q: term });
+      const candidates = Array.isArray(result?.items) ? result.items : [];
+      const canonicalMatch = candidates.find((gym) => slugifyGym(gym) === slug || gym?.slug === slug);
+      if (canonicalMatch) return { gym: canonicalMatch, matchType: 'canonical' };
+
+      const legacyMatch = candidates.find((gym) => legacySlugifyGym(gym) === slug || gym?._legacy_slug === slug);
+      if (legacyMatch) return { gym: legacyMatch, matchType: 'legacy' };
+    }
+  }
+
+  const directRows = await fetchGymRows(DETAIL_GYM_COLUMNS, [
+    `slug=eq.${encodeURIComponent(slug)}`,
+    'limit=1'
+  ]);
+  const directGyms = normalizeRows(directRows, 'detail-direct');
+  const directMatch = directGyms.find((gym) => slugifyGym(gym) === slug || gym?.slug === slug);
+  if (directMatch) return { gym: directMatch, matchType: 'canonical' };
+
+  const legacyId = legacyIdFromSlug(slug);
+  if (legacyId) {
+    const idRows = await fetchGymRows(DETAIL_GYM_COLUMNS, [
+      `id=eq.${encodeURIComponent(legacyId)}`,
+      'limit=1'
+    ]);
+    const [idGym] = normalizeRows(idRows, 'detail-id');
+    if (idGym && (legacySlugifyGym(idGym) === slug || idGym?._legacy_slug === slug || slugifyGym(idGym) === slug)) {
+      return {
+        gym: idGym,
+        matchType: slugifyGym(idGym) === slug ? 'canonical' : 'legacy'
+      };
+    }
+  }
+
+  const terms = slugSearchTerms(slug);
+  if (!terms.length) return null;
+
+  const preciseTerms = terms.slice(0, 3);
+  for (const column of ['nome', 'name']) {
+    const preciseRows = await fetchGymRows(DETAIL_GYM_COLUMNS, [
+      ...preciseTerms.map((term) => `${column}=ilike.${encodeURIComponent(`*${term}*`)}`),
+      'order=priority_score.desc.nullslast,nome.asc.nullslast',
+      'limit=10'
+    ]);
+    const preciseCandidates = normalizeRows(preciseRows, 'detail-precise');
+    const preciseCanonicalMatch = preciseCandidates.find((gym) => slugifyGym(gym) === slug || gym?.slug === slug);
+    if (preciseCanonicalMatch) return { gym: preciseCanonicalMatch, matchType: 'canonical' };
+
+    const preciseLegacyMatch = preciseCandidates.find((gym) => legacySlugifyGym(gym) === slug || gym?._legacy_slug === slug);
+    if (preciseLegacyMatch) return { gym: preciseLegacyMatch, matchType: 'legacy' };
+  }
+
+  const nameClauses = terms.flatMap((term) => {
+    const encodedTerm = encodeURIComponent(`*${term}*`);
+    return [`nome.ilike.${encodedTerm}`, `name.ilike.${encodedTerm}`];
+  });
+  const candidateRows = await fetchGymRows(DETAIL_GYM_COLUMNS, [
+    `or=(${nameClauses.join(',')})`,
+    'order=priority_score.desc.nullslast,nome.asc.nullslast',
+    'limit=50'
+  ]);
+  const candidates = normalizeRows(candidateRows, 'detail-search');
+  const canonicalMatch = candidates.find((gym) => slugifyGym(gym) === slug || gym?.slug === slug);
+  if (canonicalMatch) return { gym: canonicalMatch, matchType: 'canonical' };
+
+  const legacyMatch = candidates.find((gym) => legacySlugifyGym(gym) === slug || gym?._legacy_slug === slug);
+  return legacyMatch ? { gym: legacyMatch, matchType: 'legacy' } : null;
+}
+
+async function readRelatedGyms(gym, primaryDiscipline, gymCity) {
+  if (!hasSupabaseRead || !primaryDiscipline && !gymCity) return [];
+
+  const terms = [];
+  const encodedCity = safeLike(gymCity);
+  const encodedDiscipline = safeLike(primaryDiscipline);
+
+  if (encodedCity) {
+    const cityLike = encodeURIComponent(`*${encodedCity}*`);
+    terms.push(`citta.ilike.${cityLike}`, `city.ilike.${cityLike}`);
+  }
+
+  if (encodedDiscipline) {
+    const disciplineLike = encodeURIComponent(`*${encodedDiscipline}*`);
+    terms.push(`discipline.ilike.${disciplineLike}`);
+  }
+
+  const rows = await fetchGymRows(RELATED_GYM_COLUMNS, [
+    'deleted_at=is.null',
+    terms.length ? `or=(${terms.join(',')})` : '',
+    'order=priority_score.desc.nullslast,nome.asc.nullslast',
+    'limit=24'
+  ].filter(Boolean));
+  const candidates = normalizeRows(rows, 'related').filter((item) => item.id !== gym.id);
+
+  return candidates
+    .filter((item) => isIndexableGym(item))
+    .map((item) => {
+      const sameDiscipline = primaryDisciplineForGym(item) === primaryDiscipline;
+      const sameCity = String(cityLabelForGym(item) || '').trim().toLowerCase() === gymCity;
+      const score = (sameDiscipline ? 2 : 0) + (sameCity ? 3 : 0);
+      return { item, score };
+    })
+    .filter(({ score }) => score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 4)
+    .map(({ item }) => item);
+}
 
 function slugifyName(name) {
   return String(name || '')
@@ -36,12 +372,13 @@ function isPublicReviewGym(gym) {
 }
 
 export async function load({ params }) {
-  const gyms = await readGyms();
-  let gym = gyms.find((item) => slugifyGym(item) === params.slug);
+  const found = await findGymCandidate(params.slug);
+  let gym = found?.matchType === 'canonical' ? found.gym : null;
   const legacyTargetSlug = LEGACY_SLUG_REDIRECTS[params.slug];
 
   if (!gym && legacyTargetSlug) {
-    const legacyTarget = gyms.find((item) => slugifyGym(item) === legacyTargetSlug);
+    const legacyTargetResult = await findGymCandidate(legacyTargetSlug);
+    const legacyTarget = legacyTargetResult?.gym;
     if (legacyTarget) {
       if (isArchivedGym(legacyTarget)) {
         throw error(410, 'Scheda rimossa');
@@ -50,7 +387,7 @@ export async function load({ params }) {
     }
   }
 
-  const legacyGym = gym ? null : gyms.find((item) => legacySlugifyGym(item) === params.slug || item?._legacy_slug === params.slug);
+  const legacyGym = gym ? null : found?.matchType === 'legacy' ? found.gym : null;
 
   if (legacyGym) {
     if (isArchivedGym(legacyGym)) {
@@ -70,21 +407,7 @@ export async function load({ params }) {
   const publicGym = publicDetailGym(gym);
   const primaryDiscipline = primaryDisciplineForGym(publicGym);
   const gymCity = String(cityLabelForGym(gym) || '').trim().toLowerCase();
-  const relatedGyms = isPublicReviewGym(publicGym)
-    ? []
-    : gyms
-        .filter((item) => item.id !== gym.id)
-        .filter((item) => isIndexableGym(item))
-        .map((item) => {
-          const sameDiscipline = primaryDisciplineForGym(item) === primaryDiscipline;
-          const sameCity = String(cityLabelForGym(item) || '').trim().toLowerCase() === gymCity;
-          const score = (sameDiscipline ? 2 : 0) + (sameCity ? 3 : 0);
-          return { item, score };
-        })
-        .filter(({ score }) => score > 0)
-        .sort((a, b) => b.score - a.score)
-        .slice(0, 4)
-        .map(({ item }) => item);
+  const relatedGyms = isPublicReviewGym(publicGym) ? [] : await readRelatedGyms(gym, primaryDiscipline, gymCity);
 
   const dynamicLocation = gymCity
     ? {
@@ -102,7 +425,7 @@ export async function load({ params }) {
   return {
     gym: publicGym,
     gymSlug: slugifyGym(gym),
-    relatedGyms: relatedGyms.map(publicDetailGym),
+    relatedGyms: relatedGyms.map(publicListingGym),
     relatedLocation: dynamicLocation || seoLocationForGym(gym),
     relatedDiscipline: seoDisciplineForGym(gym) || dynamicDiscipline
   };

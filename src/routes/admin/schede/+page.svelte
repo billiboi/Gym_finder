@@ -13,8 +13,10 @@
   export let form;
 
   let q = '';
+  let appliedServerQ = '';
   let selectedGymId = '';
   let appliedFormEditId = '';
+  let appliedServerEditId = '';
   let createDisciplineInput = '';
   let qualityFilter = 'all';
   let modalDirty = false;
@@ -30,12 +32,18 @@
   }
 
   function openEditModal(id) {
+    const nextUrl = new URL(window.location.href);
+    nextUrl.searchParams.set('edit', id);
+    window.location.href = nextUrl.toString();
     selectedGymId = id;
     modalDirty = false;
   }
 
   function closeEditModal() {
     if (modalDirty && !confirm('Ci sono modifiche non salvate. Chiudere la modale?')) return;
+    const nextUrl = new URL(window.location.href);
+    nextUrl.searchParams.delete('edit');
+    window.history.replaceState({}, '', nextUrl.toString());
     selectedGymId = '';
     modalDirty = false;
   }
@@ -125,6 +133,14 @@
     selectedGymId = form.editId;
     appliedFormEditId = form.editId;
   }
+  $: if (data.editId && data.editId !== appliedServerEditId) {
+    selectedGymId = data.editId;
+    appliedServerEditId = data.editId;
+  }
+  $: if ((data.q || '') !== appliedServerQ) {
+    q = data.q || '';
+    appliedServerQ = data.q || '';
+  }
   $: createPreview = previewAssetsForDiscipline(createDisciplineInput);
   $: createAliasNotice = firstAliasNotice(createDisciplineInput, data.aliasSuggestions);
   $: selectedPreview = selectedGym
@@ -212,8 +228,12 @@
       </p>
     {/if}
 
-    <div class="mt-5 grid gap-3 sm:grid-cols-[minmax(0,1fr)_220px_minmax(160px,auto)]">
+    <form method="GET" action="/admin/schede" class="mt-5 grid gap-3 sm:grid-cols-[minmax(0,1fr)_220px_minmax(160px,auto)]">
+      <input type="hidden" name="limit" value={data.limit || 50} />
+      <input type="hidden" name="offset" value="0" />
+      <input type="hidden" name="archived" value={data.archivedMode || 'active'} />
       <input
+        name="q"
         class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none ring-slate-900 transition focus:ring-2"
         bind:value={q}
         placeholder="Cerca palestra, disciplina, città"
@@ -234,7 +254,42 @@
         <option value="archived">Archiviate</option>
       </select>
       <div class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700">
-        Risultati: <strong>{filtered.length}</strong> su {data.gyms.length}
+        Risultati pagina: <strong>{filtered.length}</strong> su {data.gyms.length}
+      </div>
+      <div class="flex flex-wrap gap-2 sm:col-span-3">
+        <button type="submit" class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">
+          Cerca
+        </button>
+        <a
+          href={`/admin/schede?limit=${data.limit || 50}&offset=0&archived=${data.archivedMode || 'active'}`}
+          class="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-800 ring-1 ring-slate-200 hover:bg-slate-50"
+        >
+          Reset
+        </a>
+      </div>
+    </form>
+
+    <div class="mt-3 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700">
+      <span>
+        Vista: <strong>{data.archivedMode || 'active'}</strong> · offset {data.offset || 0} · limite {data.limit || 50}
+      </span>
+      <div class="flex flex-wrap gap-2">
+        {#if Number(data.offset || 0) > 0}
+          <a
+            class="rounded-lg bg-white px-3 py-1.5 font-semibold text-slate-800 ring-1 ring-slate-200 hover:bg-slate-100"
+            href={`/admin/schede?limit=${data.limit || 50}&offset=${Math.max(0, Number(data.offset || 0) - Number(data.limit || 50))}&archived=${data.archivedMode || 'active'}${data.q ? `&q=${encodeURIComponent(data.q)}` : ''}`}
+          >
+            Precedenti
+          </a>
+        {/if}
+        {#if data.hasMore}
+          <a
+            class="rounded-lg bg-slate-900 px-3 py-1.5 font-semibold text-white hover:bg-slate-800"
+            href={`/admin/schede?limit=${data.limit || 50}&offset=${Number(data.offset || 0) + Number(data.limit || 50)}&archived=${data.archivedMode || 'active'}${data.q ? `&q=${encodeURIComponent(data.q)}` : ''}`}
+          >
+            Successivi
+          </a>
+        {/if}
       </div>
     </div>
 

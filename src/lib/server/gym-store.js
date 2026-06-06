@@ -13,10 +13,10 @@ const isReadOnlyRuntime = process.env.VERCEL === '1' || process.env.NODE_ENV ===
 
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL || '';
 const SUPABASE_READ_KEY =
-  process.env.SUPABASE_ANON_KEY ||
-  process.env.PUBLIC_SUPABASE_ANON_KEY ||
   process.env.SUPABASE_SERVICE_ROLE_KEY ||
   process.env.SUPABASE_KEY ||
+  process.env.SUPABASE_ANON_KEY ||
+  process.env.PUBLIC_SUPABASE_ANON_KEY ||
   '';
 const SUPABASE_WRITE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY || '';
 const SUPABASE_GYMS_TABLE = process.env.SUPABASE_GYMS_TABLE || 'gyms';
@@ -26,6 +26,116 @@ const hasSupabaseWrite = Boolean(SUPABASE_URL && SUPABASE_WRITE_KEY);
 const isDevelopment = process.env.NODE_ENV === 'development';
 const RUNTIME_CACHE_KEY = '__gymfinder_runtime_gyms__';
 const SUPABASE_SCHEMA_CACHE_KEY = '__gymfinder_supabase_columns__';
+const PUBLIC_STATIC_CSV_CACHE_KEY = '__gymfinder_public_static_csv_gyms__';
+const PUBLIC_SITE_URL = (process.env.PUBLIC_SITE_URL || process.env.SITE_URL || 'https://www.palestreinzona.it').replace(/\/$/, '');
+const PUBLIC_GYM_LISTING_COLUMNS = [
+  'id',
+  'slug',
+  'name',
+  'nome',
+  'city',
+  'citta',
+  'address',
+  'indirizzo',
+  'discipline',
+  'disciplines',
+  'latitude',
+  'longitude',
+  'lat',
+  'lng',
+  'is_verified',
+  'is_premium',
+  'priority_score',
+  'deleted_at',
+  'updated_at',
+  'hours_info',
+  'orari',
+  'phone',
+  'telefono',
+  'website',
+  'sito',
+  'image_url'
+];
+const ADMIN_CLAIM_APPROVAL_GYM_COLUMNS = [
+  'id',
+  'slug',
+  'name',
+  'nome',
+  'city',
+  'citta',
+  'address',
+  'indirizzo',
+  'discipline',
+  'disciplines',
+  'is_verified',
+  'data_verified_at',
+  'weekly_hours',
+  'deleted_at'
+];
+const ADMIN_GYM_LIST_COLUMNS = [
+  'id',
+  'slug',
+  'nome',
+  'name',
+  'citta',
+  'city',
+  'indirizzo',
+  'address',
+  'telefono',
+  'phone',
+  'sito',
+  'website',
+  'discipline',
+  'disciplines',
+  'orari',
+  'hours_info',
+  'is_verified',
+  'is_premium',
+  'priority_score',
+  'deleted_at',
+  'updated_at',
+  'data_quality_score',
+  'enrichment_status',
+  'needs_review',
+  'review_reason'
+];
+const ADMIN_GYM_DETAIL_COLUMNS = [
+  ...ADMIN_GYM_LIST_COLUMNS,
+  'lat',
+  'lng',
+  'latitude',
+  'longitude',
+  'descrizione',
+  'description',
+  'image_url',
+  'weekly_hours',
+  'discipline_aliases',
+  'discipline_canonical_slugs',
+  'data_verified_at',
+  'descrizione_owner',
+  'descrizione_editoriale',
+  'descrizione_generata',
+  'descrizione_pubblica',
+  'descrizione_source',
+  'descrizione_quality_score',
+  'descrizione_needs_review',
+  'data_quality_flags',
+  'last_data_audit_at',
+  'safe_public_description',
+  'official_source_url',
+  'editorial_summary',
+  'editorial_highlights',
+  'editorial_faq_items',
+  'price_info',
+  'price_source_url',
+  'price_updated_at',
+  'verified_commercial_info',
+  'commercial_info_last_checked_at',
+  'source_url',
+  'enrichment_notes',
+  'enrichment_updated_at',
+  'social_links'
+];
 
 function getRuntimeGyms() {
   const cache = globalThis[RUNTIME_CACHE_KEY];
@@ -41,6 +151,61 @@ function setRuntimeGyms(gyms) {
 
 function clearRuntimeGyms() {
   delete globalThis[RUNTIME_CACHE_KEY];
+}
+
+async function readPublicStaticCsvGyms() {
+  const cached = globalThis[PUBLIC_STATIC_CSV_CACHE_KEY];
+  if (Array.isArray(cached)) return cached;
+
+  try {
+    const response = await fetch(`${PUBLIC_SITE_URL}/palestre.csv`, { method: 'GET' });
+    if (!response.ok) return [];
+
+    const csvRaw = await response.text();
+    const gyms = gymsFromCsv(csvRaw);
+    globalThis[PUBLIC_STATIC_CSV_CACHE_KEY] = withCanonicalGymSlugs(gyms.filter((gym) => !isExcludedGymRecord(gym)));
+    return globalThis[PUBLIC_STATIC_CSV_CACHE_KEY];
+  } catch {
+    return [];
+  }
+}
+
+function normalizeForClaimMatch(value) {
+  return String(value || '')
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+export function extractGymSlugFromUrl(gymUrl) {
+  const raw = String(gymUrl || '').trim();
+  if (!raw) return '';
+
+  try {
+    const url = new URL(raw, 'https://www.palestreinzona.it');
+    const parts = url.pathname.split('/').filter(Boolean);
+    const palestreIndex = parts.indexOf('palestre');
+    return palestreIndex >= 0 ? parts[palestreIndex + 1] || '' : '';
+  } catch {
+    const path = raw.split('?')[0].split('#')[0];
+    const parts = path.split('/').filter(Boolean);
+    const palestreIndex = parts.indexOf('palestre');
+    return palestreIndex >= 0 ? parts[palestreIndex + 1] || '' : '';
+  }
+}
+
+function extractLegacyGymIdFromSlug(slug) {
+  const raw = String(slug || '').trim();
+  if (!raw) return '';
+
+  const uuid = raw.match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
+  if (uuid) return uuid[0];
+
+  const trailingToken = raw.match(/-([a-z0-9][a-z0-9_-]{2,})$/i)?.[1] || '';
+  return /\d/.test(trailingToken) ? trailingToken : '';
 }
 
 const CSV_HEADERS = [
@@ -499,12 +664,15 @@ async function supabaseAvailableColumns() {
   const cached = globalThis[SUPABASE_SCHEMA_CACHE_KEY];
   if (Array.isArray(cached) && cached.length) return cached;
 
+  const schemaKey = SUPABASE_WRITE_KEY || SUPABASE_READ_KEY;
+  if (!schemaKey) return [];
+
   const available = [];
   for (const column of GYM_SUPABASE_COLUMN_CANDIDATES) {
     const url = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?select=${encodeURIComponent(column)}&limit=1`;
     const response = await fetch(url, {
       method: 'GET',
-      headers: supabaseHeaders(SUPABASE_WRITE_KEY)
+      headers: supabaseHeaders(schemaKey)
     });
 
     if (response.ok) {
@@ -532,7 +700,7 @@ async function supabaseAvailableColumns() {
 
     if (response.status === 401 || response.status === 403) {
       throw new Error(
-        `Supabase schema check failed (${response.status}). Verifica SUPABASE_SERVICE_ROLE_KEY o i permessi della key configurata.`
+        `Supabase schema check failed (${response.status}). Verifica SUPABASE_SERVICE_ROLE_KEY/SUPABASE_ANON_KEY o i permessi della key configurata.`
       );
     }
 
@@ -568,6 +736,286 @@ async function readGymsFromSupabase() {
   if (!Array.isArray(data)) return [];
 
   return data.map((row, index) => normalizeGymRecord(row, `db-${index + 1}`));
+}
+
+function boundedNumber(value, fallback, { min = 0, max = Number.MAX_SAFE_INTEGER } = {}) {
+  if (value === null || value === undefined || String(value).trim() === '') return fallback;
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed)) return fallback;
+  return Math.min(Math.max(Math.trunc(parsed), min), max);
+}
+
+function uniqueAvailableColumns(columns, available) {
+  const allowed = new Set(available);
+  return [...new Set(columns)].filter((column) => allowed.has(column));
+}
+
+function activeGymQueryParams({ q = '', discipline = '', availableColumns = [] } = {}) {
+  const filters = [];
+  const available = new Set(availableColumns);
+
+  const query = String(q || '').trim();
+  if (query) {
+    const like = `*${query.replace(/[%*,()]/g, ' ').replace(/\s+/g, ' ').trim()}*`;
+    if (like !== '**') {
+      const encoded = encodeURIComponent(like);
+      const searchColumns = ['nome', 'name', 'citta', 'city', 'indirizzo', 'address', 'discipline']
+        .filter((column) => available.has(column));
+      if (searchColumns.length) {
+        filters.push(`or=(${searchColumns.map((column) => `${column}.ilike.${encoded}`).join(',')})`);
+      }
+    }
+  }
+
+  const disciplineFilter = String(discipline || '').trim();
+  if (disciplineFilter && available.has('discipline')) {
+    const encoded = encodeURIComponent(`*${disciplineFilter.replace(/[%*,()]/g, ' ').replace(/\s+/g, ' ').trim()}*`);
+    filters.push(`discipline=ilike.${encoded}`);
+  }
+
+  return filters;
+}
+
+async function readPublicGymListingFromSupabase({ limit = 24, offset = 0, q = '', discipline = '' } = {}) {
+  if (!hasSupabaseRead) return null;
+
+  const safeLimit = boundedNumber(limit, 24, { min: 1, max: 100 });
+  const safeOffset = boundedNumber(offset, 0, { min: 0 });
+  const availableColumns = await supabaseAvailableColumns();
+  const available = new Set(availableColumns);
+  const select = uniqueAvailableColumns(PUBLIC_GYM_LISTING_COLUMNS, availableColumns).join(',');
+  const order = [
+    available.has('priority_score') ? 'priority_score.desc.nullslast' : null,
+    available.has('nome') ? 'nome.asc.nullslast' : available.has('name') ? 'name.asc.nullslast' : null
+  ].filter(Boolean).join(',');
+  const params = [
+    `select=${encodeURIComponent(select)}`,
+    order ? `order=${order}` : null,
+    `limit=${safeLimit + 1}`,
+    `offset=${safeOffset}`,
+    ...activeGymQueryParams({ q, discipline, availableColumns })
+  ].filter(Boolean);
+  const url = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?${params.join('&')}`;
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: supabaseHeaders(SUPABASE_READ_KEY)
+  });
+
+  if (!response.ok) {
+    throw new Error(`Supabase public listing read failed (${response.status})`);
+  }
+
+  const data = await response.json();
+  const rows = Array.isArray(data) ? data : [];
+  const normalized = rows.slice(0, safeLimit).map((row, index) => normalizeGymRecord(row, `listing-${safeOffset + index + 1}`));
+  return {
+    items: withCanonicalGymSlugs(normalized.filter((gym) => !isExcludedGymRecord(gym))),
+    limit: safeLimit,
+    offset: safeOffset,
+    hasMore: rows.length > safeLimit
+  };
+}
+
+async function readAdminGymListFromSupabase({ limit = 50, offset = 0, q = '', archived = 'active' } = {}) {
+  if (!hasSupabaseRead) return null;
+
+  const availableColumns = await supabaseAvailableColumns();
+  const select = uniqueAvailableColumns(ADMIN_GYM_LIST_COLUMNS, availableColumns).join(',');
+  const available = new Set(availableColumns);
+  const safeLimit = boundedNumber(limit, 50, { min: 1, max: 100 });
+  const safeOffset = boundedNumber(offset, 0, { min: 0 });
+  const mode = ['active', 'archived', 'all'].includes(String(archived || '').trim())
+    ? String(archived || '').trim()
+    : 'active';
+  const orderColumns = ['nome', 'name'].filter((column) => available.has(column));
+  const params = [
+    `select=${encodeURIComponent(select)}`,
+    `limit=${safeLimit + 1}`,
+    `offset=${safeOffset}`
+  ];
+
+  if (orderColumns.length) params.splice(1, 0, `order=${orderColumns.map((column) => `${column}.asc.nullslast`).join(',')}`);
+  if (available.has('deleted_at') && mode === 'active') params.push('deleted_at=is.null');
+  if (available.has('deleted_at') && mode === 'archived') params.push('deleted_at=not.is.null');
+
+  const query = String(q || '').trim();
+  if (query) {
+    const like = `*${query.replace(/[%*,()]/g, ' ').replace(/\s+/g, ' ').trim()}*`;
+    if (like !== '**') {
+      const encoded = encodeURIComponent(like);
+      const searchColumns = ['nome', 'name', 'citta', 'city', 'indirizzo', 'address', 'discipline'].filter((column) =>
+        available.has(column)
+      );
+      if (searchColumns.length) {
+        params.push(`or=(${searchColumns.map((column) => `${column}.ilike.${encoded}`).join(',')})`);
+      }
+    }
+  }
+
+  const response = await fetch(`${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?${params.join('&')}`, {
+    method: 'GET',
+    headers: supabaseHeaders(SUPABASE_READ_KEY)
+  });
+
+  if (!response.ok) {
+    throw new Error(`Supabase admin list read failed (${response.status})`);
+  }
+
+  const rows = await response.json();
+  const pageRows = Array.isArray(rows) ? rows.slice(0, safeLimit) : [];
+  return {
+    items: withCanonicalGymSlugs(pageRows.map((row, index) => normalizeGymRecord(row, row?.id || `admin-list-${safeOffset + index + 1}`))),
+    limit: safeLimit,
+    offset: safeOffset,
+    hasMore: Array.isArray(rows) && rows.length > safeLimit,
+    q: query,
+    archived: mode
+  };
+}
+
+async function readAdminGymByIdFromSupabase(id) {
+  if (!hasSupabaseRead) return null;
+
+  const cleanId = String(id || '').trim();
+  if (!cleanId) return null;
+
+  const availableColumns = await supabaseAvailableColumns();
+  const select = uniqueAvailableColumns(ADMIN_GYM_DETAIL_COLUMNS, availableColumns).join(',');
+  const params = [
+    `select=${encodeURIComponent(select)}`,
+    `id=eq.${encodeURIComponent(cleanId)}`,
+    'limit=1'
+  ];
+  const response = await fetch(`${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?${params.join('&')}`, {
+    method: 'GET',
+    headers: supabaseHeaders(SUPABASE_READ_KEY)
+  });
+
+  if (!response.ok) {
+    throw new Error(`Supabase admin detail read failed (${response.status})`);
+  }
+
+  const rows = await response.json();
+  return Array.isArray(rows) && rows.length ? normalizeGymRecord(rows[0], cleanId) : null;
+}
+
+async function readAdminGymForClaimApprovalFromSupabase({ id = '', slug = '', name = '' } = {}) {
+  if (!hasSupabaseRead) return null;
+
+  const cleanId = String(id || '').trim();
+  const cleanSlug = String(slug || '').trim();
+  const cleanName = String(name || '').trim();
+  const select = ADMIN_CLAIM_APPROVAL_GYM_COLUMNS.join(',');
+  const baseParams = [`select=${encodeURIComponent(select)}`, 'deleted_at=is.null', 'limit=1'];
+  let params = [];
+
+  if (cleanId) {
+    params = [...baseParams, `id=eq.${encodeURIComponent(cleanId)}`];
+  } else if (cleanSlug) {
+    params = [...baseParams, `slug=eq.${encodeURIComponent(cleanSlug)}`];
+  } else if (cleanName) {
+    const encodedName = encodeURIComponent(cleanName);
+    params = [...baseParams, `or=(nome.ilike.${encodedName},name.ilike.${encodedName})`];
+  } else {
+    return null;
+  }
+
+  const response = await fetch(`${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?${params.join('&')}`, {
+    method: 'GET',
+    headers: supabaseHeaders(SUPABASE_READ_KEY)
+  });
+
+  if (!response.ok) {
+    throw new Error(`Supabase claim gym read failed (${response.status})`);
+  }
+
+  const rows = await response.json();
+  return Array.isArray(rows) && rows.length ? normalizeGymRecord(rows[0], rows[0]?.id || 'claim-gym') : null;
+}
+
+async function readLocalGyms() {
+  if (!isReadOnlyRuntime) {
+    await ensureStorage();
+  }
+
+  for (const candidatePath of [csvFilePath, staticCsvFilePath]) {
+    try {
+      const csvRaw = await readFile(candidatePath, 'utf-8');
+      const csvGyms = gymsFromCsv(csvRaw);
+      if (csvGyms.length > 0) {
+        return withCanonicalGymSlugs(csvGyms.filter((gym) => !isExcludedGymRecord(gym)));
+      }
+    } catch {
+      // try next source
+    }
+  }
+
+  if (isReadOnlyRuntime) {
+    const publicStaticGyms = await readPublicStaticCsvGyms();
+    if (publicStaticGyms.length) return publicStaticGyms;
+  }
+
+  try {
+    const raw = await readFile(dataFilePath, 'utf-8');
+    const gyms = JSON.parse(raw);
+    return Array.isArray(gyms)
+      ? withCanonicalGymSlugs(
+          gyms
+            .map((gym, index) => normalizeGymRecord(gym, `json-${index + 1}`))
+            .filter((gym) => !isExcludedGymRecord(gym))
+        )
+      : [];
+  } catch {
+    return [];
+  }
+}
+
+async function readPublicGymListingFromLocal({ limit = 24, offset = 0, q = '', discipline = '' } = {}) {
+  const safeLimit = boundedNumber(limit, 24, { min: 1, max: 100 });
+  const safeOffset = boundedNumber(offset, 0, { min: 0 });
+  const allGyms = await readLocalGyms();
+  const query = String(q || '').trim().toLowerCase();
+  const wantedDiscipline = String(discipline || '').trim().toLowerCase();
+  let filtered = allGyms.filter((gym) => !isExcludedGymRecord(gym));
+
+  if (wantedDiscipline) {
+    filtered = filtered.filter((gym) => {
+      const list = Array.isArray(gym.disciplines) && gym.disciplines.length
+        ? gym.disciplines
+        : String(gym.discipline || '').split('|');
+      return list.map((item) => String(item || '').trim().toLowerCase()).includes(wantedDiscipline);
+    });
+  }
+
+  if (query) {
+    filtered = filtered.filter((gym) =>
+      [gym.name, gym.address, gym.city, Array.isArray(gym.disciplines) ? gym.disciplines.join(' | ') : gym.discipline]
+        .some((field) => String(field || '').toLowerCase().includes(query))
+    );
+  }
+
+  const page = filtered.slice(safeOffset, safeOffset + safeLimit);
+  return {
+    items: page,
+    limit: safeLimit,
+    offset: safeOffset,
+    hasMore: filtered.length > safeOffset + safeLimit
+  };
+}
+
+async function readPublicGymCountFromSupabase() {
+  if (!hasSupabaseRead) return null;
+
+  const params = ['select=id'];
+  const url = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?${params.join('&')}`;
+  const response = await fetch(url, {
+    method: 'HEAD',
+    headers: supabaseHeaders(SUPABASE_READ_KEY, { Prefer: 'count=planned' })
+  });
+
+  if (!response.ok) return null;
+  const count = Number(response.headers.get('content-range')?.split('/')?.[1]);
+  return Number.isFinite(count) ? count : null;
 }
 
 async function upsertGymsInSupabase(gyms) {
@@ -827,6 +1275,141 @@ export async function readGyms(options = {}) {
   } catch {
     return [];
   }
+}
+
+export async function readAdminGymList(options = {}) {
+  const safeLimit = boundedNumber(options.limit, 50, { min: 1, max: 100 });
+  const safeOffset = boundedNumber(options.offset, 0, { min: 0 });
+  const query = String(options.q || '').trim();
+  const mode = ['active', 'archived', 'all'].includes(String(options.archived || '').trim())
+    ? String(options.archived || '').trim()
+    : 'active';
+
+  if (hasSupabaseRead) {
+    try {
+      const result = await readAdminGymListFromSupabase({ limit: safeLimit, offset: safeOffset, q: query, archived: mode });
+      if (result && Array.isArray(result.items)) return result;
+    } catch {
+      // fallback below
+    }
+  }
+
+  const allGyms = await readLocalGyms();
+  const normalizedQuery = query.toLowerCase();
+  let filtered = allGyms;
+
+  if (mode === 'active') filtered = filtered.filter((gym) => !gym.deleted_at);
+  if (mode === 'archived') filtered = filtered.filter((gym) => Boolean(gym.deleted_at));
+
+  if (normalizedQuery) {
+    filtered = filtered.filter((gym) =>
+      [gym.name, gym.nome, gym.city, gym.citta, gym.address, gym.indirizzo, gym.discipline, Array.isArray(gym.disciplines) ? gym.disciplines.join(' | ') : '']
+        .join(' | ')
+        .toLowerCase()
+        .includes(normalizedQuery)
+    );
+  }
+
+  const items = filtered
+    .slice(safeOffset, safeOffset + safeLimit)
+    .map((gym) => normalizeGymRecord(Object.fromEntries(ADMIN_GYM_LIST_COLUMNS.map((key) => [key, gym[key]])), gym.id));
+
+  return {
+    items: withCanonicalGymSlugs(items),
+    limit: safeLimit,
+    offset: safeOffset,
+    hasMore: filtered.length > safeOffset + safeLimit,
+    q: query,
+    archived: mode
+  };
+}
+
+export async function readAdminGymById(id) {
+  const cleanId = String(id || '').trim();
+  if (!cleanId) return null;
+
+  if (hasSupabaseRead) {
+    const gym = await readAdminGymByIdFromSupabase(cleanId);
+    if (gym) return gym;
+  }
+
+  const gyms = await readLocalGyms();
+  return gyms.find((gym) => String(gym?.id || '').trim() === cleanId) || null;
+}
+
+export async function readAdminGymForClaimApproval({ id = '', slug = '', gymUrl = '', name = '' } = {}) {
+  const cleanId = String(id || '').trim();
+  const cleanSlug = String(slug || '').trim();
+  const slugFromUrl = extractGymSlugFromUrl(gymUrl);
+  const legacyIdFromUrl = extractLegacyGymIdFromSlug(slugFromUrl);
+  const cleanName = String(name || '').trim();
+
+  if (hasSupabaseRead) {
+    if (cleanId) {
+      const gym = await readAdminGymForClaimApprovalFromSupabase({ id: cleanId });
+      if (gym) return gym;
+    }
+    if (cleanSlug) {
+      const gym = await readAdminGymForClaimApprovalFromSupabase({ slug: cleanSlug });
+      if (gym) return gym;
+    }
+    if (slugFromUrl && slugFromUrl !== cleanSlug) {
+      const gym = await readAdminGymForClaimApprovalFromSupabase({ slug: slugFromUrl });
+      if (gym) return gym;
+    }
+    if (legacyIdFromUrl && legacyIdFromUrl !== cleanId) {
+      const gym = await readAdminGymForClaimApprovalFromSupabase({ id: legacyIdFromUrl });
+      if (gym) return gym;
+    }
+    if (cleanName) {
+      const gym = await readAdminGymForClaimApprovalFromSupabase({ name: cleanName });
+      if (gym) return gym;
+    }
+  }
+
+  const gyms = await readLocalGyms();
+  if (cleanId) {
+    const byId = gyms.find((gym) => String(gym?.id || '').trim() === cleanId);
+    if (byId) return byId;
+  }
+  if (cleanSlug) {
+    const bySlug = gyms.find((gym) => String(gym?.slug || '').trim() === cleanSlug || String(gym?._legacy_slug || '').trim() === cleanSlug);
+    if (bySlug) return bySlug;
+  }
+  if (slugFromUrl && slugFromUrl !== cleanSlug) {
+    const byUrlSlug = gyms.find((gym) => String(gym?.slug || '').trim() === slugFromUrl || String(gym?._legacy_slug || '').trim() === slugFromUrl);
+    if (byUrlSlug) return byUrlSlug;
+  }
+  if (legacyIdFromUrl && legacyIdFromUrl !== cleanId) {
+    const byLegacyId = gyms.find((gym) => String(gym?.id || '').trim() === legacyIdFromUrl);
+    if (byLegacyId) return byLegacyId;
+  }
+  if (cleanName) {
+    const normalizedName = normalizeForClaimMatch(cleanName);
+    return gyms.find((gym) => normalizeForClaimMatch(gym?.name || gym?.nome) === normalizedName) || null;
+  }
+
+  return null;
+}
+
+export async function readPublicGymListing(options = {}) {
+  if (hasSupabaseRead) {
+    try {
+      const result = await readPublicGymListingFromSupabase(options);
+      if (result && Array.isArray(result.items)) return result;
+    } catch {
+      // fallback below
+    }
+  }
+
+  return readPublicGymListingFromLocal(options);
+}
+
+export async function readPublicGymCount() {
+  const supabaseCount = await readPublicGymCountFromSupabase();
+  if (Number.isFinite(supabaseCount)) return supabaseCount;
+
+  return (await readLocalGyms()).length;
 }
 
 export async function writeGyms(gyms) {

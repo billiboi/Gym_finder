@@ -7,7 +7,8 @@ import {
   canWriteSupabase,
   getUploadsDir,
   gymStoreStatus,
-  readGyms,
+  readAdminGymById,
+  readAdminGymList,
   updateGymRecord,
   writeGymRecords
 } from '$lib/server/gym-store';
@@ -137,22 +138,25 @@ async function persistentImageFromFile(file, gymName) {
   return `data:${file.type};base64,${buffer.toString('base64')}`;
 }
 
-async function getGymsWithFallback(fetchFn) {
-  const gyms = await readGyms();
-  if (Array.isArray(gyms) && gyms.length > 0) return gyms;
-
-  try {
-    const res = await fetchFn('/api/gyms');
-    if (!res.ok) return [];
-    const data = await res.json();
-    return Array.isArray(data) ? data : [];
-  } catch {
-    return [];
-  }
+function adminListMode(value) {
+  const mode = clean(value);
+  return ['active', 'archived', 'all'].includes(mode) ? mode : 'active';
 }
 
-export async function load({ url, fetch }) {
-  const gyms = await getGymsWithFallback(fetch);
+export async function load({ url }) {
+  const limit = url.searchParams.get('limit');
+  const offset = url.searchParams.get('offset');
+  const q = url.searchParams.get('q') || '';
+  const archived = adminListMode(url.searchParams.get('archived'));
+  const editId = clean(url.searchParams.get('edit'));
+  const gymList = await readAdminGymList({ limit, offset, q, archived });
+  const detailGym = editId ? await readAdminGymById(editId) : null;
+  const gymsById = new Map();
+
+  for (const gym of gymList.items || []) gymsById.set(gym.id, gym);
+  if (detailGym) gymsById.set(detailGym.id, detailGym);
+
+  const gyms = [...gymsById.values()];
   const persistentWrites = canWriteSupabase();
 
   return {
@@ -162,6 +166,12 @@ export async function load({ url, fetch }) {
         publicHref: gymHref(gym)
       }))
       .sort((a, b) => a.name.localeCompare(b.name, 'it')),
+    limit: gymList.limit,
+    offset: gymList.offset,
+    hasMore: gymList.hasMore,
+    q: gymList.q,
+    archivedMode: gymList.archived,
+    editId: detailGym?.id || '',
     persistentWrites,
     disciplineOptions: DISCIPLINE_MASTER.map((discipline) => discipline.name),
     aliasSuggestions: DISCIPLINE_ALIAS_ROWS,
@@ -175,7 +185,7 @@ export async function load({ url, fetch }) {
 }
 
 export const actions = {
-  create: async ({ request, fetch }) => {
+  create: async ({ request }) => {
     if (!canWriteSupabase()) {
       return fail(503, {
         createError:
@@ -195,7 +205,6 @@ export const actions = {
 
     if (validationError) return fail(400, { createError: validationError });
 
-    const gyms = await getGymsWithFallback(fetch);
     let imageUrl = clean(form.get('image_url'));
     if (!isValidImageUrl(imageUrl)) {
       return fail(400, { createError: 'URL immagine non valido. Usa un URL http/https oppure carica un file.' });
@@ -250,7 +259,7 @@ export const actions = {
     throw redirect(303, '/admin/schede?created=1');
   },
 
-  update: async ({ request, fetch }) => {
+  update: async ({ request }) => {
     if (!canWriteSupabase()) {
       return fail(503, {
         error:
@@ -272,12 +281,11 @@ export const actions = {
     if (!id) return fail(400, { error: 'ID palestra mancante.' });
     if (validationError) return fail(400, { error: validationError, editId: id });
 
-    const gyms = await getGymsWithFallback(fetch);
-    const idx = gyms.findIndex((gym) => gym.id === id);
+    const currentGym = await readAdminGymById(id);
 
-    if (idx < 0) return fail(404, { error: 'Palestra non trovata.', editId: id });
+    if (!currentGym) return fail(404, { error: 'Palestra non trovata.', editId: id });
 
-    let imageUrl = clean(form.get('image_url')) || gyms[idx].image_url || '';
+    let imageUrl = clean(form.get('image_url')) || currentGym.image_url || '';
     if (!isValidImageUrl(imageUrl)) {
       return fail(400, {
         error: 'URL immagine non valido. Usa un URL http/https oppure carica un file.',
@@ -299,10 +307,10 @@ export const actions = {
 
     const verified = clean(form.get('verified')) === '1';
     const premium = clean(form.get('premium')) === '1';
-    const weeklyHours = gyms[idx]?.weekly_hours && typeof gyms[idx].weekly_hours === 'object' ? gyms[idx].weekly_hours : {};
+    const weeklyHours = currentGym?.weekly_hours && typeof currentGym.weekly_hours === 'object' ? currentGym.weekly_hours : {};
 
-    gyms[idx] = {
-      ...gyms[idx],
+    const updatedGym = {
+      ...currentGym,
       nome: name,
       name,
       discipline: disciplines[0],
@@ -340,19 +348,19 @@ export const actions = {
     };
 
     try {
-      await updateGymRecord(gyms[idx]);
+      await updateGymRecord(updatedGym);
     } catch (err) {
       return fail(500, { error: adminErrorMessage(err, 'Salvataggio non riuscito.'), editId: id });
     }
 
     if (clean(form.get('next_action')) === 'open_public') {
-      throw redirect(303, gymHref(gyms[idx]));
+      throw redirect(303, gymHref(updatedGym));
     }
 
     throw redirect(303, '/admin/schede?updated=1');
   },
 
-  delete: async ({ request, fetch }) => {
+  delete: async ({ request }) => {
     // Guardrail anti-disastro: questa action mantiene il nome storico "delete"
     // per compatibilità con i form esistenti, ma non cancella mai record gyms.
     // Ogni rimozione admin deve passare da archiveGym().
@@ -365,16 +373,15 @@ export const actions = {
 
     const form = await request.formData();
     const id = clean(form.get('id'));
-    const gyms = await getGymsWithFallback(fetch);
-    const index = gyms.findIndex((gym) => gym.id === id);
+    const gym = await readAdminGymById(id);
 
     if (!id) return fail(400, { error: 'ID palestra mancante.' });
-    if (index < 0) return fail(404, { error: 'Palestra non trovata.' });
+    if (!gym) return fail(404, { error: 'Palestra non trovata.' });
 
-    gyms[index] = archiveGym(gyms[index]);
+    const archivedGym = archiveGym(gym);
 
     try {
-      await writeGymRecords(gyms[index]);
+      await writeGymRecords(archivedGym);
     } catch (err) {
       return fail(500, { error: adminErrorMessage(err, 'Archiviazione non riuscita.') });
     }
@@ -382,7 +389,7 @@ export const actions = {
     throw redirect(303, '/admin/schede?archived=1');
   },
 
-  restore: async ({ request, fetch }) => {
+  restore: async ({ request }) => {
     if (!canWriteSupabase()) {
       return fail(503, {
         error:
@@ -392,16 +399,15 @@ export const actions = {
 
     const form = await request.formData();
     const id = clean(form.get('id'));
-    const gyms = await getGymsWithFallback(fetch);
-    const index = gyms.findIndex((gym) => gym.id === id);
+    const gym = await readAdminGymById(id);
 
     if (!id) return fail(400, { error: 'ID palestra mancante.' });
-    if (index < 0) return fail(404, { error: 'Palestra non trovata.' });
+    if (!gym) return fail(404, { error: 'Palestra non trovata.' });
 
-    gyms[index] = restoreGym(gyms[index]);
+    const restoredGym = restoreGym(gym);
 
     try {
-      await writeGymRecords(gyms[index]);
+      await writeGymRecords(restoredGym);
     } catch (err) {
       return fail(500, { error: adminErrorMessage(err, 'Ripristino non riuscito.') });
     }
@@ -409,7 +415,7 @@ export const actions = {
     throw redirect(303, '/admin/schede?restored=1');
   },
 
-  duplicate: async ({ request, fetch }) => {
+  duplicate: async ({ request }) => {
     if (!canWriteSupabase()) {
       return fail(503, {
         error:
@@ -419,8 +425,7 @@ export const actions = {
 
     const form = await request.formData();
     const id = clean(form.get('id'));
-    const gyms = await getGymsWithFallback(fetch);
-    const source = gyms.find((gym) => gym.id === id);
+    const source = await readAdminGymById(id);
 
     if (!id) return fail(400, { error: 'ID palestra mancante.' });
     if (!source) return fail(404, { error: 'Palestra non trovata.' });

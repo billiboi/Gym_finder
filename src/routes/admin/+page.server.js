@@ -1,5 +1,5 @@
 import { readGyms } from '$lib/server/gym-store';
-import { readClaimRequests } from '$lib/server/claim-request-store';
+import { readClaimRequestsList } from '$lib/server/claim-request-store';
 import { isArchivedGym } from '$lib/admin/gyms';
 
 async function getGymsWithFallback(fetchFn) {
@@ -19,7 +19,8 @@ async function getGymsWithFallback(fetchFn) {
 export async function load({ fetch }) {
   const gyms = await getGymsWithFallback(fetch);
   const activeGyms = gyms.filter((gym) => !isArchivedGym(gym));
-  const requests = await readClaimRequests();
+  const claimList = await readClaimRequestsList({ limit: 100 });
+  const requests = claimList.items;
   const qualityStats = {
     noPhone: activeGyms.filter((gym) => !String(gym.phone || '').trim()).length,
     noWebsite: activeGyms.filter((gym) => !String(gym.website || '').trim()).length,

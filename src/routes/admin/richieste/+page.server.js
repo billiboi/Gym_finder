@@ -1,14 +1,17 @@
 import { fail } from '@sveltejs/kit';
-import { readClaimRequests, updateClaimRequestStatus } from '$lib/server/claim-request-store';
+import { readClaimRequestById, readClaimRequestsList, updateClaimRequestStatus } from '$lib/server/claim-request-store';
 import { writeAdminAuditLog } from '$lib/server/admin-audit-store';
-import { gymHref, slugifyGym } from '$lib/gym-detail';
-import { readGyms, updateGymRecord } from '$lib/server/gym-store';
+import { gymHref } from '$lib/gym-detail';
+import { readAdminGymForClaimApproval, updateGymRecord } from '$lib/server/gym-store';
 
 export async function load() {
-  const requests = await readClaimRequests();
+  const claimList = await readClaimRequestsList({ limit: 100 });
 
   return {
-    requests
+    requests: claimList.items,
+    limit: claimList.limit,
+    offset: claimList.offset,
+    hasMore: claimList.hasMore
   };
 }
 
@@ -16,59 +19,17 @@ function clean(value) {
   return String(value ?? '').trim();
 }
 
-function normalizeForMatch(value) {
-  return clean(value)
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, ' ')
-    .trim();
-}
-
-function slugFromClaimUrl(value) {
-  const raw = clean(value);
-  if (!raw) return '';
-
-  try {
-    const url = new URL(raw, 'https://www.palestreinzona.it');
-    const parts = url.pathname.split('/').filter(Boolean);
-    const palestreIndex = parts.indexOf('palestre');
-    return palestreIndex >= 0 ? parts[palestreIndex + 1] || '' : '';
-  } catch {
-    const parts = raw.split('/').filter(Boolean);
-    const palestreIndex = parts.indexOf('palestre');
-    return palestreIndex >= 0 ? parts[palestreIndex + 1] || '' : '';
-  }
-}
-
-function findGymForClaim(gyms, claim) {
-  const claimGymId = clean(claim?.gym_id);
-  if (claimGymId) {
-    const byId = gyms.find((gym) => clean(gym?.id) === claimGymId);
-    if (byId) return byId;
-  }
-
-  const claimSlug = slugFromClaimUrl(claim?.gym_url);
-  if (claimSlug) {
-    const bySlug = gyms.find(
-      (gym) => slugifyGym(gym) === claimSlug || clean(gym?._legacy_slug) === claimSlug || clean(gym?.slug) === claimSlug
-    );
-    if (bySlug) return bySlug;
-  }
-
-  const claimName = normalizeForMatch(claim?.gym_name);
-  if (!claimName) return null;
-
-  return gyms.find((gym) => normalizeForMatch(gym?.name || gym?.nome) === claimName) || null;
-}
-
 async function approveClaimAndVerifyGym({ claim, status, adminNotes }) {
   if (status !== 'approved') {
     return updateClaimRequestStatus(claim.id, status, adminNotes);
   }
 
-  const gyms = await readGyms();
-  const gym = findGymForClaim(gyms, claim);
+  const gym = await readAdminGymForClaimApproval({
+    id: clean(claim?.gym_id),
+    slug: clean(claim?.gym_slug || claim?.slug),
+    gymUrl: clean(claim?.gym_url),
+    name: clean(claim?.gym_name)
+  });
 
   if (!gym) {
     throw new Error('Scheda collegata non trovata: approvazione bloccata per evitare un claim senza palestra.');
@@ -130,8 +91,7 @@ export const actions = {
     }
 
     try {
-      const requests = await readClaimRequests();
-      const current = requests.find((item) => item.id === id);
+      const current = await readClaimRequestById(id);
       if (!current) throw new Error('Richiesta non trovata.');
 
       const updated = await approveClaimAndVerifyGym({ claim: current, status, adminNotes });

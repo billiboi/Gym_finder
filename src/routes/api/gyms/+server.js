@@ -1,8 +1,8 @@
 import { json } from '@sveltejs/kit';
 import { isArchivedGym } from '$lib/admin/gyms';
-import { publicClientGym } from '$lib/gym-client';
+import { publicListingGym } from '$lib/gym-client';
 import { isGymOpenNow } from '$lib/hours';
-import { readGyms } from '$lib/server/gym-store';
+import { readPublicGymListing } from '$lib/server/gym-store';
 
 function splitCsvLine(line, delimiter = ',') {
   const out = [];
@@ -158,6 +158,13 @@ function parseQueryNumber(value) {
   return Number.isFinite(parsed) ? parsed : null;
 }
 
+function parseBoundedInteger(value, fallback, { min = 0, max = Number.MAX_SAFE_INTEGER } = {}) {
+  if (value === null || value === undefined || String(value).trim() === '') return fallback;
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed)) return fallback;
+  return Math.min(Math.max(Math.trunc(parsed), min), max);
+}
+
 function toRadians(degrees) {
   return (degrees * Math.PI) / 180;
 }
@@ -242,7 +249,7 @@ function filterGyms(gyms, { q, discipline, openState, userLat, userLng, radiusKm
   return out.sort((a, b) => a.name.localeCompare(b.name, 'it'));
 }
 
-export async function GET({ url, fetch }) {
+export async function GET({ url }) {
   try {
     const q = clean(url.searchParams.get('q'));
     const discipline = clean(url.searchParams.get('discipline'));
@@ -250,15 +257,12 @@ export async function GET({ url, fetch }) {
     const userLat = parseQueryNumber(url.searchParams.get('lat'));
     const userLng = parseQueryNumber(url.searchParams.get('lng'));
     const radiusKm = parseQueryNumber(url.searchParams.get('radius_km'));
+    const limit = parseBoundedInteger(url.searchParams.get('limit'), 24, { min: 1, max: 100 });
+    const offset = parseBoundedInteger(url.searchParams.get('offset'), 0, { min: 0 });
 
-    let gyms = await readGyms();
-    if (!Array.isArray(gyms) || gyms.length === 0) {
-      const csvResponse = await fetch('/palestre.csv');
-      if (csvResponse.ok) {
-        const csvText = await csvResponse.text();
-        gyms = parseCsvToGyms(csvText);
-      }
-    }
+    let listing = await readPublicGymListing({ limit, offset, q, discipline });
+    let gyms = listing.items;
+    if (!Array.isArray(gyms)) gyms = [];
 
     const filtered = filterGyms(gyms.filter((gym) => !isArchivedGym(gym)), {
       q,
@@ -267,15 +271,26 @@ export async function GET({ url, fetch }) {
       userLat,
       userLng,
       radiusKm
-    }).map(publicClientGym);
+    });
+    const pageItems = filtered.slice(0, limit).map(publicListingGym);
 
-    return json(filtered, {
+    return json({
+      items: pageItems,
+      limit,
+      offset,
+      hasMore: listing.hasMore || filtered.length > limit
+    }, {
       headers: {
         'Cache-Control': 'public, max-age=60, stale-while-revalidate=300'
       }
     });
   } catch {
-    return json([], {
+    return json({
+      items: [],
+      limit: 24,
+      offset: 0,
+      hasMore: false
+    }, {
       headers: {
         'Cache-Control': 'public, max-age=30, stale-while-revalidate=120'
       }

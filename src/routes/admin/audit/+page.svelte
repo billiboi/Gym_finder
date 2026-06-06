@@ -85,7 +85,7 @@
                       {/each}
                     </div>
                   {:else}
-                    <span class="text-slate-400">Dettaglio non disponibile</span>
+                    <span class="text-slate-400">Dettaglio non caricato in lista</span>
                   {/if}
                 </td>
                 <td class="px-4 py-3 text-slate-600">{entry.actor || '-'}</td>

@@ -4,7 +4,7 @@ import { adminErrorMessage, adminGymView, archiveGym as archiveGymRecord, hasGen
 import { dedupeDisciplines, normalizeDisciplineField } from '$lib/disciplines';
 import { isCapLike, isSuspiciousZoneName } from '$lib/location-quality';
 import { writeAdminAuditLog } from '$lib/server/admin-audit-store';
-import { readClaimRequests } from '$lib/server/claim-request-store';
+import { readClaimRequestsList } from '$lib/server/claim-request-store';
 import { canWriteSupabase, readGyms, updateGymRecord, writeGymRecords } from '$lib/server/gym-store';
 
 function clean(value) {
@@ -356,7 +356,8 @@ function scoreBand(score) {
 
 export async function load({ url }) {
   const gyms = await readGyms();
-  const claims = await readClaimRequests();
+  const claimList = await readClaimRequestsList({ limit: 100 });
+  const claims = claimList.items;
   const claimIndex = buildClaimIndex(claims);
   const visibleGyms = gyms.filter((gym) => !isArchivedGym(gym));
   const slugCounts = new Map();

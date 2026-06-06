@@ -18,6 +18,33 @@ const CLAIM_NOTIFICATION_FROM =
 
 const hasSupabase = Boolean(SUPABASE_URL && SUPABASE_KEY);
 const hasResend = Boolean(RESEND_API_KEY && CLAIM_NOTIFICATION_TO && CLAIM_NOTIFICATION_FROM);
+const CLAIM_LIST_COLUMNS = [
+  'id',
+  'created_at',
+  'updated_at',
+  'gym_id',
+  'gym_name',
+  'gym_url',
+  'requester_name',
+  'requester_email',
+  'requester_role',
+  'status',
+  'approved_at',
+  'rejected_at',
+  'email_verified_at'
+];
+const CLAIM_DETAIL_COLUMNS = [
+  ...CLAIM_LIST_COLUMNS,
+  'reason',
+  'requester_phone',
+  'message',
+  'verification_token',
+  'verification_sent_at',
+  'owner_token',
+  'requested_updates',
+  'image_uploads',
+  'admin_notes'
+];
 const EXTENDED_WRITE_KEYS = new Set([
   'gym_id',
   'verification_token',
@@ -77,6 +104,12 @@ function supabaseBaseUrl() {
   return SUPABASE_URL.replace(/\/$/, '');
 }
 
+function boundedNumber(value, fallback, { min = 0, max = Number.POSITIVE_INFINITY } = {}) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return fallback;
+  return Math.min(Math.max(Math.trunc(number), min), max);
+}
+
 function supabaseErrorMessage(response, details, action) {
   if (response.status === 404 || response.status === 400) {
     return `${action}: verifica che la tabella "${SUPABASE_CLAIMS_TABLE}" abbia le colonne della migration claim system. ${details}`.trim();
@@ -122,6 +155,25 @@ export function normalizeClaimRequest(input) {
     admin_notes: clean(input?.admin_notes),
     created_at: createdAt,
     updated_at: clean(input?.updated_at) || createdAt
+  };
+}
+
+function normalizeClaimRequestListItem(input) {
+  const createdAt = clean(input?.created_at);
+  return {
+    id: clean(input?.id),
+    created_at: createdAt,
+    updated_at: clean(input?.updated_at) || createdAt,
+    gym_id: clean(input?.gym_id),
+    gym_name: clean(input?.gym_name),
+    gym_url: clean(input?.gym_url),
+    requester_name: clean(input?.requester_name),
+    requester_email: clean(input?.requester_email).toLowerCase(),
+    requester_role: clean(input?.requester_role),
+    status: normalizeStatus(input?.status),
+    approved_at: clean(input?.approved_at),
+    rejected_at: clean(input?.rejected_at),
+    email_verified_at: clean(input?.email_verified_at)
   };
 }
 
@@ -318,9 +370,17 @@ export function canPersistClaimRequests() {
   return hasSupabase || !isReadOnlyRuntime;
 }
 
-async function readClaimRequestsFromSupabase() {
+async function readClaimRequestsFromSupabase({ limit = 500, offset = 0 } = {}) {
+  const safeLimit = boundedNumber(limit, 500, { min: 1, max: 500 });
+  const safeOffset = boundedNumber(offset, 0, { min: 0 });
+  const params = new URLSearchParams({
+    select: CLAIM_DETAIL_COLUMNS.join(','),
+    order: 'created_at.desc',
+    limit: String(safeLimit),
+    offset: String(safeOffset)
+  });
   const response = await fetch(
-    `${supabaseBaseUrl()}/rest/v1/${SUPABASE_CLAIMS_TABLE}?select=*&order=created_at.desc`,
+    `${supabaseBaseUrl()}/rest/v1/${SUPABASE_CLAIMS_TABLE}?${params}`,
     {
       method: 'GET',
       headers: supabaseHeaders()
@@ -334,6 +394,83 @@ async function readClaimRequestsFromSupabase() {
 
   const rows = await response.json();
   return Array.isArray(rows) ? rows.map((row) => normalizeClaimRequest(row)) : [];
+}
+
+async function readClaimRequestsListFromSupabase({ limit = 50, offset = 0, status = '' } = {}) {
+  const safeLimit = boundedNumber(limit, 50, { min: 1, max: 100 });
+  const safeOffset = boundedNumber(offset, 0, { min: 0 });
+  const normalizedStatus = clean(status) ? normalizeStatus(status) : '';
+  const params = new URLSearchParams({
+    select: CLAIM_LIST_COLUMNS.join(','),
+    order: 'created_at.desc',
+    limit: String(safeLimit),
+    offset: String(safeOffset)
+  });
+
+  if (normalizedStatus) params.set('status', `eq.${normalizedStatus}`);
+
+  const response = await fetch(`${supabaseBaseUrl()}/rest/v1/${SUPABASE_CLAIMS_TABLE}?${params}`, {
+    method: 'GET',
+    headers: supabaseHeaders()
+  });
+
+  if (!response.ok) {
+    const details = await responseDetails(response);
+    throw new Error(supabaseErrorMessage(response, details, 'Lettura lista claim non riuscita'));
+  }
+
+  const rows = await response.json();
+  return {
+    items: Array.isArray(rows) ? rows.map((row) => normalizeClaimRequestListItem(row)) : [],
+    limit: safeLimit,
+    offset: safeOffset,
+    hasMore: Array.isArray(rows) && rows.length === safeLimit
+  };
+}
+
+async function readClaimRequestByIdFromSupabase(id) {
+  const cleanId = clean(id);
+  if (!cleanId) return null;
+  const params = new URLSearchParams({
+    select: CLAIM_DETAIL_COLUMNS.join(','),
+    order: 'created_at.desc',
+    limit: '1',
+    id: `eq.${cleanId}`
+  });
+  const response = await fetch(`${supabaseBaseUrl()}/rest/v1/${SUPABASE_CLAIMS_TABLE}?${params}`, {
+    method: 'GET',
+    headers: supabaseHeaders()
+  });
+
+  if (!response.ok) {
+    const details = await responseDetails(response);
+    throw new Error(supabaseErrorMessage(response, details, 'Lettura claim non riuscita'));
+  }
+
+  const rows = await response.json();
+  return Array.isArray(rows) && rows.length ? normalizeClaimRequest(rows[0]) : null;
+}
+
+async function readClaimRequestByTokenFromSupabase(column, value, action) {
+  const cleanValue = clean(value);
+  if (!cleanValue || !['owner_token', 'verification_token'].includes(column)) return null;
+  const params = new URLSearchParams({
+    select: CLAIM_DETAIL_COLUMNS.join(','),
+    [column]: `eq.${cleanValue}`,
+    limit: '1'
+  });
+  const response = await fetch(`${supabaseBaseUrl()}/rest/v1/${SUPABASE_CLAIMS_TABLE}?${params}`, {
+    method: 'GET',
+    headers: supabaseHeaders()
+  });
+
+  if (!response.ok) {
+    const details = await responseDetails(response);
+    throw new Error(supabaseErrorMessage(response, details, action));
+  }
+
+  const rows = await response.json();
+  return Array.isArray(rows) && rows.length ? normalizeClaimRequest(rows[0]) : null;
 }
 
 async function readClaimRequestsFromFile() {
@@ -357,18 +494,63 @@ export async function readClaimRequests() {
   return readClaimRequestsFromFile();
 }
 
-export async function findClaimRequestByOwnerToken(ownerToken) {
+export async function readClaimRequestsList(options = {}) {
+  if (hasSupabase) return readClaimRequestsListFromSupabase(options);
+  if (isReadOnlyRuntime) return { items: [], limit: boundedNumber(options.limit, 50, { min: 1, max: 100 }), offset: 0, hasMore: false };
+
+  const safeLimit = boundedNumber(options.limit, 50, { min: 1, max: 100 });
+  const safeOffset = boundedNumber(options.offset, 0, { min: 0 });
+  const normalizedStatus = clean(options.status) ? normalizeStatus(options.status) : '';
+  const requests = await readClaimRequestsFromFile();
+  const filtered = normalizedStatus ? requests.filter((request) => request.status === normalizedStatus) : requests;
+  const items = filtered.slice(safeOffset, safeOffset + safeLimit).map((request) => normalizeClaimRequestListItem(request));
+  return {
+    items,
+    limit: safeLimit,
+    offset: safeOffset,
+    hasMore: filtered.length > safeOffset + safeLimit
+  };
+}
+
+export async function readClaimRequestById(id) {
+  const cleanId = clean(id);
+  if (!cleanId) return null;
+  if (hasSupabase) return readClaimRequestByIdFromSupabase(cleanId);
+  if (isReadOnlyRuntime) return null;
+  const requests = await readClaimRequestsFromFile();
+  return requests.find((request) => request.id === cleanId) || null;
+}
+
+export async function readClaimRequestByOwnerToken(ownerToken) {
   const cleanToken = clean(ownerToken);
   if (!cleanToken) return null;
-  const requests = await readClaimRequests();
+  if (hasSupabase) {
+    return readClaimRequestByTokenFromSupabase('owner_token', cleanToken, 'Lettura claim owner non riuscita');
+  }
+  if (isReadOnlyRuntime) return null;
+  const requests = await readClaimRequestsFromFile();
   return requests.find((request) => request.owner_token === cleanToken) || null;
+}
+
+export async function readClaimRequestByVerificationToken(verificationToken) {
+  const cleanToken = clean(verificationToken);
+  if (!cleanToken) return null;
+  if (hasSupabase) {
+    return readClaimRequestByTokenFromSupabase('verification_token', cleanToken, 'Lettura claim verifica non riuscita');
+  }
+  if (isReadOnlyRuntime) return null;
+  const requests = await readClaimRequestsFromFile();
+  return requests.find((request) => request.verification_token === cleanToken) || null;
+}
+
+export async function findClaimRequestByOwnerToken(ownerToken) {
+  return readClaimRequestByOwnerToken(ownerToken);
 }
 
 export async function verifyClaimEmail(verificationToken) {
   const cleanToken = clean(verificationToken);
   if (!cleanToken) throw new Error('Token verifica mancante.');
-  const requests = await readClaimRequests();
-  const current = requests.find((request) => request.verification_token === cleanToken);
+  const current = await readClaimRequestByVerificationToken(cleanToken);
   if (!current) throw new Error('Token verifica non valido o scaduto.');
 
   if (current.email_verified_at) return current;
@@ -389,8 +571,7 @@ export async function updateClaimRequestStatus(id, status, adminNotes = '', extr
     throw new Error('Stato richiesta non valido.');
   }
 
-  const requests = await readClaimRequests();
-  const current = requests.find((request) => request.id === clean(id));
+  const current = await readClaimRequestById(id);
   if (!current) throw new Error('Richiesta non trovata.');
 
   const patch = {

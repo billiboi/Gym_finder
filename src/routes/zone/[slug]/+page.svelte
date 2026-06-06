@@ -104,10 +104,11 @@
       const response = await fetch(`/api/gyms?q=${encodeURIComponent(location.name)}`);
       if (!response.ok) throw new Error('Caricamento non riuscito');
       const payload = await response.json();
-      if (!Array.isArray(payload)) throw new Error('Risposta non valida');
+      const items = Array.isArray(payload) ? payload : Array.isArray(payload?.items) ? payload.items : [];
+      if (!Array.isArray(items)) throw new Error('Risposta non valida');
 
       const byId = new Map(gyms.map((gym) => [gym.id, gym]));
-      for (const gym of payload) {
+      for (const gym of items) {
         if (gym?.id && !byId.has(gym.id)) byId.set(gym.id, gym);
       }
       gyms = [...byId.values()];

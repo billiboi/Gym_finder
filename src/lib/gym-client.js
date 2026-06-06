@@ -142,3 +142,24 @@ export function publicClientGym(gym) {
     distance_km: safeGym.distance_km
   };
 }
+
+export function publicListingGym(gym) {
+  const listing = publicClientGym(gym);
+  delete listing.description;
+  delete listing.public_description;
+  delete listing.description_source;
+  delete listing.description_quality_score;
+  delete listing.description_needs_review;
+  delete listing.needs_review;
+  delete listing.review_reason;
+  delete listing.price_info;
+  delete listing.price;
+  delete listing.monthly_price;
+  delete listing.monthlyPrice;
+  delete listing.verified_commercial_info;
+  delete listing.commercial_info_last_checked_at;
+  delete listing.source_url;
+  delete listing.official_source_url;
+  delete listing.price_source_url;
+  return listing;
+}
