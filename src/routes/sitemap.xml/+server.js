@@ -3,7 +3,7 @@ import { normalizeGym } from '$lib/gym-normalizer';
 import { SITE_URL } from '$lib/site';
 import { buildSeoDisciplineEntries, buildSeoLocationEntries } from '$lib/seo-directory';
 import { EDITORIAL_GUIDES, editorialGuideHref } from '$lib/editorial';
-import { readPublicRouteGyms } from '$lib/server/gym-store';
+import { isPublicActiveGym, readPublicRouteGyms } from '$lib/server/gym-store';
 
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL || '';
 const SUPABASE_READ_KEY =
@@ -121,7 +121,11 @@ async function readSitemapGyms() {
 
     const data = await response.json();
     const rows = Array.isArray(data) ? data : [];
-    const gyms = withCanonicalGymSlugs(rows.map((row, index) => normalizeGym(row, row?.id || `sitemap-${index + 1}`)));
+    const gyms = withCanonicalGymSlugs(
+      rows
+        .map((row, index) => normalizeGym(row, row?.id || `sitemap-${index + 1}`))
+        .filter(isPublicActiveGym)
+    );
     return gyms.length ? gyms : readPublicRouteGyms();
   } catch {
     return readPublicRouteGyms();
@@ -129,7 +133,7 @@ async function readSitemapGyms() {
 }
 
 export async function GET() {
-  const gyms = (await readSitemapGyms()).filter((gym) => isIndexableGym(gym));
+  const gyms = (await readSitemapGyms()).filter((gym) => isPublicActiveGym(gym) && isIndexableGym(gym));
   const indexableGyms = gyms.filter((gym) => isIndexableGym(gym));
   const today = new Date().toISOString().slice(0, 10);
   const lastmodForGym = (gym) => {

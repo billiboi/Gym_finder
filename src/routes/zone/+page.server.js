@@ -1,6 +1,6 @@
 import { buildSeoLocationEntries } from '$lib/seo-directory';
 import { normalizeGym } from '$lib/gym-normalizer';
-import { readPublicRouteGyms } from '$lib/server/gym-store';
+import { isPublicActiveGym, readPublicRouteGyms } from '$lib/server/gym-store';
 
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL || '';
 const SUPABASE_READ_KEY =
@@ -59,7 +59,9 @@ async function readZoneIndexGyms() {
       if (!response.ok) return readPublicRouteGyms();
 
       const data = await response.json();
-      const rows = Array.isArray(data) ? data.map((row, index) => normalizeGym(row, `zone-index-${index + 1}`)) : [];
+      const rows = Array.isArray(data)
+        ? data.map((row, index) => normalizeGym(row, `zone-index-${index + 1}`)).filter(isPublicActiveGym)
+        : [];
       return rows.length ? rows : readPublicRouteGyms();
     } catch {
       return readPublicRouteGyms();

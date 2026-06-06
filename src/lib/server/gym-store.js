@@ -2,6 +2,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { GYM_SUPABASE_COLUMN_CANDIDATES, gymToSupabaseRecord, normalizeGym } from '$lib/gym-normalizer';
 import { repairMojibake } from '$lib/text-repair';
+import { isArchivedGym } from '$lib/admin/gyms';
 
 const dataDir = path.join(process.cwd(), 'data');
 const staticDir = path.join(process.cwd(), 'static');
@@ -163,7 +164,9 @@ async function readPublicStaticCsvGyms() {
 
     const csvRaw = await response.text();
     const gyms = gymsFromCsv(csvRaw);
-    globalThis[PUBLIC_STATIC_CSV_CACHE_KEY] = withCanonicalGymSlugs(gyms.filter((gym) => !isExcludedGymRecord(gym)));
+    globalThis[PUBLIC_STATIC_CSV_CACHE_KEY] = withCanonicalGymSlugs(
+      gyms.filter((gym) => isPublicActiveGym(gym) && !isExcludedGymRecord(gym))
+    );
     return globalThis[PUBLIC_STATIC_CSV_CACHE_KEY];
   } catch {
     return [];
@@ -338,6 +341,18 @@ function isExcludedGymRecord(gym) {
   }
 
   return false;
+}
+
+export function isPublicActiveGym(gym) {
+  if (!gym || typeof gym !== 'object') return false;
+  if (isArchivedGym(gym)) return false;
+  if (gym.deletedAt) return false;
+  if (gym.archived === true || gym.is_archived === true) return false;
+  const archived = String(gym.archived || '').trim().toLowerCase();
+  const isArchived = String(gym.is_archived || '').trim().toLowerCase();
+  if (['true', '1', 'yes', 'si', 'sì'].includes(archived)) return false;
+  if (['true', '1', 'yes', 'si', 'sì'].includes(isArchived)) return false;
+  return true;
 }
 
 function parseAddress(fullAddress) {
@@ -754,6 +769,10 @@ function activeGymQueryParams({ q = '', discipline = '', availableColumns = [] }
   const filters = [];
   const available = new Set(availableColumns);
 
+  if (available.has('deleted_at')) {
+    filters.push('deleted_at=is.null');
+  }
+
   const query = String(q || '').trim();
   if (query) {
     const like = `*${query.replace(/[%*,()]/g, ' ').replace(/\s+/g, ' ').trim()}*`;
@@ -807,12 +826,13 @@ async function readPublicGymListingFromSupabase({ limit = 24, offset = 0, q = ''
 
   const data = await response.json();
   const rows = Array.isArray(data) ? data : [];
-  const normalized = rows.slice(0, safeLimit).map((row, index) => normalizeGymRecord(row, `listing-${safeOffset + index + 1}`));
+  const normalized = rows.map((row, index) => normalizeGymRecord(row, `listing-${safeOffset + index + 1}`));
+  const publicRows = normalized.filter((gym) => isPublicActiveGym(gym) && !isExcludedGymRecord(gym));
   return {
-    items: withCanonicalGymSlugs(normalized.filter((gym) => !isExcludedGymRecord(gym))),
+    items: withCanonicalGymSlugs(publicRows.slice(0, safeLimit)),
     limit: safeLimit,
     offset: safeOffset,
-    hasMore: rows.length > safeLimit
+    hasMore: publicRows.length > safeLimit || rows.length > safeLimit
   };
 }
 
@@ -976,7 +996,7 @@ async function readPublicGymListingFromLocal({ limit = 24, offset = 0, q = '', d
   const allGyms = await readLocalGyms();
   const query = String(q || '').trim().toLowerCase();
   const wantedDiscipline = String(discipline || '').trim().toLowerCase();
-  let filtered = allGyms.filter((gym) => !isExcludedGymRecord(gym));
+  let filtered = allGyms.filter((gym) => isPublicActiveGym(gym) && !isExcludedGymRecord(gym));
 
   if (wantedDiscipline) {
     filtered = filtered.filter((gym) => {
@@ -1006,7 +1026,8 @@ async function readPublicGymListingFromLocal({ limit = 24, offset = 0, q = '', d
 async function readPublicGymCountFromSupabase() {
   if (!hasSupabaseRead) return null;
 
-  const params = ['select=id'];
+  const availableColumns = await supabaseAvailableColumns();
+  const params = ['select=id', ...(availableColumns.includes('deleted_at') ? ['deleted_at=is.null'] : [])];
   const url = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?${params.join('&')}`;
   const response = await fetch(url, {
     method: 'HEAD',
@@ -1409,12 +1430,12 @@ export async function readPublicGymCount() {
   const supabaseCount = await readPublicGymCountFromSupabase();
   if (Number.isFinite(supabaseCount)) return supabaseCount;
 
-  return (await readLocalGyms()).length;
+  return (await readLocalGyms()).filter(isPublicActiveGym).length;
 }
 
 export async function readPublicRouteGyms({ limit = 5000 } = {}) {
   const safeLimit = boundedNumber(limit, 5000, { min: 1, max: 5000 });
-  return (await readLocalGyms()).slice(0, safeLimit);
+  return (await readLocalGyms()).filter(isPublicActiveGym).slice(0, safeLimit);
 }
 
 export async function writeGyms(gyms) {

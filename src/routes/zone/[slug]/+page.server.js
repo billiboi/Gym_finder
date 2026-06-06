@@ -3,7 +3,7 @@ import { isIndexableGym } from '$lib/gym-detail';
 import { publicListingGym } from '$lib/gym-client';
 import { normalizeGym } from '$lib/gym-normalizer';
 import { publicCityForGym } from '$lib/location-quality';
-import { readPublicRouteGyms } from '$lib/server/gym-store';
+import { isPublicActiveGym, readPublicRouteGyms } from '$lib/server/gym-store';
 import { normalizeSeoLocationName, slugifySeoName } from '$lib/seo-directory';
 import { getSeoLocation, gymsForSeoLocation, topDisciplinesForGyms } from '$lib/seo-locations';
 
@@ -138,7 +138,9 @@ async function fetchZoneRows(params, limit = INITIAL_ZONE_GYMS + 1) {
 }
 
 function normalizeRows(rows) {
-  return withCanonicalGymSlugs(rows.map((row, index) => normalizeGym(row, row?.id || `zone-${index + 1}`)));
+  return withCanonicalGymSlugs(
+    rows.map((row, index) => normalizeGym(row, row?.id || `zone-${index + 1}`)).filter(isPublicActiveGym)
+  );
 }
 
 function locationOrFilter(terms) {
@@ -163,7 +165,7 @@ async function readZoneGyms(location) {
   const terms = locationTerms(location);
   const rows = await fetchZoneRows(['deleted_at=is.null', locationOrFilter(terms)].filter(Boolean));
   const sourceGyms = rows.length ? normalizeRows(rows) : await readPublicRouteGyms();
-  const gyms = sourceGyms.filter((gym) => isIndexableGym(gym));
+  const gyms = sourceGyms.filter((gym) => isPublicActiveGym(gym) && isIndexableGym(gym));
   const matchedGyms = gymsForSeoLocation(gyms, location).filter((gym) => isIndexableGym(gym));
 
   return {
@@ -180,7 +182,7 @@ async function readDynamicCityGyms(slug) {
     INITIAL_ZONE_GYMS + 1
   );
   const sourceGyms = rows.length ? normalizeRows(rows) : await readPublicRouteGyms();
-  const gyms = sourceGyms.filter((gym) => isIndexableGym(gym));
+  const gyms = sourceGyms.filter((gym) => isPublicActiveGym(gym) && isIndexableGym(gym));
   const matchedName = normalizeSeoLocationName(
     publicCityForGym(gyms.find((gym) => slugifySeoName(publicCityForGym(gym)) === slug))
   );

@@ -2,7 +2,7 @@ import { error, redirect } from '@sveltejs/kit';
 import { isIndexableGym } from '$lib/gym-detail';
 import { publicListingGym } from '$lib/gym-client';
 import { normalizeGym } from '$lib/gym-normalizer';
-import { readPublicRouteGyms } from '$lib/server/gym-store';
+import { isPublicActiveGym, readPublicRouteGyms } from '$lib/server/gym-store';
 import { getSeoDiscipline, gymsForSeoDiscipline } from '$lib/seo-disciplines';
 import { relatedGuidesForDiscipline } from '$lib/editorial';
 import {
@@ -134,7 +134,7 @@ function disciplineOrFilter(discipline) {
 async function readDisciplineGyms(discipline) {
   if (!hasSupabaseRead) {
     const fallbackGyms = await readPublicRouteGyms();
-    return gymsForSeoDiscipline(fallbackGyms, discipline).filter((gym) => isIndexableGym(gym));
+    return gymsForSeoDiscipline(fallbackGyms, discipline).filter((gym) => isPublicActiveGym(gym) && isIndexableGym(gym));
   }
 
   const params = [
@@ -153,20 +153,22 @@ async function readDisciplineGyms(discipline) {
     });
   } catch {
     const fallbackGyms = await readPublicRouteGyms();
-    return gymsForSeoDiscipline(fallbackGyms, discipline).filter((gym) => isIndexableGym(gym));
+    return gymsForSeoDiscipline(fallbackGyms, discipline).filter((gym) => isPublicActiveGym(gym) && isIndexableGym(gym));
   }
 
   if (!response.ok) {
     const fallbackGyms = await readPublicRouteGyms();
-    return gymsForSeoDiscipline(fallbackGyms, discipline).filter((gym) => isIndexableGym(gym));
+    return gymsForSeoDiscipline(fallbackGyms, discipline).filter((gym) => isPublicActiveGym(gym) && isIndexableGym(gym));
   }
 
   const data = await response.json();
   const rows = Array.isArray(data) ? data : [];
   const gyms = rows.length
-    ? withCanonicalGymSlugs(rows.map((row, index) => normalizeGym(row, row?.id || `discipline-${index + 1}`)))
+    ? withCanonicalGymSlugs(
+        rows.map((row, index) => normalizeGym(row, row?.id || `discipline-${index + 1}`)).filter(isPublicActiveGym)
+      )
     : await readPublicRouteGyms();
-  return gymsForSeoDiscipline(gyms, discipline).filter((gym) => isIndexableGym(gym));
+  return gymsForSeoDiscipline(gyms, discipline).filter((gym) => isPublicActiveGym(gym) && isIndexableGym(gym));
 }
 
 export async function load({ params }) {

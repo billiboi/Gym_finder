@@ -1,6 +1,6 @@
 import { error, redirect } from '@sveltejs/kit';
 import { isArchivedGym } from '$lib/admin/gyms';
-import { readPublicGymListing, readPublicRouteGyms } from '$lib/server/gym-store';
+import { isPublicActiveGym, readPublicGymListing, readPublicRouteGyms } from '$lib/server/gym-store';
 import { cityLabelForGym, isIndexableGym, legacySlugifyGym, primaryDisciplineForGym, slugifyGym } from '$lib/gym-detail';
 import { publicListingGym } from '$lib/gym-client';
 import { normalizeGym } from '$lib/gym-normalizer';
@@ -340,10 +340,10 @@ async function readRelatedGyms(gym, primaryDiscipline, gymCity) {
     'order=priority_score.desc.nullslast,nome.asc.nullslast',
     'limit=24'
   ].filter(Boolean));
-  const candidates = normalizeRows(rows, 'related').filter((item) => item.id !== gym.id);
+  const candidates = normalizeRows(rows, 'related').filter((item) => isPublicActiveGym(item) && item.id !== gym.id);
 
   return candidates
-    .filter((item) => isIndexableGym(item))
+    .filter((item) => isPublicActiveGym(item) && isIndexableGym(item))
     .map((item) => {
       const sameDiscipline = primaryDisciplineForGym(item) === primaryDiscipline;
       const sameCity = String(cityLabelForGym(item) || '').trim().toLowerCase() === gymCity;

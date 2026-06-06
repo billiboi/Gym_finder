@@ -1,14 +1,13 @@
-import { isArchivedGym } from '$lib/admin/gyms';
 import { PUBLIC_DISCIPLINE_FILTER_OPTIONS } from '$lib/disciplines';
 import { publicListingGym } from '$lib/gym-client';
-import { readPublicGymListing } from '$lib/server/gym-store';
+import { isPublicActiveGym, readPublicGymListing } from '$lib/server/gym-store';
 import { PUBLIC_CATALOG_NUMBERS } from '$lib/trust';
 
 const INITIAL_GYM_LIMIT = 24;
 
 export async function load() {
   const listing = await readPublicGymListing({ limit: INITIAL_GYM_LIMIT, offset: 0 });
-  const gyms = listing.items.filter((gym) => !isArchivedGym(gym));
+  const gyms = listing.items.filter(isPublicActiveGym);
 
   return {
     initialGyms: gyms.map(publicListingGym),

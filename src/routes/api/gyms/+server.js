@@ -1,8 +1,7 @@
 import { json } from '@sveltejs/kit';
-import { isArchivedGym } from '$lib/admin/gyms';
 import { publicListingGym } from '$lib/gym-client';
 import { isGymOpenNow } from '$lib/hours';
-import { readPublicGymListing } from '$lib/server/gym-store';
+import { isPublicActiveGym, readPublicGymListing } from '$lib/server/gym-store';
 
 function splitCsvLine(line, delimiter = ',') {
   const out = [];
@@ -264,7 +263,7 @@ export async function GET({ url }) {
     let gyms = listing.items;
     if (!Array.isArray(gyms)) gyms = [];
 
-    const filtered = filterGyms(gyms.filter((gym) => !isArchivedGym(gym)), {
+    const filtered = filterGyms(gyms.filter(isPublicActiveGym), {
       q,
       discipline,
       openState,
