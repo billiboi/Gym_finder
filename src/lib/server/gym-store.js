@@ -1412,6 +1412,11 @@ export async function readPublicGymCount() {
   return (await readLocalGyms()).length;
 }
 
+export async function readPublicRouteGyms({ limit = 5000 } = {}) {
+  const safeLimit = boundedNumber(limit, 5000, { min: 1, max: 5000 });
+  return (await readLocalGyms()).slice(0, safeLimit);
+}
+
 export async function writeGyms(gyms) {
   const normalized = (Array.isArray(gyms) ? gyms : []).map((gym, index) =>
     normalizeGymRecord(gym, `gym-${index + 1}`)

@@ -2,6 +2,7 @@ import { error, redirect } from '@sveltejs/kit';
 import { isIndexableGym } from '$lib/gym-detail';
 import { publicListingGym } from '$lib/gym-client';
 import { normalizeGym } from '$lib/gym-normalizer';
+import { readPublicRouteGyms } from '$lib/server/gym-store';
 import { getSeoDiscipline, gymsForSeoDiscipline } from '$lib/seo-disciplines';
 import { relatedGuidesForDiscipline } from '$lib/editorial';
 import {
@@ -131,7 +132,10 @@ function disciplineOrFilter(discipline) {
 }
 
 async function readDisciplineGyms(discipline) {
-  if (!hasSupabaseRead) return [];
+  if (!hasSupabaseRead) {
+    const fallbackGyms = await readPublicRouteGyms();
+    return gymsForSeoDiscipline(fallbackGyms, discipline).filter((gym) => isIndexableGym(gym));
+  }
 
   const params = [
     `select=${encodeURIComponent(DISCIPLINE_GYM_COLUMNS.join(','))}`,
@@ -141,18 +145,27 @@ async function readDisciplineGyms(discipline) {
     `limit=${INITIAL_DISCIPLINE_GYMS}`
   ].filter(Boolean);
   const url = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?${params.join('&')}`;
-  const response = await fetch(url, {
-    method: 'GET',
-    headers: supabaseHeaders()
-  });
+  let response;
+  try {
+    response = await fetch(url, {
+      method: 'GET',
+      headers: supabaseHeaders()
+    });
+  } catch {
+    const fallbackGyms = await readPublicRouteGyms();
+    return gymsForSeoDiscipline(fallbackGyms, discipline).filter((gym) => isIndexableGym(gym));
+  }
 
   if (!response.ok) {
-    throw new Error(`Supabase discipline read failed (${response.status})`);
+    const fallbackGyms = await readPublicRouteGyms();
+    return gymsForSeoDiscipline(fallbackGyms, discipline).filter((gym) => isIndexableGym(gym));
   }
 
   const data = await response.json();
   const rows = Array.isArray(data) ? data : [];
-  const gyms = withCanonicalGymSlugs(rows.map((row, index) => normalizeGym(row, row?.id || `discipline-${index + 1}`)));
+  const gyms = rows.length
+    ? withCanonicalGymSlugs(rows.map((row, index) => normalizeGym(row, row?.id || `discipline-${index + 1}`)))
+    : await readPublicRouteGyms();
   return gymsForSeoDiscipline(gyms, discipline).filter((gym) => isIndexableGym(gym));
 }
 

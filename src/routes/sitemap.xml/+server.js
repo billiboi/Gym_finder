@@ -3,6 +3,7 @@ import { normalizeGym } from '$lib/gym-normalizer';
 import { SITE_URL } from '$lib/site';
 import { buildSeoDisciplineEntries, buildSeoLocationEntries } from '$lib/seo-directory';
 import { EDITORIAL_GUIDES, editorialGuideHref } from '$lib/editorial';
+import { readPublicRouteGyms } from '$lib/server/gym-store';
 
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL || '';
 const SUPABASE_READ_KEY =
@@ -102,26 +103,29 @@ function escapeXml(value) {
 }
 
 async function readSitemapGyms() {
-  if (!hasSupabaseRead) return [];
+  if (!hasSupabaseRead) return readPublicRouteGyms();
 
-  const params = [
-    `select=${encodeURIComponent(SITEMAP_GYM_COLUMNS.join(','))}`,
-    'deleted_at=is.null',
-    'order=updated_at.desc.nullslast,nome.asc.nullslast',
-    'limit=5000'
-  ];
-  const response = await fetch(`${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?${params.join('&')}`, {
-    method: 'GET',
-    headers: supabaseHeaders()
-  });
+  try {
+    const params = [
+      `select=${encodeURIComponent(SITEMAP_GYM_COLUMNS.join(','))}`,
+      'deleted_at=is.null',
+      'order=updated_at.desc.nullslast,nome.asc.nullslast',
+      'limit=5000'
+    ];
+    const response = await fetch(`${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?${params.join('&')}`, {
+      method: 'GET',
+      headers: supabaseHeaders()
+    });
 
-  if (!response.ok) {
-    throw new Error(`Supabase sitemap read failed (${response.status})`);
+    if (!response.ok) return readPublicRouteGyms();
+
+    const data = await response.json();
+    const rows = Array.isArray(data) ? data : [];
+    const gyms = withCanonicalGymSlugs(rows.map((row, index) => normalizeGym(row, row?.id || `sitemap-${index + 1}`)));
+    return gyms.length ? gyms : readPublicRouteGyms();
+  } catch {
+    return readPublicRouteGyms();
   }
-
-  const data = await response.json();
-  const rows = Array.isArray(data) ? data : [];
-  return withCanonicalGymSlugs(rows.map((row, index) => normalizeGym(row, row?.id || `sitemap-${index + 1}`)));
 }
 
 export async function GET() {

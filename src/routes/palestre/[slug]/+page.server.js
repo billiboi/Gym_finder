@@ -1,6 +1,6 @@
 import { error, redirect } from '@sveltejs/kit';
 import { isArchivedGym } from '$lib/admin/gyms';
-import { readPublicGymListing } from '$lib/server/gym-store';
+import { readPublicGymListing, readPublicRouteGyms } from '$lib/server/gym-store';
 import { cityLabelForGym, isIndexableGym, legacySlugifyGym, primaryDisciplineForGym, slugifyGym } from '$lib/gym-detail';
 import { publicListingGym } from '$lib/gym-client';
 import { normalizeGym } from '$lib/gym-normalizer';
@@ -205,14 +205,17 @@ async function fetchGymRows(columns, params) {
   if (!hasSupabaseRead) return [];
 
   const url = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?select=${encodeURIComponent(columns.join(','))}&${params.join('&')}`;
-  const response = await fetch(url, {
-    method: 'GET',
-    headers: supabaseHeaders()
-  });
-
-  if (!response.ok) {
-    throw new Error(`Supabase gym read failed (${response.status})`);
+  let response;
+  try {
+    response = await fetch(url, {
+      method: 'GET',
+      headers: supabaseHeaders()
+    });
+  } catch {
+    return [];
   }
+
+  if (!response.ok) return [];
 
   const data = await response.json();
   return Array.isArray(data) ? data : [];
@@ -236,6 +239,13 @@ function slugSearchTerms(slug) {
 }
 
 async function findGymCandidate(slug) {
+  const fallbackGyms = await readPublicRouteGyms();
+  const fallbackCanonicalMatch = fallbackGyms.find((gym) => slugifyGym(gym) === slug || gym?.slug === slug);
+  if (fallbackCanonicalMatch) return { gym: fallbackCanonicalMatch, matchType: 'canonical' };
+
+  const fallbackLegacyMatch = fallbackGyms.find((gym) => legacySlugifyGym(gym) === slug || gym?._legacy_slug === slug);
+  if (fallbackLegacyMatch) return { gym: fallbackLegacyMatch, matchType: 'legacy' };
+
   if (!hasSupabaseRead) {
     const terms = slugSearchTerms(slug);
     for (const term of terms) {
