@@ -65,25 +65,25 @@ La homepage continua a usare la prima pagina SSR e `/api/gyms` resta paginato.
 
 Status production prima, dal report precedente:
 
-| Route | Prima production | Dopo locale |
-|---|---:|---:|
-| `/` | 200 | 200 |
-| `/api/gyms` | 200 | 200 |
-| `/zone` | 500 | 200 |
-| `/discipline` | 500 | 200 |
-| `/guide` | 200 | non ritestata nel retry finale |
-| `/chi-siamo` | 200 | non ritestata nel retry finale |
-| `/per-le-palestre` | 200 | non ritestata nel retry finale |
-| `/zone/varese` | 500 | 200 |
-| `/zone/lugano` | 500 | non ritestata nel retry finale |
-| `/discipline/fitness` | 500 | 200 |
-| `/discipline/yoga` | 500 | non ritestata nel retry finale |
-| `/sitemap.xml` | 500 | 200 |
-| `/palestre/first-studio-personal-trainer` | 500 | 404 nella prima verifica locale parziale |
-| `/palestre/piscina-acquatic-club-ticino-csv-481` | 500 | 404 nella prima verifica locale parziale |
-| `/palestre/nonstop-gym-bellinzona-csv-404` | 500 | non completata |
-| `/palestre/lugano-wellness-csv-361` | 500 | non completata |
-| `/palestre/activ-fitness-losone-csv-30` | 500 | non completata |
+| Route | Prima production | Dopo locale | Dopo production |
+|---|---:|---:|---:|
+| `/` | 200 | 200 | 200 |
+| `/api/gyms` | 200 | 200 | 200 |
+| `/zone` | 500 | 200 | 200 |
+| `/discipline` | 500 | 200 | 200 |
+| `/guide` | 200 | non ritestata nel retry finale | non ritestata production post-deploy |
+| `/chi-siamo` | 200 | non ritestata nel retry finale | non ritestata production post-deploy |
+| `/per-le-palestre` | 200 | non ritestata nel retry finale | non ritestata production post-deploy |
+| `/zone/varese` | 500 | 200 | 200 |
+| `/zone/lugano` | 500 | non ritestata nel retry finale | 200 |
+| `/discipline/fitness` | 500 | 200 | 200 |
+| `/discipline/yoga` | 500 | non ritestata nel retry finale | 200 |
+| `/sitemap.xml` | 500 | 200 | 200 |
+| `/palestre/first-studio-personal-trainer` | 500 | 404 nella prima verifica locale parziale | 404 |
+| `/palestre/piscina-acquatic-club-ticino-csv-481` | 500 | 404 nella prima verifica locale parziale | 404 |
+| `/palestre/nonstop-gym-bellinzona-csv-404` | 500 | non completata | 404 |
+| `/palestre/lugano-wellness-csv-361` | 500 | non completata | 404 |
+| `/palestre/activ-fitness-losone-csv-30` | 500 | non completata | 301 |
 
 Nota: per le schede palestra, il fix garantisce che errori Supabase gestibili non diventino `500`. Gli slug inesistenti o non piu risolvibili possono correttamente diventare `404`; gli archiviati restano `410`; i legacy validi restano candidati a `301`.
 
@@ -95,6 +95,7 @@ Nota: per le schede palestra, il fix garantisce che errori Supabase gestibili no
   - secondo tentativo mirato riuscito sui target principali.
 - `bun run build`: client e SSR compilano; fallisce nello step adapter Vercel per symlink Windows noto: `EPERM: operation not permitted, symlink '![-]\catchall.func'`.
 - Non e stato eseguito browser click completo: il problema era HTTP route-level e il markup nav era gia stato verificato nel report precedente.
+- Verifica production post-deploy: le route che erano `500` non restituiscono piu `500`; gli slug scheda indicati ora restituiscono `404` o `301` controllati.
 
 ## 9. Rischi residui
 
