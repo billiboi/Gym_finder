@@ -57,22 +57,34 @@ export function dedupeDisciplines(values) {
 }
 
 const PUBLIC_DISCIPLINE_FILTER_NAMES = new Set([
+  'Aikido',
+  'Bodybuilding',
   'Boxe',
-  'Judo',
-  'MMA',
-  'Kickboxing',
   'Brazilian Jiu Jitsu',
-  'Pilates',
-  'Fitness',
-  'Personal Training',
-  'Functional Training',
-  'Cross Training',
+  'Calisthenics',
   'CrossFit',
-  'Yoga',
+  'Difesa Personale',
+  'Fitness',
+  'Functional Training',
+  'Judo',
+  'Jujitsu',
   'Karate',
+  'Kickboxing',
+  'Kung Fu',
+  'MMA',
   'Nuoto',
-  'Padel'
+  'Pattinaggio',
+  'Pilates',
+  'Scherma',
+  'Taekwondo',
+  'Tai Chi',
+  'Wing Chun',
+  'Yoga'
 ]);
+
+export const PUBLIC_DISCIPLINE_FILTER_OPTIONS = [...PUBLIC_DISCIPLINE_FILTER_NAMES].sort((a, b) =>
+  a.localeCompare(b, 'it')
+);
 
 export function isPublicDisciplineFilterOption(value) {
   const normalized = normalizeDisciplineLabel(value);

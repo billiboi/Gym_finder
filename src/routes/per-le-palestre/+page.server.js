@@ -1,8 +1,6 @@
 import { fail } from '@sveltejs/kit';
 import { createClaimRequest } from '$lib/server/claim-request-store';
-import { isArchivedGym } from '$lib/admin/gyms';
-import { buildCatalogStats } from '$lib/catalog-stats';
-import { readGyms } from '$lib/server/gym-store';
+import { PUBLIC_CATALOG_NUMBERS } from '$lib/trust';
 
 const ALLOWED_PLANS = new Set(['Scheda verificata', 'Scheda premium', 'Partner locale']);
 
@@ -16,17 +14,13 @@ function normalizePlan(value) {
 }
 
 export async function load() {
-  const allGyms = await readGyms();
-  const gyms = allGyms.filter((gym) => !isArchivedGym(gym));
-  const stats = buildCatalogStats({ allGyms, activeGyms: gyms });
-
   return {
-    catalogTotalGyms: stats.activeGyms,
-    catalogTotalRecords: stats.totalRecords,
-    catalogTotalDisciplines: stats.publicCanonicalDisciplines,
-    catalogCuratedDisciplines: stats.curatedDisciplinePages,
-    catalogZonesAvailable: stats.zonesAvailable,
-    catalogCuratedPages: stats.curatedPages
+    catalogTotalGyms: PUBLIC_CATALOG_NUMBERS.activeGyms,
+    catalogTotalRecords: PUBLIC_CATALOG_NUMBERS.activeGyms,
+    catalogTotalDisciplines: PUBLIC_CATALOG_NUMBERS.disciplines,
+    catalogCuratedDisciplines: PUBLIC_CATALOG_NUMBERS.disciplines,
+    catalogZonesAvailable: PUBLIC_CATALOG_NUMBERS.zonesLabel,
+    catalogCuratedPages: PUBLIC_CATALOG_NUMBERS.curatedPagesLabel
   };
 }
 

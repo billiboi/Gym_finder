@@ -24,6 +24,13 @@ export const BRAND_PROOF_ITEMS = [
   { key: 'curated_pages', value: '20+', label: 'pagine curate' }
 ];
 
+export const PUBLIC_CATALOG_NUMBERS = {
+  activeGyms: 542,
+  disciplines: 23,
+  zonesLabel: '80+',
+  curatedPagesLabel: '20+'
+};
+
 export const VERIFICATION_STEPS = [
   {
     title: '1. Ricezione richiesta',

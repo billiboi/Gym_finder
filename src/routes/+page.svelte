@@ -206,6 +206,7 @@
   let remoteHasMoreGyms = Boolean(data?.initialHasMoreGyms);
   let catalogHydrated = !remoteHasMoreGyms;
   let backgroundCatalogLoading = false;
+  let nextGymOffset = Array.isArray(data?.initialGyms) ? data.initialGyms.length : 0;
 
   $: {
   filterText;
@@ -243,7 +244,10 @@
   $: catalogDisciplineCount = data?.catalogTotalDisciplines || disciplineCount || 0;
   $: catalogZoneCount = data?.catalogZonesAvailable || 0;
   $: catalogCuratedPageCount = data?.catalogCuratedPages || 0;
-  $: resultsCountLabel = !hasActiveFilters && !catalogHydrated ? catalogGymLabel : String(filteredGyms.length);
+  $: shownGymsLabel = hasActiveFilters
+    ? `Mostrate ${visibleGyms.length} schede filtrate`
+    : `Mostrate ${visibleGyms.length} schede su ${catalogGymLabel}`;
+  $: resultsCountLabel = hasActiveFilters ? `${filteredGyms.length} risultati nella pagina caricata` : shownGymsLabel;
 
   if (Array.isArray(data?.initialGyms)) {
     gyms = data.initialGyms;
@@ -510,7 +514,7 @@
     try {
       const params = new URLSearchParams({
         limit: String(API_GYM_LIMIT),
-        offset: String(reset ? 0 : gyms.length)
+        offset: String(reset ? 0 : nextGymOffset)
       });
       if (filterText.trim()) params.set('q', filterText.trim());
       if (filterDiscipline.trim()) params.set('discipline', filterDiscipline.trim());
@@ -524,10 +528,16 @@
             if (gym?.id) byId.set(gym.id, gym);
           }
           gyms = [...byId.values()];
+          const responseOffset = Number(data?.offset);
+          nextGymOffset = (Number.isFinite(responseOffset) ? responseOffset : reset ? 0 : nextGymOffset) + items.length;
           remoteHasMoreGyms = Boolean(data?.hasMore);
           catalogHydrated = !remoteHasMoreGyms;
           backgroundCatalogLoading = false;
           return;
+        }
+        if (reset) {
+          gyms = [];
+          nextGymOffset = 0;
         }
         remoteHasMoreGyms = false;
         catalogHydrated = true;
@@ -600,6 +610,10 @@
     locationRadius = 20;
     nearbyOnly = true;
     visibleLimit = INITIAL_VISIBLE_LIMIT;
+    nextGymOffset = 0;
+    catalogHydrated = false;
+    remoteHasMoreGyms = true;
+    void loadGyms({ reset: true });
   }
 
   function readCachedCatalog() {
@@ -828,6 +842,7 @@
             class="min-h-[3.35rem] rounded-2xl border border-slate-200 bg-white px-4 text-sm font-semibold outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
             bind:value={filterDiscipline}
             disabled={loadingDisciplines}
+            on:change={applySearchNow}
           >
             <option value="">Tutte</option>
             {#each disciplines as discipline}
@@ -895,7 +910,7 @@
             </button>
           {/if}
           {#if filterDiscipline.trim()}
-            <button type="button" class="rounded-full px-3 py-1.5 text-xs font-bold sc-active-filter-chip" aria-label="Rimuovi filtro disciplina" on:click={() => (filterDiscipline = '')}>
+            <button type="button" class="rounded-full px-3 py-1.5 text-xs font-bold sc-active-filter-chip" aria-label="Rimuovi filtro disciplina" on:click={() => { filterDiscipline = ''; applySearchNow(); }}>
               {filterDiscipline} x
             </button>
           {/if}
