@@ -101,7 +101,12 @@
     loadingMoreGyms = true;
     loadMoreError = '';
     try {
-      const response = await fetch(`/api/gyms?q=${encodeURIComponent(location.name)}`);
+      const params = new URLSearchParams({
+        q: location.name,
+        limit: String(INITIAL_VISIBLE_GYMS),
+        offset: String(gyms.length)
+      });
+      const response = await fetch(`/api/gyms?${params.toString()}`);
       if (!response.ok) throw new Error('Caricamento non riuscito');
       const payload = await response.json();
       const items = Array.isArray(payload) ? payload : Array.isArray(payload?.items) ? payload.items : [];
@@ -113,7 +118,7 @@
       }
       gyms = [...byId.values()];
       totalGyms = Math.max(totalGyms, gyms.length);
-      hasMoreFromServer = false;
+      hasMoreFromServer = Boolean(payload?.hasMore);
       visibleLimit += 24;
     } catch {
       loadMoreError = 'Non riesco a caricare altre schede ora. Riprova tra poco.';
@@ -129,8 +134,8 @@
     {
       question: `Quali discipline sono piu presenti a ${location.name}?`,
       answer: disciplineSummary
-        ? `In questo momento le discipline che emergono di piu in questa zona sono ${disciplineSummary}.`
-        : `In questa zona il catalogo e ancora in crescita e la panoramica delle discipline si sta consolidando.`
+        ? `In questa zona le discipline con piu schede sono ${disciplineSummary}.`
+        : `In questa zona abbiamo ancora poche schede pubbliche.`
     },
     {
       question: `Le schede di ${location.name} mostrano contatti e orari?`,
@@ -372,7 +377,7 @@
               </div>
               <div class="rounded-2xl sc-gym-card-cta p-3">
                 <a href={gymHref(gym)} class="inline-flex items-center rounded-xl bg-slate-900 px-3 py-2 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
-                  Apri scheda completa
+                  Apri scheda
                 </a>
               </div>
             </div>
@@ -400,11 +405,11 @@
         <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Panoramica della zona</p>
         <h2 class="mt-1 text-2xl font-bold text-slate-900">Allenarsi a {location.name}: come leggere questa raccolta</h2>
         <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
-          Mappa e card qui sopra mostrano le strutture disponibili a {location.name} prima del contesto editoriale. Da qui puoi passare alla scheda completa senza scorrere blocchi introduttivi.
+          Mappa e card mostrano le strutture disponibili a {location.name}. Apri una scheda per controllare dati e contatti.
         </p>
         <p class="mt-4 text-sm leading-7 text-slate-600 sm:text-base">
-          In questo momento le discipline che emergono di piu in zona sono <strong>{disciplineSummary || 'fitness e arti marziali'}</strong>.
-          Aprendo una scheda completa puoi controllare contatti, orari e posizione.
+          In questa zona le discipline con piu schede sono <strong>{disciplineSummary || 'fitness e arti marziali'}</strong>.
+          Nella scheda puoi controllare contatti, orari e posizione.
         </p>
       </div>
     </section>
@@ -448,21 +453,21 @@
     <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
       <div class="max-w-4xl">
         <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Come leggerla</p>
-        <h2 class="mt-1 text-2xl font-bold text-slate-900">Come usarla per scegliere meglio</h2>
+        <h2 class="mt-1 text-2xl font-bold text-slate-900">Come usare questa pagina</h2>
       </div>
 
       <div class="mt-5 grid gap-3 md:grid-cols-3">
         <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
           <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Selezione</p>
-          <p class="mt-2 text-sm leading-7 text-slate-700">La pagina mette insieme schede gia curate, cosi eviti risultati troppo deboli o poco informativi.</p>
+          <p class="mt-2 text-sm leading-7 text-slate-700">La pagina raggruppa le schede pubbliche collegate a questa zona.</p>
         </div>
         <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
           <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Confronto rapido</p>
-          <p class="mt-2 text-sm leading-7 text-slate-700">Puoi confrontare piu strutture della stessa area guardando indirizzo, discipline e orari prima di aprire il dettaglio completo.</p>
+          <p class="mt-2 text-sm leading-7 text-slate-700">Confronta indirizzo, discipline e orari prima di aprire la scheda.</p>
         </div>
         <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
           <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Ricerca locale</p>
-          <p class="mt-2 text-sm leading-7 text-slate-700">Se sei in viaggio o ti sei appena trasferito, qui capisci quali opzioni abbiamo censito in zona.</p>
+          <p class="mt-2 text-sm leading-7 text-slate-700">Se non conosci la zona, parti dalle schede gia presenti nel catalogo.</p>
         </div>
       </div>
     </section>

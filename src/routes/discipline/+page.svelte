@@ -54,11 +54,11 @@
       <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Discipline sportive</p>
       <h1 class="mt-2 text-3xl font-bold text-slate-900 sm:text-5xl">Sfoglia tutte le discipline</h1>
       <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-600 sm:text-base">
-        Qui trovi le discipline presenti nel catalogo, così puoi aprire subito la pagina giusta per fitness, Pilates, nuoto, boxe o yoga.
+        Scegli una disciplina e apri le schede collegate nel catalogo.
       </p>
       <div class="mt-5 flex flex-wrap gap-2">
         <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">{totalDisciplines} discipline disponibili</span>
-        <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">{featuredDisciplines.length} pagine curate</span>
+        <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">{featuredDisciplines.length} pagine dedicate</span>
       </div>
     </section>
 
@@ -67,7 +67,7 @@
         <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Guide editoriali</p>
         <h2 class="mt-1 text-2xl font-bold text-slate-900">Non sai da quale disciplina partire?</h2>
         <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
-          Le guide aiutano a confrontare obiettivi, logistica e differenze tra corsi prima di aprire le schede delle palestre.
+          Leggi criteri pratici prima di aprire le schede delle palestre.
         </p>
         <a href="/guide" class="mt-4 inline-flex min-h-[2.75rem] items-center rounded-xl bg-slate-900 px-4 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
           Apri le guide
@@ -80,7 +80,7 @@
         <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Pagine prioritarie</p>
         <h2 class="mt-1 text-2xl font-bold text-slate-900">Discipline con pagina dedicata</h2>
         <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
-          Qui trovi le discipline che hanno già una pagina più forte e più utile per esplorare palestre, schede complete e raccolte ordinate.
+          Queste discipline hanno una pagina dedicata con schede collegate.
         </p>
       </div>
 
@@ -88,7 +88,7 @@
         {#each featuredDisciplines as discipline}
           <a href={`/discipline/${discipline.slug}`} class="flex min-h-full flex-col rounded-2xl border border-slate-200 bg-white/90 p-4 transition hover:-translate-y-0.5 hover:shadow-md">
             <div class="flex items-start justify-between gap-3">
-              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Landing curata</p>
+              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Pagina dedicata</p>
               <span class="shrink-0 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-900">{discipline.count}</span>
             </div>
             <h3 class="mt-2 text-lg font-bold text-slate-900">{discipline.name}</h3>

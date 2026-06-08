@@ -54,11 +54,11 @@
       <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Zone e città</p>
       <h1 class="mt-2 text-3xl font-bold text-slate-900 sm:text-5xl">Sfoglia tutte le zone</h1>
       <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-600 sm:text-base">
-        Qui trovi le città e le zone presenti nel catalogo, così puoi partire dall'area che ti interessa e aprire raccolte locali già organizzate.
+        Scegli una città o una zona e apri le schede collegate nel catalogo.
       </p>
       <div class="mt-5 flex flex-wrap gap-2">
         <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">{totalLocations} zone disponibili</span>
-        <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">{featuredLocations.length} pagine curate</span>
+        <span class="rounded-full sc-filter-chip px-3 py-1 text-xs font-semibold">{featuredLocations.length} pagine dedicate</span>
       </div>
     </section>
 
@@ -67,7 +67,7 @@
         <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Pagine prioritarie</p>
         <h2 class="mt-1 text-2xl font-bold text-slate-900">Zone con pagina dedicata</h2>
         <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
-          Qui trovi le aree che hanno già una pagina più forte e più utile per confrontare palestre locali, discipline e schede complete.
+          Queste zone hanno una pagina dedicata con schede collegate.
         </p>
       </div>
 
@@ -75,7 +75,7 @@
         {#each featuredLocations as location}
           <a href={`/zone/${location.slug}`} class="flex min-h-full flex-col rounded-2xl border border-slate-200 bg-white/90 p-4 transition hover:-translate-y-0.5 hover:shadow-md">
             <div class="flex items-start justify-between gap-3">
-              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Landing curata</p>
+              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Pagina dedicata</p>
               <span class="shrink-0 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-900">{location.count}</span>
             </div>
             <h3 class="mt-2 text-lg font-bold text-slate-900">{location.name}</h3>

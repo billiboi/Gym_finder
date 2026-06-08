@@ -9,7 +9,6 @@
     gymHref,
     imageForGym,
     isIndexableGym,
-    isPremiumGym,
     isVerifiedGym,
     officialGymOverride,
     primaryDisciplineForGym,
@@ -105,7 +104,6 @@
   $: officialOverride = publicDataQuarantine ? null : officialGymOverride(gym);
   $: disciplines = disciplineListForGym(gym);
   $: isVerified = isVerifiedGym(gym);
-  $: isPremium = isPremiumGym(gym);
   $: primaryDiscipline = primaryDisciplineForGym(gym);
   $: editorialSummary = fixGymText(gym?.editorial_summary);
   $: editorialHighlights = textArray(gym?.editorial_highlights);
@@ -308,9 +306,6 @@
               {/each}
               {#if isVerified}
                 <span class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-emerald-900 sc-badge">Verificata</span>
-              {/if}
-              {#if isPremium}
-                <span class="rounded-full bg-sky-100 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-sky-900 sc-badge">Premium</span>
               {/if}
             </div>
 
@@ -533,8 +528,8 @@
         {/if}
         <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sc-detail-section sm:p-5">
           <div class="max-w-4xl">
-            <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Verifiche rapide</p>
-            <h2 class="mt-2 text-2xl font-bold text-slate-900">Cosa puoi capire prima di contattare la struttura</h2>
+            <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Prima del contatto</p>
+            <h2 class="mt-2 text-2xl font-bold text-slate-900">Prima di contattare la palestra</h2>
             <div class="mt-4 grid gap-3">
               {#each seoHighlights as highlight}
                 <div class="rounded-2xl border border-slate-200 bg-white/90 p-4 sc-detail-card">
@@ -610,15 +605,15 @@
       <aside class="flex min-w-0 flex-col gap-3 lg:sticky lg:top-24">
         <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sc-detail-section sm:p-5">
           <div>
-            <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Gestisci questa palestra</p>
-            <h2 class="mt-2 text-xl font-bold text-slate-900">Richiedi accesso proprietario</h2>
-            <p class="mt-3 text-sm leading-7 text-slate-600 sc-detail-copy">Aggiornare la scheda base &egrave; gratuito e non comporta obblighi pubblicitari.</p>
+            <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Dati pubblici</p>
+            <h2 class="mt-2 text-xl font-bold text-slate-900">Rappresenti questa palestra?</h2>
+            <p class="mt-3 text-sm leading-7 text-slate-600 sc-detail-copy">Puoi richiedere la verifica gratuita della scheda e segnalarci informazioni da correggere.</p>
           </div>
 
           <div class="mt-4 grid gap-2 text-sm font-semibold text-slate-700">
             <div class="rounded-xl border border-slate-200 bg-white/80 px-3 py-2 sc-detail-card">Contatti, sito e canali ufficiali</div>
             <div class="rounded-xl border border-slate-200 bg-white/80 px-3 py-2 sc-detail-card">Orari, indirizzo e posizione</div>
-            <div class="rounded-xl border border-slate-200 bg-white/80 px-3 py-2 sc-detail-card">Discipline, descrizione e informazioni club</div>
+            <div class="rounded-xl border border-slate-200 bg-white/80 px-3 py-2 sc-detail-card">Discipline, descrizione e informazioni pubbliche</div>
           </div>
 
           <div class="mt-4 flex flex-col gap-2">
@@ -626,7 +621,7 @@
               trackEvent('owner_cta_click', trackingPayload);
               trackEvent('claim_click', { ...trackingPayload, posizione: 'scheda_owner_box' });
             }}>
-              Gestisci questa palestra
+              Verifica scheda
             </a>
             <a href="/per-le-palestre" class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50" on:click={() => trackEvent('partner_cta_click', { ...trackingPayload, posizione: 'scheda_owner_box' })}>
               Info per le palestre

@@ -1,7 +1,7 @@
 export const TRUST_BADGES = [
   {
-    title: 'Catalogo curato',
-    text: 'Schede organizzate per zona, disciplina, contatti e orari utili alla scelta.'
+    title: 'Catalogo ordinato',
+    text: 'Ordiniamo le schede per zona, disciplina, contatti e orari.'
   },
   {
     title: 'Aggiornamenti verificati',
@@ -9,7 +9,7 @@ export const TRUST_BADGES = [
   },
   {
     title: 'Fonti distinguibili',
-    text: 'Quando un dato arriva da canali ufficiali viene separato dalle informazioni ancora da confermare.'
+    text: 'Separiamo i dati da fonti ufficiali dalle informazioni ancora da confermare.'
   },
   {
     title: 'Niente scorciatoie sui dati',

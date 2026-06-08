@@ -1,9 +1,11 @@
 <script>
   import { onDestroy, onMount } from 'svelte';
   import { dedupeDisciplines, normalizeDisciplineLabel, publicDisciplineFilterOptions } from '$lib/disciplines';
-  import { disciplinePreviewForGym, gymHref, imageForGym, isPremiumGym, isVerifiedGym } from '$lib/gym-detail';
+  import { disciplinePreviewForGym, gymHref, imageForGym, isVerifiedGym } from '$lib/gym-detail';
   import { isGymOpenNow } from '$lib/hours';
   import { SITE_DESCRIPTION, SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
+  import { SEO_DISCIPLINES } from '$lib/seo-disciplines';
+  import { SEO_LOCATIONS } from '$lib/seo-locations';
   import { buildHomepageSeoMeta } from '$lib/seo-meta';
   import { repairMojibake } from '$lib/text-repair';
   import { gymTrackingPayload, trackEvent } from '$lib/tracking';
@@ -28,6 +30,22 @@
     { value: 'Zona', label: 'cerca per città, distanza e disciplina' },
     { value: 'Schede', label: 'contatti, orari, sito e dettagli utili' },
     { value: 'Scelta', label: 'confronto rapido senza aprire mille tab' }
+  ];
+
+  const primaryDisciplineLinks = SEO_DISCIPLINES.slice(0, 8).map((discipline) => ({
+    label: discipline.name,
+    href: `/discipline/${discipline.slug}`
+  }));
+
+  const primaryZoneLinks = SEO_LOCATIONS.map((location) => ({
+    label: location.name,
+    href: `/zone/${location.slug}`
+  }));
+
+  const homepageTrustPoints = [
+    'Schede consultabili prima del contatto',
+    'Badge verificato quando i dati sono controllati',
+    'Proprietari abilitati a richiedere aggiornamenti'
   ];
 
   function disciplineListForGym(gym) {
@@ -669,6 +687,12 @@
 
   onMount(() => {
     applyUrlSearchParams();
+    if (filterText.trim() || filterDiscipline.trim()) {
+      catalogHydrated = false;
+      remoteHasMoreGyms = true;
+      nextGymOffset = 0;
+      void loadGyms({ reset: true });
+    }
     if (!readCachedCatalog()) scheduleCatalogHydration();
   });
 
@@ -702,16 +726,16 @@
           <div class="inline-flex items-center rounded-full border border-emerald-900/10 bg-white/65 px-3 py-1 text-[0.7rem] font-bold uppercase tracking-[0.24em] text-emerald-800">
             Palestre in Zona
           </div>
-          <h1 class="mt-4 text-3xl font-bold leading-tight text-slate-900 sm:text-5xl">Trova la palestra perfetta vicino a te</h1>
+          <h1 class="mt-4 text-3xl font-bold leading-tight text-slate-900 sm:text-5xl">Cerca una palestra in zona</h1>
           <p class="mt-4 max-w-2xl text-sm leading-7 text-slate-600 sm:text-[1.05rem]">
-            Confronta {catalogGymLabel} palestre, corsi e discipline nella tua zona. Scopri orari, contatti e dettagli aggiornati.
+            Filtra per città, disciplina o nome. Apri la scheda e controlla orari, indirizzo e contatti prima di chiamare.
           </p>
           <p class="mt-3 flex flex-wrap items-center gap-2 text-sm font-bold text-emerald-900">
-            <span>{catalogGymLabel} palestre</span>
+            <span>Schede consultabili</span>
             <span aria-hidden="true">&bull;</span>
-            <span>{catalogDisciplineCount} discipline pubbliche</span>
+            <span>Zone e discipline organizzate</span>
             <span aria-hidden="true">&bull;</span>
-            <span>{catalogZoneCount} zone</span>
+            <span>Dati da confermare quando mancano verifiche</span>
           </p>
           <div class="mt-5 flex flex-wrap gap-3 sc-hero-actions">
             <a
@@ -719,20 +743,19 @@
               class="inline-flex min-h-[3rem] items-center justify-center rounded-2xl px-5 text-sm font-bold text-white transition sc-button"
               on:click={focusSearchBox}
             >
-              Trova palestra
+              Cerca ora
             </a>
             <a
-              href="/per-le-palestre"
-              class="inline-flex min-h-[3rem] items-center justify-center rounded-2xl border border-slate-200 bg-white px-5 text-sm font-bold text-slate-900 transition hover:bg-slate-50 sc-hero-secondary-cta"
+              href="/rivendica-scheda"
+              class="inline-flex min-h-[3rem] items-center justify-center rounded-2xl bg-emerald-950 px-5 text-sm font-bold text-white transition hover:bg-emerald-900 sc-hero-secondary-cta"
             >
-              Per proprietari
+              Verifica scheda
             </a>
-            <a
-              href="/verifica-schede"
-              class="inline-flex min-h-[3rem] items-center justify-center rounded-2xl border border-slate-200 bg-white px-5 text-sm font-bold text-slate-900 transition hover:bg-slate-50 sc-hero-secondary-cta"
-            >
-              Metodo verifica
-            </a>
+          </div>
+          <div class="mt-4 flex flex-wrap gap-2 text-xs font-bold text-slate-700">
+            {#each homepageTrustPoints as point}
+              <span class="rounded-full border border-emerald-900/10 bg-white/75 px-3 py-1.5">{point}</span>
+            {/each}
           </div>
         </div>
 
@@ -740,21 +763,21 @@
     </div>
   </section>
 
-  <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+  <section class="hidden">
     <div class="max-w-4xl">
       <p class="text-xs font-bold uppercase tracking-[0.22em] text-emerald-800">Directory locale</p>
       <h2 class="mt-2 text-2xl font-bold leading-tight text-slate-900 sm:text-3xl">Trova palestre, corsi e discipline vicino a te</h2>
       <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
-        Palestre in Zona ti aiuta a cercare palestre nella tua città, confrontare corsi e discipline disponibili e trovare rapidamente contatti, orari e informazioni utili. Puoi cercare per zona, distanza o tipo di allenamento e scegliere la palestra più adatta alle tue esigenze.
+        Cerca per zona, disciplina o nome palestra. Apri la scheda per controllare indirizzo, orari, telefono, sito e dati ancora da confermare.
       </p>
     </div>
   </section>
 
-  <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
+  <section class="hidden">
     <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
       <div class="max-w-3xl">
         <p class="text-xs font-bold uppercase tracking-[0.22em] text-emerald-800">Fiducia</p>
-        <h2 class="mt-2 text-2xl font-bold leading-tight text-slate-900 sm:text-3xl">Dati leggibili, fonti distinguibili, correzioni controllate</h2>
+        <h2 class="mt-2 text-2xl font-bold leading-tight text-slate-900 sm:text-3xl">Dati leggibili, fonti chiare, correzioni controllate</h2>
       </div>
       <a href="/verifica-schede" class="inline-flex min-h-[2.75rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-bold text-slate-900 transition hover:bg-slate-50">Come funziona</a>
     </div>
@@ -763,17 +786,47 @@
     </div>
   </section>
 
-  <section class="mt-5 overflow-hidden rounded-3xl border border-white/70 bg-white/86 shadow-lg backdrop-blur-sm sc-panel">
+  <section class="hidden">
     <div class="grid gap-0 lg:grid-cols-[minmax(0,1fr)_minmax(310px,0.36fr)]">
       <div class="p-4 sm:p-5 lg:p-6">
         <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
           <div class="max-w-2xl">
             <p class="text-xs font-bold uppercase tracking-[0.22em] text-emerald-800">Scorciatoie utili</p>
-            <h2 class="mt-2 text-2xl font-bold leading-tight text-slate-950 sm:text-3xl">Parti da una ricerca già pronta</h2>
+            <h2 class="mt-2 text-2xl font-bold leading-tight text-slate-950 sm:text-3xl">Apri una ricerca pronta</h2>
           </div>
           <p class="max-w-md text-sm font-semibold leading-6 text-slate-600">
-            Link rapidi verso zone, discipline e schede filtrate.
+            Scegli una zona, una disciplina o un filtro già impostato.
           </p>
+        </div>
+
+        <div class="mt-5 grid gap-4 lg:grid-cols-2">
+          <div class="rounded-2xl border border-emerald-900/10 bg-white/75 p-4">
+            <div class="flex items-center justify-between gap-3">
+              <h3 class="text-sm font-black uppercase tracking-[0.18em] text-emerald-800">Discipline principali</h3>
+              <a href="/discipline" class="text-sm font-bold text-slate-700 underline-offset-4 hover:text-emerald-800 hover:underline">Tutte</a>
+            </div>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {#each primaryDisciplineLinks as item}
+                <a href={item.href} class="rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-slate-900 transition hover:border-emerald-800/25 hover:bg-emerald-50">
+                  {item.label}
+                </a>
+              {/each}
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-emerald-900/10 bg-white/75 p-4">
+            <div class="flex items-center justify-between gap-3">
+              <h3 class="text-sm font-black uppercase tracking-[0.18em] text-emerald-800">Zone principali</h3>
+              <a href="/zone" class="text-sm font-bold text-slate-700 underline-offset-4 hover:text-emerald-800 hover:underline">Tutte</a>
+            </div>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {#each primaryZoneLinks as item}
+                <a href={item.href} class="rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-slate-900 transition hover:border-emerald-800/25 hover:bg-emerald-50">
+                  {item.label}
+                </a>
+              {/each}
+            </div>
+          </div>
         </div>
 
         <div class="mt-5 grid gap-2 sm:grid-cols-2 xl:grid-cols-5">
@@ -791,7 +844,7 @@
           </div>
           <div class="rounded-2xl bg-emerald-50/70 px-4 py-4">
             <p class="text-sm font-black uppercase tracking-[0.18em] text-emerald-800">{catalogCuratedPageCount}</p>
-            <p class="mt-2 text-sm font-bold leading-5 text-slate-800">pagine curate</p>
+            <p class="mt-2 text-sm font-bold leading-5 text-slate-800">pagine dedicate</p>
           </div>
           {#each trustBenefitCards as benefit}
             <div class="rounded-2xl bg-emerald-50/70 px-4 py-4">
@@ -807,11 +860,11 @@
           <p class="text-xs font-bold uppercase tracking-[0.22em] text-emerald-100">Per le palestre</p>
           <h2 class="mt-2 text-2xl font-bold leading-tight">Gestisci gratuitamente la scheda della tua palestra</h2>
           <p class="mt-3 text-sm leading-6 text-emerald-50">
-            Aggiorna contatti, orari e discipline senza obblighi pubblicitari. Le opzioni premium sono facoltative e vengono valutate solo su richiesta.
+            Correggi contatti, orari e discipline senza obblighi pubblicitari. I servizi a pagamento richiedono una richiesta separata.
           </p>
         </div>
-        <a href="/per-le-palestre" class="mt-5 inline-flex min-h-[2.75rem] items-center justify-center rounded-xl bg-white px-4 text-sm font-bold text-emerald-950 transition hover:bg-emerald-50">
-          Scopri le soluzioni
+        <a href="/rivendica-scheda" class="mt-5 inline-flex min-h-[2.75rem] items-center justify-center rounded-xl bg-white px-4 text-sm font-bold text-emerald-950 transition hover:bg-emerald-50">
+          Verifica gratuitamente la tua scheda
         </a>
       </aside>
     </div>
@@ -821,12 +874,12 @@
     <div id="home-search" class="scroll-mt-16 rounded-[1.5rem] p-3 sm:p-4 sc-hero-search">
       <div class="grid gap-3 lg:grid-cols-[minmax(0,1.45fr)_minmax(190px,0.65fr)_auto] lg:items-end">
         <label class="grid gap-2">
-          <span class="text-[0.72rem] font-bold uppercase tracking-[0.2em] text-slate-500">Cerca</span>
+          <span class="text-[0.72rem] font-bold uppercase tracking-[0.2em] text-slate-500">Zona o disciplina</span>
           <input
             id="hero-gym-search"
             name="hero-gym-search"
             class="min-h-[3.35rem] rounded-2xl border border-slate-200 bg-white px-4 text-base font-semibold outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
-            placeholder="Cerca città, disciplina o palestra"
+            placeholder="Cerca zona, disciplina o palestra"
             bind:value={searchInput}
             list="quick-search-suggestions"
             on:keydown={(event) => {
@@ -857,6 +910,28 @@
       <p class="mt-2 text-sm font-semibold leading-6 text-slate-600">
         Esempi: Palestre a Varese, Boxe a Lugano, MMA vicino a me
       </p>
+      <div class="mt-3 grid gap-3 border-t border-slate-200/70 pt-3 lg:grid-cols-2">
+        <div>
+          <p class="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-slate-500">Discipline</p>
+          <div class="mt-2 flex flex-wrap gap-2">
+            {#each primaryDisciplineLinks.slice(0, 5) as item}
+              <a href={item.href} class="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-bold text-slate-800 transition hover:border-emerald-800/25 hover:bg-emerald-50">
+                {item.label}
+              </a>
+            {/each}
+          </div>
+        </div>
+        <div>
+          <p class="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-slate-500">Zone</p>
+          <div class="mt-2 flex flex-wrap gap-2">
+            {#each primaryZoneLinks.slice(0, 5) as item}
+              <a href={item.href} class="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-bold text-slate-800 transition hover:border-emerald-800/25 hover:bg-emerald-50">
+                {item.label}
+              </a>
+            {/each}
+          </div>
+        </div>
+      </div>
       <datalist id="quick-search-suggestions">
         {#each quickSearchSuggestions as suggestion}
           <option value={suggestion}></option>
@@ -1109,11 +1184,8 @@
         {@const disciplinePreview = disciplinePreviewForGym(gym, 3)}
         {@const phone = displayName(gym.phone)}
         {@const phoneLink = phoneHref(gym.phone)}
-        {@const websiteLink = websiteHref(gym.website)}
         {@const directionsLink = directionsHref(gym)}
-        {@const hasWebsite = Boolean(websiteLink)}
         {@const verified = isVerifiedGym(gym)}
-        {@const premium = isPremiumGym(gym)}
         {@const openLabel = gym.is_open_now === true ? 'Aperta ora' : gym.is_open_now === false ? 'Chiusa ora' : ''}
         {@const openClass = gym.is_open_now === true ? 'sc-status-pill--open' : 'sc-status-pill--closed'}
         {@const hours = hoursForCard(gym.hours_info)}
@@ -1157,9 +1229,8 @@
                   {/if}
                   {#if verified}
                     <span class="rounded-full bg-emerald-100 px-2.5 py-1 text-emerald-800">Verificata</span>
-                  {/if}
-                  {#if premium}
-                    <span class="rounded-full bg-sky-100 px-2.5 py-1 text-sky-800">Premium</span>
+                  {:else}
+                    <span class="rounded-full bg-slate-100 px-2.5 py-1 text-slate-600">Info da confermare</span>
                   {/if}
                 </div>
                 <div class="flex flex-wrap gap-2 sc-discipline-list">
@@ -1198,36 +1269,23 @@
                 {/if}
               </div>
 
-              <div class="flex flex-wrap gap-2 text-xs font-bold sc-card-signal-list">
-                {#if phoneLink}
-                  <span class="rounded-full px-2.5 py-1 sc-card-signal--ok">Telefono disponibile</span>
-                {:else}
-                  <span class="rounded-full px-2.5 py-1 sc-card-signal--muted">Telefono da verificare</span>
-                {/if}
-                {#if hasWebsite}
-                  <span class="rounded-full px-2.5 py-1 sc-card-signal--ok">Sito disponibile</span>
-                {:else}
-                  <span class="rounded-full px-2.5 py-1 sc-card-signal--muted">Sito non ancora disponibile</span>
-                {/if}
-              </div>
             </div>
 
-            <div class="grid gap-2 border-t border-slate-200 pt-3 sm:grid-cols-2">
+            <div class="grid gap-2 border-t border-slate-200 pt-3">
+                <a
+                  href={gymHref(gym)}
+                  class="inline-flex min-h-[2.75rem] items-center justify-center rounded-xl bg-slate-900 px-3 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
+                >
+                  Apri scheda
+                </a>
+              <div class="grid gap-2 sm:grid-cols-2">
               {#if phoneLink}
                 <a href={phoneLink} class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-slate-900 transition hover:bg-slate-50" on:click={() => trackEvent('click_telefono', gymTrackingPayload(gym))}>Chiama</a>
-              {/if}
-              {#if websiteLink}
-                <a href={websiteLink} target="_blank" rel="noreferrer" class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-slate-900 transition hover:bg-slate-50" on:click={() => trackEvent('click_sito', gymTrackingPayload(gym))}>Apri sito</a>
               {/if}
               {#if directionsLink}
                 <a href={directionsLink} target="_blank" rel="noreferrer" class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-slate-900 transition hover:bg-slate-50" on:click={() => trackEvent('click_indicazioni', gymTrackingPayload(gym))}>Indicazioni</a>
               {/if}
-                <a
-                  href={gymHref(gym)}
-                  class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl bg-slate-900 px-3 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
-                >
-                  Scheda completa
-                </a>
+              </div>
             </div>
           </div>
         </article>

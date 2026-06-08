@@ -9,7 +9,7 @@
   const pageUrl = absoluteUrl('/per-le-palestre');
   const title = `Gestisci la scheda della tua palestra | ${SITE_NAME}`;
   const description =
-    'Aggiorna informazioni, contatti e orari senza obblighi pubblicitari. Le opzioni premium sono facoltative e vengono valutate solo su richiesta.';
+    'Correggi informazioni, contatti e orari senza obblighi pubblicitari. I servizi a pagamento richiedono una richiesta separata.';
 
   const plans = [
     {
@@ -17,27 +17,27 @@
       kicker: 'Partenza',
       price: 'Gratis',
       period: 'in fase iniziale',
-      description: 'Per correggere dati essenziali e rendere la scheda affidabile.',
+      description: 'Per correggere dati essenziali e indicare un referente.',
       features: ['Contatti e orari rivisti', 'Link ufficiali e social', 'Badge verifica dopo controllo'],
       cta: 'Verifica la scheda'
     },
     {
-      name: 'Scheda premium',
-      kicker: 'Visibilità',
+      name: 'Scheda in evidenza',
+      kicker: 'Presentazione',
       price: 'Su richiesta',
       period: 'dopo aver controllato scheda, zona e obiettivo',
-      description: 'Per rendere la scheda più competitiva nelle ricerche locali.',
-      features: ['Prezzi e descrizione curati', 'CTA più forti verso contatto', 'Priorità editoriale controllata'],
-      cta: 'Richiedi premium',
+      description: 'Per chiarire dati, prezzi, servizi e canali di contatto.',
+      features: ['Prezzi e descrizione rivisti', 'Pulsanti di contatto chiari', 'Controllo editoriale prima della pubblicazione'],
+      cta: 'Richiedi valutazione',
       featured: true
     },
     {
-      name: 'Partner locale',
-      kicker: 'Crescita',
+      name: 'Progetto locale',
+      kicker: 'Su progetto',
       price: 'Su progetto',
-      period: 'per campagne locali',
-      description: 'Per strutture che vogliono lavorare su lead e presenza territoriale.',
-      features: ['Piano mensile di miglioramento', 'Analisi ricerche e scheda', 'Supporto commerciale dedicato'],
+      period: 'dopo una richiesta motivata',
+      description: 'Per richieste specifiche su scheda, zona e contenuti pubblici.',
+      features: ['Revisione periodica della scheda', 'Controllo di zona e discipline', 'Referente per richieste concordate'],
       cta: 'Parla del progetto'
     }
   ];
@@ -56,9 +56,9 @@
         'No. La verifica base serve a rendere corretti i dati essenziali e a identificare un referente affidabile della struttura.'
     },
     {
-      question: 'Quando ha senso passare a premium?',
+      question: 'Quando ha senso chiedere una scheda in evidenza?',
       answer:
-        'Quando vuoi usare la scheda per ricevere più contatti, spiegare meglio prezzi e servizi, e distinguerti nelle ricerche locali.'
+        'Quando vuoi chiarire prezzi, servizi, descrizione e canali di contatto dopo la verifica dei dati base.'
     },
     {
       question: 'Le modifiche vengono pubblicate subito?',
@@ -72,7 +72,7 @@
     }
   ];
 
-  const selectedPlan = form?.values?.plan || 'Scheda premium';
+  const selectedPlan = form?.values?.plan || 'Scheda in evidenza';
 
   const structuredDataScript = jsonLdScript({
     '@context': 'https://schema.org',
@@ -85,7 +85,7 @@
       },
       {
         '@type': 'OfferCatalog',
-        name: 'Soluzioni commerciali per palestre',
+        name: 'Richieste per palestre',
         url: pageUrl,
         itemListElement: plans.map((plan, index) => ({
           '@type': 'Offer',
@@ -140,10 +140,10 @@
         <div>
           <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Per proprietari e manager</p>
           <h1 class="mt-3 max-w-4xl text-4xl font-bold leading-tight text-slate-950 sm:text-5xl">
-            Gestisci e migliora la scheda della tua palestra
+            Verifica e correggi la scheda della tua palestra
           </h1>
           <p class="mt-4 max-w-2xl text-base leading-8 text-slate-600">
-            Aggiorna informazioni, contatti e orari senza obblighi pubblicitari. Le opzioni premium sono facoltative e vengono valutate solo su richiesta.
+            Correggi informazioni, contatti e orari senza obblighi pubblicitari. I servizi a pagamento richiedono una richiesta separata.
           </p>
           <div class="mt-6 flex flex-wrap gap-3">
             <a
@@ -158,7 +158,7 @@
               on:click={() => trackPartnerEvent({ posizione: 'hero', cta: 'vedi_soluzioni' })}
               class="inline-flex min-h-[3rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-5 text-sm font-bold text-slate-900 transition hover:bg-slate-50"
             >
-              Vedi soluzioni
+              Vedi opzioni
             </a>
           </div>
         </div>
@@ -180,10 +180,10 @@
     <section id="pricing" class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
       <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
         <div class="max-w-3xl">
-          <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Pricing</p>
-          <h2 class="mt-2 text-3xl font-bold text-slate-950">Scegli il livello giusto per la tua palestra</h2>
+          <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Opzioni</p>
+          <h2 class="mt-2 text-3xl font-bold text-slate-950">Scegli che cosa vuoi correggere</h2>
         </div>
-        <p class="max-w-sm text-sm leading-7 text-slate-600">Prima di proporre un’opzione premium controlliamo la scheda, la zona e l’obiettivo, così evitiamo promesse generiche.</p>
+        <p class="max-w-sm text-sm leading-7 text-slate-600">Prima di parlare di servizi a pagamento controlliamo scheda, zona e richiesta.</p>
       </div>
 
       <div class="mt-5 grid gap-4 lg:grid-cols-3">
@@ -226,27 +226,27 @@
     <section class="mt-5 grid gap-5 lg:grid-cols-[minmax(0,0.95fr)_minmax(360px,1.05fr)]">
       <div class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
         <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Proof</p>
-        <h2 class="mt-2 text-3xl font-bold text-slate-950">Cosa migliora quando la scheda è curata</h2>
+        <h2 class="mt-2 text-3xl font-bold text-slate-950">Cosa controllare nella scheda</h2>
         <div class="mt-5 grid gap-3">
           <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
-            <p class="text-sm font-bold text-slate-950">Meno attrito prima del contatto</p>
+            <p class="text-sm font-bold text-slate-950">Dati prima del contatto</p>
             <p class="mt-2 text-sm leading-7 text-slate-600">Orari, indirizzo, telefono, sito e prezzo aiutano l'utente a decidere senza cercare altrove.</p>
           </div>
           <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
-            <p class="text-sm font-bold text-slate-950">Più fiducia nella struttura</p>
-            <p class="mt-2 text-sm leading-7 text-slate-600">Una scheda verificata comunica che la palestra è seguita da un referente reale.</p>
+            <p class="text-sm font-bold text-slate-950">Referente identificato</p>
+            <p class="mt-2 text-sm leading-7 text-slate-600">Una scheda verificata indica che un referente ha chiesto o confermato i dati.</p>
           </div>
           <div class="rounded-2xl border border-slate-200 bg-white/90 p-4">
-            <p class="text-sm font-bold text-slate-950">Più contesto SEO locale</p>
-            <p class="mt-2 text-sm leading-7 text-slate-600">Zone, discipline e schede si collegano tra loro per intercettare ricerche locali più specifiche.</p>
+            <p class="text-sm font-bold text-slate-950">Contesto locale chiaro</p>
+            <p class="mt-2 text-sm leading-7 text-slate-600">Zone, discipline e schede aiutano l'utente a capire dove si trova la struttura.</p>
           </div>
         </div>
       </div>
 
       <section id="lead" class="rounded-3xl border border-white/70 bg-white/90 p-5 shadow-xl backdrop-blur-sm sc-panel sm:p-7">
-        <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Lead form</p>
+        <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Modulo richiesta</p>
         <h2 class="mt-2 text-3xl font-bold text-slate-950">Parliamo della tua scheda</h2>
-        <p class="mt-3 text-sm leading-7 text-slate-600">Rispondiamo a {SITE_CONTACT_EMAIL}. Il lead viene salvato come richiesta commerciale e passa da verifica.</p>
+        <p class="mt-3 text-sm leading-7 text-slate-600">Rispondiamo a {SITE_CONTACT_EMAIL}. La richiesta viene salvata e passa da verifica.</p>
 
         {#if form?.success}
           <div class="mt-5 rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
@@ -305,11 +305,11 @@
 
           <label class="grid gap-2">
             <span class="text-sm font-semibold text-slate-700">Obiettivo</span>
-            <textarea name="message" rows="5" class="rounded-2xl border border-slate-200 bg-white px-3 py-3 text-sm leading-7 text-slate-900 outline-none ring-slate-900 transition focus:ring-2" placeholder="Esempio: voglio aggiornare prezzi, orari e rendere la scheda più efficace per chi cerca corsi nella mia zona.">{form?.values?.message || ''}</textarea>
+            <textarea name="message" rows="5" class="rounded-2xl border border-slate-200 bg-white px-3 py-3 text-sm leading-7 text-slate-900 outline-none ring-slate-900 transition focus:ring-2" placeholder="Esempio: voglio correggere prezzi, orari e discipline indicate nella scheda.">{form?.values?.message || ''}</textarea>
           </label>
 
           <button type="submit" class="inline-flex min-h-[3rem] items-center justify-center rounded-xl bg-slate-900 px-5 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
-            Invia richiesta commerciale
+            Invia richiesta
           </button>
         </form>
       </section>
@@ -318,9 +318,9 @@
     <section class="mt-5 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-lg backdrop-blur-sm sc-panel sm:p-7">
       <div class="max-w-3xl">
         <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Trust</p>
-        <h2 class="mt-2 text-3xl font-bold text-slate-950">Visibilità senza perdere credibilità</h2>
+        <h2 class="mt-2 text-3xl font-bold text-slate-950">Dati pubblici prima dei servizi a pagamento</h2>
         <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
-          Le schede migliori sono complete, verificabili e sobrie. La parte commerciale migliora la presentazione, non sostituisce i controlli sui dati.
+          Una scheda deve essere leggibile e verificabile. I servizi a pagamento non sostituiscono i controlli sui dati.
         </p>
       </div>
       <div class="mt-5">

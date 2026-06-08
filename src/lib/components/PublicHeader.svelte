@@ -71,25 +71,20 @@
             Torna all'elenco
           </a>
         {/if}
-        {#if isHome}
-          <a href="/" on:click={showHeaderForNavigation} class={`${navClass()} sc-header-home-link`}>
-            Home
-          </a>
-        {/if}
         <a href="/zone" on:click={showHeaderForNavigation} class={navClass()}>
           Zone
         </a>
         <a href="/discipline" on:click={showHeaderForNavigation} class={navClass()}>
           Discipline
         </a>
-        <a href="/guide" on:click={showHeaderForNavigation} class={navClass()}>
-          Guide
+        <a href="/per-le-palestre" on:click={() => { showHeaderForNavigation(); trackEvent('partner_cta_click', { posizione: 'header', cta: 'per_le_palestre' }); }} class={`sc-header-link sc-header-business-link sc-ui-pill sc-ui-pill--primary px-3.5 py-2 text-sm ${showReturnToList ? 'sc-header-business-link--secondary' : ''}`}>
+          Per le palestre
+        </a>
+        <a href="/rivendica-scheda" on:click={showHeaderForNavigation} class={`sc-header-link sc-ui-pill sc-ui-pill--primary px-3.5 py-2 text-sm ${showReturnToList ? 'sc-header-business-link--secondary' : ''}`}>
+          Verifica scheda
         </a>
         <a href="/chi-siamo" on:click={showHeaderForNavigation} class={navClass()}>
           Chi siamo
-        </a>
-        <a href="/per-le-palestre" on:click={() => { showHeaderForNavigation(); trackEvent('partner_cta_click', { posizione: 'header', cta: 'per_le_palestre' }); }} class={`sc-header-link sc-header-business-link sc-ui-pill sc-ui-pill--primary px-3.5 py-2 text-sm ${showReturnToList ? 'sc-header-business-link--secondary' : ''}`}>
-          Per le palestre
         </a>
       </nav>
     </div>
