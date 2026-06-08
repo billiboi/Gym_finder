@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="PalestreInZona icon">
+  <title>PalestreInZona icon</title>
+  
+  <ellipse cx="256" cy="430" rx="76" ry="18" fill="#222426" opacity="0.32"/>
+  <path d="M256 58C162 58 88 131 88 224c0 116 125 211 159 235a15 15 0 0 0 18 0c34-24 159-119 159-235C424 131 350 58 256 58Z" fill="#222426"/>
+  <circle cx="256" cy="220" r="104" fill="#FFFFFF"/>
+  <g fill="none" stroke="#222426" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M164 220h184" stroke-width="20"/>
+    <path d="M202 182v76" stroke-width="20"/>
+    <path d="M310 182v76" stroke-width="20"/>
+    <path d="M176 198v44" stroke-width="18"/>
+    <path d="M336 198v44" stroke-width="18"/>
+    <path d="M148 207v26" stroke-width="16"/>
+    <path d="M364 207v26" stroke-width="16"/>
+  </g>
+</svg>

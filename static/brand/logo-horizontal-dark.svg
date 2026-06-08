@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="260" viewBox="0 0 1180 260" role="img" aria-label="PalestreInZona">
+  <title>PalestreInZona</title>
+  <defs>
+    <style>
+      .word { font-family: Inter, Poppins, Avenir, Montserrat, Arial, sans-serif; font-weight: 800; letter-spacing: -3px; }
+    </style>
+  </defs>
+  <g transform="translate(20 10) scale(0.47)">
+    <ellipse cx="256" cy="430" rx="76" ry="18" fill="#0FA3A3" opacity="0.32"/>
+    <path d="M256 58C162 58 88 131 88 224c0 116 125 211 159 235a15 15 0 0 0 18 0c34-24 159-119 159-235C424 131 350 58 256 58Z" fill="#0D2D44"/>
+    <circle cx="256" cy="220" r="104" fill="#FFFFFF"/>
+    <g fill="none" stroke="#0FA3A3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M164 220h184" stroke-width="20"/>
+      <path d="M202 182v76" stroke-width="20"/>
+      <path d="M310 182v76" stroke-width="20"/>
+      <path d="M176 198v44" stroke-width="18"/>
+      <path d="M336 198v44" stroke-width="18"/>
+      <path d="M148 207v26" stroke-width="16"/>
+      <path d="M364 207v26" stroke-width="16"/>
+    </g>
+  </g>
+  <text class="word" x="280" y="142" font-size="96" fill="#0D2D44">Palestre</text>
+  <text class="word" x="648" y="142" font-size="96" fill="#0FA3A3">InZona</text>
+  <text x="285" y="194" font-family="Inter, Poppins, Avenir, Montserrat, Arial, sans-serif" font-size="28" fill="#0D2D44" opacity="0.72" letter-spacing="1.5">palestreinzona.it</text>
+</svg>

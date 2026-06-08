@@ -1,0 +1,23 @@
+{
+  "name": "PalestreInZona",
+  "short_name": "PalestreInZona",
+  "description": "Trova palestre, corsi e centri sportivi nella tua zona.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#0D2D44",
+  "icons": [
+    {
+      "src": "/brand/logo-icon-app-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/brand/logo-icon-app-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

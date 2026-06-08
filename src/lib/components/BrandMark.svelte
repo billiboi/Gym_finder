@@ -2,14 +2,26 @@
   export let compact = false;
 </script>
 
-<span class="inline-flex min-w-0 items-center gap-3">
-  <span class="sc-brand-mark grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-emerald-950 text-sm font-black text-white">
-    PZ
-  </span>
-  {#if !compact}
-    <span class="min-w-0">
-      <span class="block text-[10px] font-bold uppercase tracking-[0.28em] text-emerald-800 sm:text-xs">Palestre in Zona</span>
-      <span class="block text-xs font-semibold leading-5 text-slate-500">Directory locale verificabile</span>
-    </span>
+<span class="inline-flex min-w-0 items-center">
+  {#if compact}
+    <img
+      src="/brand/logo-icon.svg"
+      alt="PalestreInZona"
+      width="44"
+      height="44"
+      loading="eager"
+      decoding="async"
+      class="sc-brand-logo sc-brand-logo--icon"
+    />
+  {:else}
+    <img
+      src="/brand/logo-horizontal.svg"
+      alt="PalestreInZona"
+      width="236"
+      height="52"
+      loading="eager"
+      decoding="async"
+      class="sc-brand-logo sc-brand-logo--horizontal"
+    />
   {/if}
 </span>

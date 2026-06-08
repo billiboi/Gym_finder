@@ -201,13 +201,31 @@ body {
   will-change: transform;
 }
 
-.sc-brand-mark {
-  box-shadow:
-    0 14px 28px rgba(31, 92, 74, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18);
-  background:
-    linear-gradient(145deg, #173129, #1f5c4a 58%, #5f8f7c) !important;
-  letter-spacing: 0;
+.sc-brand-logo {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.sc-brand-logo--horizontal {
+  height: 2.65rem;
+  max-width: min(15rem, 58vw);
+}
+
+.sc-brand-logo--icon {
+  width: 2.45rem;
+  height: 2.45rem;
+}
+
+.sc-header .sc-brand-logo--horizontal {
+  height: 2.45rem;
+  max-width: min(13.5rem, 52vw);
+}
+
+footer .sc-brand-logo--horizontal {
+  height: 2.4rem;
+  max-width: min(14rem, 70vw);
 }
 
 .sc-trust-badge {
@@ -292,11 +310,13 @@ body {
     font-size: 0.72rem;
   }
 
-  .sc-header .sc-brand-mark {
-    height: 2rem;
-    width: 2rem;
-    border-radius: 0.8rem;
-    font-size: 0.78rem;
+  .sc-brand-logo--horizontal {
+    height: 2.25rem;
+  }
+
+  .sc-brand-logo--icon {
+    width: 2.25rem;
+    height: 2.25rem;
   }
 
   .sc-header > div,
