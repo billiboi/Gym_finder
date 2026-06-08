@@ -209,7 +209,7 @@ body {
 }
 
 .sc-brand-logo--horizontal {
-  height: 2.65rem;
+  height: 2.5rem;
   max-width: min(15rem, 58vw);
 }
 
@@ -219,12 +219,12 @@ body {
 }
 
 .sc-header .sc-brand-logo--horizontal {
-  height: 2.45rem;
-  max-width: min(13.5rem, 52vw);
+  height: 2.25rem;
+  max-width: min(13.5rem, 50vw);
 }
 
 footer .sc-brand-logo--horizontal {
-  height: 2.4rem;
+  height: 2.25rem;
   max-width: min(14rem, 70vw);
 }
 
@@ -311,7 +311,8 @@ footer .sc-brand-logo--horizontal {
   }
 
   .sc-brand-logo--horizontal {
-    height: 2.25rem;
+    height: 1.875rem;
+    max-width: min(11rem, 42vw);
   }
 
   .sc-brand-logo--icon {
