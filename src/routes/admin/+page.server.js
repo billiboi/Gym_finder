@@ -3,14 +3,27 @@ import { readClaimRequestsList } from '$lib/server/claim-request-store';
 import { isArchivedGym } from '$lib/admin/gyms';
 
 async function getGymsWithFallback(fetchFn) {
-  const gyms = await readGyms();
-  if (Array.isArray(gyms) && gyms.length > 0) return gyms;
+  try {
+    const gyms = await readGyms();
+    if (Array.isArray(gyms) && gyms.length > 0) return gyms;
+  } catch {
+    // Keep the admin dashboard reachable even if the broad Supabase read fails.
+  }
 
   try {
     const res = await fetchFn('/api/gyms');
     if (!res.ok) return [];
     const data = await res.json();
-    return Array.isArray(data) ? data : [];
+    return Array.isArray(data) ? data : Array.isArray(data?.items) ? data.items : [];
+  } catch {
+    return [];
+  }
+}
+
+async function getClaimRequestsListSafe() {
+  try {
+    const claimList = await readClaimRequestsList({ limit: 100 });
+    return Array.isArray(claimList?.items) ? claimList.items : [];
   } catch {
     return [];
   }
@@ -19,8 +32,7 @@ async function getGymsWithFallback(fetchFn) {
 export async function load({ fetch }) {
   const gyms = await getGymsWithFallback(fetch);
   const activeGyms = gyms.filter((gym) => !isArchivedGym(gym));
-  const claimList = await readClaimRequestsList({ limit: 100 });
-  const requests = claimList.items;
+  const requests = await getClaimRequestsListSafe();
   const qualityStats = {
     noPhone: activeGyms.filter((gym) => !String(gym.phone || '').trim()).length,
     noWebsite: activeGyms.filter((gym) => !String(gym.website || '').trim()).length,
