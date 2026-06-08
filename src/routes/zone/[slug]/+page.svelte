@@ -1,5 +1,6 @@
 <script>
   import { disciplinePreviewForGym, gymHref, imageForGym, isPremiumGym, isVerifiedGym } from '$lib/gym-detail';
+  import { weeklyHoursRows } from '$lib/hours';
   import { publicCityForGym } from '$lib/location-quality';
   import { slugifySeoName } from '$lib/seo-directory';
   import { absoluteUrl, SITE_NAME, jsonLdScript } from '$lib/site';
@@ -83,9 +84,24 @@
     const y = (1 - (lat - zoneMapBounds.south) / (zoneMapBounds.north - zoneMapBounds.south)) * 100;
     return `left:${clamp(x, 4, 96)}%;top:${clamp(y, 6, 94)}%;`;
   }
+  function currentDayIndex() {
+    const shortWeekday = new Intl.DateTimeFormat('en-US', {
+      weekday: 'short',
+      timeZone: 'Europe/Rome'
+    })
+      .format(new Date())
+      .toLowerCase();
+
+    return { sun: 0, mon: 1, tue: 2, wed: 3, thu: 4, fri: 5, sat: 6 }[shortWeekday] ?? null;
+  }
+
   const publicHoursLabel = (value) => {
     const label = String(value || '').trim();
-    return !label || label === 'Orari da verificare' || label === 'Orari n/d' ? 'Orari da confermare' : label;
+    if (!label || label === 'Orari da verificare' || label === 'Orari n/d') return 'Orari da confermare';
+    const today = currentDayIndex();
+    const todayRow = Number.isInteger(today) ? weeklyHoursRows(label).find((row) => row.dayIndex === today) : null;
+    if (todayRow?.label) return `Oggi: ${todayRow.label.replace(/-/g, '–')}`;
+    return label.includes('|') ? 'Orari disponibili nella scheda' : label;
   };
   const INITIAL_VISIBLE_GYMS = 24;
   let visibleLimit = INITIAL_VISIBLE_GYMS;
@@ -362,9 +378,8 @@
                   {/if}
                 </div>
               </div>
-              <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm leading-6 text-slate-700">
-                {gym.public_description_short || 'Descrizione in verifica editoriale'}
-              </p>
+              <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Disciplina:</strong> {disciplinePreview.primary}</p>
+              <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Zona:</strong> {gym.city || location.name}</p>
               <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Indirizzo:</strong> {[gym.address, gym.city].filter(Boolean).join(', ') || 'Indirizzo non disponibile'}</p>
               <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Orari:</strong> {publicHoursLabel(gym.hours_info)}</p>
               <div class="flex flex-wrap gap-2 text-xs font-bold sc-card-signal-list">

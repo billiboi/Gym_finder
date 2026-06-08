@@ -136,34 +136,34 @@ function fallbackDescriptionByCategory(gym, context = {}) {
   const isFitness = folded.some((item) => item.includes('fitness') || item.includes('functional') || item.includes('cross training'));
 
   if (context.currentDiscipline) {
-    return `${name} è una struttura sportiva${cityPhrase(city)}${addressPhrase(address)}, collegata a ${discipline}. Le informazioni disponibili aiutano a verificare indirizzo, orari e contatti.`;
+    return `${name}${cityPhrase(city)}${addressPhrase(address)}. Disciplina indicata: ${discipline}.`;
   }
 
   if (isMultidiscipline) {
-    return `${name} è una struttura sportiva${cityPhrase(city)}${addressPhrase(address)} con attività fitness, corsi e discipline collegate. La scheda raccoglie dati utili per controllare contatti, orari e posizione.`;
+    return `${name}${cityPhrase(city)}${addressPhrase(address)}. Discipline indicate: ${discipline}.`;
   }
 
   if (isPersonalTraining) {
-    return `${name} è una struttura${cityPhrase(city)}${addressPhrase(address)} collegata al personal training. La scheda aiuta a verificare indirizzo, orari e contatti prima di approfondire.`;
+    return `${name}${cityPhrase(city)}${addressPhrase(address)}. Disciplina indicata: personal training.`;
   }
 
   if (isMartial) {
-    return `${name} è una realtà sportiva${cityPhrase(city)}${addressPhrase(address)} legata ad arti marziali e sport da combattimento. La scheda raccoglie dati utili su indirizzo, orari e contatti.`;
+    return `${name}${cityPhrase(city)}${addressPhrase(address)}. Disciplina indicata: ${discipline}.`;
   }
 
   if (isMindBody) {
-    return `${name} è una struttura${cityPhrase(city)}${addressPhrase(address)} collegata ad attività come yoga, Pilates o discipline corpo-mente. Le informazioni disponibili aiutano a verificare contatti e orari.`;
+    return `${name}${cityPhrase(city)}${addressPhrase(address)}. Discipline indicate: yoga, Pilates o corpo-mente.`;
   }
 
   if (isSwimming) {
-    return `${name} è una struttura sportiva${cityPhrase(city)}${addressPhrase(address)} collegata al nuoto. La scheda raccoglie i dati disponibili per controllare posizione, orari e contatti.`;
+    return `${name}${cityPhrase(city)}${addressPhrase(address)}. Disciplina indicata: nuoto.`;
   }
 
   if (isFitness) {
-    return `${name} è una palestra${cityPhrase(city)}${addressPhrase(address)} collegata ad attività fitness. Le informazioni disponibili aiutano a confrontare indirizzo, orari e contatti.`;
+    return `${name}${cityPhrase(city)}${addressPhrase(address)}. Disciplina indicata: fitness.`;
   }
 
-  return `${name} è una struttura sportiva${cityPhrase(city)}${addressPhrase(address)} collegata a ${discipline}. Le informazioni disponibili includono i dati principali della scheda; alcuni dettagli potrebbero richiedere ulteriore conferma.`;
+  return `${name}${cityPhrase(city)}${addressPhrase(address)}. Disciplina indicata: ${discipline}.`;
 }
 
 function isOwnerDescriptionApproved(gym) {
@@ -379,19 +379,19 @@ export function generateGymDescription(gym, gyms = []) {
 
   if (duplicateRisk) {
     reason = 'sede_o_catena_con_nome_simile';
-    text = `${name} è la sede di ${city || 'questa zona'} collegata a ${primary}. Questa scheda è dedicata alla sede specifica${address ? ` in ${address}` : ''} e aiuta a distinguere indirizzo, orari e contatti rispetto ad altre strutture con nome simile.`;
+    text = `${name}: sede ${city || 'zona da verificare'}${address ? ` in ${address}` : ''}. Disciplina indicata: ${primary}.`;
   } else if (disciplines.length > 1 && secondary) {
     reason = 'scheda_multidisciplina';
-    text = `${name} è una palestra a ${city || 'zona da verificare'} con attività legate a ${primary} e altre discipline come ${secondary}. La scheda aiuta a verificare contatti, orari e servizi disponibili${verified ? ' su una struttura già segnata come verificata' : ''}.`;
+    text = `${name}: ${city || 'zona da verificare'}. Discipline indicate: ${primary}, ${secondary}.${verified ? ' Scheda verificata.' : ''}`;
   } else if (isMartial) {
     reason = 'arti_marziali';
-    text = `${name} è una realtà sportiva a ${city || 'zona da verificare'} dedicata a ${primary}. La scheda raccoglie informazioni utili su corsi, indirizzo, contatti e discipline collegate${claimed ? ' con riferimento proprietario collegato' : ''}.`;
+    text = `${name}: ${city || 'zona da verificare'}. Disciplina indicata: ${primary}.${claimed ? ' Referente collegato.' : ''}`;
   } else if (hasFewDetails || seed % 4 === 0) {
     reason = 'informazioni_parziali';
-    text = `${name} è una struttura sportiva a ${city || 'località da verificare'} collegata a ${primary}. Le informazioni disponibili includono i dati principali della scheda; alcuni dettagli, come orari o contatti, potrebbero richiedere ulteriore verifica.`;
+    text = `${name}: ${city || 'località da verificare'}. Disciplina indicata: ${primary}. Alcuni dati sono da confermare.`;
   } else {
     reason = 'scheda_completa';
-    text = `${name} è una struttura sportiva a ${city || 'località da verificare'}${address ? `, in ${address}` : ''}, con attività legate a ${primary}. La scheda raccoglie orari, contatti e informazioni utili per confrontarla con altre palestre della zona.`;
+    text = `${name}: ${city || 'località da verificare'}${address ? `, ${address}` : ''}. Disciplina indicata: ${primary}.`;
   }
 
   return {

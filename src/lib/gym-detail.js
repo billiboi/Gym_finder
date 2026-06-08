@@ -408,17 +408,21 @@ export function cityLabelForGym(gym) {
 
 export function buildGymSeoHighlights(gym) {
   const disciplines = disciplineListForGym(gym);
-  const primary = disciplines[0] || 'Fitness';
   const city = cityLabelForGym(gym);
   const address = formatAddressForDisplay(gym);
   const hoursInfo = fixGymText(gym?.hours_info || '');
+  const hasHours = Boolean(hoursInfo && hoursInfo !== 'Orari da verificare' && hoursInfo !== 'Orari n/d');
+  const hasContact = Boolean(
+    fixGymText(gym?.phone || gym?.telefono || '') ||
+      fixGymText(gym?.website || gym?.sito || '') ||
+      fixGymText(gym?.email || '')
+  );
   const points = [
-    `${fixGymText(gym?.name || 'La struttura')} nel catalogo compare con queste discipline: ${disciplines.join(', ')}${city ? `, nella zona di ${city}` : ''}.`,
-    `L'indirizzo pubblicato è ${address}, quindi puoi capire subito se la struttura è compatibile con i tuoi spostamenti.`,
-    hoursInfo && hoursInfo !== 'Orari da verificare'
-      ? `Gli orari sono già visibili nella scheda, quindi puoi controllare disponibilità e fascia oraria senza passare da altri canali.`
-      : `Gli orari non sono completi, ma restano disponibili i riferimenti principali per contattare la struttura.`,
-    `${primary}${city ? ` a ${city}` : ''} è il taglio con cui questa pagina viene presentata, così capisci subito se stai guardando il tipo di struttura che ti interessa.`
+    `Discipline indicate: ${disciplines.join(', ') || 'da confermare'}.`,
+    `Zona: ${city || 'da confermare'}.`,
+    `Indirizzo pubblicato: ${address || 'da confermare'}.`,
+    `Orari: ${hasHours ? 'presenti' : 'da confermare'}.`,
+    `Contatti: ${hasContact ? 'disponibili' : 'da verificare'}.`
   ];
 
   return points.filter(Boolean);

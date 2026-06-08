@@ -2,7 +2,7 @@
   import { onDestroy, onMount } from 'svelte';
   import { dedupeDisciplines, normalizeDisciplineLabel, publicDisciplineFilterOptions } from '$lib/disciplines';
   import { disciplinePreviewForGym, gymHref, imageForGym, isVerifiedGym } from '$lib/gym-detail';
-  import { isGymOpenNow } from '$lib/hours';
+  import { isGymOpenNow, weeklyHoursRows } from '$lib/hours';
   import { SITE_DESCRIPTION, SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
   import { SEO_DISCIPLINES } from '$lib/seo-disciplines';
   import { SEO_LOCATIONS } from '$lib/seo-locations';
@@ -124,6 +124,32 @@
       .map((part) => (part.trim() === 'Orari da verificare' || part.trim() === 'Orari n/d' ? 'Orari da confermare' : part.trim()))
       .filter((part) => part.length <= 28)
       .filter(Boolean);
+  }
+
+  function currentDayIndex() {
+    const shortWeekday = new Intl.DateTimeFormat('en-US', {
+      weekday: 'short',
+      timeZone: 'Europe/Rome'
+    })
+      .format(new Date())
+      .toLowerCase();
+
+    return { sun: 0, mon: 1, tue: 2, wed: 3, thu: 4, fri: 5, sat: 6 }[shortWeekday] ?? null;
+  }
+
+  function shortHoursForCard(value) {
+    const hours = displayName(value) || 'Orari da confermare';
+    const unsafeCrawlerText =
+      hours.length > 140 ||
+      /\b(skip to|password|privacy|cookie|shopping_cart|area privata|registrati|campionat|contributo|societ[aà]|segreteria)\b/i.test(hours);
+
+    if (unsafeCrawlerText || hours === 'Orari da verificare' || hours === 'Orari n/d') return 'Orari da confermare';
+
+    const today = currentDayIndex();
+    const todayRow = Number.isInteger(today) ? weeklyHoursRows(hours).find((row) => row.dayIndex === today) : null;
+    if (todayRow?.label) return `Oggi: ${todayRow.label.replace(/-/g, '–')}`;
+
+    return hours.includes('|') ? 'Orari disponibili nella scheda' : hours;
   }
 
   function priceForCard(gym) {
@@ -1188,7 +1214,7 @@
         {@const verified = isVerifiedGym(gym)}
         {@const openLabel = gym.is_open_now === true ? 'Aperta ora' : gym.is_open_now === false ? 'Chiusa ora' : ''}
         {@const openClass = gym.is_open_now === true ? 'sc-status-pill--open' : 'sc-status-pill--closed'}
-        {@const hours = hoursForCard(gym.hours_info)}
+        {@const hours = shortHoursForCard(gym.hours_info)}
         {@const priceInfo = priceForCard(gym)}
         <article
           id={`gym-${gym.id}`}
@@ -1255,11 +1281,7 @@
                 </p>
                 <p class="sc-gym-card-hours">
                   <span>Orari</span>
-                  <strong>
-                    {#each hours as part}
-                      <em>{part}</em>
-                    {/each}
-                  </strong>
+                  <strong>{hours}</strong>
                 </p>
                 {#if priceInfo?.label}
                   <p class="sc-gym-card-price">
