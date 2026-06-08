@@ -138,7 +138,7 @@ async function readDisciplineGyms(discipline) {
   }
 
   const params = [
-    `select=${encodeURIComponent(DISCIPLINE_GYM_COLUMNS.join(','))}`,
+    'select=*',
     'deleted_at=is.null',
     disciplineOrFilter(discipline),
     'order=priority_score.desc.nullslast,nome.asc.nullslast',

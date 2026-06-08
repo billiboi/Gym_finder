@@ -3,6 +3,9 @@ import path from 'node:path';
 import { GYM_SUPABASE_COLUMN_CANDIDATES, gymToSupabaseRecord, normalizeGym } from '$lib/gym-normalizer';
 import { repairMojibake } from '$lib/text-repair';
 import { isArchivedGym } from '$lib/admin/gyms';
+import { isPublicActiveGym, publicGymVisibilityQueryParams } from '$lib/public-gym-visibility';
+
+export { isPublicActiveGym } from '$lib/public-gym-visibility';
 
 const dataDir = path.join(process.cwd(), 'data');
 const staticDir = path.join(process.cwd(), 'static');
@@ -48,6 +51,10 @@ const PUBLIC_GYM_LISTING_COLUMNS = [
   'is_premium',
   'priority_score',
   'deleted_at',
+  'deletedAt',
+  '_deleted_at',
+  'archived',
+  'is_archived',
   'updated_at',
   'hours_info',
   'orari',
@@ -57,6 +64,7 @@ const PUBLIC_GYM_LISTING_COLUMNS = [
   'sito',
   'image_url'
 ];
+const PUBLIC_VISIBILITY_COLUMNS = ['deletedAt', '_deleted_at', 'archived', 'is_archived'];
 const ADMIN_CLAIM_APPROVAL_GYM_COLUMNS = [
   'id',
   'slug',
@@ -341,18 +349,6 @@ function isExcludedGymRecord(gym) {
   }
 
   return false;
-}
-
-export function isPublicActiveGym(gym) {
-  if (!gym || typeof gym !== 'object') return false;
-  if (isArchivedGym(gym)) return false;
-  if (gym.deletedAt) return false;
-  if (gym.archived === true || gym.is_archived === true) return false;
-  const archived = String(gym.archived || '').trim().toLowerCase();
-  const isArchived = String(gym.is_archived || '').trim().toLowerCase();
-  if (['true', '1', 'yes', 'si', 'sì'].includes(archived)) return false;
-  if (['true', '1', 'yes', 'si', 'sì'].includes(isArchived)) return false;
-  return true;
 }
 
 function parseAddress(fullAddress) {
@@ -683,7 +679,7 @@ async function supabaseAvailableColumns() {
   if (!schemaKey) return [];
 
   const available = [];
-  for (const column of GYM_SUPABASE_COLUMN_CANDIDATES) {
+  for (const column of [...new Set([...GYM_SUPABASE_COLUMN_CANDIDATES, ...PUBLIC_VISIBILITY_COLUMNS])]) {
     const url = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?select=${encodeURIComponent(column)}&limit=1`;
     const response = await fetch(url, {
       method: 'GET',
@@ -766,12 +762,8 @@ function uniqueAvailableColumns(columns, available) {
 }
 
 function activeGymQueryParams({ q = '', discipline = '', availableColumns = [] } = {}) {
-  const filters = [];
+  const filters = publicGymVisibilityQueryParams(availableColumns);
   const available = new Set(availableColumns);
-
-  if (available.has('deleted_at')) {
-    filters.push('deleted_at=is.null');
-  }
 
   const query = String(q || '').trim();
   if (query) {
@@ -800,6 +792,7 @@ async function readPublicGymListingFromSupabase({ limit = 24, offset = 0, q = ''
 
   const safeLimit = boundedNumber(limit, 24, { min: 1, max: 100 });
   const safeOffset = boundedNumber(offset, 0, { min: 0 });
+  const fetchLimit = safeOffset + safeLimit + 1;
   const availableColumns = await supabaseAvailableColumns();
   const available = new Set(availableColumns);
   const select = uniqueAvailableColumns(PUBLIC_GYM_LISTING_COLUMNS, availableColumns).join(',');
@@ -810,8 +803,7 @@ async function readPublicGymListingFromSupabase({ limit = 24, offset = 0, q = ''
   const params = [
     `select=${encodeURIComponent(select)}`,
     order ? `order=${order}` : null,
-    `limit=${safeLimit + 1}`,
-    `offset=${safeOffset}`,
+    `limit=${fetchLimit}`,
     ...activeGymQueryParams({ q, discipline, availableColumns })
   ].filter(Boolean);
   const url = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?${params.join('&')}`;
@@ -829,10 +821,10 @@ async function readPublicGymListingFromSupabase({ limit = 24, offset = 0, q = ''
   const normalized = rows.map((row, index) => normalizeGymRecord(row, `listing-${safeOffset + index + 1}`));
   const publicRows = normalized.filter((gym) => isPublicActiveGym(gym) && !isExcludedGymRecord(gym));
   return {
-    items: withCanonicalGymSlugs(publicRows.slice(0, safeLimit)),
+    items: withCanonicalGymSlugs(publicRows.slice(safeOffset, safeOffset + safeLimit)),
     limit: safeLimit,
     offset: safeOffset,
-    hasMore: publicRows.length > safeLimit || rows.length > safeLimit
+    hasMore: publicRows.length > safeOffset + safeLimit || rows.length >= fetchLimit
   };
 }
 

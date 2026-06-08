@@ -1,5 +1,4 @@
 import { error, redirect } from '@sveltejs/kit';
-import { isArchivedGym } from '$lib/admin/gyms';
 import { isPublicActiveGym, readPublicGymListing, readPublicRouteGyms } from '$lib/server/gym-store';
 import { cityLabelForGym, isIndexableGym, legacySlugifyGym, primaryDisciplineForGym, slugifyGym } from '$lib/gym-detail';
 import { publicListingGym } from '$lib/gym-client';
@@ -204,7 +203,7 @@ function safeLike(value) {
 async function fetchGymRows(columns, params) {
   if (!hasSupabaseRead) return [];
 
-  const url = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?select=${encodeURIComponent(columns.join(','))}&${params.join('&')}`;
+  const url = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?select=*&${params.join('&')}`;
   let response;
   try {
     response = await fetch(url, {
@@ -390,7 +389,7 @@ export async function load({ params }) {
     const legacyTargetResult = await findGymCandidate(legacyTargetSlug);
     const legacyTarget = legacyTargetResult?.gym;
     if (legacyTarget) {
-      if (isArchivedGym(legacyTarget)) {
+      if (!isPublicActiveGym(legacyTarget)) {
         throw error(410, 'Scheda rimossa');
       }
       throw redirect(301, `/palestre/${slugifyGym(legacyTarget)}`);
@@ -400,13 +399,13 @@ export async function load({ params }) {
   const legacyGym = gym ? null : found?.matchType === 'legacy' ? found.gym : null;
 
   if (legacyGym) {
-    if (isArchivedGym(legacyGym)) {
+    if (!isPublicActiveGym(legacyGym)) {
       throw error(410, 'Scheda rimossa');
     }
     throw redirect(301, `/palestre/${slugifyGym(legacyGym)}`);
   }
 
-  if (gym && isArchivedGym(gym)) {
+  if (gym && !isPublicActiveGym(gym)) {
     throw error(410, 'Scheda rimossa');
   }
 
