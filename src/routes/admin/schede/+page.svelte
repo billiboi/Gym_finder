@@ -17,7 +17,6 @@
   let selectedGymId = '';
   let appliedFormEditId = '';
   let appliedServerEditId = '';
-  let createDisciplineInput = '';
   let qualityFilter = 'all';
   let modalDirty = false;
 
@@ -141,8 +140,6 @@
     q = data.q || '';
     appliedServerQ = data.q || '';
   }
-  $: createPreview = previewAssetsForDiscipline(createDisciplineInput);
-  $: createAliasNotice = firstAliasNotice(createDisciplineInput, data.aliasSuggestions);
   $: selectedPreview = selectedGym
     ? previewAssetsForDiscipline(disciplinesForGym(selectedGym).join(' | '))
     : null;
@@ -169,6 +166,7 @@
         <p class="mt-2 text-sm text-slate-600">Da questa pagina puoi creare, modificare, archiviare e ripristinare ogni scheda palestra.</p>
       </div>
       <div class="flex flex-wrap gap-2">
+        <a href="/admin/schede/nuova" class="rounded-xl bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800">Nuova scheda</a>
         <a href="/admin/export/gyms.csv" class="rounded-xl bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800">Esporta CSV backup</a>
         <a href="/admin/import" class="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-800 ring-1 ring-slate-200 hover:bg-slate-50">Import CSV sicuro</a>
         <a href="/admin" class="rounded-xl bg-slate-700 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">Home admin</a>
@@ -331,132 +329,6 @@
         <span class="font-semibold">archiviate</span>
       </button>
     </div>
-  </section>
-
-  <section class="mt-5 rounded-3xl border border-white/80 bg-white/80 p-5 shadow-xl backdrop-blur-sm sm:p-7">
-    <div class="flex flex-wrap items-center justify-between gap-3">
-      <div>
-        <p class="text-xs font-bold uppercase tracking-[0.22em] text-slate-500">Nuova scheda</p>
-        <h2 class="mt-1 text-xl font-bold text-slate-900 sm:text-2xl">Aggiungi palestra</h2>
-        <p class="mt-2 text-sm text-slate-600">I dati verranno salvati nel CSV insieme alle altre schede.</p>
-      </div>
-    </div>
-
-    <form method="POST" action="?/create" enctype="multipart/form-data" class="mt-5 grid gap-3">
-      <label class="grid gap-1">
-        <span class="text-sm font-semibold text-slate-700">Nome palestra</span>
-        <input name="name" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" required />
-      </label>
-
-      <label class="grid gap-1">
-        <span class="text-sm font-semibold text-slate-700">Discipline (separate da |)</span>
-        <input
-          name="discipline"
-          list="discipline-canonical-options"
-          class="rounded-xl border border-slate-200 px-3 py-2 text-sm"
-          placeholder="Es: Boxe | Kickboxing"
-          bind:value={createDisciplineInput}
-          required
-        />
-        {#if createAliasNotice}
-          <span class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-800">
-            Alias rilevato: “{createAliasNotice.input}” verrà salvato come “{createAliasNotice.canonical}”.
-          </span>
-        {/if}
-      </label>
-
-      <label class="grid gap-1">
-        <span class="text-sm font-semibold text-slate-700">Indirizzo</span>
-        <input name="address" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" required />
-      </label>
-
-      <label class="grid gap-1">
-        <span class="text-sm font-semibold text-slate-700">Città/Località</span>
-        <input name="city" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" required />
-      </label>
-
-      <label class="grid gap-1">
-        <span class="text-sm font-semibold text-slate-700">Telefono</span>
-        <input name="phone" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" />
-      </label>
-
-      <label class="grid gap-1">
-        <span class="text-sm font-semibold text-slate-700">Orari di apertura</span>
-        <textarea name="hours_info" rows="4" class="rounded-xl border border-slate-200 px-3 py-2 text-sm"></textarea>
-      </label>
-
-      <label class="grid gap-1">
-        <span class="text-sm font-semibold text-slate-700">Sito web</span>
-        <input name="website" type="url" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" placeholder="https://..." />
-      </label>
-
-      <label class="grid gap-1">
-        <span class="text-sm font-semibold text-slate-700">URL immagine copertina</span>
-        <input name="image_url" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" placeholder="https://..." />
-      </label>
-
-        <label class="grid gap-1">
-          <span class="text-sm font-semibold text-slate-700">Foto copertina</span>
-          <input name="image" type="file" accept="image/png,image/jpeg,image/webp,image/gif" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" />
-          <span class="text-xs text-slate-500">Se non carichi un'immagine, la scheda userà la foto stock della disciplina oppure la cover del brand.</span>
-        </label>
-
-      <div class="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
-        <img
-          src={createPreview.src}
-          alt={`Anteprima fallback ${createPreview.discipline}`}
-          class="h-44 w-full object-cover"
-          on:error={(event) => handlePreviewError(event, createPreview)}
-        />
-        <div class="grid gap-1 border-t border-slate-200 bg-white/80 px-3 py-3 text-sm text-slate-600">
-          <p><strong class="text-slate-900">Anteprima fallback:</strong> {createPreview.discipline}</p>
-          <p>
-            {#if createPreview.stockResolved}
-              {createPreview.stockResolved.length} foto stock trovate. Rotazione attiva, selezione corrente: <code>{createPreview.stockSelected}</code>
-            {:else}
-              Nessuna foto stock disponibile per <code>{createPreview.stockBase}</code>: verrà usata la cover del brand.
-            {/if}
-          </p>
-        </div>
-      </div>
-
-      <label class="grid gap-1">
-        <span class="text-sm font-semibold text-slate-700">Breve presentazione</span>
-        <textarea
-          name="description"
-          rows="5"
-          class="rounded-xl border border-slate-200 px-3 py-2 text-sm"
-          placeholder="Descrivi in breve ambiente, servizi, focus della palestra e tipo di pubblico."
-        ></textarea>
-      </label>
-
-      <div class="grid gap-3 sm:grid-cols-2">
-        <label class="grid gap-1">
-          <span class="text-sm font-semibold text-slate-700">Latitudine</span>
-          <input name="latitude" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" />
-        </label>
-        <label class="grid gap-1">
-          <span class="text-sm font-semibold text-slate-700">Longitudine</span>
-          <input name="longitude" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" />
-        </label>
-      </div>
-
-      <section class="grid gap-2 rounded-2xl border border-slate-200 bg-white p-4">
-        <h3 class="text-sm font-bold uppercase tracking-[0.18em] text-slate-500">Stato scheda</h3>
-        <label class="inline-flex items-center gap-2 text-sm font-semibold text-slate-700">
-          <input type="checkbox" name="verified" value="1" />
-          Scheda verificata
-        </label>
-        <label class="inline-flex items-center gap-2 text-sm font-semibold text-slate-700">
-          <input type="checkbox" name="premium" value="1" />
-          Scheda premium
-        </label>
-      </section>
-
-      <button type="submit" class="mt-2 rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700">
-        Crea scheda
-      </button>
-    </form>
   </section>
 
   <section class="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
