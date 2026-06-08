@@ -1,21 +1,14 @@
-import { readGyms } from '$lib/server/gym-store';
+import { readAdminGymList } from '$lib/server/gym-store';
 import { readClaimRequestsList } from '$lib/server/claim-request-store';
 import { isArchivedGym } from '$lib/admin/gyms';
 
-async function getGymsWithFallback(fetchFn) {
+async function getDashboardGyms() {
   try {
-    const gyms = await readGyms();
-    if (Array.isArray(gyms) && gyms.length > 0) return gyms;
+    const gymList = await readAdminGymList({ limit: 100, offset: 0, archived: 'active' });
+    return Array.isArray(gymList?.items) ? gymList.items : [];
   } catch {
-    // Keep the admin dashboard reachable even if the broad Supabase read fails.
-  }
-
-  try {
-    const res = await fetchFn('/api/gyms');
-    if (!res.ok) return [];
-    const data = await res.json();
-    return Array.isArray(data) ? data : Array.isArray(data?.items) ? data.items : [];
-  } catch {
+    // Keep the admin dashboard reachable, but do not fall back to public /api/gyms:
+    // public rows are paginated/sanitized and can produce broken admin edit links.
     return [];
   }
 }
@@ -29,8 +22,8 @@ async function getClaimRequestsListSafe() {
   }
 }
 
-export async function load({ fetch }) {
-  const gyms = await getGymsWithFallback(fetch);
+export async function load() {
+  const gyms = await getDashboardGyms();
   const activeGyms = gyms.filter((gym) => !isArchivedGym(gym));
   const requests = await getClaimRequestsListSafe();
   const qualityStats = {

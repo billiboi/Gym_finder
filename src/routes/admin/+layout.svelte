@@ -14,6 +14,8 @@
       <nav class="flex flex-wrap gap-2" aria-label="Navigazione admin">
         <a href="/" class="sc-ui-pill px-3.5 py-2 text-sm">Home pubblica</a>
         <a href="/admin" class="sc-ui-pill sc-ui-pill--primary px-3.5 py-2 text-sm">Dashboard admin</a>
+        <a href="/admin/schede" class="sc-ui-pill px-3.5 py-2 text-sm">Schede</a>
+        <a href="/admin/richieste" class="sc-ui-pill px-3.5 py-2 text-sm">Richieste</a>
         <a href="/admin/qualita" class="sc-ui-pill px-3.5 py-2 text-sm">Qualità</a>
         <a href="/admin/prezzi" class="sc-ui-pill px-3.5 py-2 text-sm">Contenuti</a>
         <a href="/admin/audit" class="sc-ui-pill px-3.5 py-2 text-sm">Audit log</a>

@@ -1319,8 +1319,8 @@ export async function readAdminGymList(options = {}) {
   const normalizedQuery = query.toLowerCase();
   let filtered = allGyms;
 
-  if (mode === 'active') filtered = filtered.filter((gym) => !gym.deleted_at);
-  if (mode === 'archived') filtered = filtered.filter((gym) => Boolean(gym.deleted_at));
+  if (mode === 'active') filtered = filtered.filter((gym) => !isArchivedGym(gym));
+  if (mode === 'archived') filtered = filtered.filter((gym) => isArchivedGym(gym));
 
   if (normalizedQuery) {
     filtered = filtered.filter((gym) =>
