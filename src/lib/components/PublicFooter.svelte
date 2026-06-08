@@ -1,5 +1,4 @@
 <script>
-  import BrandMark from '$lib/components/BrandMark.svelte';
   import { trackEvent } from '$lib/tracking';
 </script>
 
@@ -7,10 +6,8 @@
   <div class="rounded-3xl border border-white/70 bg-white/80 px-4 py-4 shadow-lg backdrop-blur-sm sc-panel">
     <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
       <div class="max-w-2xl">
-        <a href="/" class="inline-flex" aria-label="PalestreInZona - Home">
-          <BrandMark />
-        </a>
-        <p class="mt-3 text-sm leading-6 text-slate-600">
+        <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-emerald-800">Palestre in Zona</p>
+        <p class="mt-2 text-sm leading-6 text-slate-600">
           Cerca palestre e discipline vicine. Apri schede con contatti, orari e dati da verificare quando mancano conferme.
         </p>
       </div>
