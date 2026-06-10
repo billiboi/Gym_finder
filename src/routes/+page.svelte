@@ -773,7 +773,7 @@
             </a>
             <a
               href="/rivendica-scheda"
-              class="inline-flex min-h-[3rem] items-center justify-center rounded-2xl bg-emerald-950 px-5 text-sm font-bold text-white transition hover:bg-emerald-900 sc-hero-secondary-cta"
+              class="inline-flex min-h-[3rem] items-center justify-center rounded-2xl px-5 text-sm font-bold transition sc-button sc-button--secondary sc-hero-secondary-cta"
             >
               Verifica scheda
             </a>
@@ -805,7 +805,7 @@
         <p class="text-xs font-bold uppercase tracking-[0.22em] text-emerald-800">Fiducia</p>
         <h2 class="mt-2 text-2xl font-bold leading-tight text-slate-900 sm:text-3xl">Dati leggibili, fonti chiare, correzioni controllate</h2>
       </div>
-      <a href="/verifica-schede" class="inline-flex min-h-[2.75rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-bold text-slate-900 transition hover:bg-slate-50">Come funziona</a>
+      <a href="/verifica-schede" class="inline-flex min-h-[2.75rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button sc-button--secondary">Come funziona</a>
     </div>
     <div class="mt-5">
       <TrustBadges />
@@ -889,7 +889,7 @@
             Correggi contatti, orari e discipline senza obblighi pubblicitari. I servizi a pagamento richiedono una richiesta separata.
           </p>
         </div>
-        <a href="/rivendica-scheda" class="mt-5 inline-flex min-h-[2.75rem] items-center justify-center rounded-xl bg-white px-4 text-sm font-bold text-emerald-950 transition hover:bg-emerald-50">
+        <a href="/rivendica-scheda" class="mt-5 inline-flex min-h-[2.75rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button sc-button--secondary">
           Verifica gratuitamente la tua scheda
         </a>
       </aside>
@@ -1254,9 +1254,9 @@
                     <span class="rounded-full bg-slate-100 px-2.5 py-1">{displayName(gym.city)}</span>
                   {/if}
                   {#if verified}
-                    <span class="rounded-full bg-emerald-100 px-2.5 py-1 text-emerald-800">Verificata</span>
+                    <span class="rounded-full px-2.5 py-1 sc-badge sc-badge--success">Verificata</span>
                   {:else}
-                    <span class="rounded-full bg-slate-100 px-2.5 py-1 text-slate-600">Info da confermare</span>
+                    <span class="rounded-full px-2.5 py-1 sc-badge sc-badge--muted">Info da confermare</span>
                   {/if}
                 </div>
                 <div class="flex flex-wrap gap-2 sc-discipline-list">
@@ -1296,16 +1296,16 @@
             <div class="grid gap-2 border-t border-slate-200 pt-3">
                 <a
                   href={gymHref(gym)}
-                  class="inline-flex min-h-[2.75rem] items-center justify-center rounded-xl bg-slate-900 px-3 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
+                  class="inline-flex min-h-[2.75rem] items-center justify-center rounded-xl px-3 text-sm font-bold transition sc-button sc-button--primary"
                 >
                   Apri scheda
                 </a>
               <div class="grid gap-2 sm:grid-cols-2">
               {#if phoneLink}
-                <a href={phoneLink} class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-slate-900 transition hover:bg-slate-50" on:click={() => trackEvent('click_telefono', gymTrackingPayload(gym))}>Chiama</a>
+                <a href={phoneLink} class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl px-3 text-sm font-bold transition sc-button sc-button--secondary" on:click={() => trackEvent('click_telefono', gymTrackingPayload(gym))}>Chiama</a>
               {/if}
               {#if directionsLink}
-                <a href={directionsLink} target="_blank" rel="noreferrer" class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-slate-900 transition hover:bg-slate-50" on:click={() => trackEvent('click_indicazioni', gymTrackingPayload(gym))}>Indicazioni</a>
+                <a href={directionsLink} target="_blank" rel="noreferrer" class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl px-3 text-sm font-bold transition sc-button sc-button--secondary" on:click={() => trackEvent('click_indicazioni', gymTrackingPayload(gym))}>Indicazioni</a>
               {/if}
               </div>
             </div>
@@ -1319,7 +1319,7 @@
     <div class="mt-5 flex justify-center">
       <button
         type="button"
-        class="inline-flex min-h-[2.9rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-5 text-sm font-bold text-slate-900 transition hover:bg-slate-50"
+        class="inline-flex min-h-[2.9rem] items-center justify-center rounded-xl px-5 text-sm font-bold transition sc-button sc-button--secondary"
         on:click={showMoreGyms}
       >
         {backgroundCatalogLoading ? 'Caricamento...' : `Mostra altre ${nextGymsLabel} palestre`}

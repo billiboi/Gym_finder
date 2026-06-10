@@ -305,7 +305,7 @@
                 </span>
               {/each}
               {#if isVerified}
-                <span class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-emerald-900 sc-badge">Verificata</span>
+                <span class="rounded-full px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] sc-badge sc-badge--success">Verificata</span>
               {/if}
             </div>
 
@@ -352,14 +352,14 @@
                 href={mapsHref}
                 target="_blank"
                 rel="noreferrer"
-                class="inline-flex min-h-[2.8rem] items-center justify-center rounded-xl bg-slate-900 px-4 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
+                class="inline-flex min-h-[2.8rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button sc-button--secondary"
                 on:click={() => trackEvent('click_indicazioni', trackingPayload)}
               >
                 Apri mappa
               </a>
               <a
                 href={hasPhone ? `tel:${phone.replace(/\s+/g, '')}` : mapsHref}
-                class="inline-flex min-h-[2.8rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-bold text-slate-900 transition hover:bg-slate-50"
+                class="inline-flex min-h-[2.8rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button sc-button--secondary"
                 on:click={() => trackEvent(hasPhone ? 'click_telefono' : 'click_indicazioni', trackingPayload)}
               >
                 {hasPhone ? 'Chiama' : 'Indicazioni'}
@@ -369,7 +369,7 @@
                   href={website}
                   target="_blank"
                   rel="noreferrer"
-                  class="inline-flex min-h-[2.8rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-bold text-slate-900 transition hover:bg-slate-50"
+                  class="inline-flex min-h-[2.8rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button sc-button--secondary"
                   on:click={() => trackEvent('click_sito', trackingPayload)}
                 >
                   Apri sito
@@ -377,7 +377,7 @@
               {:else}
                 <a
                   href={claimHref}
-                  class="inline-flex min-h-[2.8rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-bold text-slate-900 transition hover:bg-slate-50"
+                  class="inline-flex min-h-[2.8rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button sc-button--secondary"
                   on:click={() => trackEvent('claim_click', trackingPayload)}
                 >
                   Aggiorna dati
@@ -437,7 +437,7 @@
             {#if hoursRows.length}
               <div class="mt-2 space-y-2">
                 {#if alwaysOpen}
-                  <div class="inline-flex rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-emerald-800">
+                  <div class="inline-flex rounded-full px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] sc-badge sc-badge--success">
                     Aperta 24/7
                   </div>
                 {/if}
@@ -472,7 +472,7 @@
                   href={officialSourceUrl}
                   target="_blank"
                   rel="noreferrer"
-                  class="inline-flex min-h-[2.75rem] shrink-0 items-center justify-center rounded-xl border border-emerald-200 bg-emerald-50 px-4 text-sm font-bold text-emerald-900 transition hover:border-emerald-300 hover:bg-emerald-100"
+                  class="inline-flex min-h-[2.75rem] shrink-0 items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button sc-button--secondary"
                 >
                   Apri fonte ufficiale
                 </a>
@@ -492,17 +492,17 @@
                   <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Canali ufficiali</p>
                   <div class="mt-3 flex flex-wrap gap-2">
                     {#if officialEmail}
-                      <a href={`mailto:${officialEmail}`} class="inline-flex min-h-[2.55rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-3.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50">
+                      <a href={`mailto:${officialEmail}`} class="inline-flex min-h-[2.55rem] items-center justify-center rounded-xl px-3.5 text-sm font-bold transition sc-button sc-button--secondary">
                         Email
                       </a>
                     {/if}
                     {#each officialSocialLinks as social}
-                      <a href={social.href} target="_blank" rel="noreferrer" class="inline-flex min-h-[2.55rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-3.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50">
+                      <a href={social.href} target="_blank" rel="noreferrer" class="inline-flex min-h-[2.55rem] items-center justify-center rounded-xl px-3.5 text-sm font-bold transition sc-button sc-button--secondary">
                         {social.label}
                       </a>
                     {/each}
                     {#if !officialMonthlyPrice && officialSourceUrl}
-                      <a href={officialSourceUrl} target="_blank" rel="noreferrer" class="inline-flex min-h-[2.55rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-3.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50">
+                      <a href={officialSourceUrl} target="_blank" rel="noreferrer" class="inline-flex min-h-[2.55rem] items-center justify-center rounded-xl px-3.5 text-sm font-bold transition sc-button sc-button--secondary">
                         Fonte ufficiale
                       </a>
                     {/if}
@@ -617,13 +617,13 @@
           </div>
 
           <div class="mt-4 flex flex-col gap-2">
-            <a href={claimHref} class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-slate-800 sc-button" on:click={() => {
+            <a href={claimHref} class="inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-sm font-bold transition sc-button sc-button--primary" on:click={() => {
               trackEvent('owner_cta_click', trackingPayload);
               trackEvent('claim_click', { ...trackingPayload, posizione: 'scheda_owner_box' });
             }}>
               Verifica scheda
             </a>
-            <a href="/per-le-palestre" class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50" on:click={() => trackEvent('partner_cta_click', { ...trackingPayload, posizione: 'scheda_owner_box' })}>
+            <a href="/per-le-palestre" class="inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-sm font-bold transition sc-button sc-button--secondary" on:click={() => trackEvent('partner_cta_click', { ...trackingPayload, posizione: 'scheda_owner_box' })}>
               Info per le palestre
             </a>
           </div>

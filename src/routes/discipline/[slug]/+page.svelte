@@ -307,7 +307,7 @@
                     {/if}
                   {/if}
                   {#if verified}
-                    <span class="rounded-full bg-emerald-100 px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-800">Verificata</span>
+                    <span class="rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.14em] sc-badge sc-badge--success">Verificata</span>
                   {/if}
                   {#if premium}
                     <span class="rounded-full bg-sky-100 px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-sky-800">Premium</span>
@@ -328,7 +328,7 @@
                 </span>
               </div>
               <div class="rounded-2xl sc-gym-card-cta p-3">
-                <a href={gymHref(gym)} class="inline-flex items-center rounded-xl bg-slate-900 px-3 py-2 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
+                <a href={gymHref(gym)} class="inline-flex items-center rounded-xl px-3 py-2 text-sm font-bold transition sc-button sc-button--primary">
                   Apri scheda
                 </a>
               </div>

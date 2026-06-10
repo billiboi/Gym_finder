@@ -312,10 +312,10 @@
           </div>
         </div>
         <div class="mt-3 flex flex-col gap-2 sm:flex-row">
-          <a href={zoneMapOpenHref} target="_blank" rel="noreferrer" class="inline-flex min-h-[2.75rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-bold text-slate-900 transition hover:bg-slate-50">
+          <a href={zoneMapOpenHref} target="_blank" rel="noreferrer" class="inline-flex min-h-[2.75rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button sc-button--secondary">
             Apri mappa grande
           </a>
-          <a href="#palestre-zona" class="inline-flex min-h-[2.75rem] items-center justify-center rounded-xl bg-slate-900 px-4 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
+          <a href="#palestre-zona" class="inline-flex min-h-[2.75rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button sc-button--primary">
             Vai alle schede
           </a>
         </div>
@@ -371,7 +371,7 @@
                     {/if}
                   {/if}
                   {#if verified}
-                    <span class="rounded-full bg-emerald-100 px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-800">Verificata</span>
+                    <span class="rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.14em] sc-badge sc-badge--success">Verificata</span>
                   {/if}
                   {#if premium}
                     <span class="rounded-full bg-sky-100 px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-sky-800">Premium</span>
@@ -391,7 +391,7 @@
                 </span>
               </div>
               <div class="rounded-2xl sc-gym-card-cta p-3">
-                <a href={gymHref(gym)} class="inline-flex items-center rounded-xl bg-slate-900 px-3 py-2 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
+                <a href={gymHref(gym)} class="inline-flex items-center rounded-xl px-3 py-2 text-sm font-bold transition sc-button sc-button--primary">
                   Apri scheda
                 </a>
               </div>
@@ -402,7 +402,7 @@
           <div class="col-span-full flex justify-center rounded-2xl border border-slate-200 bg-white/80 p-4">
             <button
               type="button"
-              class="inline-flex min-h-[2.9rem] items-center justify-center rounded-xl bg-slate-900 px-5 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
+              class="inline-flex min-h-[2.9rem] items-center justify-center rounded-xl px-5 text-sm font-bold transition sc-button sc-button--primary"
               on:click={loadMoreGyms}
             >
               {loadingMoreGyms ? 'Caricamento...' : `Carica altre schede (${Math.max(totalGyms - visibleGyms.length, 0)})`}

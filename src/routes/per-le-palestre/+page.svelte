@@ -19,7 +19,7 @@
       period: 'in fase iniziale',
       description: 'Per correggere dati essenziali e indicare un referente.',
       features: ['Contatti e orari rivisti', 'Link ufficiali e social', 'Badge verifica dopo controllo'],
-      cta: 'Verifica la scheda'
+      cta: 'Richiedi verifica gratuita'
     },
     {
       name: 'Scheda in evidenza',
@@ -28,7 +28,7 @@
       period: 'dopo aver controllato scheda, zona e obiettivo',
       description: 'Per chiarire dati, prezzi, servizi e canali di contatto.',
       features: ['Prezzi e descrizione rivisti', 'Pulsanti di contatto chiari', 'Controllo editoriale prima della pubblicazione'],
-      cta: 'Richiedi valutazione',
+      cta: 'Scopri dettagli',
       featured: true
     },
     {
@@ -149,16 +149,16 @@
             <a
               href="#lead"
               on:click={() => trackPartnerEvent({ posizione: 'hero', cta: 'richiedi_verifica' })}
-              class="inline-flex min-h-[3rem] items-center justify-center rounded-xl bg-slate-900 px-5 text-sm font-bold text-white transition hover:bg-slate-800 sc-button"
+              class="inline-flex min-h-[3rem] items-center justify-center rounded-xl px-5 text-sm font-bold transition sc-button sc-button--primary"
             >
-              Richiedi contatto
+              Richiedi verifica gratuita
             </a>
             <a
               href="#pricing"
               on:click={() => trackPartnerEvent({ posizione: 'hero', cta: 'vedi_soluzioni' })}
-              class="inline-flex min-h-[3rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-5 text-sm font-bold text-slate-900 transition hover:bg-slate-50"
+              class="inline-flex min-h-[3rem] items-center justify-center rounded-xl px-5 text-sm font-bold transition sc-button sc-button--secondary"
             >
-              Vedi opzioni
+              Come funziona
             </a>
           </div>
         </div>
@@ -214,7 +214,7 @@
             <a
               href="#lead"
               on:click={() => trackPartnerEvent({ posizione: 'piano', piano: plan.name, cta: plan.cta })}
-              class={`mt-6 inline-flex min-h-[2.9rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition ${plan.featured ? 'bg-white text-emerald-950 hover:bg-emerald-50' : 'border border-slate-200 bg-white text-slate-950 hover:bg-slate-50'}`}
+              class={`mt-6 inline-flex min-h-[2.9rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button ${plan.cta === 'Richiedi verifica gratuita' ? 'sc-button--primary' : 'sc-button--secondary'}`}
             >
               {plan.cta}
             </a>
@@ -308,7 +308,7 @@
             <textarea name="message" rows="5" class="rounded-2xl border border-slate-200 bg-white px-3 py-3 text-sm leading-7 text-slate-900 outline-none ring-slate-900 transition focus:ring-2" placeholder="Esempio: voglio correggere prezzi, orari e discipline indicate nella scheda.">{form?.values?.message || ''}</textarea>
           </label>
 
-          <button type="submit" class="inline-flex min-h-[3rem] items-center justify-center rounded-xl bg-slate-900 px-5 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
+          <button type="submit" class="inline-flex min-h-[3rem] items-center justify-center rounded-xl px-5 text-sm font-bold transition sc-button sc-button--primary">
             Invia richiesta
           </button>
         </form>
