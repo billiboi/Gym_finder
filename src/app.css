@@ -1510,5 +1510,38 @@ body {
   .sc-contact-card .sc-detail-copy {
     max-width: none;
   }
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  min-width: 0;
+  text-decoration: none;
+}
+
+.brand-mark__logo {
+  display: block;
+  object-fit: contain;
+}
+
+.brand-mark__logo--desktop {
+  width: clamp(190px, 18vw, 280px);
+  height: 44px;
+}
+
+.brand-mark__logo--mobile {
+  display: none;
+  width: 44px;
+  height: 44px;
+}
+
+@media (max-width: 720px) {
+  .brand-mark__logo--desktop {
+    display: none;
+  }
+
+  .brand-mark__logo--mobile {
+    display: block;
+  }
+}
 }
 
