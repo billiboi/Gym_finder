@@ -107,7 +107,7 @@ async function readSitemapGyms() {
 
   try {
     const params = [
-      `select=${encodeURIComponent(SITEMAP_GYM_COLUMNS.join(','))}`,
+      'select=*',
       'deleted_at=is.null',
       'order=updated_at.desc.nullslast,nome.asc.nullslast',
       'limit=5000'

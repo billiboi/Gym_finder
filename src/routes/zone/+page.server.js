@@ -47,7 +47,7 @@ async function readZoneIndexGyms() {
   if (hasSupabaseRead) {
     try {
       const params = [
-        `select=${encodeURIComponent(ZONE_INDEX_COLUMNS.join(','))}`,
+        'select=*',
         'deleted_at=is.null',
         'limit=5000'
       ];

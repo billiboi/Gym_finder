@@ -120,9 +120,7 @@ async function fetchZoneRows(params, limit = INITIAL_ZONE_GYMS + 1) {
   if (!hasSupabaseRead) return [];
 
   try {
-    const url = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?select=${encodeURIComponent(
-      ZONE_GYM_COLUMNS.join(',')
-    )}&${params.join('&')}&order=priority_score.desc.nullslast,nome.asc.nullslast&limit=${limit}`;
+    const url = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?select=*&${params.join('&')}&order=priority_score.desc.nullslast,nome.asc.nullslast&limit=${limit}`;
     const response = await fetch(url, {
       method: 'GET',
       headers: supabaseHeaders()

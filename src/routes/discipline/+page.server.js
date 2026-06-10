@@ -45,7 +45,7 @@ async function readDisciplineIndexGyms() {
   if (hasSupabaseRead) {
     try {
       const params = [
-        `select=${encodeURIComponent(DISCIPLINE_INDEX_COLUMNS.join(','))}`,
+        'select=*',
         'deleted_at=is.null',
         'limit=5000'
       ];
