@@ -321,7 +321,6 @@ async function findGymCandidate(slug) {
   const legacyMatch = candidates.find((gym) => legacySlugifyGym(gym) === slug || gym?._legacy_slug === slug);
   return legacyMatch ? { gym: legacyMatch, matchType: 'legacy' } : null;
 }
-}
 
 async function readRelatedGyms(gym, primaryDiscipline, gymCity) {
   if (!hasSupabaseRead || !primaryDiscipline && !gymCity) return [];
