@@ -238,24 +238,28 @@ function slugSearchTerms(slug) {
 }
 
 async function findGymCandidate(slug) {
-  const fallbackGyms = await readPublicRouteGyms();
-  const fallbackCanonicalMatch = fallbackGyms.find((gym) => slugifyGym(gym) === slug || gym?.slug === slug);
-  if (fallbackCanonicalMatch) return { gym: fallbackCanonicalMatch, matchType: 'canonical' };
-
-  const fallbackLegacyMatch = fallbackGyms.find((gym) => legacySlugifyGym(gym) === slug || gym?._legacy_slug === slug);
-  if (fallbackLegacyMatch) return { gym: fallbackLegacyMatch, matchType: 'legacy' };
-
   if (!hasSupabaseRead) {
+    const fallbackGyms = await readPublicRouteGyms();
+
+    const fallbackCanonicalMatch = fallbackGyms.find((gym) => slugifyGym(gym) === slug || gym?.slug === slug);
+    if (fallbackCanonicalMatch) return { gym: fallbackCanonicalMatch, matchType: 'canonical' };
+
+    const fallbackLegacyMatch = fallbackGyms.find((gym) => legacySlugifyGym(gym) === slug || gym?._legacy_slug === slug);
+    if (fallbackLegacyMatch) return { gym: fallbackLegacyMatch, matchType: 'legacy' };
+
     const terms = slugSearchTerms(slug);
     for (const term of terms) {
       const result = await readPublicGymListing({ limit: 100, q: term });
       const candidates = Array.isArray(result?.items) ? result.items : [];
+
       const canonicalMatch = candidates.find((gym) => slugifyGym(gym) === slug || gym?.slug === slug);
       if (canonicalMatch) return { gym: canonicalMatch, matchType: 'canonical' };
 
       const legacyMatch = candidates.find((gym) => legacySlugifyGym(gym) === slug || gym?._legacy_slug === slug);
       if (legacyMatch) return { gym: legacyMatch, matchType: 'legacy' };
     }
+
+    return null;
   }
 
   const directRows = await fetchGymRows(DETAIL_GYM_COLUMNS, [
@@ -292,6 +296,7 @@ async function findGymCandidate(slug) {
       'limit=10'
     ]);
     const preciseCandidates = normalizeRows(preciseRows, 'detail-precise');
+
     const preciseCanonicalMatch = preciseCandidates.find((gym) => slugifyGym(gym) === slug || gym?.slug === slug);
     if (preciseCanonicalMatch) return { gym: preciseCanonicalMatch, matchType: 'canonical' };
 
@@ -309,11 +314,13 @@ async function findGymCandidate(slug) {
     'limit=50'
   ]);
   const candidates = normalizeRows(candidateRows, 'detail-search');
+
   const canonicalMatch = candidates.find((gym) => slugifyGym(gym) === slug || gym?.slug === slug);
   if (canonicalMatch) return { gym: canonicalMatch, matchType: 'canonical' };
 
   const legacyMatch = candidates.find((gym) => legacySlugifyGym(gym) === slug || gym?._legacy_slug === slug);
   return legacyMatch ? { gym: legacyMatch, matchType: 'legacy' } : null;
+}
 }
 
 async function readRelatedGyms(gym, primaryDiscipline, gymCity) {
