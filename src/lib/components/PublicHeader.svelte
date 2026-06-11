@@ -73,7 +73,7 @@
       <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
         <div class="sc-header-top flex items-center justify-between gap-3">
           <a href="/" class="inline-flex min-h-11 min-w-0 max-w-full items-center gap-3" aria-label="PalestreInZona home">
-            <BrandMark compact={isMobileHeader} />
+            <BrandMark />
           </a>
           <button
             type="button"

@@ -1,11 +1,12 @@
-<script>
-  export let compact = false;
-</script>
-
-<img
-  class={compact ? 'h-10 w-10 shrink-0' : 'h-11 w-auto max-w-[13.5rem] shrink-0'}
-  src={compact ? '/brand/logo-icon.png' : '/brand/logo-horizontal.png'}
-  alt="PalestreInZona"
-  width={compact ? '40' : '165'}
-  height="44"
-/>
+<picture class="brand-mark-picture">
+  <source media="(max-width: 767px)" srcset="/brand/logo-icon.png" />
+  <img
+    class="brand-mark-img"
+    src="/brand/logo-horizontal.png"
+    alt="PalestreInZona"
+    width="220"
+    height="44"
+    decoding="async"
+    fetchpriority="high"
+  />
+</picture>
