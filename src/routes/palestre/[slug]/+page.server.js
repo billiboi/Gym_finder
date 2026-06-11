@@ -419,6 +419,10 @@ export async function load({ params }) {
     throw error(410, 'Scheda rimossa');
   }
 
+  if (gym && slugifyGym(gym) !== params.slug) {
+    throw redirect(301, `/palestre/${slugifyGym(gym)}`);
+  }
+
   if (!gym || !isIndexableGym(gym)) {
     throw error(404, 'Palestra non trovata');
   }

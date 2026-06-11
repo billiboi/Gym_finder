@@ -117,7 +117,7 @@ async function readSitemapGyms() {
       headers: supabaseHeaders()
     });
 
-    if (!response.ok) return readPublicRouteGyms();
+    if (!response.ok) return [];
 
     const data = await response.json();
     const rows = Array.isArray(data) ? data : [];
@@ -126,9 +126,9 @@ async function readSitemapGyms() {
         .map((row, index) => normalizeGym(row, row?.id || `sitemap-${index + 1}`))
         .filter(isPublicActiveGym)
     );
-    return gyms.length ? gyms : readPublicRouteGyms();
+    return gyms;
   } catch {
-    return readPublicRouteGyms();
+    return [];
   }
 }
 
