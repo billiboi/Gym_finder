@@ -44,6 +44,10 @@
     "audit:gyms:contamination:preview": "bun scripts/fix-gym-contamination-preview.ts --env-file=.env.staging.local",
     "audit:gyms:contamination:apply": "bun scripts/apply-gym-contamination-fixes.ts --env-file=.env.staging.local",
     "seo:legacy-redirects": "bun scripts/report-legacy-gym-redirects.mjs",
+    "seo:check:sitemap": "bun scripts/check-sitemap-no-legacy-urls.mjs",
+    "seo:check:archived": "bun scripts/check-archived-gym-urls.mjs",
+    "seo:check:legacy": "bun scripts/check-legacy-gym-redirects.mjs",
+    "seo:check:archived-csv-drift": "bun scripts/check-archived-public-csv-drift.mjs",
     "clean:data": "bun run scripts/clean-data-control-chars.mjs",
     "sync:gyms:staging": "bun scripts/sync-supabase-gyms.mjs --env-file=.env.staging.local",
     "sync:gyms:prod": "bun scripts/sync-supabase-gyms.mjs --env-file=.env.vercel.production.check"
