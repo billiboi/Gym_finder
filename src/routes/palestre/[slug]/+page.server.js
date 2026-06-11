@@ -262,20 +262,22 @@ async function findGymCandidate(slug) {
     return null;
   }
 
-  const directRows = await fetchGymRows(DETAIL_GYM_COLUMNS, [
-    `slug=eq.${encodeURIComponent(slug)}`,
-    'limit=1'
-  ]);
+const directRows = await fetchGymRows(DETAIL_GYM_COLUMNS, [
+  `slug=eq.${encodeURIComponent(slug)}`,
+  'deleted_at=is.null',
+  'limit=1'
+]);
   const directGyms = normalizeRows(directRows, 'detail-direct');
   const directMatch = directGyms.find((gym) => slugifyGym(gym) === slug || gym?.slug === slug);
   if (directMatch) return { gym: directMatch, matchType: 'canonical' };
 
   const legacyId = legacyIdFromSlug(slug);
   if (legacyId) {
-    const idRows = await fetchGymRows(DETAIL_GYM_COLUMNS, [
-      `id=eq.${encodeURIComponent(legacyId)}`,
-      'limit=1'
-    ]);
+const idRows = await fetchGymRows(DETAIL_GYM_COLUMNS, [
+  `id=eq.${encodeURIComponent(legacyId)}`,
+  'deleted_at=is.null',
+  'limit=1'
+]);
     const [idGym] = normalizeRows(idRows, 'detail-id');
     if (idGym && (legacySlugifyGym(idGym) === slug || idGym?._legacy_slug === slug || slugifyGym(idGym) === slug)) {
       return {
@@ -290,11 +292,12 @@ async function findGymCandidate(slug) {
 
   const preciseTerms = terms.slice(0, 3);
   for (const column of ['nome', 'name']) {
-    const preciseRows = await fetchGymRows(DETAIL_GYM_COLUMNS, [
-      ...preciseTerms.map((term) => `${column}=ilike.${encodeURIComponent(`*${term}*`)}`),
-      'order=priority_score.desc.nullslast,nome.asc.nullslast',
-      'limit=10'
-    ]);
+  const preciseRows = await fetchGymRows(DETAIL_GYM_COLUMNS, [
+  ...preciseTerms.map((term) => `${column}=ilike.${encodeURIComponent(`*${term}*`)}`),
+  'deleted_at=is.null',
+  'order=priority_score.desc.nullslast,nome.asc.nullslast',
+  'limit=10'
+]);
     const preciseCandidates = normalizeRows(preciseRows, 'detail-precise');
 
     const preciseCanonicalMatch = preciseCandidates.find((gym) => slugifyGym(gym) === slug || gym?.slug === slug);
@@ -309,10 +312,11 @@ async function findGymCandidate(slug) {
     return [`nome.ilike.${encodedTerm}`, `name.ilike.${encodedTerm}`];
   });
   const candidateRows = await fetchGymRows(DETAIL_GYM_COLUMNS, [
-    `or=(${nameClauses.join(',')})`,
-    'order=priority_score.desc.nullslast,nome.asc.nullslast',
-    'limit=50'
-  ]);
+  `or=(${nameClauses.join(',')})`,
+  'deleted_at=is.null',
+  'order=priority_score.desc.nullslast,nome.asc.nullslast',
+  'limit=50'
+]);
   const candidates = normalizeRows(candidateRows, 'detail-search');
 
   const canonicalMatch = candidates.find((gym) => slugifyGym(gym) === slug || gym?.slug === slug);
