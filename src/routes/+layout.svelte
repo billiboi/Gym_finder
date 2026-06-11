@@ -30,6 +30,18 @@
     <meta name="robots" content="noindex,nofollow" />
   {/if}
   {@html organizationStructuredDataScript}
+	<link
+  	rel="preload"
+  	as="image"
+  	href="/brand/logo-icon.png"
+  	media="(max-width: 767px)"
+	/>
+	<link
+ 	 rel="preload"
+	  as="image"
+	  href="/brand/logo-horizontal.png"
+ 	 media="(min-width: 768px)"
+	/>
 </svelte:head>
 
 {#if !isAdminRoute}

@@ -1534,6 +1534,26 @@ body {
   height: 44px;
 }
 
+.brand-mark-picture {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.brand-mark-img {
+  display: block;
+  width: clamp(180px, 18vw, 220px);
+  height: 44px;
+  object-fit: contain;
+}
+
+@media (max-width: 767px) {
+  .brand-mark-img {
+    width: 44px;
+    height: 44px;
+  }
+}
+
 @media (max-width: 720px) {
   .brand-mark__logo--desktop {
     display: none;
