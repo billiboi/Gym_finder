@@ -4,6 +4,7 @@ import { SITE_URL } from '$lib/site';
 import { buildSeoDisciplineEntries, buildSeoLocationEntries } from '$lib/seo-directory';
 import { EDITORIAL_GUIDES, editorialGuideHref } from '$lib/editorial';
 import { isPublicActiveGym, readPublicRouteGyms } from '$lib/server/gym-store';
+import { withCanonicalGymSlugs } from '$lib/gym-canonical-slug';
 
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL || '';
 const SUPABASE_READ_KEY =
@@ -51,48 +52,6 @@ function supabaseHeaders() {
   };
 }
 
-function slugPart(value) {
-  return String(value || '')
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-}
-
-function withCanonicalGymSlugs(gyms) {
-  const groups = new Map();
-  const normalized = gyms.map((gym) => ({ ...gym }));
-
-  for (const gym of normalized) {
-    const base = slugPart(gym?.name || gym?.nome) || 'palestra';
-    if (!groups.has(base)) groups.set(base, []);
-    groups.get(base).push(gym);
-  }
-
-  const used = new Set();
-  for (const [base, group] of groups) {
-    group.forEach((gym, index) => {
-      let slug = base;
-      if (group.length > 1) {
-        const city = slugPart(gym?.city || gym?.citta);
-        const street = slugPart(String(gym?.address || gym?.indirizzo || '').split(',')[0]);
-        slug = [base, city && !base.includes(city) ? city : '', street]
-          .filter(Boolean)
-          .join('-')
-          .replace(/-{2,}/g, '-');
-      }
-
-      if (used.has(slug)) slug = `${slug}-${index + 1}`;
-      used.add(slug);
-      gym._canonical_slug = slug;
-      gym._legacy_slug = gym?.id ? `${base}-${String(gym.id).trim()}` : base;
-    });
-  }
-
-  return normalized;
-}
-
 function escapeXml(value) {
   return String(value || '')
     .replace(/&/g, '&amp;')
@@ -109,7 +68,7 @@ async function readSitemapGyms() {
     const params = [
       'select=*',
       'deleted_at=is.null',
-      'order=updated_at.desc.nullslast,nome.asc.nullslast',
+      'order=updated_at.desc.nullslast,nome.asc.nullslast,id.asc',
       'limit=5000'
     ];
     const response = await fetch(`${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?${params.join('&')}`, {
