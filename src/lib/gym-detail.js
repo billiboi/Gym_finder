@@ -1,6 +1,7 @@
 import { normalizeDisciplineLabel } from '$lib/disciplines';
 import { pickPublicDescription } from '$lib/gym-description';
 import { normalizeItalianCopy } from '$lib/text-format';
+import { slugPart } from '$lib/gym-canonical-slug';
 
 export function fixGymText(value) {
   let text = String(value || '');
@@ -292,15 +293,7 @@ export function slugifyGym(gym) {
   const canonicalSlug = String(gym?._canonical_slug || '').trim();
   if (canonicalSlug) return canonicalSlug;
 
-  const base = fixGymText(gym?.name || 'palestra')
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .replace(/-{2,}/g, '-');
-
-  return base || 'palestra';
+  return slugPart(fixGymText(gym?.name || 'palestra')) || 'palestra';
 }
 
 export function legacySlugifyGym(gym) {

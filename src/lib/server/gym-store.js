@@ -4,6 +4,7 @@ import { GYM_SUPABASE_COLUMN_CANDIDATES, gymToSupabaseRecord, normalizeGym } fro
 import { repairMojibake } from '$lib/text-repair';
 import { isArchivedGym } from '$lib/admin/gyms';
 import { isPublicActiveGym, publicGymVisibilityQueryParams } from '$lib/public-gym-visibility';
+import { withCanonicalGymSlugs } from '$lib/gym-canonical-slug';
 
 export { isPublicActiveGym } from '$lib/public-gym-visibility';
 
@@ -462,85 +463,6 @@ function normalizeGymRecord(gym, fallbackId) {
     },
     fallbackId
   );
-}
-
-function slugPart(value) {
-  return (
-    repairMojibake(value)
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '')
-      .replace(/-{2,}/g, '-') || ''
-  );
-}
-
-function baseGymSlug(gym) {
-  return slugPart(gym?.name || gym?.nome) || 'palestra';
-}
-
-function citySlugForGym(gym) {
-  return slugPart(gym?.city || gym?.citta);
-}
-
-function streetSlugForGym(gym) {
-  return slugPart(String(gym?.address || gym?.indirizzo || '').split(',')[0]);
-}
-
-function joinSlugParts(parts) {
-  return parts.filter(Boolean).join('-').replace(/-{2,}/g, '-').replace(/^-+|-+$/g, '') || 'palestra';
-}
-
-function canonicalSlugCandidates(gym, base, duplicateGroup) {
-  if (!duplicateGroup) return [base];
-
-  const city = citySlugForGym(gym);
-  const street = streetSlugForGym(gym);
-  const cityPart = city && !base.includes(city) ? city : '';
-
-  return [
-    joinSlugParts([base, cityPart]),
-    joinSlugParts([base, cityPart, street]),
-    joinSlugParts([base, street])
-  ].filter((value, index, list) => value && list.indexOf(value) === index);
-}
-
-function withCanonicalGymSlugs(gyms) {
-  const normalized = gyms.map((gym) => ({ ...gym }));
-  const groups = new Map();
-
-  for (const gym of normalized) {
-    const base = baseGymSlug(gym);
-    if (!groups.has(base)) groups.set(base, []);
-    groups.get(base).push(gym);
-  }
-
-  const used = new Set();
-
-  for (const [base, group] of groups) {
-    const duplicateGroup = group.length > 1;
-
-    group.forEach((gym, index) => {
-      const candidates = canonicalSlugCandidates(gym, base, duplicateGroup);
-      let slug = candidates.find((candidate) => !used.has(candidate));
-
-      if (!slug) {
-        const fallbackBase = candidates[candidates.length - 1] || base;
-        let suffix = index + 1;
-        do {
-          slug = `${fallbackBase}-${suffix}`;
-          suffix += 1;
-        } while (used.has(slug));
-      }
-
-      used.add(slug);
-      gym._canonical_slug = slug;
-      gym._legacy_slug = gym?.id ? `${base}-${String(gym.id).trim()}` : base;
-    });
-  }
-
-  return normalized;
 }
 
 function gymsFromCsv(csvText) {

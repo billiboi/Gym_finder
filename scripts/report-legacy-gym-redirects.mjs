@@ -1,5 +1,6 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { withCanonicalGymSlugs } from '../src/lib/gym-canonical-slug.js';
 
 const args = new Map(process.argv.slice(2).map((arg) => {
   const [key, ...rest] = arg.split('=');
@@ -41,26 +42,6 @@ function clean(value) {
   return String(value || '').trim();
 }
 
-function slugPart(value) {
-  return clean(value)
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .replace(/-{2,}/g, '');
-}
-
-function slugifyGym(gym) {
-  return clean(gym?._canonical_slug) || slugPart(gym?.name || gym?.nome || 'palestra') || 'palestra';
-}
-
-function legacySlugifyGym(gym) {
-  const base = slugPart(gym?.name || gym?.nome || 'palestra') || 'palestra';
-  const id = clean(gym?.id);
-  return id ? `${base}-${id}` : base;
-}
-
 function isArchivedGym(gym) {
   return Boolean(gym?.deleted_at || gym?.weekly_hours?._deleted_at);
 }
@@ -80,20 +61,36 @@ if (!response.ok) {
   throw new Error(`Cannot read ${table}: ${response.status} ${await response.text()}`);
 }
 
-const gyms = await response.json();
-const rows = gyms
+const rawGyms = await response.json();
+
+// _legacy_slug (base-id) is context-independent: compute it for every row,
+// active or archived, through the same canonicalization the live site uses.
+const legacySlugById = new Map(
+  withCanonicalGymSlugs(rawGyms).map((gym) => [String(gym.id), gym._legacy_slug])
+);
+
+// _canonical_slug depends on which OTHER gyms are currently active
+// (duplicate-name disambiguation), so it must be computed over the
+// active-only catalog -- the same set the sitemap and detail route use.
+const activeGyms = rawGyms.filter((gym) => !isArchivedGym(gym));
+const canonicalSlugById = new Map(
+  withCanonicalGymSlugs(activeGyms).map((gym) => [String(gym.id), gym._canonical_slug])
+);
+
+const rows = rawGyms
   .map((gym) => {
-    const oldSlug = legacySlugifyGym(gym);
-    const newSlug = slugifyGym(gym);
+    const id = clean(gym.id);
     const archived = isArchivedGym(gym);
+    const oldSlug = legacySlugById.get(id) || '';
+    const newSlug = archived ? '' : canonicalSlugById.get(id) || '';
 
     return {
-      id: clean(gym.id),
+      id,
       nome: clean(gym.name || gym.nome),
       old_slug: oldSlug,
       old_url: `/palestre/${oldSlug}`,
       new_slug: newSlug,
-      new_url: `/palestre/${newSlug}`,
+      new_url: newSlug ? `/palestre/${newSlug}` : '',
       status: archived ? 410 : oldSlug !== newSlug ? 301 : 200
     };
   })
