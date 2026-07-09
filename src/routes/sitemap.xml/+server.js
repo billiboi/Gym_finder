@@ -68,7 +68,7 @@ async function readSitemapGyms() {
     const params = [
       'select=*',
       'deleted_at=is.null',
-      'order=updated_at.desc.nullslast,nome.asc.nullslast',
+      'order=updated_at.desc.nullslast,nome.asc.nullslast,id.asc',
       'limit=5000'
     ];
     const response = await fetch(`${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?${params.join('&')}`, {

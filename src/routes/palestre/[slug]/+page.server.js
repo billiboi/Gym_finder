@@ -180,7 +180,7 @@ async function readFullActiveCatalog() {
 
   const rows = await fetchGymRows(DETAIL_GYM_COLUMNS, [
     'deleted_at=is.null',
-    'order=updated_at.desc.nullslast,nome.asc.nullslast',
+    'order=updated_at.desc.nullslast,nome.asc.nullslast,id.asc',
     'limit=5000'
   ]);
   const gyms = normalizeRows(rows, 'detail-catalog');

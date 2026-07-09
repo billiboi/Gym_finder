@@ -50,7 +50,11 @@ await loadEnvFile(path.resolve(envFile));
 
 const supabaseUrl = requiredEnv('SUPABASE_URL').replace(/\/$/, '');
 const serviceKey = requiredEnv('SUPABASE_SERVICE_ROLE_KEY');
-const response = await fetch(`${supabaseUrl}/rest/v1/${encodeURIComponent(table)}?select=*&order=id.asc`, {
+// Same fetch order as the sitemap and detail route so duplicate-name
+// disambiguation assigns identical slugs here and on the live site.
+const response = await fetch(
+  `${supabaseUrl}/rest/v1/${encodeURIComponent(table)}?select=*&order=updated_at.desc.nullslast,nome.asc.nullslast,id.asc`,
+  {
   headers: {
     apikey: serviceKey,
     Authorization: `Bearer ${serviceKey}`
