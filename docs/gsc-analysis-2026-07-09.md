@@ -8,7 +8,7 @@ Impressioni giornaliere: ~700–1000 per tutto maggio/giugno, poi crollo dal 23 
 
 Verifiche da fare:
 
-1. GSC → Indicizzazione → Copertura: pagine "Scansionata, attualmente non indicizzata" o errori in crescita da fine giugno — **non verificabile da Claude Code, richiede accesso diretto a Search Console. Ancora da fare.**
+1. GSC → Indicizzazione → Copertura: pagine "Scansionata, attualmente non indicizzata" o errori in crescita da fine giugno — **verificato manualmente 10 luglio: le pagine non indicizzate iniziano a crescere dal 12 giugno, non dal 23. Dato decisivo: vedi causa trovata sotto.**
 2. Vercel: deploy falliti o modifiche attorno al 20–23 giugno — **verificato 10 luglio: nessun deploy tra l'11 giugno e il 9 luglio (28 giorni di silenzio totale). Esclude un deploy rotto come causa diretta, dato che non c'era nessun deploy in quella finestra.**
 3. Supabase: progetto attivo? Un DB in pausa = pagine 500 = deindicizzazione (esiste già un hotfix report `docs/audit/public-routes-500-hotfix-report.md` — il problema potrebbe essersi ripresentato) — **verificato 10 luglio: Supabase produzione raggiungibile e attivo ora. Impossibile confermare retroattivamente lo stato al 23 giugno (nessuna cronologia pause disponibile via i tool usati). Nota: grazie al fix del 6 giugno (`public-routes-500-hotfix-report.md`), una pausa di Supabase degraderebbe le route pubbliche al fallback CSV statico invece di produrre 500 — quindi anche in caso di pausa, il sintomo non sarebbe una wave di errori 500 ma pagine servite da un dataset diverso/più piccolo.**
 4. `bun run seo:check:sitemap` e `seo:check:archived` — **eseguiti 10 luglio: entrambi OK (nessun URL legacy `-csv-NNN` in sitemap; tutti gli archiviati rispondono 404/410 in produzione). Smoke test più ampio (homepage, 5 schede random, una pagina combo disciplina+città) anche tutto 200 e veloce.**
@@ -19,7 +19,15 @@ Durante un'indagine collegata (perché 15 palestre attive su staging risultavano
 
 **Non è collegata al crollo del 23 giugno** (la divergenza risale a metà maggio, precedente e indipendente), ma è un problema operativo reale: qualsiasi verifica fatta contro staging (script con `.env.staging.local`, dev server locale, o preview deploy) **non riflette lo stato del sito live**. Le azioni di archiviazione fatte su staging in questa sessione (fase 4 + un giro successivo, 131 record) non hanno avuto alcun effetto sul sito reale, che aveva già una propria pulizia indipendente. Vedi memoria `staging_production_supabase_divergence` per i dettagli.
 
-**Conclusione P0 al 10 luglio**: nessun problema tecnico attivo trovato (produzione sana, nessun 500, nessun deploy rotto nella finestra del crollo). La causa esatta del calo del 23 giugno resta da accertare — l'unico controllo mancante è la Copertura di Google Search Console, che richiede accesso manuale.
+### Causa trovata e corretta (10 luglio 2026): sitemap senza fallback dall'11 giugno
+
+Il dato GSC (non indicizzate in crescita dal **12 giugno**, non dal 23) puntava a qualcosa iniziato l'11 giugno — esattamente l'ultimo giorno di deploy prima dei 28 giorni di silenzio. Il commit `746b042` ("Harden public gym SEO routes and archived CSV fallback", 11 giugno) ha modificato `readSitemapGyms()` in `src/routes/sitemap.xml/+server.js`: prima, se la lettura da Supabase falliva (risposta non ok, eccezione, o zero righe), la sitemap tornava al CSV statico di fallback (`readPublicRouteGyms()`), come fanno tutte le altre route pubbliche. Dopo quel commit, in caso di fallimento la sitemap restituiva un **array vuoto**.
+
+Con nessun deploy per 28 giorni e quindi nessuno a correggere un eventuale intoppo, un fallimento anche transitorio di Supabase in quella finestra avrebbe fatto sì che la sitemap offrisse a Google poche o nessuna URL di scheda palestra — esattamente il tipo di segnale che porta Google a smettere di re-indicizzare pagine nel tempo. Il ritardo di ~11 giorni tra il 12 giugno (inizio crescita non-indicizzate) e il 23 giugno (crollo impressioni visibile) è coerente con i tempi tipici di re-crawl.
+
+**Fix applicato**: ripristinato il fallback a `readPublicRouteGyms()` su risposta non ok, eccezione, o zero righe — comportamento pre-11-giugno. PR #15, mergiata su `main` il 10 luglio.
+
+**Conclusione P0**: causa tecnica concreta trovata e corretta. Il bug era ancora presente in produzione fino ad oggi (nessuno lo aveva toccato dall'11 giugno). Da monitorare nei prossimi giorni/settimane se le impressioni e l'indicizzazione tornano a crescere una volta che Google ri-scansiona la sitemap ripristinata.
 
 ## P1 — 626 URL legacy `-csv-NNN` ancora indicizzati (63% delle pagine in SERP)
 
@@ -65,7 +73,7 @@ Azione: `bun run audit:gyms:contamination` per il censimento, poi rimozione/arch
 
 ## Ordine di esecuzione consigliato con Claude Code
 
-1. Investigare il crollo di fine giugno (P0) — prima di tutto, potrebbe invalidare il resto — **fatto 10/07: nessun problema tecnico trovato, manca solo la verifica manuale di GSC Copertura**
+1. Investigare il crollo di fine giugno (P0) — prima di tutto, potrebbe invalidare il resto — **fatto 10/07: causa trovata e corretta (fallback sitemap mancante dall'11 giugno, PR #15) — vedi dettaglio sopra**
 2. Redirect legacy `-csv-NNN` (P1) — fix tecnico, alto impatto, script già esistenti — **fatto (PR #10/#11, in produzione)**
 3. Title/meta schede + homepage (P2) — **fatto (PR #11, in produzione)**
 4. Pulizia contaminazione (P4 — richiede conferme manuali sui dati) — **fatto su staging (PR #12), ma produzione aveva già una pulizia indipendente più ampia dal 15 maggio — vedi nota su staging/produzione in P0**
