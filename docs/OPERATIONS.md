@@ -2,6 +2,24 @@
 
 This document captures the safe operating path for production data and schema changes.
 
+## Supabase environments — which env file points to what
+
+There are **two separate, independently-writable Supabase projects**, not a staging/production split of the same project:
+
+| Env file | Points to | Role |
+|---|---|---|
+| `.env.vercel.production.check` | The real production project (`opcd...`) — what Vercel production and `www.palestreinzona.it` actually read | **Source of truth.** |
+| `.env.staging.local` | A separate, forked project (`wftd...`) | Rehearsal/dry-run environment for scripts. **Not** a live mirror of production — it drifts and must be manually resynced. |
+
+They diverged around mid-May 2026 (see `docs/audit/staging-production-diff-2026-07.md` for the full diff and `docs/ROADMAP.md` priority 1 for the incident). Discovered 2026-07-10 while debugging a gym that was invisible on the live site despite passing every filter — it was archived in production but active in staging, and every verification that session had used staging.
+
+**Rules that follow from this:**
+
+- Any check of "is this live", "did this take effect on the site", "does production have X" must query `.env.vercel.production.check` directly (or hit `www.palestreinzona.it` itself) — never infer it from staging, a local dev server, or a Vercel Preview deployment (Previews use the staging project).
+- A script defaulting to `.env.staging.local` is safe to run freely (rehearsal only) — it has **zero effect on the live site** until the same action is deliberately re-run with `--env-file=.env.vercel.production.check` and the full protocol below.
+- `sync:gyms:prod` (`scripts/sync-supabase-gyms.mjs --env-file=.env.vercel.production.check`) writes `data/gyms.json` straight into production via upsert. That local file is not kept in lockstep with production's live enrichment edits — running this with `--write --confirm` can silently revert recent production edits for any matching id. Treat it as a disaster-recovery/seed tool, not a routine sync; diff `data/gyms.json` against a fresh production export first.
+- To re-check or re-align the two projects: `bun scripts/audit-staging-production-diff.mjs` (read-only, writes `docs/audit/staging-production-diff-2026-07.md`) and `bun scripts/reconcile-staging-with-production.mjs` (staging-only writes, dry-run by default, needs `--confirm-apply`).
+
 ## Production data rule
 
 The manually reviewed Supabase catalog is the production source of truth. Local JSON/CSV files are development and recovery material only unless a migration plan explicitly says otherwise.
