@@ -19,10 +19,10 @@ Current migration order:
 4. `20260429_004_add_gym_editorial_enrichment_fields.sql`
 5. `20260505_005_add_soft_delete_to_gyms.sql`
 6. `20260506_006_gyms_stability_hardening.sql`
-7. `20260509_001_claim_system.sql` (extends `claim_requests` with verification/owner-dashboard fields — applied to staging only; **missing on production**, see note below)
+7. `20260509_001_claim_system.sql` (extends `claim_requests` with verification/owner-dashboard fields — applied to staging and production)
 8. `20260710_001_gym_candidates.sql` (applied to staging and production — see docs/ACQUISITION_PIPELINE.md)
 
-**Known gap (found 2026-07-11):** `20260509_001_claim_system.sql` was written and applied to staging but never tracked in this list or applied to production. Production's `claim_requests` table is missing `updated_at`, `verification_token`, `verification_sent_at`, `owner_token`, `requested_updates`, `image_uploads`, and `admin_notes` — this breaks `/admin/richieste` and `/admin/qualita` (both read via `readClaimRequestsList`, which selects those columns). The app now degrades gracefully instead of crashing (shows an error banner), but the underlying gap still needs the migration applied to production.
+**Resolved gap (found and fixed 2026-07-11):** `20260509_001_claim_system.sql` was written and applied to staging but never tracked in this list, and was missing on production until 2026-07-11 — this broke `/admin/richieste` and `/admin/qualita` (both read via `readClaimRequestsList`, which selects columns only present after this migration). Applied to production manually via the SQL editor (using the `timestamptz` alias in place of `timestamp with time zone`, which hit a copy-paste-induced syntax error in the editor). Verified: all columns present, `public.gyms` row count unchanged. The app's graceful-degradation fix (empty result + error banner instead of a crash on a failed claim_requests read) stays in place regardless.
 
 Production apply checklist:
 
