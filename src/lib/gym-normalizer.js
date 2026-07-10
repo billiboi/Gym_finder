@@ -242,7 +242,7 @@ export function normalizeGym(gym, fallbackId = '') {
     enrichment_status: clean(firstValue(gym, ['enrichment_status'], 'pending')) || 'pending',
     enrichment_notes: clean(firstValue(gym, ['enrichment_notes'])),
     enrichment_updated_at: firstValue(gym, ['enrichment_updated_at'], null) || null,
-    social_links: gym?.social_links && typeof gym.social_links === 'object' ? gym.social_links : null,
+    social_links: gym?.social_links && typeof gym.social_links === 'object' ? gym.social_links : [],
     data_verified_at: firstValue(gym, ['data_verified_at'], null) || null,
     descrizione_owner: clean(firstValue(gym, ['descrizione_owner'])),
     descrizione_editoriale: clean(firstValue(gym, ['descrizione_editoriale'])),
