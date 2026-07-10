@@ -135,6 +135,10 @@
       </button>
     </div>
 
+    {#if data.listError}
+      <p class="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-900">{data.listError}</p>
+    {/if}
+
     {#if form?.success}
       <p class="mt-4 text-sm font-semibold text-emerald-700">Stato richiesta aggiornato correttamente.</p>
     {:else if form?.error}

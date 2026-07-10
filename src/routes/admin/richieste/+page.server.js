@@ -11,7 +11,8 @@ export async function load() {
     requests: claimList.items,
     limit: claimList.limit,
     offset: claimList.offset,
-    hasMore: claimList.hasMore
+    hasMore: claimList.hasMore,
+    listError: claimList.error || ''
   };
 }
 

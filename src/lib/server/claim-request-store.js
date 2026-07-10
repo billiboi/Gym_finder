@@ -489,17 +489,36 @@ async function readClaimRequestsFromFile() {
 }
 
 export async function readClaimRequests() {
-  if (hasSupabase) return readClaimRequestsFromSupabase();
+  if (hasSupabase) {
+    try {
+      return await readClaimRequestsFromSupabase();
+    } catch {
+      return [];
+    }
+  }
   if (isReadOnlyRuntime) return [];
   return readClaimRequestsFromFile();
 }
 
 export async function readClaimRequestsList(options = {}) {
-  if (hasSupabase) return readClaimRequestsListFromSupabase(options);
-  if (isReadOnlyRuntime) return { items: [], limit: boundedNumber(options.limit, 50, { min: 1, max: 100 }), offset: 0, hasMore: false };
-
   const safeLimit = boundedNumber(options.limit, 50, { min: 1, max: 100 });
   const safeOffset = boundedNumber(options.offset, 0, { min: 0 });
+
+  if (hasSupabase) {
+    try {
+      return await readClaimRequestsListFromSupabase(options);
+    } catch (err) {
+      return {
+        items: [],
+        limit: safeLimit,
+        offset: safeOffset,
+        hasMore: false,
+        error: err?.message || 'Lettura richieste non riuscita.'
+      };
+    }
+  }
+  if (isReadOnlyRuntime) return { items: [], limit: safeLimit, offset: 0, hasMore: false };
+
   const normalizedStatus = clean(options.status) ? normalizeStatus(options.status) : '';
   const requests = await readClaimRequestsFromFile();
   const filtered = normalizedStatus ? requests.filter((request) => request.status === normalizedStatus) : requests;

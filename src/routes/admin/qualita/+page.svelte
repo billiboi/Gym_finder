@@ -118,6 +118,11 @@
         {form.error}
       </div>
     {/if}
+    {#if data.claimListError}
+      <div class="mt-5 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm font-semibold text-amber-900">
+        Richieste claim non lette: {data.claimListError} I flag legati alle richieste (claim pending/approvate) potrebbero essere incompleti.
+      </div>
+    {/if}
     {#if data.merged}
       <div class="mt-5 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold text-emerald-800">
         Merge completato: la scheda duplicata è stata archiviata, non eliminata.

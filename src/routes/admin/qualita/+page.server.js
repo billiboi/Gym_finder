@@ -443,6 +443,7 @@ export async function load({ url }) {
       }))
       .slice(0, 80),
     persistentWrites: canWriteSupabase(),
+    claimListError: claimList.error || '',
     merged: url.searchParams.get('merged') === '1',
     normalized: url.searchParams.get('normalized') === '1',
     normalizedCount: Number(url.searchParams.get('normalized_count') || 0),
