@@ -9,7 +9,10 @@ const SUPABASE_CANDIDATES_TABLE = process.env.SUPABASE_GYM_CANDIDATES_TABLE || '
 
 const hasSupabase = Boolean(SUPABASE_URL && SUPABASE_KEY);
 
-const LIST_COLUMNS = [
+// The admin/candidati queue renders full cards straight from the list
+// query (there's no separate single-candidate detail view), so the list
+// needs every field a reviewer needs to see — not a trimmed-down set.
+const DETAIL_COLUMNS = [
   'id',
   'nome',
   'citta',
@@ -25,11 +28,7 @@ const LIST_COLUMNS = [
   'reviewed_at',
   'reviewed_by',
   'published_gym_id',
-  'created_at'
-];
-
-const DETAIL_COLUMNS = [
-  ...LIST_COLUMNS,
+  'created_at',
   'indirizzo',
   'regione',
   'telefono',
@@ -45,6 +44,8 @@ const DETAIL_COLUMNS = [
   'rejection_reason',
   'updated_at'
 ];
+
+const LIST_COLUMNS = DETAIL_COLUMNS;
 
 function clean(value) {
   return String(value ?? '').trim();
