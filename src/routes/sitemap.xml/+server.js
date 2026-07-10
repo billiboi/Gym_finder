@@ -1,7 +1,7 @@
 import { isIndexableGym, slugifyGym } from '$lib/gym-detail';
 import { normalizeGym } from '$lib/gym-normalizer';
 import { SITE_URL } from '$lib/site';
-import { buildSeoDisciplineEntries, buildSeoLocationEntries } from '$lib/seo-directory';
+import { buildSeoDisciplineCityEntries, buildSeoDisciplineEntries, buildSeoLocationEntries } from '$lib/seo-directory';
 import { EDITORIAL_GUIDES, editorialGuideHref } from '$lib/editorial';
 import { isPublicActiveGym, readPublicRouteGyms } from '$lib/server/gym-store';
 import { withCanonicalGymSlugs } from '$lib/gym-canonical-slug';
@@ -129,6 +129,13 @@ export async function GET() {
     })
   );
 
+  const disciplineCityEntries = buildSeoDisciplineCityEntries(gyms).map((entry) => ({
+    loc: `${SITE_URL}/discipline/${entry.disciplineSlug}/${entry.citySlug}`,
+    changefreq: 'weekly',
+    priority: '0.5',
+    lastmod: today
+  }));
+
   const gymEntries = indexableGyms.map((gym) => ({
     loc: `${SITE_URL}/palestre/${slugifyGym(gym)}`,
     changefreq: 'weekly',
@@ -144,7 +151,7 @@ export async function GET() {
   }));
 
   const seen = new Set();
-  const urls = [...staticEntries, ...locationEntries, ...disciplineEntries, ...guideEntries, ...gymEntries].filter((entry) => {
+  const urls = [...staticEntries, ...locationEntries, ...disciplineEntries, ...disciplineCityEntries, ...guideEntries, ...gymEntries].filter((entry) => {
     if (seen.has(entry.loc)) return false;
     seen.add(entry.loc);
     return true;

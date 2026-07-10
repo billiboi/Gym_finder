@@ -14,10 +14,17 @@
     primaryDisciplineForGym,
     structuredAddressForGym
   } from '$lib/gym-detail';
+  import { canonicalizeDiscipline, isPublicDisciplineSlug } from '$lib/discipline-taxonomy';
   import { isAlwaysOpen, weeklyHoursRows } from '$lib/hours';
   import { SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
   import { appendSiteName, buildGymSeoMeta } from '$lib/seo-meta';
   import { gymTrackingPayload, trackEvent } from '$lib/tracking';
+
+  function disciplineHref(name) {
+    const canonical = canonicalizeDiscipline(name);
+    if (!canonical?.slug || !isPublicDisciplineSlug(canonical.slug)) return '';
+    return `/discipline/${canonical.slug}`;
+  }
 
   export let data;
 
@@ -302,9 +309,19 @@
           <div class="space-y-3">
             <div class="flex flex-wrap gap-2">
               {#each disciplines as discipline}
-                <span class="rounded-full bg-slate-900 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-white sc-badge sc-badge--accent">
-                  {discipline}
-                </span>
+                {@const href = disciplineHref(discipline)}
+                {#if href}
+                  <a
+                    {href}
+                    class="rounded-full bg-slate-900 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-white transition hover:bg-slate-700 sc-badge sc-badge--accent"
+                  >
+                    {discipline}
+                  </a>
+                {:else}
+                  <span class="rounded-full bg-slate-900 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-white sc-badge sc-badge--accent">
+                    {discipline}
+                  </span>
+                {/if}
               {/each}
               {#if isVerified}
                 <span class="rounded-full px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] sc-badge sc-badge--success">Verificata</span>

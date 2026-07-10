@@ -1,5 +1,5 @@
 import { dedupeDisciplines } from '$lib/disciplines';
-import { DISCIPLINE_MASTER, isPublicDisciplineSlug } from '$lib/discipline-taxonomy';
+import { canonicalizeDiscipline, DISCIPLINE_MASTER, isPublicDisciplineSlug } from '$lib/discipline-taxonomy';
 import { isIndexableGym } from '$lib/gym-detail';
 import { isSuspiciousZoneName, publicCityForGym } from '$lib/location-quality';
 import { SEO_DISCIPLINES, gymsForSeoDiscipline } from '$lib/seo-disciplines';
@@ -110,6 +110,44 @@ export function buildSeoLocationEntries(gyms, { includeLowCount = true } = {}) {
   return filterByCount([...featured, ...extra], includeLowCount)
     .filter((entry) => entry.count > 0)
     .sort((left, right) => right.count - left.count || left.name.localeCompare(right.name, 'it'));
+}
+
+export function buildSeoDisciplineCityEntries(gyms, { minCount = SEO_LANDING_MIN_INDEXABLE_COUNT } = {}) {
+  const indexableGyms = gyms.filter((gym) => isIndexableGym(gym));
+  const counts = new Map();
+
+  for (const gym of indexableGyms) {
+    const city = normalizeSeoLocationName(publicCityForGym(gym));
+    if (!city || !isBrowsableLocationName(city)) continue;
+    const citySlug = slugifySeoName(city);
+
+    const seenSlugs = new Set();
+    for (const rawName of disciplinesForGym(gym)) {
+      const canonical = canonicalizeDiscipline(rawName);
+      if (!canonical?.slug || !isPublicDisciplineSlug(canonical.slug) || seenSlugs.has(canonical.slug)) continue;
+      seenSlugs.add(canonical.slug);
+
+      const key = `${canonical.slug}::${citySlug}`;
+      const current = counts.get(key) || {
+        disciplineSlug: canonical.slug,
+        disciplineName: canonical.name,
+        citySlug,
+        cityName: city,
+        count: 0
+      };
+      current.count += 1;
+      counts.set(key, current);
+    }
+  }
+
+  return [...counts.values()]
+    .filter((entry) => entry.count >= minCount)
+    .sort(
+      (left, right) =>
+        right.count - left.count ||
+        left.disciplineName.localeCompare(right.disciplineName, 'it') ||
+        left.cityName.localeCompare(right.cityName, 'it')
+    );
 }
 
 export function buildSeoDisciplineEntries(gyms, { includeLowCount = true } = {}) {
