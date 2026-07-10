@@ -376,6 +376,16 @@ function parseAddress(fullAddress) {
 function normalizeAddressAndCity(addressValue, cityValue) {
   const address = repairMojibake(addressValue).trim();
   const city = repairMojibake(cityValue).trim();
+
+  // Address and city are already separate inputs here; only run them through
+  // the comma-split heuristic when both are present and need disambiguating
+  // (e.g. a combined CSV-import string). With address empty, splitting the
+  // lone remaining token misfires and discards the city (see gym-store.js
+  // parseAddress: parts.length < 2 files the sole token as "address").
+  if (!address) {
+    return { address: '', city: cleanCityLabel(city) };
+  }
+
   const combined = [address, city].filter(Boolean).join(', ');
 
   if (combined) {
