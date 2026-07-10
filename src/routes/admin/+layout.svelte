@@ -1,3 +1,20 @@
+<script>
+  import { page } from '$app/stores';
+
+  function isActive(pathname, prefixes) {
+    return prefixes.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));
+  }
+
+  $: pathname = $page.url.pathname;
+  $: areas = [
+    { label: 'Dashboard', href: '/admin', active: pathname === '/admin' },
+    { label: 'Catalogo', href: '/admin/schede', active: isActive(pathname, ['/admin/schede', '/admin/gyms', '/admin/qualita']) },
+    { label: 'Acquisizione', href: '/admin/candidati', active: isActive(pathname, ['/admin/candidati']) },
+    { label: 'Richieste', href: '/admin/richieste', active: isActive(pathname, ['/admin/richieste']) },
+    { label: 'Sistema', href: '/admin/sistema', active: isActive(pathname, ['/admin/sistema', '/admin/audit', '/admin/export']) }
+  ];
+</script>
+
 <header class="mx-auto w-full max-w-7xl px-4 pt-4 sm:px-6 sm:pt-6 lg:px-8">
   <div class="rounded-[1.75rem] border border-white/70 bg-white/85 px-4 py-4 shadow-lg backdrop-blur-sm sc-panel">
     <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
@@ -13,14 +30,16 @@
 
       <nav class="flex flex-wrap gap-2" aria-label="Navigazione admin">
         <a href="/" class="sc-ui-pill px-3.5 py-2 text-sm">Home pubblica</a>
-        <a href="/admin" class="sc-ui-pill sc-ui-pill--primary px-3.5 py-2 text-sm">Dashboard admin</a>
-        <a href="/admin/schede" class="sc-ui-pill px-3.5 py-2 text-sm">Schede</a>
-        <a href="/admin/schede/nuova" class="sc-ui-pill px-3.5 py-2 text-sm">Nuova scheda</a>
-        <a href="/admin/richieste" class="sc-ui-pill px-3.5 py-2 text-sm">Richieste</a>
-        <a href="/admin/candidati" class="sc-ui-pill px-3.5 py-2 text-sm">Candidati</a>
-        <a href="/admin/qualita" class="sc-ui-pill px-3.5 py-2 text-sm">Qualità</a>
-        <a href="/admin/prezzi" class="sc-ui-pill px-3.5 py-2 text-sm">Contenuti</a>
-        <a href="/admin/audit" class="sc-ui-pill px-3.5 py-2 text-sm">Audit log</a>
+        {#each areas as area}
+          <a
+            href={area.href}
+            class="sc-ui-pill px-3.5 py-2 text-sm"
+            class:sc-ui-pill--primary={area.active}
+            aria-current={area.active ? 'page' : undefined}
+          >
+            {area.label}
+          </a>
+        {/each}
         <form method="POST" action="/admin/logout">
           <button type="submit" class="sc-ui-pill sc-ui-pill--danger px-3.5 py-2 text-sm">
             Esci
@@ -32,4 +51,3 @@
 </header>
 
 <slot />
-
