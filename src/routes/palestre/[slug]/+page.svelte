@@ -155,7 +155,9 @@
     city: cityLabel,
     discipline: primaryDiscipline,
     disciplines,
-    description: presentation
+    description: officialPresentation || editorialSummary,
+    hoursInfo,
+    price: officialMonthlyPrice
   });
   $: seoTitle = officialOverride?.seoTitle ? appendSiteName(fixGymText(officialOverride.seoTitle)) : fallbackGymSeo.title;
   $: seoDescription = fixGymText(officialOverride?.seoDescription) || fallbackGymSeo.description;

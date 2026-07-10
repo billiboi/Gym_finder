@@ -1,8 +1,9 @@
 import { SITE_NAME } from '$lib/site';
+import { todayHoursLabel } from '$lib/hours';
 
-const HOME_TITLE = 'Trova Palestre Vicino a Te | Fitness, Boxe, Yoga e Pilates';
+const HOME_TITLE = 'Trova Palestre Vicino a Te | Confronta Orari e Prezzi';
 const HOME_DESCRIPTION =
-  'Scopri palestre, corsi e discipline vicino a te. Confronta orari, contatti, sedi e attività disponibili nella tua zona.';
+  'Trova la palestra giusta vicino a te: confronta orari, prezzi, discipline e contatti. Fitness, boxe, yoga, pilates e arti marziali in Italia e Ticino.';
 
 function cleanSeoText(value) {
   return String(value || '')
@@ -52,28 +53,45 @@ export function buildLocationSeoMeta(cityName, topDisciplines = []) {
   };
 }
 
-export function buildGymSeoMeta({ name, city, discipline, disciplines = [], description } = {}) {
+export function buildGymSeoMeta({
+  name,
+  city,
+  discipline,
+  disciplines = [],
+  description,
+  hoursInfo,
+  price
+} = {}) {
   const gymName = cleanSeoText(name) || 'Palestra';
   const cityText = cleanSeoText(city);
   const disciplineText = disciplineFallback(discipline);
   const disciplineList = Array.isArray(disciplines) ? disciplines.map(cleanSeoText).filter(Boolean) : [];
-  const hasManyDisciplines = disciplineList.length >= 4;
-  const martialSignals = ['Boxe', 'MMA', 'Kickboxing', 'Brazilian Jiu Jitsu', 'Judo', 'Karate', 'Krav Maga', 'Muay Thai'];
-  const hasMartialCluster = disciplineList.filter((item) => martialSignals.includes(item)).length >= 2;
+  const priceText = cleanSeoText(price);
   const citySegment = cityText ? ` a ${cityText}` : '';
-  const titleTail = hasManyDisciplines
-    ? hasMartialCluster
-      ? `${disciplineText} e arti marziali`
-      : 'Corsi, orari e contatti'
-    : `${disciplineText}, orari e contatti`;
-  const title = trimAtWord(`${gymName}${citySegment} | ${titleTail}`, 68);
-  const fallbackDescription = cityText
-    ? `Scopri ${gymName} a ${cityText}: discipline, orari, contatti, sito ufficiale e informazioni utili per scegliere la palestra più adatta.`
-    : `Scopri ${gymName}: discipline, orari, contatti, sito ufficiale e informazioni utili per scegliere la palestra più adatta.`;
+
+  const base = `${gymName}${citySegment}`;
+  const titleCandidates = [
+    priceText ? `${base}: orari, prezzi e contatti` : null,
+    `${base}: orari e contatti`,
+    trimAtWord(base, 52)
+  ].filter(Boolean);
+  const contentTitle = titleCandidates.find((candidate) => candidate.length <= 52) || titleCandidates[titleCandidates.length - 1];
+  const title = appendSiteName(contentTitle);
+
+  if (description) {
+    return { title, description: trimAtWord(description, 155) };
+  }
+
+  const disciplineSummary = disciplineList.length ? disciplineList.slice(0, 3).join(', ') : disciplineText;
+  const hoursLabel = todayHoursLabel(hoursInfo);
+  const sentenceParts = [`${gymName}${citySegment}: ${disciplineSummary}.`];
+  if (hoursLabel) sentenceParts.push(`${hoursLabel}.`);
+  if (priceText) sentenceParts.push(`${priceText}.`);
+  sentenceParts.push('Orari, contatti e mappa.');
 
   return {
     title,
-    description: trimAtWord(description || fallbackDescription, 155)
+    description: trimAtWord(sentenceParts.join(' '), 155)
   };
 }
 
