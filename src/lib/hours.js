@@ -177,6 +177,21 @@ export function isAlwaysOpen(hoursInfo) {
   return rows.length === 7 && rows.every((row) => row.isTwentyFourHours);
 }
 
+export function todayHoursLabel(hoursInfo, options = {}) {
+  if (isAlwaysOpen(hoursInfo)) return 'Aperto 24 ore su 24';
+
+  const now = options.now ?? new Date();
+  const timeZone = options.timeZone ?? 'Europe/Rome';
+  const localTime = parseLocalWeekdayAndMinute(now, timeZone);
+  if (!localTime) return null;
+
+  const rows = weeklyHoursRows(hoursInfo);
+  const todayRow = rows.find((row) => row.dayIndex === localTime.dayIndex);
+  if (!todayRow) return null;
+
+  return todayRow.isClosed ? 'Chiuso oggi' : `Aperto oggi ${todayRow.label}`;
+}
+
 export function isGymOpenNow(hoursInfo, options = {}) {
   const now = options.now ?? new Date();
   const timeZone = options.timeZone ?? 'Europe/Rome';
