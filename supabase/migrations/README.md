@@ -19,6 +19,7 @@ Current migration order:
 4. `20260429_004_add_gym_editorial_enrichment_fields.sql`
 5. `20260505_005_add_soft_delete_to_gyms.sql`
 6. `20260506_006_gyms_stability_hardening.sql`
+7. `20260710_001_gym_candidates.sql` (staging only for now — see docs/ACQUISITION_PIPELINE.md)
 
 Production apply checklist:
 
