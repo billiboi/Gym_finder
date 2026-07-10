@@ -26,6 +26,11 @@ const cacheDir = args.get('--cache-dir') || 'data/osm-cache';
 const confirmApply = args.has('--confirm-apply');
 const skipCache = args.has('--fresh');
 const dedupThreshold = Number(args.get('--dedup-threshold') || 0.85);
+const target = args.get('--target') || 'staging';
+if (!['staging', 'production'].includes(target)) {
+  throw new Error('--target must be "staging" or "production" (default: staging).');
+}
+const confirmProductionWrite = args.has('--confirm-production-write');
 
 const USER_AGENT = 'PalestreInZonaAcquisitionPipeline/1.0 (contact: info@palestreinzona.it)';
 
@@ -57,6 +62,15 @@ function ensureStagingTarget(env) {
   const envName = String(env.SUPABASE_ENV || '').toLowerCase();
   if (envName !== 'staging' || url.includes('prod')) {
     throw new Error('Blocked: --staging-env-file must resolve to the staging project (SUPABASE_ENV=staging).');
+  }
+}
+
+function ensureProductionWriteConfirmed() {
+  if (!confirmApply || !confirmProductionWrite) {
+    throw new Error(
+      'Blocked: writing gym_candidates to production requires both --confirm-apply and --confirm-production-write. ' +
+        'This never touches public.gyms — only the review queue table — but production writes need an explicit double confirmation.'
+    );
   }
 }
 
@@ -438,9 +452,17 @@ function bestDedupMatch(candidate, pool, nameKey, cityKey) {
 // --- 6. Main ---
 
 async function main() {
-  const stagingEnv = await loadEnv(path.resolve(stagingEnvFile));
   const productionEnv = await loadEnv(path.resolve(productionEnvFile));
-  ensureStagingTarget(stagingEnv);
+  let writeEnv;
+
+  if (target === 'production') {
+    writeEnv = productionEnv;
+    if (confirmApply) ensureProductionWriteConfirmed();
+    console.log('[scrape-osm] TARGET: production — gym_candidates verrà scritto sul progetto Supabase di produzione.');
+  } else {
+    writeEnv = await loadEnv(path.resolve(stagingEnvFile));
+    ensureStagingTarget(writeEnv);
+  }
 
   const bbox = await resolveBoundingBox(area);
   console.log(`[scrape-osm] area resolved: ${bbox.displayName}`);
@@ -454,8 +476,8 @@ async function main() {
 
   console.log('[scrape-osm] reading production catalog for dedup (read-only)...');
   const productionGyms = await readActiveProductionGyms(productionEnv);
-  console.log('[scrape-osm] reading existing gym_candidates for cross-batch dedup...');
-  const existingCandidates = await readExistingCandidates(stagingEnv);
+  console.log(`[scrape-osm] reading existing gym_candidates (${target}) for cross-batch dedup...`);
+  const existingCandidates = await readExistingCandidates(writeEnv);
 
   const results = { hard_rejected: [], flagged: [], clean: [] };
 
@@ -524,17 +546,19 @@ async function main() {
   console.log(`\n[scrape-osm] totale candidati da inserire in gym_candidates (pending): ${toInsert.length}`);
 
   if (!confirmApply) {
-    console.log('[scrape-osm] DRY RUN — nessuna scrittura eseguita. Ri-esegui con --confirm-apply per scrivere su gym_candidates (staging).');
+    console.log(`[scrape-osm] DRY RUN — nessuna scrittura eseguita. Ri-esegui con --confirm-apply per scrivere su gym_candidates (${target}).`);
     return;
   }
+
+  if (target === 'production') ensureProductionWriteConfirmed();
 
   if (!toInsert.length) {
     console.log('[scrape-osm] Nessun candidato da inserire.');
     return;
   }
 
-  const url = stagingEnv.SUPABASE_URL.replace(/\/$/, '');
-  const key = stagingEnv.SUPABASE_SERVICE_ROLE_KEY;
+  const url = writeEnv.SUPABASE_URL.replace(/\/$/, '');
+  const key = writeEnv.SUPABASE_SERVICE_ROLE_KEY;
   const res = await fetch(`${url}/rest/v1/gym_candidates?on_conflict=source,source_id`, {
     method: 'POST',
     headers: {
@@ -546,7 +570,7 @@ async function main() {
     body: JSON.stringify(toInsert)
   });
   if (!res.ok) throw new Error(`Insert failed (${res.status}): ${await res.text()}`);
-  console.log(`[scrape-osm] scritto/aggiornato ${toInsert.length} candidati su gym_candidates (status=pending).`);
+  console.log(`[scrape-osm] scritto/aggiornato ${toInsert.length} candidati su gym_candidates (${target}, status=pending).`);
 }
 
 await main();
