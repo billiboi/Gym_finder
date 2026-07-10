@@ -2,9 +2,11 @@ import { error, redirect } from '@sveltejs/kit';
 import { isIndexableGym } from '$lib/gym-detail';
 import { publicListingGym } from '$lib/gym-client';
 import { normalizeGym } from '$lib/gym-normalizer';
+import { publicCityForGym } from '$lib/location-quality';
 import { isPublicActiveGym, readPublicRouteGyms } from '$lib/server/gym-store';
 import { getSeoDiscipline, gymsForSeoDiscipline } from '$lib/seo-disciplines';
-import { relatedGuidesForDiscipline } from '$lib/editorial';
+import { getSeoLocation, gymsForSeoLocation } from '$lib/seo-locations';
+import { normalizeSeoLocationName, slugifySeoName, SEO_LANDING_MIN_INDEXABLE_COUNT } from '$lib/seo-directory';
 import {
   canonicalSlugForDisciplineSlug,
   getDisciplineBySlug,
@@ -12,7 +14,8 @@ import {
   isPublicDisciplineSlug
 } from '$lib/discipline-taxonomy';
 
-const INITIAL_DISCIPLINE_GYMS = 72;
+const INITIAL_COMBO_GYMS = 36;
+const DISCIPLINE_FETCH_LIMIT = 500;
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL || '';
 const SUPABASE_READ_KEY =
   process.env.SUPABASE_ANON_KEY ||
@@ -22,38 +25,6 @@ const SUPABASE_READ_KEY =
   '';
 const SUPABASE_GYMS_TABLE = process.env.SUPABASE_GYMS_TABLE || 'gyms';
 const hasSupabaseRead = Boolean(SUPABASE_URL && SUPABASE_READ_KEY);
-
-const DISCIPLINE_GYM_COLUMNS = [
-  'id',
-  'slug',
-  'nome',
-  'name',
-  'indirizzo',
-  'address',
-  'citta',
-  'city',
-  'telefono',
-  'phone',
-  'sito',
-  'website',
-  'discipline',
-  'disciplines',
-  'discipline_aliases',
-  'discipline_canonical_slugs',
-  'orari',
-  'hours_info',
-  'lat',
-  'lng',
-  'latitude',
-  'longitude',
-  'image_url',
-  'is_verified',
-  'verified',
-  'is_premium',
-  'priority_score',
-  'deleted_at',
-  'updated_at'
-];
 
 function supabaseBaseUrl() {
   return SUPABASE_URL.replace(/\/$/, '');
@@ -121,28 +92,16 @@ function disciplineOrFilter(discipline) {
 
   for (const term of terms) {
     const encoded = encodeURIComponent(`*${term}*`);
-    clauses.push(
-      `discipline.ilike.${encoded}`,
-      `nome.ilike.${encoded}`,
-      `name.ilike.${encoded}`
-    );
+    clauses.push(`discipline.ilike.${encoded}`, `nome.ilike.${encoded}`, `name.ilike.${encoded}`);
   }
 
   return clauses.length ? `or=(${clauses.join(',')})` : '';
 }
 
-function sliceWithHasMore(matchedGyms) {
-  return {
-    gyms: matchedGyms.slice(0, INITIAL_DISCIPLINE_GYMS),
-    hasMore: matchedGyms.length > INITIAL_DISCIPLINE_GYMS
-  };
-}
-
-async function readDisciplineGyms(discipline) {
+async function readDisciplineGymPool(discipline) {
   if (!hasSupabaseRead) {
     const fallbackGyms = await readPublicRouteGyms();
-    const matched = gymsForSeoDiscipline(fallbackGyms, discipline).filter((gym) => isPublicActiveGym(gym) && isIndexableGym(gym));
-    return sliceWithHasMore(matched);
+    return gymsForSeoDiscipline(fallbackGyms, discipline).filter((gym) => isPublicActiveGym(gym) && isIndexableGym(gym));
   }
 
   const params = [
@@ -150,73 +109,103 @@ async function readDisciplineGyms(discipline) {
     'deleted_at=is.null',
     disciplineOrFilter(discipline),
     'order=priority_score.desc.nullslast,nome.asc.nullslast',
-    `limit=${INITIAL_DISCIPLINE_GYMS + 1}`
+    `limit=${DISCIPLINE_FETCH_LIMIT}`
   ].filter(Boolean);
   const url = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?${params.join('&')}`;
+
   let response;
   try {
-    response = await fetch(url, {
-      method: 'GET',
-      headers: supabaseHeaders()
-    });
+    response = await fetch(url, { method: 'GET', headers: supabaseHeaders() });
   } catch {
     const fallbackGyms = await readPublicRouteGyms();
-    const matched = gymsForSeoDiscipline(fallbackGyms, discipline).filter((gym) => isPublicActiveGym(gym) && isIndexableGym(gym));
-    return sliceWithHasMore(matched);
+    return gymsForSeoDiscipline(fallbackGyms, discipline).filter((gym) => isPublicActiveGym(gym) && isIndexableGym(gym));
   }
 
   if (!response.ok) {
     const fallbackGyms = await readPublicRouteGyms();
-    const matched = gymsForSeoDiscipline(fallbackGyms, discipline).filter((gym) => isPublicActiveGym(gym) && isIndexableGym(gym));
-    return sliceWithHasMore(matched);
+    return gymsForSeoDiscipline(fallbackGyms, discipline).filter((gym) => isPublicActiveGym(gym) && isIndexableGym(gym));
   }
 
   const data = await response.json();
   const rows = Array.isArray(data) ? data : [];
   const gyms = rows.length
     ? withCanonicalGymSlugs(
-        rows.map((row, index) => normalizeGym(row, row?.id || `discipline-${index + 1}`)).filter(isPublicActiveGym)
+        rows.map((row, index) => normalizeGym(row, row?.id || `discipline-city-${index + 1}`)).filter(isPublicActiveGym)
       )
     : await readPublicRouteGyms();
-  const matched = gymsForSeoDiscipline(gyms, discipline).filter((gym) => isPublicActiveGym(gym) && isIndexableGym(gym));
-  return sliceWithHasMore(matched);
+  return gymsForSeoDiscipline(gyms, discipline).filter((gym) => isPublicActiveGym(gym) && isIndexableGym(gym));
 }
 
-export async function load({ params }) {
-  const canonicalSlug = canonicalSlugForDisciplineSlug(params.slug) || params.slug;
+function resolveDiscipline(slug) {
+  const canonicalSlug = canonicalSlugForDisciplineSlug(slug) || slug;
   if (!isPublicDisciplineSlug(canonicalSlug)) {
     throw error(410, 'Disciplina rimossa');
   }
 
-  if (isDisciplineAliasSlug(params.slug)) {
-    throw redirect(301, `/discipline/${canonicalSlug}`);
+  if (isDisciplineAliasSlug(slug)) {
+    return { discipline: null, canonicalSlug, isAlias: true };
   }
 
-  let discipline = getSeoDiscipline(params.slug);
-
+  let discipline = getSeoDiscipline(slug);
   if (!discipline) {
-    const canonical = getDisciplineBySlug(params.slug);
-
-    if (!canonical || canonical.slug !== params.slug) {
+    const canonical = getDisciplineBySlug(slug);
+    if (!canonical || canonical.slug !== slug) {
       throw error(404, 'Disciplina non trovata');
     }
-
     discipline = {
-      slug: params.slug,
+      slug,
       name: canonical.name,
       title: `Palestre di ${canonical.name}`,
-      description: `Esplora le schede pubbliche collegate a ${canonical.name} e vedi quali strutture del catalogo rientrano davvero in questa disciplina.`,
+      description: `Esplora le schede pubbliche collegate a ${canonical.name}.`,
       keywords: [canonical.name, ...(canonical.aliases || [])]
     };
   }
 
-  const { gyms: matchedGyms, hasMore } = await readDisciplineGyms(discipline);
+  return { discipline, canonicalSlug, isAlias: false };
+}
+
+export async function load({ params }) {
+  const { discipline, canonicalSlug, isAlias } = resolveDiscipline(params.slug);
+
+  if (isAlias) {
+    throw redirect(301, `/discipline/${canonicalSlug}/${params.citySlug}`);
+  }
+
+  const disciplineGyms = await readDisciplineGymPool(discipline);
+
+  let location = getSeoLocation(params.citySlug);
+  let matchedGyms;
+
+  if (location) {
+    matchedGyms = gymsForSeoLocation(disciplineGyms, location);
+  } else {
+    matchedGyms = disciplineGyms.filter((gym) => slugifySeoName(publicCityForGym(gym)) === params.citySlug);
+    const matchedName = normalizeSeoLocationName(publicCityForGym(matchedGyms[0]));
+
+    if (!matchedName) {
+      throw error(404, 'Combinazione non trovata');
+    }
+
+    location = {
+      slug: params.citySlug,
+      name: matchedName,
+      title: `Palestre a ${matchedName}`,
+      keywords: [matchedName]
+    };
+  }
+
+  if (!matchedGyms.length) {
+    throw error(404, 'Combinazione non trovata');
+  }
+
+  const visibleGyms = matchedGyms.slice(0, INITIAL_COMBO_GYMS);
 
   return {
     discipline,
-    gyms: matchedGyms.map(publicListingGym),
+    location,
+    gyms: visibleGyms.map(publicListingGym),
     totalGyms: matchedGyms.length,
-    hasMoreGyms: hasMore,
-    relatedGuides: relatedGuidesForDiscipline(discipline.slug)
+    hasMoreGyms: matchedGyms.length > INITIAL_COMBO_GYMS,
+    isIndexableLanding: matchedGyms.length >= SEO_LANDING_MIN_INDEXABLE_COUNT
   };
 }

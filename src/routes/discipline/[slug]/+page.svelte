@@ -11,11 +11,10 @@
   export let data;
 
   const { discipline, gyms, relatedGuides = [] } = data;
+  const totalGyms = data.totalGyms || gyms.length;
+  const hasMoreFromServer = Boolean(data.hasMoreGyms);
   const pageUrl = absoluteUrl(`/discipline/${discipline.slug}`);
-  const seoMeta = buildDisciplineSeoMeta(discipline.name);
-  const title = seoMeta.title;
-  const description = seoMeta.description;
-  const isIndexableLanding = gyms.length >= 2;
+  const isIndexableLanding = totalGyms >= 2;
   const cityStats = [...gyms
     .reduce((map, gym) => {
       const city = publicCityForGym(gym);
@@ -30,8 +29,16 @@
   const cityLinks = cityStats.map(([city, count]) => ({
     city,
     count,
-    href: `/zone/${slugifySeoName(city)}`
+    href: `/discipline/${discipline.slug}/${slugifySeoName(city)}`
   }));
+  const seoMeta = buildDisciplineSeoMeta(
+    discipline.name,
+    cityStats.map(([city]) => city),
+    totalGyms,
+    hasMoreFromServer
+  );
+  const title = seoMeta.title;
+  const description = seoMeta.description;
   const publicHoursLabel = (value) => {
     const label = String(value || '').trim();
     return !label || label === 'Orari da verificare' || label === 'Orari n/d' ? 'Orari da confermare' : label;

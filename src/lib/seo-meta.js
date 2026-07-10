@@ -28,29 +28,69 @@ export function buildHomepageSeoMeta() {
   };
 }
 
-export function buildDisciplineSeoMeta(disciplineName) {
-  const discipline = disciplineFallback(disciplineName);
-  return {
-    title: trimAtWord(`Palestre di ${discipline} vicino a te | Orari, contatti e corsi`, 68),
-    description: trimAtWord(
-      `Trova corsi di ${discipline} vicino a te. Confronta palestre, orari, contatti, sedi e discipline disponibili.`,
-      155
-    )
-  };
+function countLabel(gymCount, hasMore) {
+  const count = Number(gymCount) > 0 ? Math.floor(Number(gymCount)) : 0;
+  if (!count) return '';
+  return hasMore ? `${count}+` : `${count}`;
 }
 
-export function buildLocationSeoMeta(cityName, topDisciplines = []) {
+export function buildDisciplineSeoMeta(disciplineName, topCities = [], gymCount = 0, hasMore = false) {
+  const discipline = disciplineFallback(disciplineName);
+  const cities = Array.isArray(topCities) ? topCities.map(cleanSeoText).filter(Boolean) : [];
+  const label = countLabel(gymCount, hasMore);
+
+  const contentTitle = label
+    ? trimAtWord(`Palestre di ${discipline}: ${label} schede, orari e contatti`, 52)
+    : trimAtWord(`Palestre di ${discipline} vicino a te: orari e contatti`, 52);
+  const title = appendSiteName(contentTitle);
+
+  const countClause = label ? `${label} palestre` : 'Palestre';
+  const cityClause = cities.length ? ` a ${cities.slice(0, 3).join(', ')}` : ' vicino a te';
+  const description = trimAtWord(
+    `${countClause} di ${discipline}${cityClause}: confronta orari, contatti e sedi disponibili.`,
+    155
+  );
+
+  return { title, description };
+}
+
+export function buildLocationSeoMeta(cityName, topDisciplines = [], gymCount = 0, hasMore = false) {
   const city = cleanSeoText(cityName);
   const place = city || 'questa zona';
   const disciplineText = topDisciplines.length ? topDisciplines.slice(0, 3).join(', ') : 'fitness, boxe, yoga';
+  const label = countLabel(gymCount, hasMore);
 
-  return {
-    title: trimAtWord(`Palestre a ${place} | Fitness, Boxe, Yoga, orari e contatti`, 68),
-    description: trimAtWord(
-      `Scopri palestre a ${place}: ${disciplineText}, arti marziali e corsi disponibili. Trova orari, contatti e sedi vicino a te.`,
-      155
-    )
-  };
+  const contentTitle = label
+    ? trimAtWord(`Palestre a ${place}: ${label} schede, orari e contatti`, 52)
+    : trimAtWord(`Palestre a ${place}: orari e contatti`, 52);
+  const title = appendSiteName(contentTitle);
+
+  const countClause = label ? `${label} palestre` : 'Palestre';
+  const description = trimAtWord(
+    `${countClause} a ${place}: ${disciplineText}, arti marziali e corsi disponibili. Orari, contatti e sedi.`,
+    155
+  );
+
+  return { title, description };
+}
+
+export function buildDisciplineCitySeoMeta(disciplineName, cityName, gymCount = 0, hasMore = false) {
+  const discipline = disciplineFallback(disciplineName);
+  const city = cleanSeoText(cityName) || 'questa zona';
+  const label = countLabel(gymCount, hasMore);
+
+  const contentTitle = label
+    ? trimAtWord(`${discipline} a ${city}: ${label} palestre, orari e contatti`, 52)
+    : trimAtWord(`${discipline} a ${city}: orari e contatti`, 52);
+  const title = appendSiteName(contentTitle);
+
+  const countClause = label ? `${label} palestre` : 'Palestre';
+  const description = trimAtWord(
+    `${countClause} di ${discipline} a ${city}: confronta orari, contatti e sedi disponibili.`,
+    155
+  );
+
+  return { title, description };
 }
 
 export function buildGymSeoMeta({

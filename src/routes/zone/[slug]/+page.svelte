@@ -2,6 +2,7 @@
   import { disciplinePreviewForGym, gymHref, imageForGym, isPremiumGym, isVerifiedGym } from '$lib/gym-detail';
   import { weeklyHoursRows } from '$lib/hours';
   import { publicCityForGym } from '$lib/location-quality';
+  import { canonicalizeDiscipline } from '$lib/discipline-taxonomy';
   import { slugifySeoName } from '$lib/seo-directory';
   import { absoluteUrl, SITE_NAME, jsonLdScript } from '$lib/site';
   import { buildLocationSeoMeta } from '$lib/seo-meta';
@@ -16,7 +17,7 @@
   let loadingMoreGyms = false;
   let loadMoreError = '';
   const pageUrl = absoluteUrl(`/zone/${location.slug}`);
-  const seoMeta = buildLocationSeoMeta(location.name, topDisciplines);
+  const seoMeta = buildLocationSeoMeta(location.name, topDisciplines, totalGyms, hasMoreFromServer);
   const title = seoMeta.title;
   const description = seoMeta.description;
   $: isIndexableLanding = totalGyms >= 2;
@@ -30,10 +31,12 @@
     .entries()]
     .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'it'))
     .slice(0, 6);
-  const disciplineLinks = topDisciplines.map((name) => ({
-    name,
-    href: `/discipline/${slugifySeoName(name)}`
-  }));
+  const disciplineLinks = topDisciplines
+    .map((name) => {
+      const canonical = canonicalizeDiscipline(name);
+      return canonical?.slug ? { name, href: `/discipline/${canonical.slug}/${location.slug}` } : null;
+    })
+    .filter(Boolean);
   $: cityLinks = cityStats.map(([city, count]) => ({
     city,
     count,
