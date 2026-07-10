@@ -26,4 +26,4 @@ data/legacy-gym-redirect-report-*.json
 data/audit-gym-contamination-*.json
 data/audit-gym-contamination-*.csv
 static/preview.png
-audit/
+/audit/
