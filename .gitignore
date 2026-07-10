@@ -23,4 +23,7 @@ data/supabase-*.json
 data/description-*.json
 data/description-*.csv
 data/legacy-gym-redirect-report-*.json
+data/audit-gym-contamination-*.json
+data/audit-gym-contamination-*.csv
 static/preview.png
+audit/
