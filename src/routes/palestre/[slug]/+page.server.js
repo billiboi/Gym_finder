@@ -371,6 +371,13 @@ function isPublicReviewGym(gym) {
 
 export async function load({ params }) {
   const found = await findGymCandidate(params.slug);
+  if (params.slug === 'activ-fitness-bellinzona') {
+    console.log('GYMDEBUG-DETAIL slug=' + params.slug + ' matchType=' + (found?.matchType || 'none') + ' foundGym=' + JSON.stringify(found?.gym ? { id: found.gym.id, name: found.gym.name, _canonical_slug: found.gym._canonical_slug, deleted_at: found.gym.deleted_at } : null));
+    if (!found) {
+      const catalog = await readFullActiveCatalog();
+      console.log('GYMDEBUG-DETAIL catalog_size=' + catalog.length + ' activInCatalog=' + JSON.stringify(catalog.filter((g) => /activ/i.test(g.name || '')).map((g) => ({ id: g.id, name: g.name, _canonical_slug: g._canonical_slug }))));
+    }
+  }
   let gym = found?.matchType === 'canonical' ? found.gym : null;
   const legacyTargetSlug = LEGACY_SLUG_REDIRECTS[params.slug];
 
@@ -400,6 +407,10 @@ export async function load({ params }) {
 
   if (gym && slugifyGym(gym) !== params.slug) {
     throw redirect(301, `/palestre/${slugifyGym(gym)}`);
+  }
+
+  if (params.slug === 'activ-fitness-bellinzona') {
+    console.log('GYMDEBUG-DETAIL pre404 gym=' + Boolean(gym) + ' isIndexable=' + (gym ? isIndexableGym(gym) : 'n/a'));
   }
 
   if (!gym || !isIndexableGym(gym)) {

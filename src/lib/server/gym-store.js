@@ -742,8 +742,20 @@ async function readPublicGymListingFromSupabase({ limit = 24, offset = 0, q = ''
   const rows = Array.isArray(data) ? data : [];
   const normalized = rows.map((row, index) => normalizeGymRecord(row, `listing-${safeOffset + index + 1}`));
   const publicRows = normalized.filter((gym) => isPublicActiveGym(gym) && !isExcludedGymRecord(gym));
+  const finalItems = withCanonicalGymSlugs(publicRows.slice(safeOffset, safeOffset + safeLimit));
+
+  if (q === 'Bellinzona') {
+    console.log('GYMDEBUG url=' + url);
+    console.log('GYMDEBUG availableColumns=' + JSON.stringify(availableColumns));
+    console.log('GYMDEBUG rawRows=' + rows.length + ' rawHasActiv=' + JSON.stringify(rows.filter((r) => /activ/i.test(r.nome || r.name || '')).map((r) => r.id)));
+    console.log('GYMDEBUG normalized=' + normalized.length + ' normHasActiv=' + JSON.stringify(normalized.filter((g) => /activ/i.test(g.name || '')).map((g) => ({ id: g.id, name: g.name, deleted_at: g.deleted_at }))));
+    console.log('GYMDEBUG publicRows=' + publicRows.length + ' pubHasActiv=' + JSON.stringify(publicRows.filter((g) => /activ/i.test(g.name || '')).map((g) => g.id)));
+    console.log('GYMDEBUG finalItems=' + finalItems.length + ' finalHasActiv=' + JSON.stringify(finalItems.filter((g) => /activ/i.test(g.name || '')).map((g) => g.id)));
+    console.log('GYMDEBUG safeLimit=' + safeLimit + ' safeOffset=' + safeOffset + ' fetchLimit=' + fetchLimit);
+  }
+
   return {
-    items: withCanonicalGymSlugs(publicRows.slice(safeOffset, safeOffset + safeLimit)),
+    items: finalItems,
     limit: safeLimit,
     offset: safeOffset,
     hasMore: publicRows.length > safeOffset + safeLimit || rows.length >= fetchLimit
