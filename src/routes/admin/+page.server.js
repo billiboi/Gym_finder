@@ -1,59 +1,58 @@
-import { readAdminGymList } from '$lib/server/gym-store';
-import { readClaimRequestsList } from '$lib/server/claim-request-store';
 import { isArchivedGym } from '$lib/admin/gyms';
+import { buildDuplicateGroups } from '$lib/admin/gym-duplicates';
+import { readClaimRequestsList } from '$lib/server/claim-request-store';
+import { readAdminGymCandidatesList } from '$lib/server/gym-candidates-store';
+import { readActiveGymQualityIssueCount, readGyms, readPublicGymCount } from '$lib/server/gym-store';
 
-async function getDashboardGyms() {
-  try {
-    const gymList = await readAdminGymList({ limit: 100, offset: 0, archived: 'active' });
-    return Array.isArray(gymList?.items) ? gymList.items : [];
-  } catch {
-    // Keep the admin dashboard reachable, but do not fall back to public /api/gyms:
-    // public rows are paginated/sanitized and can produce broken admin edit links.
-    return [];
-  }
-}
-
-async function getClaimRequestsListSafe() {
-  try {
-    const claimList = await readClaimRequestsList({ limit: 100 });
-    return Array.isArray(claimList?.items) ? claimList.items : [];
-  } catch {
-    return [];
-  }
+function clean(value) {
+  return String(value ?? '').trim();
 }
 
 export async function load() {
-  const gyms = await getDashboardGyms();
-  const activeGyms = gyms.filter((gym) => !isArchivedGym(gym));
-  const requests = await getClaimRequestsListSafe();
-  const qualityStats = {
-    noPhone: activeGyms.filter((gym) => !String(gym.phone || '').trim()).length,
-    noWebsite: activeGyms.filter((gym) => !String(gym.website || '').trim()).length,
-    noContact: activeGyms.filter((gym) => !String(gym.phone || '').trim() && !String(gym.website || '').trim()).length,
-    hoursToVerify: activeGyms.filter(
-      (gym) => !String(gym.hours_info || '').trim() || /orari da verificare/i.test(String(gym.hours_info || ''))
-    ).length
-  };
-  const requestStats = {
-    pending: requests.filter((request) => (request.status || 'pending') === 'pending').length,
-    inReview: requests.filter((request) => request.status === 'in_review').length,
-    approved: requests.filter((request) => request.status === 'approved').length,
-    rejected: requests.filter((request) => request.status === 'rejected').length,
-    resolved: requests.filter((request) => request.status === 'resolved').length,
-    open: requests.filter((request) => ['pending', 'in_review'].includes(request.status || 'pending')).length
-  };
+  const [activeGymCount, qualityIssueCount, candidatesList, claimList, gyms] = await Promise.all([
+    readPublicGymCount(),
+    readActiveGymQualityIssueCount(),
+    readAdminGymCandidatesList({ limit: 500, status: 'pending' }),
+    readClaimRequestsList({ limit: 100 }),
+    readGyms()
+  ]);
+
+  const openRequests = claimList.items.filter((request) => ['pending', 'in_review'].includes(request.status || 'pending'));
+  const oldestOpenRequests = [...openRequests]
+    .sort((a, b) => String(a.created_at).localeCompare(String(b.created_at)))
+    .slice(0, 3);
+
+  const recentCandidates = candidatesList.items.slice(0, 5);
+
+  const visibleGyms = gyms.filter((gym) => !isArchivedGym(gym));
+  const duplicateGroups = buildDuplicateGroups(visibleGyms).slice(0, 3);
 
   return {
-    qualityStats,
-    requestStats,
-    gyms: activeGyms
-      .map((gym) => ({
-        id: gym.id,
-        name: gym.name || 'Senza nome',
-        discipline: gym.discipline || (Array.isArray(gym.disciplines) ? gym.disciplines[0] : '') || 'Fitness',
-        address: [gym.address, gym.city].filter(Boolean).join(', '),
-        city: gym.city || ''
-      }))
-      .sort((a, b) => a.name.localeCompare(b.name, 'it'))
+    stats: {
+      activeGyms: activeGymCount,
+      candidatesPending: candidatesList.items.length,
+      requestsOpen: openRequests.length,
+      qualityIssues: qualityIssueCount
+    },
+    candidatesError: candidatesList.error || '',
+    requestsError: claimList.error || '',
+    recentCandidates: recentCandidates.map((candidate) => ({
+      id: candidate.id,
+      nome: candidate.nome,
+      citta: candidate.citta,
+      source: candidate.source
+    })),
+    oldestOpenRequests: oldestOpenRequests.map((request) => ({
+      id: request.id,
+      gym_name: clean(request.gym_name) || 'Richiesta senza palestra',
+      status: request.status || 'pending',
+      created_at: request.created_at
+    })),
+    duplicateGroups: duplicateGroups.map((group) => ({
+      key: group.key,
+      label: group.label,
+      count: group.gyms.length,
+      names: group.gyms.slice(0, 3).map((gym) => gym.name)
+    }))
   };
 }

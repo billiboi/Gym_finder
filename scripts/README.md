@@ -40,6 +40,18 @@ These scripts support data import, normalization, inspection, and cleanup workfl
 - `audit-gym-contamination.ts`, `fix-gym-contamination-preview.ts`, `apply-gym-contamination-fixes.ts`
   Audit possible public data contamination, generate a non-destructive fix preview, and apply only additive review fields after confirmation. Default commands use staging. Run `supabase/migrations/20260521_001_gym_contamination_audit_fields.sql` before apply if the target schema does not have the audit fields.
 
+- `check-sitemap-no-legacy-urls.mjs`
+  Verifies that a sitemap contains no `/palestre/...csv-*` URLs. Use `bun run seo:check:sitemap -- --url=https://www.palestreinzona.it/sitemap.xml` or `bun run seo:check:sitemap -- --file=path/to/sitemap.xml`.
+
+- `check-archived-gym-urls.mjs`
+  Verifies that archived gym URLs from a CSV return 404 or 410. Use `bun run seo:check:archived -- --csv=path/to/archived.csv --base-url=https://www.palestreinzona.it`. The CSV may include `url`, `slug`, `old_url`, `old_slug`, `legacy_url`, or `legacy_slug`, plus `deleted_at`, `archived`, or `status=410`.
+
+- `check-legacy-gym-redirects.mjs`
+  Verifies that active legacy `csv-*` gym URLs from a CSV return 301 to clean URLs. Use `bun run seo:check:legacy -- --csv=path/to/legacy.csv --base-url=https://www.palestreinzona.it`. The CSV may include `old_url`/`old_slug` and `new_url`/`new_slug` pairs.
+
+- `check-archived-public-csv-drift.mjs`
+  Compares an exported archived gyms CSV against public fallback CSV files and fails if archived gyms still appear publicly. Use `bun run seo:check:archived-csv-drift -- --archived=path/to/archived-gyms.csv`. Defaults to `data/palestre.csv,static/palestre.csv`; override with `--public-files=file1.csv,file2.csv`. The report is printed as CSV to stdout unless `--out=path/report.csv` is provided.
+
 - `clean-palestre-dataset.cjs`
   Cleans the main CSV dataset, removes noisy records, and restores discipline labels.
 

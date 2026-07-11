@@ -955,6 +955,44 @@ async function readPublicGymCountFromSupabase() {
   const url = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?${params.join('&')}`;
   const response = await fetch(url, {
     method: 'HEAD',
+    // count=exact, not count=planned: this table is small (~700 rows) so an
+    // exact count is cheap, and count=planned returned a stale query-planner
+    // estimate (537 vs a real 692) when checked live against production.
+    headers: supabaseHeaders(SUPABASE_READ_KEY, { Prefer: 'count=exact' })
+  });
+
+  if (!response.ok) return null;
+  const count = Number(response.headers.get('content-range')?.split('/')?.[1]);
+  return Number.isFinite(count) ? count : null;
+}
+
+// Exact count of active gyms missing phone/website or with placeholder hours —
+// the dashboard's "problemi di qualità" number. Deliberately narrower than
+// admin/qualita's full flag set (which also checks discipline text, images,
+// duplicates, contamination, etc.) so it stays a single cheap COUNT query
+// instead of pulling every active gym into memory just to render one number.
+export async function readActiveGymQualityIssueCount() {
+  if (!hasSupabaseRead) return null;
+
+  const availableColumns = await supabaseAvailableColumns();
+  const available = new Set(availableColumns);
+  const phoneCol = available.has('telefono') ? 'telefono' : available.has('phone') ? 'phone' : null;
+  const websiteCol = available.has('sito') ? 'sito' : available.has('website') ? 'website' : null;
+  const hoursCol = available.has('orari') ? 'orari' : available.has('hours_info') ? 'hours_info' : null;
+
+  const orClauses = [];
+  if (phoneCol) orClauses.push(`${phoneCol}.is.null`, `${phoneCol}.eq.`);
+  if (websiteCol) orClauses.push(`${websiteCol}.is.null`, `${websiteCol}.eq.`);
+  if (hoursCol) orClauses.push(`${hoursCol}.is.null`, `${hoursCol}.eq.`, `${hoursCol}.ilike.*da verificare*`);
+
+  if (!orClauses.length) return null;
+
+  const params = ['select=id', `or=(${orClauses.join(',')})`];
+  if (available.has('deleted_at')) params.push('deleted_at=is.null');
+
+  const url = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?${params.join('&')}`;
+  const response = await fetch(url, {
+    method: 'HEAD',
     headers: supabaseHeaders(SUPABASE_READ_KEY, { Prefer: 'count=planned' })
   });
 
