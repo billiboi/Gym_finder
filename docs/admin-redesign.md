@@ -22,7 +22,7 @@ Il resto di questo documento è la proposta originale (Fase 2), lasciata intatta
 | `/admin` | Dashboard: tabella di tutte le palestre attive + due contatori (qualità, richieste) | sì |
 | `/admin/schede` | Elenco palestre, ricerca, paginazione 50/pagina, **modale di modifica inline** (`?edit=ID`), archivia/ripristina/duplica | sì |
 | `/admin/schede/nuova` | Form di creazione nuova scheda (riusa l'azione `create` di schede) | sì |
-| `/admin/gyms/[id]` | **Seconda pagina completa di modifica scheda** — stessi campi base di schede (nome, indirizzo, città, telefono, orari, sito, immagine) più un pannello che schede non ha (descrizione editoriale/generata/pubblica, quality score) | no (linkata da dashboard, qualità, prezzi, descrizioni-preview) |
+| `/admin/gyms/[id]` | Editor unico di scheda (assorbe l'ex modale di `/admin/schede`) — campi base (nome, indirizzo, città, telefono, orari, sito, immagine), pannello descrizione editoriale/generata/pubblica con quality score, e pannello "Contenuti dal sito ufficiale" con accept/reject per campo su prezzo, orari, telefono | no (linkata da dashboard, qualità, qualità/contenuti) |
 | `/admin/richieste` | Coda claim/rivendicazione schede: approva/rifiuta/in revisione | sì |
 | `/admin/qualita` | Flag di qualità dati (calcolati live), duplicati con merge, verifica scheda, normalizzazione discipline puntuale | sì |
 | `/admin/prezzi` ("Contenuti" in nav) | Legge report JSON pre-generati da script CLI (prezzi, contenuti da sito ufficiale), mostra candidati di riconciliazione, applica alla scheda | sì |
