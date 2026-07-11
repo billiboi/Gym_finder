@@ -817,6 +817,47 @@ async function readAdminGymListFromSupabase({ limit = 50, offset = 0, q = '', ar
   };
 }
 
+// Exact total for the "X–Y di TOT" pagination label — same q/archived filters
+// as readAdminGymListFromSupabase, but a HEAD count=exact request instead of
+// fetching rows, so paginating doesn't cost an extra full-table read.
+async function readAdminGymCountFromSupabase({ q = '', archived = 'active' } = {}) {
+  if (!hasSupabaseRead) return null;
+
+  const availableColumns = await supabaseAvailableColumns();
+  const available = new Set(availableColumns);
+  const mode = ['active', 'archived', 'all'].includes(String(archived || '').trim())
+    ? String(archived || '').trim()
+    : 'active';
+  const params = ['select=id'];
+
+  if (available.has('deleted_at') && mode === 'active') params.push('deleted_at=is.null');
+  if (available.has('deleted_at') && mode === 'archived') params.push('deleted_at=not.is.null');
+
+  const query = String(q || '').trim();
+  if (query) {
+    const like = `*${query.replace(/[%*,()]/g, ' ').replace(/\s+/g, ' ').trim()}*`;
+    if (like !== '**') {
+      const encoded = encodeURIComponent(like);
+      const searchColumns = ['nome', 'name', 'citta', 'city', 'indirizzo', 'address', 'discipline'].filter((column) =>
+        available.has(column)
+      );
+      if (searchColumns.length) {
+        params.push(`or=(${searchColumns.map((column) => `${column}.ilike.${encoded}`).join(',')})`);
+      }
+    }
+  }
+
+  const url = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?${params.join('&')}`;
+  const response = await fetch(url, {
+    method: 'HEAD',
+    headers: supabaseHeaders(SUPABASE_READ_KEY, { Prefer: 'count=exact' })
+  });
+
+  if (!response.ok) return null;
+  const count = Number(response.headers.get('content-range')?.split('/')?.[1]);
+  return Number.isFinite(count) ? count : null;
+}
+
 async function readAdminGymByIdFromSupabase(id) {
   if (!hasSupabaseRead) return null;
 
@@ -1270,8 +1311,11 @@ export async function readAdminGymList(options = {}) {
 
   if (hasSupabaseRead) {
     try {
-      const result = await readAdminGymListFromSupabase({ limit: safeLimit, offset: safeOffset, q: query, archived: mode });
-      if (result && Array.isArray(result.items)) return result;
+      const [result, total] = await Promise.all([
+        readAdminGymListFromSupabase({ limit: safeLimit, offset: safeOffset, q: query, archived: mode }),
+        readAdminGymCountFromSupabase({ q: query, archived: mode })
+      ]);
+      if (result && Array.isArray(result.items)) return { ...result, total };
     } catch {
       // fallback below
     }
@@ -1302,6 +1346,7 @@ export async function readAdminGymList(options = {}) {
     limit: safeLimit,
     offset: safeOffset,
     hasMore: filtered.length > safeOffset + safeLimit,
+    total: filtered.length,
     q: query,
     archived: mode
   };

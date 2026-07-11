@@ -1,4 +1,6 @@
 <script>
+  import { page } from '$app/stores';
+  import { goto } from '$app/navigation';
   import {
     imageForGym,
     placeholderImageForDiscipline,
@@ -14,11 +16,8 @@
 
   let q = '';
   let appliedServerQ = '';
-  let selectedGymId = '';
-  let appliedFormEditId = '';
-  let appliedServerEditId = '';
   let qualityFilter = 'all';
-  let modalDirty = false;
+  let newDisciplineInput = '';
 
   function disciplinesForGym(gym) {
     if (Array.isArray(gym.disciplines) && gym.disciplines.length) {
@@ -30,21 +29,10 @@
     return ['Fitness'];
   }
 
-  function openEditModal(id) {
+  function closeNewModal() {
     const nextUrl = new URL(window.location.href);
-    nextUrl.searchParams.set('edit', id);
-    window.location.href = nextUrl.toString();
-    selectedGymId = id;
-    modalDirty = false;
-  }
-
-  function closeEditModal() {
-    if (modalDirty && !confirm('Ci sono modifiche non salvate. Chiudere la modale?')) return;
-    const nextUrl = new URL(window.location.href);
-    nextUrl.searchParams.delete('edit');
-    window.history.replaceState({}, '', nextUrl.toString());
-    selectedGymId = '';
-    modalDirty = false;
+    nextUrl.searchParams.delete('new');
+    goto(`${nextUrl.pathname}${nextUrl.search}`, { replaceState: true, noScroll: true, keepFocus: true });
   }
 
   function activeGyms(gyms) {
@@ -127,25 +115,15 @@
     if (!matchesQuery) return false;
     return matchesQualityFilter(gym, qualityFilter);
   });
-  $: selectedGym = data.gyms.find((gym) => gym.id === selectedGymId) || null;
-  $: if (form?.editId && form.editId !== appliedFormEditId) {
-    selectedGymId = form.editId;
-    appliedFormEditId = form.editId;
-  }
-  $: if (data.editId && data.editId !== appliedServerEditId) {
-    selectedGymId = data.editId;
-    appliedServerEditId = data.editId;
-  }
   $: if ((data.q || '') !== appliedServerQ) {
     q = data.q || '';
     appliedServerQ = data.q || '';
   }
-  $: selectedPreview = selectedGym
-    ? previewAssetsForDiscipline(disciplinesForGym(selectedGym).join(' | '))
-    : null;
-  $: selectedAliasNotice = selectedGym
-    ? firstAliasNotice(disciplinesForGym(selectedGym).join(' | '), data.aliasSuggestions)
-    : null;
+  $: showNewModal = $page.url.searchParams.get('new') === '1';
+  $: newPreview = previewAssetsForDiscipline(newDisciplineInput);
+  $: newAliasNotice = firstAliasNotice(newDisciplineInput, data.aliasSuggestions);
+  $: paginationStart = data.gyms.length ? Number(data.offset || 0) + 1 : 0;
+  $: paginationEnd = Number(data.offset || 0) + data.gyms.length;
 </script>
 
 <main class="mx-auto min-h-screen w-full max-w-7xl px-4 pb-10 pt-6 sm:px-6 lg:px-8">
@@ -163,10 +141,10 @@
       <div>
         <p class="text-xs font-bold uppercase tracking-[0.22em] text-slate-500">Area Admin</p>
         <h1 class="mt-1 text-3xl font-bold text-slate-900 sm:text-4xl">Gestione schede palestre</h1>
-        <p class="mt-2 text-sm text-slate-600">Da questa pagina puoi creare, modificare, archiviare e ripristinare ogni scheda palestra.</p>
+        <p class="mt-2 text-sm text-slate-600">Da questa pagina puoi creare, archiviare e ripristinare ogni scheda palestra. Per modificare una scheda, apri "Modifica".</p>
       </div>
       <div class="flex flex-wrap gap-2">
-        <a href="/admin/schede/nuova" class="rounded-xl bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800">Nuova scheda</a>
+        <a href="/admin/schede?new=1" class="rounded-xl bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800">Nuova scheda</a>
         <a href="/admin/export/gyms.csv" class="rounded-xl bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800">Esporta CSV backup</a>
         <a href="/admin/import" class="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-800 ring-1 ring-slate-200 hover:bg-slate-50">Import CSV sicuro</a>
         <a href="/admin" class="rounded-xl bg-slate-700 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">Home admin</a>
@@ -269,7 +247,10 @@
 
     <div class="mt-3 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700">
       <span>
-        Vista: <strong>{data.archivedMode || 'active'}</strong> · offset {data.offset || 0} · limite {data.limit || 50}
+        Vista: <strong>{data.archivedMode || 'active'}</strong>
+        {#if data.total != null}
+          · <strong>{paginationStart}–{paginationEnd}</strong> di <strong>{data.total}</strong>
+        {/if}
       </span>
       <div class="flex flex-wrap gap-2">
         {#if Number(data.offset || 0) > 0}
@@ -339,12 +320,11 @@
     {:else}
       {#each filtered as gym}
         <article class="relative rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md">
-          <button
-            type="button"
+          <a
             class="absolute inset-0 rounded-2xl"
             aria-label={`Apri modifica per ${gym.name}`}
-            on:click={() => openEditModal(gym.id)}
-          ></button>
+            href={`/admin/gyms/${gym.id}`}
+          ></a>
 
           <div class="relative z-10">
             <h2 class="text-base font-bold text-slate-900">{gym.name}</h2>
@@ -377,13 +357,12 @@
           </div>
 
           <div class="relative z-10 mt-3 flex flex-wrap gap-2">
-            <button
-              type="button"
+            <a
               class="inline-flex rounded-lg bg-blue-700 px-3 py-1.5 text-sm font-semibold text-white hover:bg-blue-800"
-              on:click={() => openEditModal(gym.id)}
+              href={`/admin/gyms/${gym.id}`}
             >
               Modifica
-            </button>
+            </a>
 
             <a
               class="inline-flex rounded-lg bg-emerald-700 px-3 py-1.5 text-sm font-semibold text-white hover:bg-emerald-800"
@@ -438,175 +417,152 @@
     {/if}
   </section>
 
-  {#if selectedGym}
+  {#if showNewModal}
     <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/55 p-4 backdrop-blur-sm">
       <div class="max-h-[92vh] w-full max-w-3xl overflow-y-auto rounded-3xl border border-white/70 bg-white shadow-2xl sc-admin-modal">
         <div class="sticky top-0 z-10 flex flex-wrap items-start justify-between gap-3 border-b border-slate-200 bg-white/95 px-4 py-4 backdrop-blur-sm sm:px-7">
           <div>
-            <p class="text-xs font-bold uppercase tracking-[0.22em] text-slate-500">Modifica scheda</p>
-            <h2 class="mt-1 text-2xl font-bold text-slate-900">{selectedGym.name}</h2>
-            <p class="mt-2 text-sm text-slate-600">Aggiorna contenuti della pagina dettaglio senza uscire dall'elenco.</p>
+            <p class="text-xs font-bold uppercase tracking-[0.22em] text-slate-500">Nuova scheda</p>
+            <h2 class="mt-1 text-2xl font-bold text-slate-900">Crea palestra</h2>
+            <p class="mt-2 text-sm text-slate-600">Inserisci una nuova palestra senza lasciare l'elenco.</p>
           </div>
           <button
             type="button"
             class="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-100"
-            on:click={closeEditModal}
+            on:click={closeNewModal}
           >
             Chiudi
           </button>
         </div>
 
-        <form method="POST" action="?/update" enctype="multipart/form-data" class="grid gap-4 px-4 py-4 sm:px-7 sm:py-6" on:input={() => (modalDirty = true)}>
-          <input type="hidden" name="id" value={selectedGym.id} />
-
+        <form method="POST" action="?/create" enctype="multipart/form-data" class="grid gap-4 px-4 py-4 sm:px-7 sm:py-6">
           <section class="grid gap-3 rounded-2xl border border-slate-200 bg-slate-50/70 p-4">
             <h3 class="text-sm font-bold uppercase tracking-[0.18em] text-slate-500">Dati principali</h3>
-          <label class="grid gap-1">
-            <span class="text-sm font-semibold text-slate-700">Nome palestra</span>
-            <input name="name" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" value={selectedGym.name} required />
-          </label>
+            <label class="grid gap-1">
+              <span class="text-sm font-semibold text-slate-700">Nome palestra</span>
+              <input name="name" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" required />
+            </label>
 
-          <label class="grid gap-1">
-            <span class="text-sm font-semibold text-slate-700">Discipline (separate da |)</span>
-            <input
-              name="discipline"
-              list="discipline-canonical-options"
-              class="rounded-xl border border-slate-200 px-3 py-2 text-sm"
-              value={disciplinesForGym(selectedGym).join(' | ')}
-              required
-            />
-            {#if selectedAliasNotice}
-              <span class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-800">
-                Alias rilevato: “{selectedAliasNotice.input}” verrà salvato come “{selectedAliasNotice.canonical}”.
-              </span>
-            {/if}
-          </label>
+            <label class="grid gap-1">
+              <span class="text-sm font-semibold text-slate-700">Discipline (separate da |)</span>
+              <input
+                name="discipline"
+                list="discipline-canonical-options"
+                class="rounded-xl border border-slate-200 px-3 py-2 text-sm"
+                placeholder="Es: Boxe | Kickboxing"
+                bind:value={newDisciplineInput}
+                required
+              />
+              {#if newAliasNotice}
+                <span class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-800">
+                  Alias rilevato: “{newAliasNotice.input}” verrà salvato come “{newAliasNotice.canonical}”.
+                </span>
+              {/if}
+            </label>
 
-          <label class="grid gap-1">
-            <span class="text-sm font-semibold text-slate-700">Indirizzo</span>
-            <input name="address" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" value={selectedGym.address} required />
-          </label>
+            <label class="grid gap-1">
+              <span class="text-sm font-semibold text-slate-700">Indirizzo</span>
+              <input name="address" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" required />
+            </label>
 
-          <label class="grid gap-1">
-            <span class="text-sm font-semibold text-slate-700">Città/Località</span>
-            <input name="city" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" value={selectedGym.city} required />
-          </label>
+            <label class="grid gap-1">
+              <span class="text-sm font-semibold text-slate-700">Città/Località</span>
+              <input name="city" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" required />
+            </label>
           </section>
 
           <section class="grid gap-3 rounded-2xl border border-slate-200 bg-white p-4">
             <h3 class="text-sm font-bold uppercase tracking-[0.18em] text-slate-500">Contatti</h3>
-          <label class="grid gap-1">
-            <span class="text-sm font-semibold text-slate-700">Telefono</span>
-            <input name="phone" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" value={selectedGym.phone} />
-          </label>
+            <label class="grid gap-1">
+              <span class="text-sm font-semibold text-slate-700">Telefono</span>
+              <input name="phone" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" />
+            </label>
 
-          <label class="grid gap-1">
-            <span class="text-sm font-semibold text-slate-700">Sito web</span>
-            <input name="website" type="url" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" value={selectedGym.website} placeholder="https://..." />
-          </label>
+            <label class="grid gap-1">
+              <span class="text-sm font-semibold text-slate-700">Sito web</span>
+              <input name="website" type="url" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" placeholder="https://..." />
+            </label>
           </section>
 
           <section class="grid gap-3 rounded-2xl border border-slate-200 bg-white p-4">
             <h3 class="text-sm font-bold uppercase tracking-[0.18em] text-slate-500">Orari</h3>
-          <label class="grid gap-1">
-            <span class="text-sm font-semibold text-slate-700">Orari di apertura</span>
-            <textarea name="hours_info" rows="4" class="rounded-xl border border-slate-200 px-3 py-2 text-sm">{selectedGym.hours_info}</textarea>
-          </label>
+            <label class="grid gap-1">
+              <span class="text-sm font-semibold text-slate-700">Orari di apertura</span>
+              <textarea name="hours_info" rows="4" class="rounded-xl border border-slate-200 px-3 py-2 text-sm"></textarea>
+            </label>
           </section>
 
           <section class="grid gap-3 rounded-2xl border border-slate-200 bg-white p-4">
-            <h3 class="text-sm font-bold uppercase tracking-[0.18em] text-slate-500">SEO / descrizione</h3>
-          <div class="grid gap-3 sm:grid-cols-2">
-            <label class="grid gap-1">
-              <span class="text-sm font-semibold text-slate-700">Latitudine</span>
-              <input name="latitude" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" value={selectedGym.latitude} />
-            </label>
-            <label class="grid gap-1">
-              <span class="text-sm font-semibold text-slate-700">Longitudine</span>
-              <input name="longitude" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" value={selectedGym.longitude} />
-            </label>
-          </div>
+            <h3 class="text-sm font-bold uppercase tracking-[0.18em] text-slate-500">Foto e descrizione</h3>
+            <div class="grid gap-3 sm:grid-cols-2">
+              <label class="grid gap-1">
+                <span class="text-sm font-semibold text-slate-700">Latitudine</span>
+                <input name="latitude" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" />
+              </label>
+              <label class="grid gap-1">
+                <span class="text-sm font-semibold text-slate-700">Longitudine</span>
+                <input name="longitude" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" />
+              </label>
+            </div>
 
-          <div class="grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
+            <div class="grid gap-3 sm:grid-cols-2">
+              <label class="grid gap-1">
+                <span class="text-sm font-semibold text-slate-700">URL immagine copertina</span>
+                <input name="image_url" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" placeholder="https://..." />
+              </label>
               <label class="grid gap-1">
                 <span class="text-sm font-semibold text-slate-700">Foto copertina</span>
                 <input name="image" type="file" accept="image/png,image/jpeg,image/webp,image/gif" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" />
-                <span class="text-xs text-slate-500">Se vuoto, resta l'immagine attuale; in assenza di foto verrà usata quella stock della disciplina.</span>
               </label>
-            <label class="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-700">
-              <input type="checkbox" name="replace_image" value="1" />
-              Sostituisci immagine attuale
-            </label>
-          </div>
-
-          <label class="grid gap-1">
-            <span class="text-sm font-semibold text-slate-700">URL immagine copertina</span>
-            <input name="image_url" class="rounded-xl border border-slate-200 px-3 py-2 text-sm" value={selectedGym.image_url || ''} placeholder="https://..." />
-          </label>
-
-          {#if selectedGym.image_url}
-            <div class="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
-              <img src={selectedGym.image_url} alt={`Anteprima ${selectedGym.name}`} class="h-48 w-full object-cover" />
             </div>
-          {:else if selectedPreview}
+
             <div class="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
               <img
-                src={selectedPreview.src}
-                alt={`Anteprima fallback ${selectedPreview.discipline}`}
-                class="h-48 w-full object-cover"
-                on:error={(event) => handlePreviewError(event, selectedPreview)}
+                src={newPreview.src}
+                alt={`Anteprima fallback ${newPreview.discipline}`}
+                class="h-44 w-full object-cover"
+                on:error={(event) => handlePreviewError(event, newPreview)}
               />
               <div class="grid gap-1 border-t border-slate-200 bg-white/80 px-3 py-3 text-sm text-slate-600">
-                <p><strong class="text-slate-900">Fallback attivo:</strong> {selectedPreview.discipline}</p>
+                <p><strong class="text-slate-900">Anteprima fallback:</strong> {newPreview.discipline}</p>
                 <p>
-                  {#if selectedPreview.stockResolved}
-                    Rotazione attiva su {selectedPreview.stockResolved.length} immagini. Selezione corrente: <code>{selectedPreview.stockSelected}</code>.
+                  {#if newPreview.stockResolved}
+                    {newPreview.stockResolved.length} foto stock trovate. Selezione corrente: <code>{newPreview.stockSelected}</code>
                   {:else}
-                    Questa scheda non ha una foto caricata e non esiste ancora una foto stock per <code>{selectedPreview.stockBase}</code>: verrà usata la cover del brand.
+                    Nessuna foto stock disponibile per <code>{newPreview.stockBase}</code>: verrà usata la cover del brand.
                   {/if}
                 </p>
               </div>
             </div>
-          {/if}
 
-          <label class="grid gap-1">
-            <span class="text-sm font-semibold text-slate-700">Breve presentazione</span>
-            <textarea name="description" rows="6" class="rounded-xl border border-slate-200 px-3 py-2 text-sm">{selectedGym.description}</textarea>
-          </label>
+            <label class="grid gap-1">
+              <span class="text-sm font-semibold text-slate-700">Breve presentazione</span>
+              <textarea
+                name="description"
+                rows="5"
+                class="rounded-xl border border-slate-200 px-3 py-2 text-sm"
+                placeholder="Descrivi in breve ambiente, servizi, focus della palestra e tipo di pubblico."
+              ></textarea>
+            </label>
           </section>
 
           <section class="grid gap-3 rounded-2xl border border-slate-200 bg-white p-4">
             <h3 class="text-sm font-bold uppercase tracking-[0.18em] text-slate-500">Stato scheda</h3>
             <label class="inline-flex items-center gap-2 text-sm font-semibold text-slate-700">
-              <input type="checkbox" name="verified" value="1" checked={selectedGym.verified} />
+              <input type="checkbox" name="verified" value="1" />
               Scheda verificata
             </label>
             <label class="inline-flex items-center gap-2 text-sm font-semibold text-slate-700">
-              <input type="checkbox" name="premium" value="1" checked={selectedGym.premium} />
+              <input type="checkbox" name="premium" value="1" />
               Scheda premium
             </label>
-            <div class="flex flex-wrap gap-2 text-xs font-bold">
-              {#if selectedGym.premium}
-                <span class="rounded-full bg-sky-100 px-2.5 py-1 text-sky-800">premium</span>
-              {/if}
-              {#if selectedGym.archived}
-                <span class="rounded-full bg-slate-200 px-2.5 py-1 text-slate-700">archiviata</span>
-              {/if}
-              <span class="rounded-full bg-slate-100 px-2.5 py-1 text-slate-700">priorità {selectedGym.priority_score}</span>
-            </div>
           </section>
 
           <div class="sticky bottom-0 -mx-4 mt-2 flex flex-wrap gap-2 border-t border-slate-200 bg-white/95 px-4 pt-4 backdrop-blur-sm sm:-mx-7 sm:px-7">
-            <button type="submit" class="rounded-xl bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800">
-              Salva modifiche
+            <button type="submit" class="rounded-xl bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800">
+              Crea scheda
             </button>
-            <button type="submit" name="next_action" value="open_public" class="rounded-xl bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800">
-              Salva e apri scheda pubblica
-            </button>
-            <button type="submit" name="verified" value="1" class="rounded-xl bg-sky-700 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-800">
-              Salva e segna verificata
-            </button>
-            <button type="button" class="rounded-xl bg-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-300" on:click={closeEditModal}>
+            <button type="button" class="rounded-xl bg-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-300" on:click={closeNewModal}>
               Annulla
             </button>
           </div>
@@ -615,4 +571,3 @@
     </div>
   {/if}
 </main>
-

@@ -200,9 +200,35 @@
         </label>
       </div>
 
-      <button type="submit" class="mt-2 rounded-xl bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800">
-        Salva modifiche
-      </button>
+      <section class="grid gap-3 rounded-2xl border border-slate-200 bg-white p-4">
+        <h2 class="text-sm font-bold uppercase tracking-[0.18em] text-slate-500">Stato scheda</h2>
+        <label class="inline-flex items-center gap-2 text-sm font-semibold text-slate-700">
+          <input type="checkbox" name="verified" value="1" checked={gym.verified} />
+          Scheda verificata
+        </label>
+        <label class="inline-flex items-center gap-2 text-sm font-semibold text-slate-700">
+          <input type="checkbox" name="premium" value="1" checked={gym.premium} />
+          Scheda premium
+        </label>
+        <div class="flex flex-wrap gap-2 text-xs font-bold">
+          {#if gym.premium}
+            <span class="rounded-full bg-sky-100 px-2.5 py-1 text-sky-800">premium</span>
+          {/if}
+          {#if gym.archived}
+            <span class="rounded-full bg-slate-200 px-2.5 py-1 text-slate-700">archiviata</span>
+          {/if}
+          <span class="rounded-full bg-slate-100 px-2.5 py-1 text-slate-700">priorità {gym.priority_score}</span>
+        </div>
+      </section>
+
+      <div class="flex flex-wrap gap-2 pt-2">
+        <button type="submit" class="rounded-xl bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800">
+          Salva modifiche
+        </button>
+        <button type="submit" name="next_action" value="open_public" class="rounded-xl bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800">
+          Salva e apri scheda pubblica
+        </button>
+      </div>
     </form>
   </section>
 </main>

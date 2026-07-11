@@ -1,133 +1,52 @@
 import { error, fail, redirect } from '@sveltejs/kit';
-import { writeFile } from 'node:fs/promises';
-import path from 'node:path';
-import { canWriteSupabase, getUploadsDir, readGyms, updateGymRecord } from '$lib/server/gym-store';
-import { normalizeDisciplineField, normalizeDisciplineSlugs } from '$lib/disciplines';
+import { gymHref } from '$lib/gym-detail';
+import { canWriteSupabase, readAdminGymById, updateGymRecord } from '$lib/server/gym-store';
+import {
+  clean,
+  disciplineAliases,
+  disciplineSlugs,
+  isValidImageUrl,
+  normalizePhone,
+  persistentImageFromFile,
+  toDisciplines,
+  toNullableNumber,
+  validateGymPayload
+} from '$lib/server/gym-form-fields';
+import { adminErrorMessage, adminGymView } from '$lib/admin/gyms';
 import { DISCIPLINE_MASTER, DISCIPLINE_ALIAS_ROWS } from '$lib/discipline-taxonomy';
 import { generateGymDescription, pickPublicDescription, scoreDescription } from '$lib/gym-description';
 
-function clean(value) {
-  return String(value ?? '').trim();
-}
-
-function toNullableNumber(value) {
-  const raw = clean(value);
-  if (!raw) return null;
-  const n = Number(raw);
-  return Number.isFinite(n) ? n : null;
-}
-
-function toDisciplines(value) {
-  return normalizeDisciplineField(value, ['Fitness']).disciplines;
-}
-
-function disciplineAliases(value, fallback = []) {
-  return normalizeDisciplineField(value, fallback).aliases;
-}
-
-function disciplineSlugs(value, fallback = []) {
-  return normalizeDisciplineSlugs(value, fallback);
-}
-
-function sanitizeFileName(value) {
-  return String(value || 'image')
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .slice(0, 60) || 'image';
-}
-
-async function storeImage(file, gymName) {
-  if (!(file instanceof File) || file.size === 0) return '';
-
-  const allowed = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
-  if (!allowed.has(file.type)) {
-    throw new Error('Formato immagine non supportato. Usa JPG, PNG, WEBP o GIF.');
-  }
-
-  const extMap = {
-    'image/jpeg': '.jpg',
-    'image/png': '.png',
-    'image/webp': '.webp',
-    'image/gif': '.gif'
-  };
-
-  const fileName = `${sanitizeFileName(gymName)}-${Date.now()}${extMap[file.type] || '.jpg'}`;
-  const targetPath = path.join(getUploadsDir(), fileName);
-  const buffer = Buffer.from(await file.arrayBuffer());
-  await writeFile(targetPath, buffer);
-  return `/uploads/${fileName}`;
-}
-
-function isValidImageUrl(value) {
-  const raw = clean(value);
-  if (!raw) return true;
-  if (raw.startsWith('data:image/')) return true;
-
-  try {
-    const url = new URL(raw);
-    return ['http:', 'https:'].includes(url.protocol);
-  } catch {
-    return false;
-  }
-}
-
-async function persistentImageFromFile(file, gymName) {
-  if (!(file instanceof File) || file.size === 0) return '';
-
-  const isVercelRuntime = process.env.VERCEL === '1';
-  if (!isVercelRuntime) {
-    return storeImage(file, gymName);
-  }
-
-  const allowed = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
-  if (!allowed.has(file.type)) {
-    throw new Error('Formato immagine non supportato. Usa JPG, PNG, WEBP o GIF.');
-  }
-
-  const maxBytes = 2 * 1024 * 1024;
-  if (file.size > maxBytes) {
-    throw new Error('Immagine troppo grande per il salvataggio diretto. Usa un file sotto 2 MB oppure incolla un URL immagine.');
-  }
-
-  const buffer = Buffer.from(await file.arrayBuffer());
-  return `data:${file.type};base64,${buffer.toString('base64')}`;
-}
-
-async function getGymsWithFallback(fetchFn) {
-  const gyms = await readGyms();
-  if (Array.isArray(gyms) && gyms.length > 0) return gyms;
-
-  try {
-    const res = await fetchFn('/api/gyms');
-    if (!res.ok) return [];
-    const data = await res.json();
-    return Array.isArray(data) ? data : [];
-  } catch {
-    return [];
-  }
-}
-
-export async function load({ params, fetch }) {
-  const gyms = await getGymsWithFallback(fetch);
-  const gym = gyms.find((item) => item.id === params.id);
+export async function load({ params }) {
+  const gym = await readAdminGymById(params.id);
 
   if (!gym) {
     throw error(404, 'Palestra non trovata');
   }
 
+  const publicDescription = pickPublicDescription(gym);
+
   return {
     gym: {
-      ...gym,
-      descrizione_pubblica_attuale: pickPublicDescription(gym).text,
-      descrizione_pubblica_source: pickPublicDescription(gym).source,
-      descrizione_generata_preview: gym.descrizione_generata || generateGymDescription(gym, gyms).description,
-      descrizione_quality_score_calculated: scoreDescription(gym, pickPublicDescription(gym).text),
-      discipline_text: Array.isArray(gym.disciplines)
+      ...adminGymView(gym),
+      discipline_text: Array.isArray(gym.disciplines) && gym.disciplines.length
         ? gym.disciplines.join(' | ')
-        : clean(gym.discipline) || 'Fitness'
+        : clean(gym.discipline) || 'Fitness',
+      descrizione_pubblica_attuale: publicDescription.text,
+      descrizione_pubblica_source: publicDescription.source,
+      // Non abbiamo più l'intero catalogo qui (era un readGyms() di ~700 righe
+      // solo per trovarne una): il confronto "sede/catena con nome simile" di
+      // generateGymDescription degrada a nessun rischio rilevato invece di
+      // interrompere l'anteprima. È solo un suggerimento che l'admin rivede
+      // prima di salvare, non un dato scritto automaticamente.
+      descrizione_generata_preview: gym.descrizione_generata || generateGymDescription(gym, []).description,
+      descrizione_quality_score_calculated: scoreDescription(gym, publicDescription.text),
+      descrizione_owner: gym.descrizione_owner || '',
+      descrizione_editoriale: gym.descrizione_editoriale || '',
+      descrizione_generata: gym.descrizione_generata || '',
+      descrizione_pubblica: gym.descrizione_pubblica || '',
+      descrizione_source: gym.descrizione_source || '',
+      descrizione_quality_score: gym.descrizione_quality_score || 0,
+      descrizione_needs_review: Boolean(gym.descrizione_needs_review)
     },
     disciplineOptions: DISCIPLINE_MASTER.map((discipline) => discipline.name),
     aliasSuggestions: DISCIPLINE_ALIAS_ROWS
@@ -135,7 +54,7 @@ export async function load({ params, fetch }) {
 }
 
 export const actions = {
-  default: async ({ params, request, fetch }) => {
+  default: async ({ params, request }) => {
     if (!canWriteSupabase()) {
       return fail(503, {
         error:
@@ -144,32 +63,24 @@ export const actions = {
     }
 
     const form = await request.formData();
-
     const name = clean(form.get('name'));
-    const disciplineText = clean(form.get('discipline'));
+    const disciplines = toDisciplines(form.get('discipline'));
+    const aliases = disciplineAliases(form.get('discipline'), disciplines);
+    const canonicalSlugs = disciplineSlugs(form.get('discipline'), disciplines);
     const address = clean(form.get('address'));
     const city = clean(form.get('city'));
+    const website = clean(form.get('website'));
+    const validationError = validateGymPayload({ name, city, disciplines, website });
 
-    if (!name || !address) {
-      return fail(400, { error: 'Nome e indirizzo sono obbligatori.' });
-    }
+    if (validationError) return fail(400, { error: validationError });
 
-    const gyms = await getGymsWithFallback(fetch);
-    const idx = gyms.findIndex((item) => item.id === params.id);
+    const currentGym = await readAdminGymById(params.id);
 
-    if (idx < 0) {
-      return fail(404, { error: 'Palestra non trovata.' });
-    }
+    if (!currentGym) return fail(404, { error: 'Palestra non trovata.' });
 
-    const disciplines = toDisciplines(disciplineText);
-    const aliases = disciplineAliases(disciplineText, disciplines);
-    const canonicalSlugs = disciplineSlugs(disciplineText, disciplines);
-    let imageUrl = clean(form.get('image_url')) || gyms[idx].image_url || '';
+    let imageUrl = clean(form.get('image_url')) || currentGym.image_url || '';
     if (!isValidImageUrl(imageUrl)) {
-      return fail(400, {
-        error: 'URL immagine non valido. Usa un URL http/https oppure carica un file.',
-        editId: params.id
-      });
+      return fail(400, { error: 'URL immagine non valido. Usa un URL http/https oppure carica un file.' });
     }
 
     try {
@@ -181,13 +92,15 @@ export const actions = {
         imageUrl = '';
       }
     } catch (err) {
-      return fail(400, {
-        error: err?.message || 'Errore durante il caricamento immagine.'
-      });
+      return fail(400, { error: err?.message || 'Errore durante il caricamento immagine.' });
     }
 
-    gyms[idx] = {
-      ...gyms[idx],
+    const verified = clean(form.get('verified')) === '1';
+    const premium = clean(form.get('premium')) === '1';
+    const weeklyHours = currentGym?.weekly_hours && typeof currentGym.weekly_hours === 'object' ? currentGym.weekly_hours : {};
+
+    const updatedGym = {
+      ...currentGym,
       nome: name,
       name,
       discipline: disciplines[0],
@@ -198,28 +111,33 @@ export const actions = {
       address,
       citta: city,
       city,
-      telefono: clean(form.get('phone')),
-      phone: clean(form.get('phone')),
+      telefono: normalizePhone(form.get('phone')),
+      phone: normalizePhone(form.get('phone')),
       orari: clean(form.get('hours_info')) || 'Orari da verificare',
       hours_info: clean(form.get('hours_info')) || 'Orari da verificare',
-      sito: clean(form.get('website')),
-      website: clean(form.get('website')),
+      sito: website,
+      website,
       descrizione: clean(form.get('description')),
       description: clean(form.get('description')),
-      descrizione_owner: clean(form.get('descrizione_owner')) || gyms[idx].descrizione_owner || '',
+      descrizione_owner: clean(form.get('descrizione_owner')) || currentGym.descrizione_owner || '',
       descrizione_editoriale: clean(form.get('descrizione_editoriale')) || '',
-      descrizione_generata: clean(form.get('descrizione_generata')) || gyms[idx].descrizione_generata || '',
+      descrizione_generata: clean(form.get('descrizione_generata')) || currentGym.descrizione_generata || '',
       descrizione_pubblica: clean(form.get('descrizione_pubblica')) || '',
       descrizione_source: clean(form.get('descrizione_source')) || 'admin',
       descrizione_quality_score: toNullableNumber(form.get('descrizione_quality_score')) || 0,
       descrizione_needs_review: clean(form.get('descrizione_needs_review')) === '1',
+      verified,
+      is_verified: verified,
+      is_premium: premium,
       lat: toNullableNumber(form.get('latitude')),
       latitude: toNullableNumber(form.get('latitude')),
       lng: toNullableNumber(form.get('longitude')),
       longitude: toNullableNumber(form.get('longitude')),
       image_url: imageUrl,
       weekly_hours: {
-        ...(gyms[idx]?.weekly_hours && typeof gyms[idx].weekly_hours === 'object' ? gyms[idx].weekly_hours : {}),
+        ...weeklyHours,
+        _verified: verified,
+        _is_premium: premium,
         _image_url: imageUrl,
         _discipline_aliases: aliases,
         _discipline_canonical_slugs: canonicalSlugs
@@ -227,11 +145,13 @@ export const actions = {
     };
 
     try {
-      await updateGymRecord(gyms[idx]);
+      await updateGymRecord(updatedGym);
     } catch (err) {
-      return fail(500, {
-        error: err?.message || 'Errore durante il salvataggio.'
-      });
+      return fail(500, { error: adminErrorMessage(err, 'Salvataggio non riuscito.') });
+    }
+
+    if (clean(form.get('next_action')) === 'open_public') {
+      throw redirect(303, gymHref(updatedGym));
     }
 
     throw redirect(303, `/admin/gyms/${params.id}?saved=1`);
