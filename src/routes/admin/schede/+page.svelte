@@ -146,7 +146,7 @@
       <div class="flex flex-wrap gap-2">
         <a href="/admin/schede?new=1" class="rounded-xl bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800">Nuova scheda</a>
         <a href="/admin/export/gyms.csv" class="rounded-xl bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800">Esporta CSV backup</a>
-        <a href="/admin/import" class="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-800 ring-1 ring-slate-200 hover:bg-slate-50">Import CSV sicuro</a>
+        <a href="/admin/candidati/importa-csv" class="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-800 ring-1 ring-slate-200 hover:bg-slate-50">Import CSV sicuro</a>
         <a href="/admin" class="rounded-xl bg-slate-700 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">Home admin</a>
         <a href="/" class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">Pagina utente</a>
       </div>

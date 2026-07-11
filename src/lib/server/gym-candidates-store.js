@@ -193,6 +193,34 @@ export async function readAdminGymCandidateById(id) {
   return Array.isArray(rows) && rows.length ? normalizeCandidate(rows[0]) : null;
 }
 
+// Bulk insert for non-OSM producers (currently: CSV import, source='csv_import').
+// Upserts on (source, source_id) so re-submitting the same source_id updates the
+// existing pending candidate instead of creating a duplicate — same on_conflict
+// pattern scripts/scrape-gyms-osm.mjs uses for its own (source, source_id) pairs.
+export async function createGymCandidates(candidates) {
+  const rows = (Array.isArray(candidates) ? candidates : [candidates]).filter(Boolean);
+  if (!rows.length) return;
+  if (!hasSupabase) throw new Error('Scrittura coda candidati non configurata: imposta SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY.');
+
+  const chunkSize = 300;
+  for (let i = 0; i < rows.length; i += chunkSize) {
+    const chunk = rows.slice(i, i + chunkSize);
+    const response = await fetch(`${supabaseBaseUrl()}/rest/v1/${SUPABASE_CANDIDATES_TABLE}?on_conflict=source,source_id`, {
+      method: 'POST',
+      headers: supabaseHeaders({
+        'Content-Type': 'application/json',
+        Prefer: 'resolution=merge-duplicates,return=minimal'
+      }),
+      body: JSON.stringify(chunk)
+    });
+
+    if (!response.ok) {
+      const details = await responseDetails(response);
+      throw new Error(supabaseErrorMessage(response, details, 'Inserimento candidati non riuscito'));
+    }
+  }
+}
+
 export async function updateGymCandidateStatus(id, patch) {
   const cleanId = clean(id);
   if (!cleanId) throw new Error('ID candidato mancante.');
