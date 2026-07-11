@@ -250,44 +250,44 @@
         <div class="grid gap-4 md:grid-cols-2">
           <label class="grid gap-2">
             <span class="text-sm font-semibold text-slate-700">Nome palestra</span>
-            <input name="gym_name" value={currentValues.gym_name} class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2" />
+            <input name="gym_name" value={currentValues.gym_name} class="rounded-xl px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field" />
           </label>
           <label class="grid gap-2">
             <span class="text-sm font-semibold text-slate-700">Link scheda</span>
-            <input name="gym_url" value={currentValues.gym_url} class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2" />
+            <input name="gym_url" value={currentValues.gym_url} class="rounded-xl px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field" />
           </label>
         </div>
 
         <div class="grid gap-4 md:grid-cols-2">
           <label class="grid gap-2">
             <span class="text-sm font-semibold text-slate-700">Nome e cognome</span>
-            <input name="requester_name" value={currentValues.requester_name} class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2" />
+            <input name="requester_name" value={currentValues.requester_name} class="rounded-xl px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field" />
           </label>
           <label class="grid gap-2">
             <span class="text-sm font-semibold text-slate-700">Ruolo</span>
-            <input name="requester_role" value={currentValues.requester_role} placeholder="Titolare, coach, staff..." class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2" />
+            <input name="requester_role" value={currentValues.requester_role} placeholder="Titolare, coach, staff..." class="rounded-xl px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field" />
           </label>
         </div>
 
         <div class="grid gap-4 md:grid-cols-2">
           <label class="grid gap-2">
             <span class="text-sm font-semibold text-slate-700">Email</span>
-            <input name="requester_email" type="email" value={currentValues.requester_email} class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2" />
+            <input name="requester_email" type="email" value={currentValues.requester_email} class="rounded-xl px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field" />
           </label>
           <label class="grid gap-2">
             <span class="text-sm font-semibold text-slate-700">Telefono</span>
-            <input name="requester_phone" value={currentValues.requester_phone} class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2" />
+            <input name="requester_phone" value={currentValues.requester_phone} class="rounded-xl px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field" />
           </label>
         </div>
 
         <div class="grid gap-4 md:grid-cols-2">
           <label class="grid gap-2">
             <span class="text-sm font-semibold text-slate-700">Sito ufficiale</span>
-            <input name="official_website" type="url" value={currentValues.official_website} placeholder="https://..." class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2" />
+            <input name="official_website" type="url" value={currentValues.official_website} placeholder="https://..." class="rounded-xl px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field" />
           </label>
           <label class="grid gap-2">
             <span class="text-sm font-semibold text-slate-700">URL immagine</span>
-            <input name="image_url" type="url" value={currentValues.image_url} placeholder="https://..." class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2" />
+            <input name="image_url" type="url" value={currentValues.image_url} placeholder="https://..." class="rounded-xl px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field" />
           </label>
         </div>
 
@@ -297,7 +297,7 @@
             name="message"
             rows="7"
             placeholder={selectedFlow.messagePlaceholder}
-            class="rounded-2xl border border-slate-200 bg-white px-3 py-3 text-sm leading-7 text-slate-900 outline-none ring-slate-900 transition focus:ring-2"
+            class="rounded-2xl px-3 py-3 text-sm leading-7 text-slate-900 outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
           >{currentValues.message}</textarea>
         </label>
 
@@ -313,10 +313,10 @@
             </p>
           </div>
           <div class="flex flex-wrap gap-3">
-            <button type="submit" class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
+            <button type="submit" class="inline-flex items-center justify-center px-4 py-2.5 text-sm font-bold text-white transition sc-button">
               {selectedFlow.submitLabel}
             </button>
-            <a href={mailtoHref} class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-slate-50" on:click={() => trackEvent('claim_click', {
+            <a href={mailtoHref} class="inline-flex items-center justify-center px-4 py-2.5 text-sm font-bold transition sc-button sc-button--secondary" on:click={() => trackEvent('claim_click', {
               id_scheda: currentValues.gym_id,
               nome_palestra: currentValues.gym_name,
               tipo_richiesta: currentValues.reason,

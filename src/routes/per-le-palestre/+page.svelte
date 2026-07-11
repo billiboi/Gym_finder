@@ -264,11 +264,11 @@
           <div class="grid gap-4 md:grid-cols-2">
             <label class="grid gap-2">
               <span class="text-sm font-semibold text-slate-700">Nome palestra</span>
-              <input name="gym_name" value={form?.values?.gym_name || ''} class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2" required />
+              <input name="gym_name" value={form?.values?.gym_name || ''} class="rounded-xl px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field" required />
             </label>
             <label class="grid gap-2">
               <span class="text-sm font-semibold text-slate-700">Piano</span>
-              <select name="plan" class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2">
+              <select name="plan" class="rounded-xl px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field">
                 {#each plans as plan}
                   <option value={plan.name} selected={selectedPlan === plan.name}>{plan.name}</option>
                 {/each}
@@ -279,33 +279,33 @@
           <div class="grid gap-4 md:grid-cols-2">
             <label class="grid gap-2">
               <span class="text-sm font-semibold text-slate-700">Referente</span>
-              <input name="requester_name" value={form?.values?.requester_name || ''} class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2" required />
+              <input name="requester_name" value={form?.values?.requester_name || ''} class="rounded-xl px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field" required />
             </label>
             <label class="grid gap-2">
               <span class="text-sm font-semibold text-slate-700">Ruolo</span>
-              <input name="requester_role" value={form?.values?.requester_role || ''} placeholder="Titolare, manager, staff" class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2" />
+              <input name="requester_role" value={form?.values?.requester_role || ''} placeholder="Titolare, manager, staff" class="rounded-xl px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field" />
             </label>
           </div>
 
           <div class="grid gap-4 md:grid-cols-2">
             <label class="grid gap-2">
               <span class="text-sm font-semibold text-slate-700">Email</span>
-              <input name="requester_email" type="email" value={form?.values?.requester_email || ''} class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2" required />
+              <input name="requester_email" type="email" value={form?.values?.requester_email || ''} class="rounded-xl px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field" required />
             </label>
             <label class="grid gap-2">
               <span class="text-sm font-semibold text-slate-700">Telefono</span>
-              <input name="requester_phone" value={form?.values?.requester_phone || ''} class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2" />
+              <input name="requester_phone" value={form?.values?.requester_phone || ''} class="rounded-xl px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field" />
             </label>
           </div>
 
           <label class="grid gap-2">
             <span class="text-sm font-semibold text-slate-700">Sito o link scheda</span>
-            <input name="website" value={form?.values?.website || ''} placeholder="https://..." class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2" />
+            <input name="website" value={form?.values?.website || ''} placeholder="https://..." class="rounded-xl px-3 py-2.5 text-sm text-slate-900 outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field" />
           </label>
 
           <label class="grid gap-2">
             <span class="text-sm font-semibold text-slate-700">Obiettivo</span>
-            <textarea name="message" rows="5" class="rounded-2xl border border-slate-200 bg-white px-3 py-3 text-sm leading-7 text-slate-900 outline-none ring-slate-900 transition focus:ring-2" placeholder="Esempio: voglio correggere prezzi, orari e discipline indicate nella scheda.">{form?.values?.message || ''}</textarea>
+            <textarea name="message" rows="5" class="rounded-2xl px-3 py-3 text-sm leading-7 text-slate-900 outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field" placeholder="Esempio: voglio correggere prezzi, orari e discipline indicate nella scheda.">{form?.values?.message || ''}</textarea>
           </label>
 
           <button type="submit" class="inline-flex min-h-[3rem] items-center justify-center rounded-xl px-5 text-sm font-bold transition sc-button sc-button--primary">

@@ -118,8 +118,8 @@
           <p class="mt-3 text-sm leading-7 text-slate-600">Le segnalazioni precise migliorano il catalogo più di qualsiasi claim generico.</p>
         </div>
         <div class="flex flex-wrap gap-3">
-          <a href="/verifica-schede" class="inline-flex min-h-[2.85rem] items-center justify-center rounded-xl bg-slate-900 px-4 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">Come verifichiamo</a>
-          <a href={SITE_CONTACT_MAILTO} class="inline-flex min-h-[2.85rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-bold text-slate-950 transition hover:bg-slate-50">{SITE_CONTACT_EMAIL}</a>
+          <a href="/verifica-schede" class="inline-flex min-h-[2.85rem] items-center justify-center px-4 text-sm font-bold text-white transition sc-button">Come verifichiamo</a>
+          <a href={SITE_CONTACT_MAILTO} class="inline-flex min-h-[2.85rem] items-center justify-center px-4 text-sm font-bold transition sc-button sc-button--secondary">{SITE_CONTACT_EMAIL}</a>
         </div>
       </div>
     </section>

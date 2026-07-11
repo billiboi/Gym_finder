@@ -746,7 +746,7 @@
 
 <div class="min-h-screen w-full sc-page relative">
   <main id="top" class="mx-auto w-full max-w-7xl px-4 pb-8 pt-4 sm:px-6 lg:px-8" aria-busy={isBootstrapping}>
-  <section class="reveal rounded-3xl border border-white/80 bg-white/70 p-4 shadow-xl backdrop-blur-sm sm:p-7 sc-panel sc-hero">
+  <section class="reveal rounded-3xl border border-white/80 bg-white/70 p-5 shadow-xl backdrop-blur-sm sm:p-7 sc-panel sc-hero">
     <div class="mx-auto flex max-w-5xl flex-col gap-3 sc-hero-copy">
         <div class="max-w-3xl">
           <div class="inline-flex items-center rounded-full border border-emerald-900/10 bg-white/65 px-3 py-1 text-[0.7rem] font-bold uppercase tracking-[0.24em] text-emerald-800">
@@ -766,14 +766,14 @@
           <div class="mt-5 flex flex-wrap gap-3 sc-hero-actions">
             <a
               href="#home-search"
-              class="inline-flex min-h-[3rem] items-center justify-center rounded-2xl px-5 text-sm font-bold text-white transition sc-button"
+              class="inline-flex min-h-[3rem] items-center justify-center rounded-xl px-5 text-sm font-bold text-white transition sc-button"
               on:click={focusSearchBox}
             >
               Cerca ora
             </a>
             <a
               href="/rivendica-scheda"
-              class="inline-flex min-h-[3rem] items-center justify-center rounded-2xl px-5 text-sm font-bold transition sc-button sc-button--secondary sc-hero-secondary-cta"
+              class="inline-flex min-h-[3rem] items-center justify-center rounded-xl px-5 text-sm font-bold transition sc-button sc-button--secondary sc-hero-secondary-cta"
             >
               Verifica scheda
             </a>
@@ -929,7 +929,7 @@
             {/each}
           </select>
         </label>
-        <a href="#elenco-palestre" class="inline-flex min-h-[3.35rem] items-center justify-center rounded-2xl px-5 text-center text-sm font-bold text-white transition sc-button" on:click={applySearchNow}>
+        <a href="#elenco-palestre" class="inline-flex min-h-[3.35rem] items-center justify-center rounded-xl px-5 text-center text-sm font-bold text-white transition sc-button" on:click={applySearchNow}>
           Trova palestra
         </a>
       </div>
@@ -1218,7 +1218,7 @@
         {@const priceInfo = priceForCard(gym)}
         <article
           id={`gym-${gym.id}`}
-          class="group flex h-full flex-col overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg sc-card sc-gym-card"
+          class="group flex h-full flex-col overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl sc-card sc-gym-card"
           style={`animation-delay:${i * 20}ms`}
         >
           <div class="relative h-40 overflow-hidden">

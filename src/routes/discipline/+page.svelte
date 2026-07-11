@@ -69,7 +69,7 @@
         <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
           Leggi criteri pratici prima di aprire le schede delle palestre.
         </p>
-        <a href="/guide" class="mt-4 inline-flex min-h-[2.75rem] items-center rounded-xl bg-slate-900 px-4 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">
+        <a href="/guide" class="mt-4 inline-flex min-h-[2.75rem] items-center px-4 text-sm font-bold text-white transition sc-button">
           Apri le guide
         </a>
       </div>
@@ -95,7 +95,7 @@
             <p class="mt-2 text-sm leading-6 text-slate-600">{shortDescription(discipline.description)}</p>
             <div class="mt-auto flex items-center justify-between gap-3 pt-4">
               <span class="text-sm font-semibold text-emerald-800">{formatCount(discipline.count, 'scheda pubblica', 'schede pubbliche')}</span>
-              <span class="inline-flex min-h-[2.35rem] items-center rounded-xl bg-slate-900 px-3 text-sm font-bold text-white">Apri</span>
+              <span class="inline-flex min-h-[2.35rem] items-center px-3 text-sm font-bold sc-button">Apri</span>
             </div>
           </a>
         {/each}
@@ -120,7 +120,7 @@
               <p class="mt-2 text-sm leading-6 text-slate-600">{shortDescription(discipline.description || `Schede pubbliche collegate a ${discipline.name}.`)}</p>
               <div class="mt-auto flex items-center justify-between gap-3 pt-4">
                 <span class="text-sm font-semibold text-slate-700">{formatCount(discipline.count, 'scheda collegata', 'schede collegate')}</span>
-                <span class="inline-flex min-h-[2.35rem] items-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-slate-900">Apri</span>
+                <span class="inline-flex min-h-[2.35rem] items-center px-3 text-sm font-bold sc-button sc-button--secondary">Apri</span>
               </div>
             </a>
           {/each}

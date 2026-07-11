@@ -47,27 +47,27 @@
       <div class="grid gap-4 md:grid-cols-2">
         <label class="grid gap-2">
           <span class="text-sm font-semibold text-slate-700">Telefono</span>
-          <input name="telefono" value={values.telefono || ''} class="rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none ring-slate-900 focus:ring-2" />
+          <input name="telefono" value={values.telefono || ''} class="rounded-xl px-3 py-2.5 text-sm outline-none ring-slate-900 focus:ring-2 sc-input sc-filter-field" />
         </label>
         <label class="grid gap-2">
           <span class="text-sm font-semibold text-slate-700">Email</span>
-          <input name="email" type="email" value={values.email || ''} class="rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none ring-slate-900 focus:ring-2" />
+          <input name="email" type="email" value={values.email || ''} class="rounded-xl px-3 py-2.5 text-sm outline-none ring-slate-900 focus:ring-2 sc-input sc-filter-field" />
         </label>
       </div>
 
       <label class="grid gap-2">
         <span class="text-sm font-semibold text-slate-700">Sito ufficiale</span>
-        <input name="sito" type="url" value={values.sito || ''} class="rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none ring-slate-900 focus:ring-2" />
+        <input name="sito" type="url" value={values.sito || ''} class="rounded-xl px-3 py-2.5 text-sm outline-none ring-slate-900 focus:ring-2 sc-input sc-filter-field" />
       </label>
 
       <label class="grid gap-2">
         <span class="text-sm font-semibold text-slate-700">Orari aggiornati</span>
-        <textarea name="orari" rows="5" class="rounded-2xl border border-slate-200 px-3 py-3 text-sm leading-7 outline-none ring-slate-900 focus:ring-2">{values.orari || ''}</textarea>
+        <textarea name="orari" rows="5" class="rounded-2xl px-3 py-3 text-sm leading-7 outline-none ring-slate-900 focus:ring-2 sc-input sc-filter-field">{values.orari || ''}</textarea>
       </label>
 
       <label class="grid gap-2">
         <span class="text-sm font-semibold text-slate-700">Descrizione proposta</span>
-        <textarea name="descrizione" rows="5" class="rounded-2xl border border-slate-200 px-3 py-3 text-sm leading-7 outline-none ring-slate-900 focus:ring-2">{values.descrizione || ''}</textarea>
+        <textarea name="descrizione" rows="5" class="rounded-2xl px-3 py-3 text-sm leading-7 outline-none ring-slate-900 focus:ring-2 sc-input sc-filter-field">{values.descrizione || ''}</textarea>
       </label>
 
       <label class="grid gap-2">
@@ -76,7 +76,7 @@
           name="image_uploads"
           rows="4"
           placeholder="Inserisci un URL immagine per riga. Le immagini vengono controllate prima della pubblicazione."
-          class="rounded-2xl border border-slate-200 px-3 py-3 text-sm leading-7 outline-none ring-slate-900 focus:ring-2"
+          class="rounded-2xl px-3 py-3 text-sm leading-7 outline-none ring-slate-900 focus:ring-2 sc-input sc-filter-field"
         >{Array.isArray(values.image_uploads) ? values.image_uploads.join('\n') : ''}</textarea>
       </label>
 
@@ -87,10 +87,10 @@
 
       <label class="grid gap-2">
         <span class="text-sm font-semibold text-slate-700">Note per l’admin</span>
-        <textarea name="note" rows="4" class="rounded-2xl border border-slate-200 px-3 py-3 text-sm leading-7 outline-none ring-slate-900 focus:ring-2">{values.note || ''}</textarea>
+        <textarea name="note" rows="4" class="rounded-2xl px-3 py-3 text-sm leading-7 outline-none ring-slate-900 focus:ring-2 sc-input sc-filter-field">{values.note || ''}</textarea>
       </label>
 
-      <button type="submit" class="w-fit rounded-xl bg-slate-900 px-5 py-3 text-sm font-bold text-white hover:bg-slate-800">
+      <button type="submit" class="w-fit px-5 py-3 text-sm font-bold text-white sc-button">
         Invia aggiornamenti in revisione
       </button>
     </form>

@@ -82,7 +82,7 @@
             <p class="mt-2 text-sm leading-6 text-slate-600">{shortDescription(location.description)}</p>
             <div class="mt-auto flex items-center justify-between gap-3 pt-4">
               <span class="text-sm font-semibold text-emerald-800">{formatCount(location.count, 'scheda pubblica', 'schede pubbliche')}</span>
-              <span class="inline-flex min-h-[2.35rem] items-center rounded-xl bg-slate-900 px-3 text-sm font-bold text-white">Apri</span>
+              <span class="inline-flex min-h-[2.35rem] items-center px-3 text-sm font-bold sc-button">Apri</span>
             </div>
           </a>
         {/each}
@@ -107,7 +107,7 @@
               <p class="mt-2 text-sm leading-6 text-slate-600">{shortDescription(location.description || `Schede pubbliche collegate a ${location.name}.`)}</p>
               <div class="mt-auto flex items-center justify-between gap-3 pt-4">
                 <span class="text-sm font-semibold text-slate-700">{formatCount(location.count, 'scheda collegata', 'schede collegate')}</span>
-                <span class="inline-flex min-h-[2.35rem] items-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-slate-900">Apri</span>
+                <span class="inline-flex min-h-[2.35rem] items-center px-3 text-sm font-bold sc-button sc-button--secondary">Apri</span>
               </div>
             </a>
           {/each}

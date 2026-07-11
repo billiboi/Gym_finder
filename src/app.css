@@ -470,6 +470,7 @@ body {
 .sc-button {
   display: inline-flex;
   min-height: 2.75rem;
+  border-radius: 0.75rem !important;
   align-items: center;
   justify-content: center;
   border: 1px solid var(--brand-navy);
