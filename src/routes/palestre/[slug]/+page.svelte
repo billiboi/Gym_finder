@@ -15,7 +15,7 @@
     structuredAddressForGym
   } from '$lib/gym-detail';
   import { canonicalizeDiscipline, isPublicDisciplineSlug } from '$lib/discipline-taxonomy';
-  import { isAlwaysOpen, weeklyHoursRows } from '$lib/hours';
+  import { isAlwaysOpen, isGymOpenNow, weeklyHoursRows } from '$lib/hours';
   import { SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
   import { appendSiteName, buildGymSeoMeta } from '$lib/seo-meta';
   import { gymTrackingPayload, trackEvent } from '$lib/tracking';
@@ -124,6 +124,8 @@
   );
   $: officialScheduleCards = textCardArray(officialOverride?.scheduleCards);
   $: officialFaqItems = faqArray(officialOverride?.faqItems);
+  $: editorialFaqItems = faqArray(gym?.editorial_faq_items);
+  $: faqItems = officialFaqItems.length ? officialFaqItems : editorialFaqItems;
   $: cityLabel = cityLabelForGym(gym);
   $: imageAsset = imageForGym(gym);
   $: imageMeta =
@@ -135,6 +137,7 @@
   $: hoursInfo = !rawHoursInfo || rawHoursInfo === 'Orari da verificare' || rawHoursInfo === 'Orari n/d' ? 'Orari da confermare' : rawHoursInfo;
   $: hoursRows = weeklyHoursRows(hoursInfo);
   $: alwaysOpen = isAlwaysOpen(hoursInfo);
+  $: isOpenNow = isGymOpenNow(hoursInfo);
   $: address = officialOverride?.address || formatAddressForDisplay(gym);
   $: structuredAddress = structuredAddressForGym(gym);
   $: isIndexable = isIndexableGym(gym);
@@ -225,11 +228,11 @@
         : undefined
     }
   ];
-  $: faqStructuredData = officialFaqItems.length
+  $: faqStructuredData = faqItems.length
     ? {
         '@context': 'https://schema.org',
         '@type': 'FAQPage',
-        mainEntity: officialFaqItems.map((item) => ({
+        mainEntity: faqItems.map((item) => ({
           '@type': 'Question',
           name: item.question,
           acceptedAnswer: {
@@ -308,23 +311,28 @@
         <div class="flex flex-col gap-3 p-4">
           <div class="space-y-3">
             <div class="flex flex-wrap gap-2">
-              {#each disciplines as discipline}
+              {#each disciplines as discipline, i}
                 {@const href = disciplineHref(discipline)}
+                {@const chipClass = `rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.14em] sc-discipline-chip ${i === 0 ? 'sc-discipline-chip--primary' : ''}`}
                 {#if href}
-                  <a
-                    {href}
-                    class="rounded-full bg-slate-900 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-white transition hover:bg-slate-700 sc-badge sc-badge--accent"
-                  >
+                  <a {href} class="{chipClass} transition hover:opacity-90">
                     {discipline}
                   </a>
                 {:else}
-                  <span class="rounded-full bg-slate-900 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-white sc-badge sc-badge--accent">
+                  <span class={chipClass}>
                     {discipline}
                   </span>
                 {/if}
               {/each}
+              {#if isOpenNow !== null}
+                <span class={`rounded-full px-2.5 py-1 text-xs font-bold uppercase tracking-[0.18em] sc-status-pill--${isOpenNow ? 'open' : 'closed'}`}>
+                  {isOpenNow ? 'Aperta ora' : 'Chiusa ora'}
+                </span>
+              {/if}
               {#if isVerified}
                 <span class="rounded-full px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] sc-badge sc-badge--success">Verificata</span>
+              {:else}
+                <span class="rounded-full px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] sc-badge sc-badge--muted">Info da confermare</span>
               {/if}
             </div>
 
@@ -404,18 +412,6 @@
               {/if}
             </div>
 
-            {#if hasCoordinates}
-              <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white sc-detail-map-preview">
-                <iframe
-                  title={`Mappa ${fixGymText(gym?.name)}`}
-                  src={osmEmbedHref}
-                  class="h-56 w-full"
-                  loading="lazy"
-                  width="640"
-                  height="224"
-                ></iframe>
-              </div>
-            {/if}
           </div>
         </div>
       </div>
@@ -444,10 +440,26 @@
               >
                 Visita il sito ufficiale
               </a>
+              {#if hostFor(website)}
+                <p class="mt-1 text-xs font-semibold text-slate-500">{hostFor(website)}</p>
+              {/if}
             {:else}
               <p class="mt-2 text-sm font-semibold text-slate-900 sm:text-base sc-detail-value">Non disponibile</p>
             {/if}
           </div>
+
+          {#if hasCoordinates}
+            <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white lg:col-span-3">
+              <iframe
+                title={`Mappa ${fixGymText(gym?.name)}`}
+                src={osmEmbedHref}
+                class="h-72 w-full sm:h-80"
+                loading="lazy"
+                width="960"
+                height="320"
+              ></iframe>
+            </div>
+          {/if}
 
           <div class="rounded-2xl border border-slate-200 bg-white/90 p-4 sc-detail-meta lg:col-span-3">
             <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">
@@ -478,7 +490,7 @@
     </section>
 
     <div class="grid gap-3 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
-      <div class="flex min-w-0 flex-col gap-3">
+      <div class="order-2 flex min-w-0 flex-col gap-3 lg:order-1">
         {#if hasOfficialData}
           <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-5">
             <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
@@ -601,7 +613,7 @@
           </section>
         {/if}
 
-        {#if officialFaqItems.length}
+        {#if faqItems.length}
           <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sc-detail-section sm:p-5">
             <div class="max-w-3xl">
               <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">FAQ ufficiali</p>
@@ -609,7 +621,7 @@
             </div>
 
             <div class="mt-5 grid gap-3">
-              {#each officialFaqItems as item}
+              {#each faqItems as item}
                 <article class="rounded-2xl border border-slate-200 bg-white/90 p-4 sc-detail-card">
                   <h3 class="text-base font-bold leading-6 text-slate-950">{item.question}</h3>
                   <p class="mt-2 text-sm leading-7 text-slate-600 sm:text-base">{item.answer}</p>
@@ -621,7 +633,7 @@
 
       </div>
 
-      <aside class="flex min-w-0 flex-col gap-3 lg:sticky lg:top-24">
+      <aside class="order-1 flex min-w-0 flex-col gap-3 lg:order-2 lg:sticky lg:top-24">
         <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sc-detail-section sm:p-5">
           <div>
             <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Dati pubblici</p>

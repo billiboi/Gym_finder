@@ -354,8 +354,7 @@ function slugifyName(name) {
 }
 
 function publicDetailGym(gym) {
-  const { editorial_faq_items, ...publicGym } = sanitizePublicGymData(gym) || {};
-  return publicGym;
+  return sanitizePublicGymData(gym) || {};
 }
 
 function isPublicReviewGym(gym) {
