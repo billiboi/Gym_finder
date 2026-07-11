@@ -13,7 +13,7 @@ Principali rischi admin:
 - alcune action leggono tutto il catalogo prima di aggiornare un solo record;
 - bulk update in `riclassifica` usa `Promise.all` su più `updateGymRecord()` senza limite di concorrenza;
 - alcune action di qualità salvano audit log con record completi in `before_data/after_data`;
-- `admin/prezzi` può fare scraping live lato admin e carica tutto il catalogo per calcolare report.
+- `admin/prezzi` può fare scraping live lato admin e carica tutto il catalogo per calcolare report. **Risolto in Fase 3 (2026-07-11, vedi `docs/admin-redesign.md`)**: `/admin/prezzi` è ora solo un redirect; lo scraping live vive in `/admin/gyms/[id]` (azione `analyzeOfficialSite`), scoped a una sola scheda per volta invece che fino a 40 in batch; `/admin/qualita/contenuti` mostra solo una lista candidati, senza scraping.
 
 Cosa sistemare prima:
 
@@ -49,8 +49,8 @@ Cosa lasciare dopo:
 | `src/routes/admin/gyms/[id]/+page.server.js` | Action update rilegge tutto per aggiornare un solo record. | `readGyms()` poi `findIndex`, poi `updateGymRecord`. | Alto: payload completo per singola modifica. | Leggere solo record target prima dell'update oppure usare patch mirata con optimistic `updated_at`. |
 | `src/routes/admin/qualita/+page.server.js` | Pagina qualità carica tutto il catalogo e tutti i claim, calcola duplicati/stats in memoria. | `readGyms()` + `readClaimRequests()`. | Alto: pagina molto pesante, usa molti campi anche JSON (`weekly_hours`, descrizioni, enrichment per flag). | Paginare lista qualità. Separare stats aggregate da lista. Caricare solo campi necessari ai flag visibili. Claim index solo con campi minimi e limit/status. |
 | `src/routes/admin/riclassifica/+page.server.js` | Lista riclassifica carica tutto il catalogo completo. | `readGyms()` via `getGymsWithFallback()`. | Alto: tabella admin per discipline scarica campi non necessari. | Query admin-list con campi minimi: id, name, city, address, discipline/disciplines, verified, deleted_at. Paginazione e filtri server-side. |
-| `src/routes/admin/prezzi/+page.server.js` | Load prezzi carica tutto il catalogo per stats/report live. | `Promise.all([... readGyms().catch(() => [])])`. | Alto: pagina rara ma molto larga; usa anche report locali fino a 200 righe. | Proiezione minima per stats prezzi/descrizioni, paginazione report, nessun `readGyms()` completo in load. |
-| `src/routes/admin/prezzi/+page.server.js` | Action `generatePreview` legge tutto e poi fa scraping live. | `readGyms()` + `generatePreviewFromGyms(...)` + `fetchHtml(...)`. | Alto: traffico DB + traffico esterno; può essere lanciato da admin. | Spostare in job/script con conferma, limit basso, rate limit, stato progressivo. Non farlo come normale action web senza coda. |
+| `src/routes/admin/qualita/contenuti/+page.server.js` (**era `admin/prezzi`, risolto Fase 3 2026-07-11**) | Load candidati carica tutto il catalogo solo se manca il report CLI locale. | `readGyms()` come fallback in `buildLiveCandidates`, altrimenti legge un report `price-enrichment-candidates-*.json`. | Medio (ridotto da Alto): niente più 4 report letti in parallelo né scraping in load; resta un `readGyms()` completo nel caso senza report. | Proiezione minima per la lista candidati, nessun `readGyms()` completo quando manca il report. |
+| `src/routes/admin/gyms/[id]/+page.server.js` (**azione `analyzeOfficialSite`, era `generatePreview` in `admin/prezzi`, risolto Fase 3 2026-07-11**) | Scraping live scoped a una sola scheda per invocazione (non più batch fino a 40). | `readAdminGymById(params.id)` + `analyzeGymOfficialSite(gym)` + `fetchHtml(...)`. | Medio (ridotto da Alto): nessuna lettura completa del catalogo; traffico esterno resta ma limitato a 1 scheda per click, non a un batch scelto liberamente dall'admin. | Valutare rate limit per-sessione se l'uso diventa frequente; per ora resta una normale action web, non una coda. |
 | `src/routes/admin/richieste/+page.server.js` | Pagina richieste legge tutti i claim; approvazione claim legge tutto il catalogo per trovare palestra. | `readClaimRequests()` in load/action; `readGyms()` in `approveClaimAndVerifyGym`. | Alto: claim non paginati e ricerca palestra su catalogo completo. | Paginare claim. Per approvazione usare `gym_id` diretto o query mirata per id/slug/name, con fallback controllato. |
 | `src/lib/server/admin-audit-store.js` | Lista audit log ha `limit`, ma include `before_data` e `after_data`. | `select: 'id,created_at,actor,action,table_name,record_id,before_data,after_data'` con `limit<=100`. | Alto: anche 50 righe possono essere enormi se before/after contengono record palestra completi. | Lista: `id,created_at,actor,action,table_name,record_id` più dimensione/summary. Dettaglio audit on demand con JSON. |
 
@@ -60,7 +60,7 @@ Cosa lasciare dopo:
 | --- | --- | --- | --- | --- |
 | `src/routes/admin/schede/+page.server.js` | Create/update/delete/restore/duplicate rileggono tutto il catalogo per validare o trovare record. | `getGymsWithFallback(fetch)` in più action. | Medio/alto: action singole, ma payload completo. | Helper `readAdminGymById` e patch/update mirati. Per create non serve leggere tutto salvo deduplica esplicita. |
 | `src/routes/admin/qualita/+page.server.js` | `normalizeDisciplines` aggiorna selezionati in loop sequenziale, ma parte da lettura completa fresh. | `readGyms({ fresh: true })`, poi `for (const gym of changed) await updateGymRecord(gym)`. | Medio: scritture sequenziali ok, ma lettura completa e audit con payload `records` possono crescere. | Leggere solo ID selezionati, max batch, audit compatto. |
-| `src/routes/admin/prezzi/+page.server.js` | Legge file report locali da `data/` e mostra fino a 200 righe. | `readLatestReport(...)`, `rows.slice(0, 200)`. | Medio: non Supabase, ma può pesare render e memoria se JSON locali grandi. | Caricare solo metadata e paginare righe report. |
+| `src/routes/admin/qualita/contenuti/+page.server.js` (**era `admin/prezzi`, risolto Fase 3 2026-07-11**) | Legge un solo report locale (`price-enrichment-candidates-*.json`, non più 4) e mostra fino a 200 righe. | `readLatestCandidatesReport(...)`, `rows.slice(0, 200)`. | Basso/medio (ridotto): un solo report invece di quattro letti in parallelo. | Caricare solo metadata e paginare righe report, se il report locale crescesse molto. |
 | `src/lib/server/claim-request-store.js` | POST/PATCH claim usa `Prefer: return=representation`. | `Prefer: 'return=representation'`. | Medio: dopo scrittura ritorna record completo, incluso campi estesi. | Usare `return=minimal` dove possibile, oppure `select`/ritorno ristretto post-write. |
 | `src/routes/admin/import/+page.server.js` | Fuori lista principale, ma grep mostra `readGyms()` e scrittura audit diretta. | `readGyms()` in import/dry run; fetch diretto `admin_audit_log`. | Medio/alto, area operativa sensibile. | Audit dedicato futuro su import; mantenere conferme, backup e limiti. |
 
@@ -73,7 +73,7 @@ Cosa lasciare dopo:
 | `/admin/gyms/[id]` | tutto `gyms` completo per un ID. | Nessuna paginazione: query by ID `limit=1`. | Form detail: campi modificabili e descrizioni necessarie, non tutto il catalogo. |
 | `/admin/qualita` | tutto `gyms` completo + claim completi, duplicati/stats in memoria. | `limit=50`, filtri problema server-side, stats separate. | Per lista: id, name, city, address, phone, website, hours, discipline, verified, deleted_at, quality score fields. Claim index minimo. |
 | `/admin/riclassifica` | tutto `gyms` completo. | `limit=50`, search/filtro discipline server-side, bulk solo su pagina/selezione. | id, name, city, address, discipline/disciplines, verified, deleted_at. |
-| `/admin/prezzi` | tutto `gyms` per stats live + report locali. | Limit report, stats con campi minimi, preview job separato. | id, name, city, website, price_info, description/descrizione flag, hours/phone solo se necessari. |
+| `/admin/qualita/contenuti` (**era `/admin/prezzi`, risolto Fase 3 2026-07-11**) | `gyms` completo solo come fallback senza report locale; niente più scraping né 4 tab. | Limit report, stats con campi minimi. | id, name, city, website, price_info, description/descrizione flag, hours/phone solo se necessari. |
 | `/admin/richieste` | tutti i claim completi. | `limit=50`, `offset`, filtro status. | id, created_at, gym_id, gym_name, gym_url, requester_name, requester_email, status, updated_at. Dettaglio con `message`, `requested_updates`, `image_uploads`, `admin_notes`. |
 | `/admin/audit` | 50 audit log con JSON before/after. | Lista `limit=50` ok, ma senza JSON; detail on demand. | id, created_at, actor, action, table_name, record_id, maybe summary/diff_size. |
 
@@ -169,7 +169,7 @@ Conferme necessarie:
 
 1. Paginare `/admin/qualita` e separare stats aggregate da lista.
 2. Paginare `/admin/riclassifica`; limitare bulk update e rimuovere `Promise.all` non limitato.
-3. Ottimizzare `/admin/prezzi` con query minima e job separato per preview/scraping.
+3. ~~Ottimizzare `/admin/prezzi` con query minima e job separato per preview/scraping.~~ Fatto in Fase 3 (2026-07-11): pagina batch sostituita da `/admin/qualita/contenuti` (lista) + scraping scoped a 1 scheda per volta in `/admin/gyms/[id]`.
 4. Sostituire action che leggono tutto il catalogo con letture per ID o batch ID.
 5. Ridurre audit payload in tutte le action qualità/claim.
 

@@ -50,7 +50,7 @@ Chiamanti principali rilevati:
 - `src/routes/admin/gyms/[id]/+page.server.js`: non usa il ritorno.
 - `src/routes/admin/qualita/+page.server.js`: non usa il ritorno.
 - `src/routes/admin/riclassifica/+page.server.js`: non usa il ritorno.
-- `src/routes/admin/prezzi/+page.server.js`: non usa il ritorno.
+- ~~`src/routes/admin/prezzi/+page.server.js`: non usa il ritorno.~~ Risolto in Fase 3 (2026-07-11): `/admin/prezzi` ora è solo un redirect e non chiama più `updateGymRecord()`. Le chiamate equivalenti (accept per-campo, approvazione editoriale) sono state spostate in `src/routes/admin/gyms/[id]/+page.server.js`, già elencato sopra — anche le nuove azioni non usano il ritorno.
 - `src/routes/admin/richieste/+page.server.js`: usa il ritorno in `savedGymRows` per `gym_id`, `recordId` e audit.
 
 ## 6. Modifica a `updateGymRecord()`

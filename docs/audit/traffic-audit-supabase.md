@@ -37,7 +37,7 @@ Audit read-only del codice. Non sono stati eseguiti script, export, scraping, sy
 | `src/routes/admin/qualita/+page.server.js:358-447` | Admin qualita carica tutte le palestre, claim e calcola molti flag. | `readGyms()` + `readClaimRequests()` | Utile ma pesante: full dataset, duplicate groups, stats e liste. | Paginare per categoria problema; calcolare stats con query dedicate; caricare duplicate/candidati on demand. |
 | `src/routes/admin/riclassifica/+page.server.js:24-110` | Admin riclassifica carica tutte le schede. | `readGyms()` fallback `/api/gyms` | Payload completo per mostrare tabella ridotta. | Lista paginata con query minima; bulk solo su ID selezionati. |
 | `src/routes/admin/riclassifica/+page.server.js:310` | Bulk update parallelo. | `Promise.all(changedGyms.map((gym) => updateGymRecord(gym)))` | Puo generare molte PATCH simultanee e traffico Vercel/Supabase; ogni update ritorna `representation`. | Limitare concorrenza, usare `return=minimal`, batch controllato e audit compatto. |
-| `src/routes/admin/prezzi/+page.server.js:254-348` | Area admin prezzi fa fetch HTML verso siti esterni. | `fetchHtml(url)` + `discoverPages(website)` | Non e traffico Supabase, ma puo generare traffico Vercel e scraping se usata dall'admin. | Disabilitare in produzione o mettere rate limit, allowlist, dry-run esplicito e limite per richiesta. |
+| `src/routes/admin/gyms/[id]/+page.server.js` (**azione `analyzeOfficialSite`, era `admin/prezzi`, risolto Fase 3 2026-07-11**) | Fetch HTML verso siti esterni, ora scoped a una sola scheda per invocazione invece che fino a 40 in batch. | `fetchHtml(url)` + `discoverPages(website)` in `src/lib/server/official-content-analysis.js`. | Non e traffico Supabase; traffico Vercel/scraping esterno resta ma ridotto al singolo click admin su una scheda. | Valutare rate limit per-sessione se l'uso diventa frequente; per ora nessun allowlist/dry-run esplicito oltre al limite di 1 scheda. |
 
 ## 4. Problemi P2/P3
 
@@ -71,7 +71,7 @@ Audit read-only del codice. Non sono stati eseguiti script, export, scraping, sy
 | `src/routes/admin/gyms/[id]/+page.server.js` | Tutte le schede per trovare un ID e generare descrizione con contesto. | Si. | No per dettaglio; serve query by id. | No, serve detail query. |
 | `src/routes/admin/riclassifica/+page.server.js` | Tutte le schede per verifica/archivio/applica disciplina. | Si. | Si. | Si, con bulk per ID. |
 | `src/routes/admin/qualita/+page.server.js` | Tutte le schede, claim, duplicati, flags, candidati normalizzazione. | Si, molto. | Si, per categorie e filtri problema. | Si, piu caricamenti on demand. |
-| `src/routes/admin/prezzi/+page.server.js` | Report locali e `readGyms()`; azione manuale puo fetchare pagine esterne. | Medio. | Si per selezione candidate. | Si, e rate limit scraping admin. |
+| `src/routes/admin/qualita/contenuti/+page.server.js` (**era `admin/prezzi`, risolto Fase 3 2026-07-11**) | Un report locale (non piu 4) e `readGyms()` solo come fallback; lo scraping manuale e' su `/admin/gyms/[id]`, non piu qui. | Medio (ridotto). | Si per selezione candidate. | Gia paginato a 200 righe; lo scraping scoped a 1 scheda non ha ancora rate limit esplicito. |
 | `src/routes/admin/audit/+page.server.js` | Ultimi 50 record audit con JSON before/after. | Limit presente, ma JSON potenzialmente pesante. | No. | Meglio lista metadata + dettaglio on demand. |
 | `src/routes/admin/export/gyms.csv/+server.js` | Tutte le palestre in CSV. | Si, ma manuale. | No. | Streaming/paginazione o conferma forte. |
 
@@ -129,5 +129,5 @@ Audit read-only del codice. Non sono stati eseguiti script, export, scraping, sy
 1. Prerender o cache lunga per sitemap, indici zone/discipline e pagine statistiche.
 2. Rendere audit log list-only: metadata nella lista, JSON diff on demand.
 3. Nei report/script usare colonne esplicite, `--limit`, paginazione e staging guard.
-4. Rate limit e allowlist per fetch HTML admin/prezzi/enrichment.
+4. Rate limit e allowlist per fetch HTML admin (ora in `/admin/gyms/[id]`, azione `analyzeOfficialSite`, scoped a 1 scheda per volta dalla Fase 3 2026-07-11) ed enrichment.
 5. Aggiungere logging dimensione payload e contatori per endpoint critici, senza dati personali.
