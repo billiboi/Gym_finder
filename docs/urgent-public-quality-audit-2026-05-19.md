@@ -1,5 +1,9 @@
 # Audit correttivo pubblico urgente - 2026-05-19
 
+## Stato (verificato 2026-07-11)
+
+**Confermato eseguito.** Verifica diretta su produzione (sola lettura) di tutti e 7 gli ID: i campi contaminati (`descrizione`, `official_source_url`, `editorial_summary`, `editorial_highlights`, `editorial_faq_items`, `price_info`, `price_source_url`) sono vuoti su tutti e 7, e `enrichment_notes` corrisponde esattamente alle stringhe dello SQL correttivo qui sotto — quindi lo SQL è stato eseguito, anche se non era mai stato spuntato nella checklist. Unica incoerenza residua: `csv-194` e `csv-606` hanno `needs_review=false` (invece di `true` come gli altri 5), senza impatto pubblico dato che i campi sono già vuoti — pulizia facoltativa, non un rischio dati.
+
 ## Scope
 
 Audit eseguito prima su staging/preview. Nessuna modifica diretta a Supabase production eseguita da Codex.
@@ -129,3 +133,5 @@ commit;
 5. Aprire le 7 schede pubbliche corrette.
 6. Controllare che non compaiano più CrossFit Varese, Good Life Academy, SMASH X3, De Nittis Choy Lay Fut, MADDYFIT, Emotion Fitness o TC Lugano 1903.
 7. Controllare JSON-LD delle pagine.
+
+**Punti 1-3 confermati eseguiti** (vedi "Stato" in cima al documento — i 7 record risultano già ripuliti in produzione). Punti 4-7 (verifica `admin_audit_log`, apertura schede pubbliche, controllo JSON-LD) non ri-verificati in questo passaggio — da fare se serve una conferma visiva completa.

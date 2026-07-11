@@ -36,7 +36,7 @@ Cosa lasciare dopo:
 | --- | --- | --- | --- | --- |
 | `src/lib/server/claim-request-store.js` | `readClaimRequestsFromSupabase()` legge tutte le richieste claim con tutti i campi. | `/rest/v1/claim_requests?select=*&order=created_at.desc` | Critico: nessun `limit`, nessuna paginazione, include `requested_updates`, `image_uploads`, `admin_notes`, token e dati di contatto. Crescendo, gonfia traffico e payload admin. | Introdurre `readClaimRequestsList({ limit, offset, status })` con campi lista minimi. Dettaglio claim on demand con campi completi. Default `limit=50`, max `100`. |
 | `src/routes/admin/schede/+page.server.js` | Pagina principale schede carica tutto `gyms` completo per tabella admin. | `readGyms()` via `getGymsWithFallback()`; fallback a `/api/gyms` ora incompatibile perché API restituisce oggetto paginato. | Critico: admin table può scaricare tutto `public.gyms` con descrizioni, JSON, editoriali, prezzi, social e campi enrichment. | Query paginata admin-list con proiezione minima per tabella. Server-side search/filter/sort. Rimuovere fallback `/api/gyms` o adattarlo solo a listing paginato. |
-| `src/routes/admin/export/gyms.csv/+server.js` | Export CSV completo immediato. | `readGyms()` e `gymsToAdminCsv(...)`. | Critico: scarica tutto il catalogo completo e produce export con dati sensibili/payload pieno; endpoint admin ma senza conferma o limiti nel codice server. | Rendere export azione POST confermata, con log audit, rate limit/admin check, proiezione CSV minima, streaming o batch. Evitare export casuale via GET. |
+| `src/routes/admin/export/gyms.csv/+server.js` | Export CSV completo immediato. | `readGyms()` e `gymsToAdminCsv(...)`. | **Parzialmente risolto (2026-07-11)**: endpoint ora `POST`-only (un `GET`, prefetch o crawler non lo innesca più) con `writeAdminAuditLog` a ogni export; i 4 link in admin (`schede`, `qualità`, `sistema`, `candidati/importa-csv`) sono form con submit esplicito. **Resta aperto**: legge ancora `readGyms()` completo, nessuna proiezione minima, nessuno streaming/batch, nessun rate limit. | Proiezione CSV minima, streaming o batch, rate limit. |
 | `src/routes/admin/riclassifica/+page.server.js` | Bulk update parallelo senza limite di concorrenza. | `await Promise.all(changedGyms.map((gym) => updateGymRecord(gym)))`. | Critico: molte update simultanee possono generare burst Supabase, fallimenti parziali e pressione write/audit. | Eseguire update sequenziali o con concorrenza 3-5, limite massimo record, preview/dry-run, conferma esplicita e audit compatto. |
 | `src/routes/admin/qualita/+page.server.js` | Merge e archive scrivono audit log con record completi. | `writeAdminAuditLog({ beforeData: { keep: primary, archive: secondary }, afterData: { keep: mergedPrimary, archive: archivedSecondary } })` e `beforeData: gym, afterData: changed`. | Critico storage: `before_data/after_data` possono contenere descrizioni, editoriali, weekly_hours, enrichment e JSON pesanti. | Salvare audit compatto: id, campi cambiati, hash/diff sintetico. Dettaglio completo solo se indispensabile e troncato. |
 
@@ -133,8 +133,8 @@ Paginazione:
 Export CSV:
 
 - `src/routes/admin/export/gyms.csv/+server.js` usa `readGyms()` e genera CSV completo.
-- Rischio traffico alto e possibile esposizione accidentale di dati se l'endpoint admin viene chiamato spesso.
-- Va trasformato in POST confermato, con `no-store`, audit compatto, eventuale rate limit e campi CSV espliciti letti da query dedicata.
+- **POST confermato + audit log fatti (2026-07-11)**: `GET` rimosso, ogni export ora richiede submit esplicito da un form admin e scrive `EXPORT_GYMS_CSV` in `admin_audit_log` (`row_count`, `filename`). `Cache-Control: no-store` era già presente.
+- Resta aperto: nessun rate limit, nessuna proiezione CSV minima da query dedicata (continua a leggere `readGyms()` completo).
 
 Backup/import:
 
@@ -163,7 +163,7 @@ Conferme necessarie:
 3. Cambiare audit log list per non selezionare `before_data/after_data`.
 4. Paginare `/admin/schede` con proiezione admin-list minima.
 5. Sostituire `/admin/gyms/[id]` con query by ID `limit=1`.
-6. Bloccare o convertire export CSV GET in azione POST confermata.
+6. ~~Bloccare o convertire export CSV GET in azione POST confermata.~~ Fatto (2026-07-11): endpoint POST-only con audit log; resta da fare la proiezione minima/streaming (vedi tabella P0 sopra).
 
 ### Fix successivi
 

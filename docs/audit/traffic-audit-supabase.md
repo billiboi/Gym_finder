@@ -47,7 +47,7 @@ Audit read-only del codice. Non sono stati eseguiti script, export, scraping, sy
 | `src/routes/zone/+page.server.js:6` | Pagina indice zone legge tutto. | `readGyms()` | Simile a discipline: traffico non enorme se poco visitata, ma full read. | Cache/prerender o query minima. Priorita P2. |
 | `src/routes/chi-siamo/+page.server.js:6` | Pagina informativa legge tutto per statistiche. | `readGyms()` | Pagina non catalogo che comunque scarica tutto. | Usare stats precomputate o count leggero. Priorita P2. |
 | `src/routes/per-le-palestre/+page.server.js:19` | Pagina business legge tutto per statistiche. | `readGyms()` | Payload completo per pochi numeri. | Query stats/count o cache. Priorita P2. |
-| `src/routes/admin/export/gyms.csv/+server.js:5` | Export admin CSV legge tutte le schede. | `readGyms()` | Manuale/admin, ma full read piu download completo. | Richiedere conferma, stream/paginazione, colonne selezionabili. Priorita P2. |
+| `src/routes/admin/export/gyms.csv/+server.js:5` | Export admin CSV legge tutte le schede. | `readGyms()` | Manuale/admin, ma full read piu download completo. **Conferma POST + audit log fatti (2026-07-11)**; resta stream/paginazione/colonne selezionabili. | Priorita P2, ridotta: solo stream/paginazione, colonne selezionabili. |
 | `src/lib/server/admin-audit-store.js:26-45` | Lettura audit log ha limit, ma seleziona JSON completi. | `select=id,created_at,actor,action,table_name,record_id,before_data,after_data&limit<=100` | Limit presente; il peso dipende da `before_data/after_data`. | Per lista audit usare solo metadata e caricare JSON diff on demand. Priorita P2. |
 | `scripts/report-gym-content-enrichment.mjs:84-118` | Report manuale legge molte righe senza `limit`. | `select=${columns}&order=name.asc` | Colonne limitate, ma no paginazione. Script manuale. | Aggiungere `--limit`, paginazione e staging guard. Priorita P3. |
 | `scripts/sync-reviewed-enrichment-batch.mjs:118-175` | Batch enrichment legge per ID e poi PATCH. | `id=in.(...)`, campi selezionati | Sicuro se batch piccolo; rischio se file batch enorme. | Max batch size, conferma, concorrenza limitata. Priorita P2. |
@@ -73,7 +73,7 @@ Audit read-only del codice. Non sono stati eseguiti script, export, scraping, sy
 | `src/routes/admin/qualita/+page.server.js` | Tutte le schede, claim, duplicati, flags, candidati normalizzazione. | Si, molto. | Si, per categorie e filtri problema. | Si, piu caricamenti on demand. |
 | `src/routes/admin/qualita/contenuti/+page.server.js` (**era `admin/prezzi`, risolto Fase 3 2026-07-11**) | Un report locale (non piu 4) e `readGyms()` solo come fallback; lo scraping manuale e' su `/admin/gyms/[id]`, non piu qui. | Medio (ridotto). | Si per selezione candidate. | Gia paginato a 200 righe; lo scraping scoped a 1 scheda non ha ancora rate limit esplicito. |
 | `src/routes/admin/audit/+page.server.js` | Ultimi 50 record audit con JSON before/after. | Limit presente, ma JSON potenzialmente pesante. | No. | Meglio lista metadata + dettaglio on demand. |
-| `src/routes/admin/export/gyms.csv/+server.js` | Tutte le palestre in CSV. | Si, ma manuale. | No. | Streaming/paginazione o conferma forte. |
+| `src/routes/admin/export/gyms.csv/+server.js` | Tutte le palestre in CSV. | Si, ma manuale. | No. | **Conferma forte fatta (2026-07-11)**: POST-only + audit log. Resta streaming/paginazione. |
 
 ## 7. Script sospetti
 

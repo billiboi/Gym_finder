@@ -36,9 +36,11 @@
       <p class="text-lg font-bold text-slate-900">Log operazioni</p>
       <p class="mt-1 text-sm text-slate-600">Cronologia delle modifiche fatte da admin: cosa è cambiato, quando, su quale scheda.</p>
     </a>
-    <a href="/admin/export/gyms.csv" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-slate-300 hover:shadow-md">
-      <p class="text-lg font-bold text-slate-900">Esporta backup CSV</p>
-      <p class="mt-1 text-sm text-slate-600">Scarica l'intero catalogo schede in formato CSV.</p>
-    </a>
+    <form method="POST" action="/admin/export/gyms.csv" class="rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:border-slate-300 hover:shadow-md">
+      <button type="submit" class="block w-full p-5 text-left">
+        <p class="text-lg font-bold text-slate-900">Esporta backup CSV</p>
+        <p class="mt-1 text-sm text-slate-600">Scarica l'intero catalogo schede in formato CSV.</p>
+      </button>
+    </form>
   </section>
 </main>

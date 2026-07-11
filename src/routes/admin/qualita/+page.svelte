@@ -109,7 +109,9 @@
       <div class="flex flex-wrap gap-2">
         <a href="/admin/schede" class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">Gestione schede</a>
         <a href="/admin/richieste" class="rounded-xl bg-amber-700 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-800">Claim</a>
-        <a href="/admin/export/gyms.csv" class="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-800 ring-1 ring-slate-200 hover:bg-slate-50">Esporta backup</a>
+        <form method="POST" action="/admin/export/gyms.csv">
+          <button type="submit" class="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-800 ring-1 ring-slate-200 hover:bg-slate-50">Esporta backup</button>
+        </form>
       </div>
     </div>
 

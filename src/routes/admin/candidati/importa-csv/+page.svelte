@@ -148,7 +148,9 @@
       </div>
       <div class="flex flex-wrap gap-2">
         <a href="/admin/schede" class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">Gestione schede</a>
-        <a href="/admin/export/gyms.csv" class="rounded-xl bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800">Esporta backup prima</a>
+        <form method="POST" action="/admin/export/gyms.csv">
+          <button type="submit" class="rounded-xl bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800">Esporta backup prima</button>
+        </form>
       </div>
     </div>
 
