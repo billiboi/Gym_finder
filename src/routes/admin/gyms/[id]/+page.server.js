@@ -15,6 +15,17 @@ import {
 import { adminErrorMessage, adminGymView } from '$lib/admin/gyms';
 import { DISCIPLINE_MASTER, DISCIPLINE_ALIAS_ROWS } from '$lib/discipline-taxonomy';
 import { generateGymDescription, pickPublicDescription, scoreDescription } from '$lib/gym-description';
+import { analyzeGymOfficialSite, appendAdminNote, normalizeFaqItems } from '$lib/server/official-content-analysis';
+import { writeAdminAuditLog } from '$lib/server/admin-audit-store';
+
+function parseJsonPayload(value) {
+  try {
+    const parsed = JSON.parse(String(value || '{}'));
+    return parsed && typeof parsed === 'object' ? parsed : {};
+  } catch {
+    return {};
+  }
+}
 
 export async function load({ params }) {
   const gym = await readAdminGymById(params.id);
@@ -155,5 +166,151 @@ export const actions = {
     }
 
     throw redirect(303, `/admin/gyms/${params.id}?saved=1`);
+  },
+
+  analyzeOfficialSite: async ({ params }) => {
+    const currentGym = await readAdminGymById(params.id);
+    if (!currentGym) return fail(404, { error: 'Palestra non trovata.' });
+
+    const officialAnalysis = await analyzeGymOfficialSite(currentGym);
+    return { officialAnalysis };
+  },
+
+  acceptContentField: async ({ params, request }) => {
+    if (!canWriteSupabase()) {
+      return fail(503, {
+        error:
+          'Salvataggio bloccato: questa area admin deve scrivere su Supabase, ma SUPABASE_SERVICE_ROLE_KEY non è disponibile nell\'ambiente corrente.'
+      });
+    }
+
+    const form = await request.formData();
+    const field = clean(form.get('field'));
+    const value = clean(form.get('value'));
+    const sourceUrl = clean(form.get('source_url'));
+
+    if (!['telefono', 'orari', 'prezzi'].includes(field)) {
+      return fail(400, { error: 'Campo non valido.' });
+    }
+    if (!value) {
+      return fail(400, { error: 'Valore proposto assente.' });
+    }
+
+    const currentGym = await readAdminGymById(params.id);
+    if (!currentGym) return fail(404, { error: 'Palestra non trovata.' });
+
+    const now = new Date().toISOString();
+    const note = `Campo "${field}" aggiornato da fonte ufficiale in admin il ${now}.${sourceUrl ? ` Fonte: ${sourceUrl}.` : ''}`;
+
+    const patch =
+      field === 'telefono'
+        ? { telefono: normalizePhone(value), phone: normalizePhone(value) }
+        : field === 'orari'
+          ? { orari: value, hours_info: value }
+          : { price_info: value, price_source_url: sourceUrl || currentGym.price_source_url || '', price_updated_at: now };
+
+    patch.enrichment_notes = appendAdminNote(currentGym.enrichment_notes, note);
+
+    try {
+      await updateGymRecord({ ...currentGym, ...patch });
+    } catch (err) {
+      return fail(500, { error: adminErrorMessage(err, 'Salvataggio non riuscito.') });
+    }
+
+    await writeAdminAuditLog({
+      action: 'CONTENT_ACCEPT_FIELD',
+      recordId: params.id,
+      beforeData: { [field]: currentGym[field] },
+      afterData: patch
+    }).catch(() => {});
+
+    return { contentFieldAccepted: { field, value } };
+  },
+
+  approveEditorial: async ({ params, request }) => {
+    if (!canWriteSupabase()) {
+      return fail(503, {
+        error: 'Pubblicazione bloccata: questa azione deve scrivere su Supabase, ma SUPABASE_SERVICE_ROLE_KEY non è disponibile.'
+      });
+    }
+
+    const form = await request.formData();
+    const approvalType = clean(form.get('approval_type'));
+    const payload = parseJsonPayload(form.get('editorial_payload'));
+
+    if (!['breve', 'lunga', 'tutto'].includes(approvalType)) {
+      return fail(400, { error: 'Tipo approvazione non valido.' });
+    }
+
+    if (payload?.conflicts?.length) {
+      return fail(400, { error: 'Pubblicazione bloccata: la preview contiene conflitti nel confronto scheda/fonte.' });
+    }
+
+    const preview = payload?.editorial_preview || {};
+    const shortText = clean(preview.descrizione_breve);
+    const longText = clean(preview.descrizione_lunga);
+
+    if ((approvalType === 'breve' || approvalType === 'tutto') && !shortText) {
+      return fail(400, { error: 'Descrizione breve assente.' });
+    }
+    if ((approvalType === 'lunga' || approvalType === 'tutto') && !longText) {
+      return fail(400, { error: 'Descrizione lunga assente.' });
+    }
+
+    const currentGym = await readAdminGymById(params.id);
+    if (!currentGym) return fail(404, { error: 'Palestra non trovata.' });
+
+    const now = new Date().toISOString();
+    const source = clean(payload.source_url || currentGym.sito || currentGym.website);
+    const auditNote = `Editoriale approvato in admin (${approvalType}) il ${now}. Livello ${clean(preview.livello) || 'n/d'}, quality score ${Number(preview.quality_score || 0)}. Fonte: ${source || 'solo dati scheda'}.`;
+
+    const patch = {
+      descrizione_source: `admin_editorial_preview:${approvalType}:${now}`,
+      descrizione_quality_score: Number(preview.quality_score || 0) || 0,
+      descrizione_needs_review: false,
+      enrichment_status: 'published',
+      enrichment_updated_at: now,
+      enrichment_notes: appendAdminNote(currentGym.enrichment_notes, auditNote),
+      official_source_url: source || currentGym.official_source_url || ''
+    };
+
+    if (approvalType === 'breve' || approvalType === 'tutto') {
+      patch.editorial_summary = shortText;
+    }
+    if (approvalType === 'lunga' || approvalType === 'tutto') {
+      patch.descrizione_editoriale = longText;
+      patch.descrizione_pubblica = longText;
+    }
+    if (approvalType === 'tutto') {
+      patch.editorial_faq_items = normalizeFaqItems(preview.faq);
+    }
+
+    try {
+      await updateGymRecord({ ...currentGym, ...patch });
+    } catch (err) {
+      return fail(500, { error: adminErrorMessage(err, 'Errore durante la pubblicazione della preview.') });
+    }
+
+    await writeAdminAuditLog({
+      action: 'CONTENT_APPROVE_EDITORIAL',
+      recordId: params.id,
+      beforeData: {
+        descrizione_editoriale: currentGym.descrizione_editoriale,
+        descrizione_pubblica: currentGym.descrizione_pubblica
+      },
+      afterData: patch
+    }).catch(() => {});
+
+    return {
+      editorialPublished: {
+        approval_type: approvalType,
+        message:
+          approvalType === 'breve'
+            ? 'Descrizione breve approvata e pubblicata.'
+            : approvalType === 'lunga'
+              ? 'Descrizione lunga approvata e pubblicata.'
+              : 'Descrizione breve, lunga e FAQ approvate e pubblicate.'
+      }
+    };
   }
 };

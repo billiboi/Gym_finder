@@ -9,11 +9,11 @@ Nessun codice in questo documento. Principio guida: **semplificazione**. L'admin
 | 1. Layout + nav | ✅ Fatto | `680a350` | 9 pill → 5 voci con stato attivo per prefisso route |
 | 2. Dashboard | ✅ Fatto | `c2744d6` | 4 numeri per area + lista "cosa guardare oggi" (candidati recenti, richieste più vecchie, duplicati) |
 | 3. Catalogo | ✅ Fatto | `bed4282` | Editor unico in `/admin/gyms/[id]` (assorbe verified/premium, valida come `schede`); creazione a modale `?new=1`; paginazione con conteggio totale |
-| 4. Qualità | ⚠️ Parziale | `aa6b4c3` | Riclassifica e Descrizioni spostate sotto `/admin/qualita/*` con tab-bar. **Contenuti (`/admin/prezzi`) non spostato**: si è rivelato molto più grande di una ripiantatura — solo la descrizione editoriale ha oggi un percorso di scrittura reale, prezzo/orari/contatti sono proposte mostrate ma mai salvate. Portarlo al design qui sotto richiede costruire da zero l'accept/reject per-campo in `/admin/gyms/[id]`: area separata, non ancora pianificata |
+| 4. Qualità | ✅ Fatto | `aa6b4c3` + successivo | Riclassifica e Descrizioni sotto `/admin/qualita/*`. Contenuti: `/admin/prezzi` (1306 righe, solo la descrizione editoriale aveva un percorso di scrittura reale) sostituito da `/admin/qualita/contenuti` — lista snella di schede candidate — più un nuovo pannello "Contenuti dal sito ufficiale" in `/admin/gyms/[id]` con accept/reject per campo su prezzo, orari, telefono (scope deciso con l'utente: discipline/indirizzo/sito hanno già un campo diretto nello stesso editor). Il tab "Residui" (conflitti prezzo post-merge, nessun report locale committato) è stato eliminato dalla UI, non spostato — resta generabile via `bun run prices:review:queue` |
 | 5. Acquisizione (import CSV) | ✅ Fatto, con una modifica | `75e7ce5` | Spostato su `/admin/candidati/importa-csv`. **Non è un'adozione totale della coda candidati come descritto sotto**: le righe CSV che corrispondono a una scheda già pubblicata continuano ad aggiornarla direttamente (la coda candidati oggi sa solo creare schede nuove, non aggiornarle); solo le righe senza corrispondenza vanno in `gym_candidates` come `source='csv_import'` |
 | 6. Sistema | ✅ Fatto | `680a350` | Pagina landing `/admin/sistema` con pannello di stato ambiente (gymStore/candidatesStore) e link a Log operazioni ed Export CSV; nav già segna "Sistema" attivo su `/admin/sistema`, `/admin/audit`, `/admin/export`. Implementata insieme all'area 1 ma non ancora segnata qui |
 
-Il resto di questo documento è la proposta originale (Fase 2), lasciata intatta come riferimento del design — le due deviazioni sopra (Contenuti, import CSV) sono emerse leggendo il codice reale durante l'implementazione, non erano previste in fase di proposta.
+Il resto di questo documento è la proposta originale (Fase 2), lasciata intatta come riferimento del design — la deviazione sopra (import CSV) è emersa leggendo il codice reale durante l'implementazione, non era prevista in fase di proposta.
 
 ## Inventario reale (letto il codice di ogni pagina, non solo i nomi)
 
@@ -128,7 +128,7 @@ Sotto, non una tabella di tutte le palestre (è già `/admin/schede`), ma una li
 1. ✅ Layout + nav (5 voci, stato attivo, mobile)
 2. ✅ Dashboard (4 numeri + lista corta)
 3. ✅ Catalogo: elimina duplicazione modifica scheda, sposta creazione a modale, aggiungi paginazione con conteggio
-4. ⚠️ Qualità: raggruppa riclassifica/descrizioni/contenuti sotto `/admin/qualita/*` con redirect dai vecchi URL — fatto solo riclassifica + descrizioni, contenuti rimandato (vedi tabella di stato sopra)
+4. ✅ Qualità: raggruppa riclassifica/descrizioni/contenuti sotto `/admin/qualita/*` con redirect dai vecchi URL
 5. ✅ Acquisizione: sposta import CSV nella coda candidati (ultimo, più rischioso) — con la modifica descritta sopra (righe corrispondenti a schede esistenti aggiornano direttamente)
 6. ✅ Sistema: nuova pagina landing, sposta audit/export in nav
 

@@ -5,7 +5,8 @@
   $: tabs = [
     { label: 'Panoramica', href: '/admin/qualita', active: pathname === '/admin/qualita' },
     { label: 'Riclassifica', href: '/admin/qualita/riclassifica', active: pathname === '/admin/qualita/riclassifica' },
-    { label: 'Descrizioni', href: '/admin/qualita/descrizioni', active: pathname === '/admin/qualita/descrizioni' }
+    { label: 'Descrizioni', href: '/admin/qualita/descrizioni', active: pathname === '/admin/qualita/descrizioni' },
+    { label: 'Contenuti', href: '/admin/qualita/contenuti', active: pathname === '/admin/qualita/contenuti' }
   ];
 </script>
 
