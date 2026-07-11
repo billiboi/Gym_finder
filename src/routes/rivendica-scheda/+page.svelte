@@ -233,7 +233,7 @@
         <input type="hidden" name="gym_id" value={currentValues.gym_id} />
         <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
           {#each reasonOptions as option}
-            <label class={`rounded-2xl border p-4 transition ${currentValues.reason === option.value ? 'border-emerald-500 bg-emerald-50/90 shadow-sm' : 'border-slate-200 bg-white/90 hover:border-slate-300'}`}>
+            <label class={`rounded-2xl border p-4 transition has-[:focus-visible]:[outline:3px_solid_rgba(15,163,163,0.36)] has-[:focus-visible]:[outline-offset:3px] ${currentValues.reason === option.value ? 'border-emerald-500 bg-emerald-50/90 shadow-sm' : 'border-slate-200 bg-white/90 hover:border-slate-300'}`}>
               <input class="sr-only" type="radio" name="reason" value={option.value} checked={currentValues.reason === option.value} />
               <div class="flex items-start justify-between gap-3">
                 <div>

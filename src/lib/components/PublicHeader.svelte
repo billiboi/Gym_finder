@@ -80,10 +80,10 @@
             class="sc-header-menu-button inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl border px-3 text-sm font-black md:hidden"
             aria-label={mobileMenuOpen ? 'Chiudi menu' : 'Apri menu'}
             aria-expanded={mobileMenuOpen}
-            aria-controls="public-mobile-menu"
+            aria-controls={mobileMenuOpen ? 'public-mobile-menu' : undefined}
             on:click={() => (mobileMenuOpen = !mobileMenuOpen)}
           >
-            {mobileMenuOpen ? 'X' : 'Menu'}
+            {mobileMenuOpen ? 'Chiudi' : 'Menu'}
           </button>
         </div>
 

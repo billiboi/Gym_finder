@@ -1226,7 +1226,8 @@
               src={image.src}
               alt={`Immagine ${gym.name}`}
               class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-              loading="lazy"
+              loading={i < 3 ? 'eager' : 'lazy'}
+              fetchpriority={i === 0 ? 'high' : undefined}
               decoding="async"
               width="360"
               height="160"

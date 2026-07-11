@@ -286,7 +286,8 @@
                 src={image.src}
                 alt={`Immagine ${gym.name}`}
                 class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                loading="lazy"
+                loading={i < 3 ? 'eager' : 'lazy'}
+                fetchpriority={i === 0 ? 'high' : undefined}
                 decoding="async"
                 width="360"
                 height="176"
@@ -300,7 +301,7 @@
             <div class="space-y-3 p-3 sm:p-4">
               <div class="space-y-1 rounded-2xl sc-gym-card-head p-3">
                 <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">{discipline.name}</p>
-                <h2 class="text-lg font-bold leading-tight text-slate-900">{gym.name}</h2>
+                <h3 class="text-lg font-bold leading-tight text-slate-900">{gym.name}</h3>
                 <div class="mt-3 flex flex-wrap gap-2 sc-discipline-list">
                   <span class="rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.14em] sc-discipline-chip sc-discipline-chip--primary">
                     {disciplinePreview.primary}
