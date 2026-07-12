@@ -337,7 +337,7 @@
             </div>
 
             <div class="rounded-3xl sc-detail-hero p-3.5 lg:p-4">
-              <h1 class="text-4xl font-bold leading-none text-slate-900 sm:text-[3.3rem] sc-detail-title">
+              <h1 class="text-4xl leading-none sm:text-[3.3rem] sc-detail-title">
                 {fixGymText(gym?.name)}
               </h1>
             </div>

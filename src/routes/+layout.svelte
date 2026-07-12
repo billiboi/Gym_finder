@@ -23,7 +23,7 @@
 </script>
 
 <svelte:head>
-  <meta name="theme-color" content="#1f5c4a" />
+  <meta name="theme-color" content="#0d2d44" />
   <meta property="og:site_name" content={SITE_NAME} />
   <meta name="twitter:card" content="summary_large_image" />
   {#if isAdminRoute}

@@ -59,7 +59,7 @@
   $: premium = isPremiumGym(gym);
 </script>
 
-<article class="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl sc-card sc-gym-card" style={`animation-delay:${index * 20}ms`}>
+<article class="group overflow-hidden rounded-2xl transition sc-card sc-gym-card" style={`animation-delay:${index * 20}ms`}>
   <div class="relative h-44 overflow-hidden">
     <img
       src={image.src}
@@ -73,7 +73,7 @@
       sizes="(min-width: 1280px) 31vw, (min-width: 640px) 48vw, 100vw"
       on:error={(event) => handleImageError(event, image)}
     />
-    <span class="absolute left-3 top-3 rounded-full bg-slate-900/85 px-2.5 py-1 text-xs font-bold text-white sc-badge sc-badge--accent">
+    <span class="absolute left-3 top-3 rounded-full px-2.5 py-1 text-xs font-bold text-white sc-badge sc-badge--accent">
       {disciplinePreview.primary}
     </span>
   </div>

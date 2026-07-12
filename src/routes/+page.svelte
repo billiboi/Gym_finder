@@ -752,7 +752,7 @@
           <div class="inline-flex items-center rounded-full border border-emerald-900/10 bg-white/65 px-3 py-1 text-[0.7rem] font-bold uppercase tracking-[0.24em] text-emerald-800">
             Palestre in Zona
           </div>
-          <h1 class="mt-4 text-3xl font-bold leading-tight text-slate-900 sm:text-5xl">Cerca una palestra in zona</h1>
+          <h1 class="mt-4 text-3xl leading-tight sm:text-5xl">Cerca una palestra in zona</h1>
           <p class="mt-4 max-w-2xl text-sm leading-7 text-slate-600 sm:text-[1.05rem]">
             Filtra per città, disciplina o nome. Apri la scheda e controlla orari, indirizzo e contatti prima di chiamare.
           </p>
