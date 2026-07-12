@@ -26,6 +26,51 @@ const SUPABASE_READ_KEY =
 const SUPABASE_GYMS_TABLE = process.env.SUPABASE_GYMS_TABLE || 'gyms';
 const hasSupabaseRead = Boolean(SUPABASE_URL && SUPABASE_READ_KEY);
 
+const DISCIPLINE_GYM_COLUMNS = [
+  'id',
+  'slug',
+  'nome',
+  'name',
+  'indirizzo',
+  'address',
+  'citta',
+  'city',
+  'telefono',
+  'phone',
+  'sito',
+  'website',
+  'discipline',
+  'disciplines',
+  'discipline_aliases',
+  'discipline_canonical_slugs',
+  'orari',
+  'hours_info',
+  'lat',
+  'lng',
+  'latitude',
+  'longitude',
+  'image_url',
+  'is_verified',
+  'is_premium',
+  'priority_score',
+  'deleted_at',
+  'updated_at',
+  'weekly_hours',
+  'descrizione',
+  'description',
+  'descrizione_owner',
+  'descrizione_editoriale',
+  'editorial_summary',
+  'descrizione_generata',
+  'descrizione_pubblica',
+  'descrizione_source',
+  'descrizione_quality_score',
+  'descrizione_needs_review',
+  'needs_review',
+  'data_quality_flags',
+  'safe_public_description'
+];
+
 function supabaseBaseUrl() {
   return SUPABASE_URL.replace(/\/$/, '');
 }
@@ -105,7 +150,7 @@ async function readDisciplineGymPool(discipline) {
   }
 
   const params = [
-    'select=*',
+    `select=${DISCIPLINE_GYM_COLUMNS.join(',')}`,
     'deleted_at=is.null',
     disciplineOrFilter(discipline),
     'order=priority_score.desc.nullslast,nome.asc.nullslast',

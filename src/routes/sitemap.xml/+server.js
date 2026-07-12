@@ -38,7 +38,11 @@ const SITEMAP_GYM_COLUMNS = [
   'latitude',
   'longitude',
   'updated_at',
-  'deleted_at'
+  'deleted_at',
+  'weekly_hours',
+  'data_verified_at',
+  'price_updated_at',
+  'enrichment_updated_at'
 ];
 
 function supabaseBaseUrl() {
@@ -66,7 +70,7 @@ async function readSitemapGyms() {
 
   try {
     const params = [
-      'select=*',
+      `select=${SITEMAP_GYM_COLUMNS.join(',')}`,
       'deleted_at=is.null',
       'order=updated_at.desc.nullslast,nome.asc.nullslast,id.asc',
       'limit=5000'

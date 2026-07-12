@@ -48,11 +48,24 @@ const DISCIPLINE_GYM_COLUMNS = [
   'longitude',
   'image_url',
   'is_verified',
-  'verified',
   'is_premium',
   'priority_score',
   'deleted_at',
-  'updated_at'
+  'updated_at',
+  'weekly_hours',
+  'descrizione',
+  'description',
+  'descrizione_owner',
+  'descrizione_editoriale',
+  'editorial_summary',
+  'descrizione_generata',
+  'descrizione_pubblica',
+  'descrizione_source',
+  'descrizione_quality_score',
+  'descrizione_needs_review',
+  'needs_review',
+  'data_quality_flags',
+  'safe_public_description'
 ];
 
 function supabaseBaseUrl() {
@@ -146,7 +159,7 @@ async function readDisciplineGyms(discipline) {
   }
 
   const params = [
-    'select=*',
+    `select=${DISCIPLINE_GYM_COLUMNS.join(',')}`,
     'deleted_at=is.null',
     disciplineOrFilter(discipline),
     'order=priority_score.desc.nullslast,nome.asc.nullslast',

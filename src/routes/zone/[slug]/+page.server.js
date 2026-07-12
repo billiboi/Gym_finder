@@ -41,11 +41,11 @@ const ZONE_GYM_COLUMNS = [
   'longitude',
   'image_url',
   'is_verified',
-  'verified',
   'is_premium',
   'priority_score',
   'deleted_at',
-  'updated_at'
+  'updated_at',
+  'weekly_hours'
 ];
 
 function supabaseBaseUrl() {
@@ -120,7 +120,7 @@ async function fetchZoneRows(params, limit = INITIAL_ZONE_GYMS + 1) {
   if (!hasSupabaseRead) return [];
 
   try {
-    const url = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?select=*&${params.join('&')}&order=priority_score.desc.nullslast,nome.asc.nullslast&limit=${limit}`;
+    const url = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?select=${ZONE_GYM_COLUMNS.join(',')}&${params.join('&')}&order=priority_score.desc.nullslast,nome.asc.nullslast&limit=${limit}`;
     const response = await fetch(url, {
       method: 'GET',
       headers: supabaseHeaders()

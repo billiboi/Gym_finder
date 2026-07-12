@@ -61,7 +61,6 @@ const DETAIL_GYM_COLUMNS = [
   'longitude',
   'image_url',
   'is_verified',
-  'verified',
   'is_premium',
   'priority_score',
   'deleted_at',
@@ -77,10 +76,8 @@ const DETAIL_GYM_COLUMNS = [
   'price_info',
   'price_source_url',
   'price_updated_at',
-  'verified_commercial_info',
-  'commercial_info_last_checked_at',
-  'source_url',
   'enrichment_status',
+  'enrichment_notes',
   'enrichment_updated_at',
   'social_links',
   'data_verified_at'
@@ -109,7 +106,6 @@ const RELATED_GYM_COLUMNS = [
   'longitude',
   'image_url',
   'is_verified',
-  'verified',
   'is_premium',
   'priority_score',
   'deleted_at',
@@ -143,7 +139,7 @@ function safeLike(value) {
 async function fetchGymRows(columns, params) {
   if (!hasSupabaseRead) return [];
 
-  const url = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?select=*&${params.join('&')}`;
+  const url = `${supabaseBaseUrl()}/rest/v1/${SUPABASE_GYMS_TABLE}?select=${columns.join(',')}&${params.join('&')}`;
   let response;
   try {
     response = await fetch(url, {
