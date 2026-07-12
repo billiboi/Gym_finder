@@ -28,3 +28,4 @@ data/audit-gym-contamination-*.csv
 data/osm-cache/
 static/preview.png
 /audit/
+.env*

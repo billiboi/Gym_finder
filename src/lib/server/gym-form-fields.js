@@ -1,5 +1,6 @@
 import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { put } from '@vercel/blob';
 import { getUploadsDir } from '$lib/server/gym-store';
 import { normalizeDisciplineField, normalizeDisciplineSlugs } from '$lib/disciplines';
 
@@ -113,11 +114,18 @@ export async function persistentImageFromFile(file, gymName) {
     throw new Error('Formato immagine non supportato. Usa JPG, PNG, WEBP o GIF.');
   }
 
-  const maxBytes = 2 * 1024 * 1024;
+  const maxBytes = 5 * 1024 * 1024;
   if (file.size > maxBytes) {
-    throw new Error('Immagine troppo grande per il salvataggio diretto. Usa un file sotto 2 MB oppure incolla un URL immagine.');
+    throw new Error('Immagine troppo grande. Usa un file sotto 5 MB oppure incolla un URL immagine.');
   }
 
-  const buffer = Buffer.from(await file.arrayBuffer());
-  return `data:${file.type};base64,${buffer.toString('base64')}`;
+  const extMap = {
+    'image/jpeg': '.jpg',
+    'image/png': '.png',
+    'image/webp': '.webp',
+    'image/gif': '.gif'
+  };
+  const fileName = `${sanitizeFileName(gymName)}-${Date.now()}${extMap[file.type] || '.jpg'}`;
+  const blob = await put(fileName, file, { access: 'public', contentType: file.type });
+  return blob.url;
 }
