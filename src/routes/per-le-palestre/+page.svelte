@@ -135,7 +135,7 @@
 
 <div class="min-h-screen w-full sc-page">
   <main class="mx-auto w-full max-w-6xl px-4 pb-10 pt-4 sm:px-6 lg:px-8">
-    <section class="rounded-3xl border border-white/80 bg-white/80 p-5 shadow-xl backdrop-blur-sm sc-panel sm:p-7 lg:p-9">
+    <section class="rounded-3xl border border-white/80 bg-white/80 p-5 shadow-xl backdrop-blur-sm sc-hero sm:p-7 lg:p-9">
       <div class="grid gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)] lg:items-center">
         <div>
           <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Per proprietari e manager</p>

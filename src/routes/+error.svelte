@@ -19,7 +19,7 @@
 </svelte:head>
 
 <main class="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8">
-  <section class="sc-panel sc-error-shell rounded-3xl p-5 sm:p-8 lg:p-10">
+  <section class="sc-hero sc-error-shell rounded-3xl p-5 sm:p-8 lg:p-10">
     <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.55fr)] lg:items-center">
       <div class="min-w-0">
         <p class="text-[0.72rem] font-bold uppercase tracking-[0.24em] text-emerald-800">{status}</p>
@@ -43,7 +43,7 @@
         </div>
       </div>
 
-      <aside class="rounded-2xl border border-white/70 bg-white/72 p-4 shadow-sm">
+      <aside class="rounded-2xl border border-white/70 bg-white/72 p-4 shadow-sm sc-hero-card-light">
         <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Indirizzo richiesto</p>
         <p class="mt-2 break-words text-sm font-bold text-slate-900">{requestedPath}</p>
         <div class="mt-4 grid gap-2 text-sm text-slate-600">

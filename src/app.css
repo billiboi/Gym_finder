@@ -620,6 +620,19 @@ button.sc-active-filter-chip:hover {
   backdrop-filter: none !important;
 }
 
+/* .sc-hero/.sc-error-shell must win when a hero band still carries the
+   legacy .sc-panel class too: equal-specificity !important rules would
+   otherwise be decided by source order alone, which is how the navy
+   hero previously rendered as a white .sc-panel card. */
+.sc-panel.sc-hero,
+.sc-panel.sc-error-shell {
+  background: var(--navy-900) !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+  box-shadow: var(--shadow-md) !important;
+  backdrop-filter: none !important;
+  color: var(--on-navy);
+}
+
 .sc-card {
   background: var(--surface) !important;
   border: 1px solid var(--border) !important;
@@ -1565,4 +1578,46 @@ main article.rounded-2xl.border.bg-white:hover {
 .sc-page [class~="border-emerald-900"],
 .sc-page [class~="hover:border-emerald-800/25"] {
   border-color: rgba(255, 255, 255, 0.16) !important;
+}
+
+/* ============================================================
+   Hero band content overrides
+   Placed after the neutralization block above so it wins, by
+   source order, wherever those same emerald/slate utility
+   classes land inside a real navy .sc-hero band instead of a
+   plain white .sc-page card. Elements that carry their own
+   light bg-white/* chip are excluded so nested light pills keep
+   their dark ink text.
+   ============================================================ */
+.sc-hero [class~="text-emerald-800"]:not([class*="bg-white"]),
+.sc-hero [class~="text-emerald-900"]:not([class*="bg-white"]) {
+  color: var(--on-navy) !important;
+}
+
+.sc-hero [class~="text-slate-500"],
+.sc-hero [class~="text-slate-600"],
+.sc-hero [class~="text-slate-700"] {
+  color: var(--on-navy-muted) !important;
+}
+
+/* nested "dark stat panel" boxes (e.g. proof-point figures) lose their
+   contrast once the hero itself is navy; turn them into a frosted-glass
+   panel instead so they still read as a distinct block */
+.sc-hero [class~="bg-emerald-700"],
+.sc-hero [class~="bg-emerald-900"],
+.sc-hero [class~="bg-emerald-950"] {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+}
+
+/* explicit escape hatch: a plain light card nested inside a .sc-hero
+   (e.g. the 404 "requested address" aside) keeps its own dark-on-light
+   text instead of inheriting the hero's light-on-navy remapping above */
+.sc-hero-card-light,
+.sc-hero-card-light [class~="text-slate-500"],
+.sc-hero-card-light [class~="text-slate-600"],
+.sc-hero-card-light [class~="text-slate-700"],
+.sc-hero-card-light [class~="text-emerald-800"],
+.sc-hero-card-light [class~="text-emerald-900"] {
+  color: var(--ink) !important;
 }

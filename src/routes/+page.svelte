@@ -746,7 +746,7 @@
 
 <div class="min-h-screen w-full sc-page relative">
   <main id="top" class="mx-auto w-full max-w-7xl px-4 pb-8 pt-4 sm:px-6 lg:px-8" aria-busy={isBootstrapping}>
-  <section class="reveal rounded-3xl border border-white/80 bg-white/70 p-5 shadow-xl backdrop-blur-sm sm:p-7 sc-panel sc-hero">
+  <section class="reveal rounded-3xl border border-white/80 bg-white/70 p-5 shadow-xl backdrop-blur-sm sm:p-7 sc-hero">
     <div class="mx-auto flex max-w-5xl flex-col gap-3 sc-hero-copy">
         <div class="max-w-3xl">
           <div class="inline-flex items-center rounded-full border border-emerald-900/10 bg-white/65 px-3 py-1 text-[0.7rem] font-bold uppercase tracking-[0.24em] text-emerald-800">
@@ -780,7 +780,7 @@
           </div>
           <div class="mt-4 flex flex-wrap gap-2 text-xs font-bold text-slate-700">
             {#each homepageTrustPoints as point}
-              <span class="rounded-full border border-emerald-900/10 bg-white/75 px-3 py-1.5">{point}</span>
+              <span class="rounded-full border border-emerald-900/10 bg-white/75 px-3 py-1.5 text-slate-700">{point}</span>
             {/each}
           </div>
         </div>

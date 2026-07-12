@@ -102,7 +102,7 @@
       <span class="font-semibold text-slate-900">{location.name}</span>
     </nav>
 
-    <section class="mt-4 rounded-3xl border border-white/80 bg-white/80 p-5 shadow-xl backdrop-blur-sm sc-panel sm:p-7">
+    <section class="mt-4 rounded-3xl border border-white/80 bg-white/80 p-5 shadow-xl backdrop-blur-sm sc-hero sm:p-7">
       <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Landing disciplina + zona</p>
       <h1 class="mt-2 text-3xl font-bold text-slate-900 sm:text-5xl">{discipline.name} a {location.name}</h1>
       <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-600 sm:text-base">

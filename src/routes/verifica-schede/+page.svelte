@@ -57,7 +57,7 @@
 
 <div class="min-h-screen w-full sc-page">
   <main class="mx-auto w-full max-w-6xl px-4 pb-10 pt-4 sm:px-6 lg:px-8">
-    <section class="rounded-3xl border border-white/80 bg-white/80 p-5 shadow-xl backdrop-blur-sm sc-panel sm:p-7 lg:p-9">
+    <section class="rounded-3xl border border-white/80 bg-white/80 p-5 shadow-xl backdrop-blur-sm sc-hero sm:p-7 lg:p-9">
       <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Verifica schede</p>
       <h1 class="mt-3 max-w-4xl text-4xl font-bold leading-tight text-slate-950 sm:text-5xl">
         Come controlliamo aggiornamenti, fonti e richieste sulle schede
