@@ -27,7 +27,8 @@ const DISCIPLINE_INDEX_COLUMNS = [
   'hours_info',
   'discipline',
   'disciplines',
-  'deleted_at'
+  'deleted_at',
+  'weekly_hours'
 ];
 
 function supabaseBaseUrl() {
@@ -45,7 +46,7 @@ async function readDisciplineIndexGyms() {
   if (hasSupabaseRead) {
     try {
       const params = [
-        'select=*',
+        `select=${DISCIPLINE_INDEX_COLUMNS.join(',')}`,
         'deleted_at=is.null',
         'limit=5000'
       ];
