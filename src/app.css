@@ -668,31 +668,6 @@ button.sc-active-filter-chip:hover {
   line-height: 1;
 }
 
-.sc-results-status {
-  display: grid;
-  gap: 0.25rem;
-  min-height: 4rem;
-  align-content: center;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border);
-  background: var(--bg);
-  padding: 0.8rem 0.95rem;
-}
-
-.sc-results-status span {
-  color: var(--ink-soft);
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.sc-results-status strong {
-  color: var(--navy-900);
-  font-size: 0.95rem;
-  font-weight: 600;
-}
-
 .sc-card,
 main article.rounded-2xl.border.bg-white,
 main .rounded-2xl.border.bg-white,

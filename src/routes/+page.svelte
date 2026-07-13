@@ -994,7 +994,7 @@
           </button>
         {/if}
         <p class="min-w-0 text-sm font-semibold text-slate-600" aria-live="polite">
-          {resultsCountLabel} palestre trovate
+          {resultsCountLabel}
         </p>
         {#if hasActiveFilters}
           <button type="button" class="inline-flex min-h-[2.7rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button-ghost" on:click={resetFilters}>
@@ -1129,7 +1129,7 @@
 
   <section id="elenco-palestre" class="mt-5 scroll-mt-6" aria-label="Elenco palestre filtrate">
   <div class="mb-4 overflow-hidden rounded-3xl sc-results-shell">
-    <div class="flex flex-col gap-4 p-4 sm:p-5 lg:flex-row lg:items-center lg:justify-between">
+    <div class="flex flex-col gap-4 p-4 sm:p-5">
       <div class="min-w-0">
         <div class="flex flex-wrap items-center gap-2">
           <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-emerald-800">Elenco palestre</p>
@@ -1139,31 +1139,7 @@
           Confronta le strutture disponibili
         </h2>
       </div>
-
-      <div class="grid gap-2 sm:grid-cols-2 lg:min-w-[22rem]">
-        <div class="sc-results-status">
-          <span>Filtri</span>
-          <strong>{hasActiveFilters ? `${activeFilterCount} ${activeFilterCount === 1 ? 'attivo' : 'attivi'}` : 'Nessuno'}</strong>
-        </div>
-        <div class="sc-results-status">
-          <span>Ordine</span>
-          <strong>{sortMode === 'distance' ? 'Distanza' : sortMode === 'name' ? 'Nome' : sortMode === 'open' ? 'Apertura' : 'Consigliato'}</strong>
-        </div>
-      </div>
     </div>
-
-    {#if hasActiveFilters || locationReady}
-      <div class="flex flex-col gap-3 border-t border-emerald-900/10 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5">
-        <p class="text-sm font-semibold leading-6 text-slate-600">
-          {locationReady ? 'Distanza calcolata dalla tua posizione.' : 'Selezione aggiornata in base alla ricerca.'}
-        </p>
-        {#if hasActiveFilters}
-          <button type="button" class="inline-flex min-h-[2.55rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button-ghost sm:w-auto" on:click={resetFilters}>
-            Azzera filtri
-          </button>
-        {/if}
-      </div>
-    {/if}
   </div>
 
   <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3" aria-live="polite" aria-busy={isBootstrapping}>
