@@ -1,5 +1,5 @@
 <script>
-  import { onDestroy, onMount } from 'svelte';
+  import { onDestroy, onMount, tick } from 'svelte';
   import { dedupeDisciplines, normalizeDisciplineLabel, publicDisciplineFilterOptions } from '$lib/disciplines';
   import { disciplinePreviewForGym, gymHref, imageForGym, isVerifiedGym } from '$lib/gym-detail';
   import { isGymOpenNow, weeklyHoursRows } from '$lib/hours';
@@ -17,6 +17,8 @@
   const INITIAL_VISIBLE_LIMIT = 24;
   const LOAD_MORE_STEP = 24;
   const API_GYM_LIMIT = 24;
+  const MAP_AUTO_LOAD_CAP = 200;
+  const MAP_AUTO_LOAD_MAX_REQUESTS = 8;
 
   const popularSearches = [
     { label: 'Palestre a Varese', href: '/zone/varese' },
@@ -252,6 +254,17 @@
   let backgroundCatalogLoading = false;
   let nextGymOffset = Array.isArray(data?.initialGyms) ? data.initialGyms.length : 0;
 
+  let resultsView = 'list';
+  let activeGymId = '';
+  let mapContainer;
+  let mapInstance = null;
+  let markersLayer = null;
+  let usingMarkerCluster = false;
+  let markerByGymId = new Map();
+  let userMarker = null;
+  let radiusCircle = null;
+  let mapDataLoading = false;
+
   $: {
   filterText;
   filterDiscipline;
@@ -271,6 +284,14 @@
   $: disciplineCount = disciplines.length;
   $: locationReady = Boolean(userLocation);
   $: isBootstrapping = loadingGyms || loadingDisciplines;
+  $: activeGym = activeGymId ? filteredGyms.find((gym) => String(gym.id) === activeGymId) : null;
+  $: if (mapInstance && markersLayer) {
+    filteredGyms;
+    userLocation;
+    nearbyOnly;
+    locationRadius;
+    refreshMap();
+  }
   $: quickSuggestionPool = buildQuickSuggestionPool(gyms, disciplines);
   $: quickSearchSuggestions = filterQuickSuggestions(quickSuggestionPool, searchInput);
   $: activeFilterCount = [
@@ -711,6 +732,267 @@
     visibleLimit += LOAD_MORE_STEP;
   }
 
+  async function ensureGymsForMap() {
+    let requests = 0;
+    mapDataLoading = true;
+    try {
+      while (remoteHasMoreGyms && gyms.length < MAP_AUTO_LOAD_CAP && requests < MAP_AUTO_LOAD_MAX_REQUESTS) {
+        await loadGyms();
+        requests += 1;
+      }
+    } finally {
+      mapDataLoading = false;
+    }
+  }
+
+  function escapeHtml(value) {
+    return String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  async function ensureLeaflet() {
+    if (typeof window === 'undefined') return;
+    if (window.L && window.L.markerClusterGroup) return;
+
+    if (!document.getElementById('leaflet-css')) {
+      const link = document.createElement('link');
+      link.id = 'leaflet-css';
+      link.rel = 'stylesheet';
+      link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+      document.head.appendChild(link);
+    }
+
+    if (!document.getElementById('leaflet-markercluster-css')) {
+      const link = document.createElement('link');
+      link.id = 'leaflet-markercluster-css';
+      link.rel = 'stylesheet';
+      link.href = 'https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css';
+      document.head.appendChild(link);
+    }
+
+    if (!document.getElementById('leaflet-markercluster-default-css')) {
+      const link = document.createElement('link');
+      link.id = 'leaflet-markercluster-default-css';
+      link.rel = 'stylesheet';
+      link.href = 'https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css';
+      document.head.appendChild(link);
+    }
+
+    await new Promise((resolve, reject) => {
+      const existing = document.getElementById('leaflet-js');
+      if (existing) {
+        if (window.L) resolve();
+        else existing.addEventListener('load', resolve, { once: true });
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.id = 'leaflet-js';
+      script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+      script.async = true;
+      script.onload = resolve;
+      script.onerror = reject;
+      document.body.appendChild(script);
+    });
+
+    await new Promise((resolve, reject) => {
+      const existing = document.getElementById('leaflet-markercluster-js');
+      if (existing) {
+        if (window.L?.markerClusterGroup) resolve();
+        else existing.addEventListener('load', resolve, { once: true });
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.id = 'leaflet-markercluster-js';
+      script.src = 'https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js';
+      script.async = true;
+      script.onload = resolve;
+      script.onerror = reject;
+      document.body.appendChild(script);
+    });
+  }
+
+  function createClusterIcon(cluster) {
+    const count = cluster.getChildCount();
+    const size = count < 10 ? 'small' : count < 50 ? 'medium' : 'large';
+    return window.L.divIcon({
+      html: `<span>${count}</span>`,
+      className: `sc-marker-cluster sc-marker-cluster--${size}`,
+      iconSize: window.L.point(size === 'large' ? 58 : size === 'medium' ? 50 : 42, size === 'large' ? 58 : size === 'medium' ? 50 : 42)
+    });
+  }
+
+  function refreshMap() {
+    if (!mapInstance || !window.L || !markersLayer) return;
+
+    markersLayer.clearLayers();
+    markerByGymId = new Map();
+
+    for (const gym of filteredGyms) {
+      const lat = Number(gym.latitude);
+      const lng = Number(gym.longitude);
+      if (!Number.isFinite(lat) || !Number.isFinite(lng)) continue;
+
+      const distance = gym.distance_km !== null && gym.distance_km !== undefined ? `${gym.distance_km} km` : '-';
+      const popupName = escapeHtml(displayName(gym.name));
+      const popupPhone = escapeHtml(displayName(gym.phone) || 'Non disponibile');
+      const detailHref = escapeHtml(gymHref(gym));
+      const popupDiscipline = escapeHtml(disciplineListForGym(gym).join(' | '));
+      const popupAddress = escapeHtml(formatAddressForDisplay(gym));
+
+      const marker = window.L.marker([lat, lng]).bindPopup(
+          `<div class="sc-map-popup">
+            <div class="sc-map-popup-title">${popupName}</div>
+            <div class="sc-map-popup-row">
+              <span class="sc-map-popup-label">Disciplina</span>
+              <span class="sc-map-popup-value">${popupDiscipline}</span>
+            </div>
+            <div class="sc-map-popup-row">
+              <span class="sc-map-popup-label">Indirizzo</span>
+              <span class="sc-map-popup-value">${popupAddress}</span>
+            </div>
+            <div class="sc-map-popup-row">
+              <span class="sc-map-popup-label">Distanza</span>
+              <span class="sc-map-popup-value sc-map-popup-distance">${distance}</span>
+            </div>
+            <div class="sc-map-popup-footer">
+              <span class="sc-map-popup-contact">${popupPhone}</span>
+              <a href="${detailHref}" class="sc-map-popup-link">Scheda completa</a>
+            </div>
+          </div>`,
+          { autoPan: true, className: 'sc-map-popup-shell', keepInView: true, maxWidth: 320 }
+        );
+
+      marker.on('click', () => {
+        activeGymId = String(gym.id);
+        marker.openPopup();
+      });
+      marker.on('popupopen', () => {
+        activeGymId = String(gym.id);
+      });
+      marker.addTo(markersLayer);
+      markerByGymId.set(String(gym.id), marker);
+    }
+
+    if (userMarker) {
+      mapInstance.removeLayer(userMarker);
+      userMarker = null;
+    }
+
+    if (radiusCircle) {
+      mapInstance.removeLayer(radiusCircle);
+      radiusCircle = null;
+    }
+
+    if (userLocation) {
+      userMarker = window.L.marker([userLocation.latitude, userLocation.longitude], {
+        title: 'La tua posizione'
+      }).addTo(mapInstance);
+
+      if (nearbyOnly) {
+        radiusCircle = window.L.circle([userLocation.latitude, userLocation.longitude], {
+          radius: locationRadius * 1000,
+          color: '#2563eb',
+          weight: 2,
+          fillColor: '#60a5fa',
+          fillOpacity: 0.15
+        }).addTo(mapInstance);
+      }
+
+      mapInstance.setView([userLocation.latitude, userLocation.longitude], 11);
+    }
+  }
+
+  async function initMap() {
+    if (mapInstance || !mapContainer) return;
+
+    await ensureLeaflet();
+
+    mapInstance = window.L.map(mapContainer).setView([45.8206, 8.825], 9);
+
+    window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(mapInstance);
+
+    if (window.L?.markerClusterGroup) {
+      usingMarkerCluster = true;
+      markersLayer = window.L.markerClusterGroup({
+        showCoverageOnHover: false,
+        spiderfyOnMaxZoom: true,
+        maxClusterRadius: 42,
+        iconCreateFunction: createClusterIcon
+      }).addTo(mapInstance);
+    } else {
+      usingMarkerCluster = false;
+      markersLayer = window.L.layerGroup().addTo(mapInstance);
+    }
+    refreshMap();
+  }
+
+  async function setResultsView(view) {
+    resultsView = view;
+    if (view !== 'map') return;
+
+    await initMap();
+    await ensureGymsForMap();
+    await tick();
+
+    setTimeout(() => {
+      mapInstance?.invalidateSize();
+      refreshMap();
+    }, 0);
+    setTimeout(() => {
+      mapInstance?.invalidateSize();
+    }, 180);
+  }
+
+  function showResultsList() {
+    resultsView = 'list';
+
+    setTimeout(() => {
+      const target = activeGymId
+        ? document.getElementById(`gym-${activeGymId}`)
+        : document.getElementById('elenco-palestre');
+
+      target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 0);
+  }
+
+  async function focusGymOnMap(gym) {
+    const lat = Number(gym.latitude);
+    const lng = Number(gym.longitude);
+    if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+
+    await setResultsView('map');
+    activeGymId = String(gym.id);
+    await tick();
+
+    setTimeout(() => {
+      if (!mapInstance) return;
+
+      mapInstance.invalidateSize();
+      document.getElementById('mappa-palestre')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      const marker = markerByGymId.get(String(gym.id));
+      const openMarker = () => {
+        mapInstance.setView([lat, lng], Math.max(mapInstance.getZoom(), 14));
+        marker?.openPopup();
+      };
+
+      if (usingMarkerCluster && marker && markersLayer?.zoomToShowLayer) {
+        markersLayer.zoomToShowLayer(marker, openMarker);
+        return;
+      }
+
+      openMarker();
+    }, 0);
+  }
+
   onMount(() => {
     applyUrlSearchParams();
     if (filterText.trim() || filterDiscipline.trim()) {
@@ -720,12 +1002,17 @@
       void loadGyms({ reset: true });
     }
     if (!readCachedCatalog()) scheduleCatalogHydration();
+    if (window.matchMedia('(min-width: 1024px)').matches) void initMap();
   });
 
   onDestroy(() => {
     if (searchDebounceTimer) {
       clearTimeout(searchDebounceTimer);
       searchDebounceTimer = null;
+    }
+    if (mapInstance) {
+      mapInstance.remove();
+      mapInstance = null;
     }
   });
 </script>
@@ -1127,7 +1414,76 @@
     </div>
   </section>
 
-  <section id="elenco-palestre" class="mt-5 scroll-mt-6" aria-label="Elenco palestre filtrate">
+  <div class="mt-5 grid grid-cols-2 gap-2 rounded-2xl border border-white/70 bg-white/80 p-1 shadow-lg sc-mobile-view-toggle lg:hidden" role="group" aria-label="Vista risultati">
+    <button
+      type="button"
+      class={`min-h-[2.8rem] rounded-xl px-3 text-sm font-bold transition ${resultsView === 'list' ? 'sc-button' : 'text-slate-700 hover:bg-white'}`}
+      aria-pressed={resultsView === 'list'}
+      on:click={() => setResultsView('list')}
+    >
+      Lista
+    </button>
+    <button
+      type="button"
+      class={`min-h-[2.8rem] rounded-xl px-3 text-sm font-bold transition ${resultsView === 'map' ? 'sc-button' : 'text-slate-700 hover:bg-white'}`}
+      aria-pressed={resultsView === 'map'}
+      on:click={() => setResultsView('map')}
+    >
+      Mappa
+    </button>
+  </div>
+
+  <div class="mt-5 lg:grid lg:grid-cols-[minmax(340px,0.8fr)_minmax(0,1.2fr)] lg:items-start lg:gap-5">
+  <section id="mappa-palestre" class:hidden={resultsView !== 'map'} class="overflow-hidden rounded-3xl border border-white/70 bg-white/85 shadow-lg sc-panel sc-map lg:sticky lg:top-5 lg:block" aria-label="Mappa delle palestre filtrate">
+    <div class="border-b border-slate-200 px-4 py-4 sm:px-5">
+      <div class="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h2 class="text-lg font-bold text-slate-900">Mappa</h2>
+          <p class="mt-1 hidden text-sm font-semibold text-slate-600 lg:block">Usala mentre scorri i risultati.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button type="button" class="rounded-2xl sc-map-chip px-3 py-2 text-xs font-semibold transition hover:bg-white lg:hidden" on:click={showResultsList}>
+            {activeGymId ? 'Vedi nella lista' : 'Vai alla lista'}
+          </button>
+          <div class="rounded-2xl sc-map-chip px-3 py-2 text-xs font-semibold">
+            {filteredGyms.length} risultati
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="relative">
+      <div class="pointer-events-none absolute inset-x-0 top-0 z-[400] h-16 bg-gradient-to-b from-white/70 to-transparent sc-map-fade"></div>
+      <div bind:this={mapContainer} class="h-[300px] w-full sm:h-[420px] lg:h-[calc(100vh-15rem)] lg:min-h-[520px]" aria-label="Mappa interattiva con i risultati filtrati"></div>
+      {#if isBootstrapping || mapDataLoading}
+        <div class="pointer-events-none absolute inset-0 z-[450] flex items-center justify-center bg-white/55 backdrop-blur-[2px]">
+          <div class="rounded-2xl border border-white/70 bg-white/85 px-4 py-3 text-sm font-semibold text-slate-700 shadow-lg sc-loading-card" role="status" aria-live="polite">
+            Caricamento mappa e palestre...
+          </div>
+        </div>
+      {/if}
+    </div>
+    {#if activeGym}
+      <div class="border-t border-slate-200 bg-white/92 p-4 sm:p-5">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div class="min-w-0">
+            <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Palestra selezionata</p>
+            <h3 class="mt-1 line-clamp-2 text-lg font-bold text-slate-900">{displayName(activeGym.name)}</h3>
+            <p class="mt-1 text-sm font-semibold leading-6 text-slate-600">{formatAddressForDisplay(activeGym)}</p>
+          </div>
+          <div class="flex flex-wrap gap-2 sm:justify-end">
+            <button type="button" class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button-ghost lg:hidden" on:click={showResultsList}>
+              Vedi nella lista
+            </button>
+            <a href={gymHref(activeGym)} class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl px-4 text-sm font-bold text-white transition sc-button">
+              Scheda completa
+            </a>
+          </div>
+        </div>
+      </div>
+    {/if}
+  </section>
+
+  <section id="elenco-palestre" class:hidden={resultsView !== 'list'} class="lg:block" aria-label="Elenco palestre filtrate">
   <div class="mb-4 overflow-hidden rounded-3xl sc-results-shell">
     <div class="flex flex-col gap-4 p-4 sm:p-5">
       <div class="min-w-0">
@@ -1192,9 +1548,10 @@
         {@const openClass = gym.is_open_now === true ? 'sc-status-pill--open' : 'sc-status-pill--closed'}
         {@const hours = shortHoursForCard(gym.hours_info)}
         {@const priceInfo = priceForCard(gym)}
+        {@const hasMapLocation = Number.isFinite(Number(gym.latitude)) && Number.isFinite(Number(gym.longitude))}
         <article
           id={`gym-${gym.id}`}
-          class="group flex h-full flex-col overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl sc-card sc-gym-card"
+          class={`group flex h-full flex-col overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl sc-card sc-gym-card ${activeGymId === String(gym.id) ? 'sc-gym-card--active' : ''}`}
           style={`animation-delay:${i * 20}ms`}
         >
           <div class="relative h-40 overflow-hidden">
@@ -1284,6 +1641,16 @@
               {#if directionsLink}
                 <a href={directionsLink} target="_blank" rel="noreferrer" class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl px-3 text-sm font-bold transition sc-button sc-button--secondary" on:click={() => trackEvent('click_indicazioni', gymTrackingPayload(gym))}>Indicazioni</a>
               {/if}
+              {#if hasMapLocation}
+                <button
+                  type="button"
+                  class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl px-3 text-sm font-bold transition sc-button sc-button--secondary"
+                  on:click={() => focusGymOnMap(gym)}
+                  aria-label={`Mostra ${displayName(gym.name)} sulla mappa`}
+                >
+                  Mappa
+                </button>
+              {/if}
               </div>
             </div>
           </div>
@@ -1304,6 +1671,7 @@
     </div>
   {/if}
 </section>
+  </div>
   </main>
 </div>
 
