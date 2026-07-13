@@ -1,6 +1,7 @@
 <script>
   import { disciplinePreviewForGym, gymHref, imageForGym, isPremiumGym, isVerifiedGym } from '$lib/gym-detail';
   import { weeklyHoursRows } from '$lib/hours';
+  import { gymTrackingPayload, trackEvent } from '$lib/tracking';
 
   export let gym;
   export let index = 0;
@@ -27,8 +28,14 @@
     return label.includes('|') ? 'Orari disponibili nella scheda' : label;
   }
 
-  function hasContactSignal(gymValue) {
-    return Boolean(String(gymValue.phone || '').trim() || String(gymValue.website || '').trim());
+  function phoneHref(value) {
+    const cleaned = String(value || '').trim().replace(/[^\d+]/g, '');
+    return cleaned ? `tel:${cleaned}` : '';
+  }
+
+  function directionsHref(gymValue) {
+    const target = [gymValue?.address, gymValue?.city].filter(Boolean).join(', ').trim();
+    return target ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(target)}` : '';
   }
 
   function imageMetaForGym(gymValue) {
@@ -57,6 +64,8 @@
   $: disciplinePreview = disciplinePreviewForGym(gym, 3, preferredDiscipline);
   $: verified = isVerifiedGym(gym);
   $: premium = isPremiumGym(gym);
+  $: phoneLink = phoneHref(gym.phone);
+  $: directionsLink = directionsHref(gym);
 </script>
 
 <article class="group overflow-hidden rounded-2xl transition sc-card sc-gym-card" style={`animation-delay:${index * 20}ms`}>
@@ -106,18 +115,36 @@
 
     <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Indirizzo:</strong> {[gym.address, gym.city].filter(Boolean).join(', ') || 'Indirizzo non disponibile'}</p>
     <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Orari:</strong> {publicHoursLabel(gym.hours_info)}</p>
-    <div class="flex flex-wrap gap-2 text-xs font-bold sc-card-signal-list">
-      <span class={`rounded-full px-2.5 py-1 ${hasContactSignal(gym) ? 'sc-card-signal--ok' : 'sc-card-signal--muted'}`}>
-        {hasContactSignal(gym) ? 'Contatti disponibili' : 'Contatti da verificare'}
-      </span>
-      <span class={`rounded-full px-2.5 py-1 ${gym.latitude && gym.longitude ? 'sc-card-signal--ok' : 'sc-card-signal--muted'}`}>
-        {gym.latitude && gym.longitude ? 'Indicazioni disponibili' : 'Indicazioni da verificare'}
-      </span>
-    </div>
-    <div class="rounded-2xl sc-gym-card-cta p-3">
-      <a href={gymHref(gym)} class="inline-flex items-center rounded-xl px-3 py-2 text-sm font-bold transition sc-button sc-button--primary">
+    <div class="grid gap-2 rounded-2xl sc-gym-card-cta p-3">
+      <a href={gymHref(gym)} class="inline-flex min-h-[2.75rem] items-center justify-center rounded-xl px-3 text-sm font-bold transition sc-button sc-button--primary">
         Apri scheda
       </a>
+      {#if phoneLink || directionsLink}
+        <div class="grid gap-2 sm:grid-cols-2">
+          {#if phoneLink}
+            <a
+              href={phoneLink}
+              class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl px-3 text-sm font-bold transition sc-button sc-button--secondary"
+              on:click={() => trackEvent('click_telefono', gymTrackingPayload(gym))}
+            >
+              Chiama
+            </a>
+          {/if}
+          {#if directionsLink}
+            <a
+              href={directionsLink}
+              target="_blank"
+              rel="noreferrer"
+              class="inline-flex min-h-[2.6rem] items-center justify-center rounded-xl px-3 text-sm font-bold transition sc-button sc-button--secondary"
+              on:click={() => trackEvent('click_indicazioni', gymTrackingPayload(gym))}
+            >
+              Indicazioni
+            </a>
+          {/if}
+        </div>
+      {:else}
+        <span class="rounded-full px-2.5 py-1 text-xs font-bold sc-card-signal--muted">Contatti da verificare</span>
+      {/if}
     </div>
   </div>
 </article>
