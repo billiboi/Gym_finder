@@ -523,17 +523,17 @@
                   <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Canali ufficiali</p>
                   <div class="mt-3 flex flex-wrap gap-2">
                     {#if officialEmail}
-                      <a href={`mailto:${officialEmail}`} class="inline-flex min-h-[2.55rem] items-center justify-center rounded-xl px-3.5 text-sm font-bold transition sc-button sc-button--secondary">
+                      <a href={`mailto:${officialEmail}`} class="inline-flex min-h-[2.75rem] items-center justify-center rounded-xl px-3.5 text-sm font-bold transition sc-button sc-button--secondary">
                         Email
                       </a>
                     {/if}
                     {#each officialSocialLinks as social}
-                      <a href={social.href} target="_blank" rel="noreferrer" class="inline-flex min-h-[2.55rem] items-center justify-center rounded-xl px-3.5 text-sm font-bold transition sc-button sc-button--secondary">
+                      <a href={social.href} target="_blank" rel="noreferrer" class="inline-flex min-h-[2.75rem] items-center justify-center rounded-xl px-3.5 text-sm font-bold transition sc-button sc-button--secondary">
                         {social.label}
                       </a>
                     {/each}
                     {#if !officialMonthlyPrice && officialSourceUrl}
-                      <a href={officialSourceUrl} target="_blank" rel="noreferrer" class="inline-flex min-h-[2.55rem] items-center justify-center rounded-xl px-3.5 text-sm font-bold transition sc-button sc-button--secondary">
+                      <a href={officialSourceUrl} target="_blank" rel="noreferrer" class="inline-flex min-h-[2.75rem] items-center justify-center rounded-xl px-3.5 text-sm font-bold transition sc-button sc-button--secondary">
                         Fonte ufficiale
                       </a>
                     {/if}
