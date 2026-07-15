@@ -21,6 +21,7 @@ Current migration order:
 6. `20260506_006_gyms_stability_hardening.sql`
 7. `20260509_001_claim_system.sql` (extends `claim_requests` with verification/owner-dashboard fields — applied to staging and production)
 8. `20260710_001_gym_candidates.sql` (applied to staging and production — see docs/ACQUISITION_PIPELINE.md)
+9. `20260715_001_claim_requests_updated_at_repair.sql` (idempotent repair: re-asserts the migration 7 columns, `updated_at` included, after `/admin/richieste` and `/admin/qualita` started 500ing again in production on `column claim_requests.updated_at does not exist` — see the resolved-gap note below, this looks like the same manual-apply/SQL-editor-paste issue recurring. Not yet applied anywhere; pending explicit approval before running against staging or production.)
 
 **Resolved gap (found and fixed 2026-07-11):** `20260509_001_claim_system.sql` was written and applied to staging but never tracked in this list, and was missing on production until 2026-07-11 — this broke `/admin/richieste` and `/admin/qualita` (both read via `readClaimRequestsList`, which selects columns only present after this migration). Applied to production manually via the SQL editor (using the `timestamptz` alias in place of `timestamp with time zone`, which hit a copy-paste-induced syntax error in the editor). Verified: all columns present, `public.gyms` row count unchanged. The app's graceful-degradation fix (empty result + error banner instead of a crash on a failed claim_requests read) stays in place regardless.
 
