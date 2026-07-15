@@ -647,6 +647,87 @@ textarea:disabled,
   box-shadow: none;
 }
 
+/* home search block: row 2 quick-shortcut chips */
+.sc-quick-chip--teal {
+  border: 1px solid rgba(15, 163, 163, 0.32);
+  background: rgba(15, 163, 163, 0.12);
+  color: #085041;
+}
+
+.sc-quick-chip--teal:hover {
+  border-color: var(--teal-500);
+  background: rgba(15, 163, 163, 0.18);
+}
+
+.sc-quick-chip--zone {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--navy-900);
+}
+
+.sc-quick-chip--zone:hover {
+  border-color: var(--border-strong);
+  background: #fff;
+}
+
+/* home search block: row 3 "Aperte adesso" toggle */
+.sc-open-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--ink-muted);
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.sc-open-toggle:hover {
+  border-color: var(--border-strong);
+}
+
+.sc-open-toggle-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: var(--border-strong);
+  transition: background-color 160ms ease;
+}
+
+.sc-open-toggle--active {
+  border-color: rgba(123, 201, 67, 0.45);
+  background: rgba(123, 201, 67, 0.16);
+  color: var(--navy-900);
+}
+
+.sc-open-toggle--active .sc-open-toggle-dot {
+  background: var(--lime-500);
+}
+
+/* home search block: row 3 "Usa posizione" button */
+.sc-location-button {
+  border: 1px solid var(--teal-500);
+  background: #fff;
+  color: var(--teal-600);
+}
+
+.sc-location-button:hover {
+  background: rgba(15, 163, 163, 0.08);
+}
+
+.sc-location-button--active {
+  background: rgba(15, 163, 163, 0.12);
+  color: var(--teal-600);
+}
+
+.sc-location-button:disabled {
+  cursor: progress;
+  opacity: 0.65;
+}
+
 .sc-filter-toggle {
   background: #fff;
 }

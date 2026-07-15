@@ -245,7 +245,6 @@
   let locationError = '';
   let locationRadius = 20;
   let nearbyOnly = true;
-  let filtersExpanded = false;
   let searchDebounceTimer = null;
   let scheduledSearchValue = '';
   let visibleLimit = INITIAL_VISIBLE_LIMIT;
@@ -542,7 +541,6 @@
 
     if (open === 'now') {
       filterOpenState = 'open';
-      filtersExpanded = true;
     }
   }
 
@@ -1187,12 +1185,12 @@
     <div id="home-search" class="scroll-mt-16 rounded-[1.5rem] p-3 sm:p-4 sc-hero-search">
       <div class="grid gap-3 lg:grid-cols-[minmax(0,1.45fr)_minmax(190px,0.65fr)_auto] lg:items-end">
         <label class="grid gap-2">
-          <span class="text-[0.72rem] font-bold uppercase tracking-[0.2em] text-slate-500">Zona o disciplina</span>
+          <span class="text-[0.72rem] font-bold uppercase tracking-[0.2em] text-slate-500">Zona, disciplina o nome</span>
           <input
             id="hero-gym-search"
             name="hero-gym-search"
-            class="min-h-[3.35rem] rounded-2xl border border-slate-200 bg-white px-4 text-base font-semibold outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
-            placeholder="Cerca zona, disciplina o palestra"
+            class="min-h-[42px] rounded-2xl border border-slate-200 bg-white px-4 text-base font-semibold outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
+            placeholder="Palestre a Varese, Boxe a Lugano, MMA vicino a me"
             bind:value={searchInput}
             list="quick-search-suggestions"
             on:keydown={(event) => {
@@ -1205,7 +1203,7 @@
           <select
             id="hero-discipline-filter"
             name="hero-discipline-filter"
-            class="min-h-[3.35rem] rounded-2xl border border-slate-200 bg-white px-4 text-sm font-semibold outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
+            class="min-h-[42px] rounded-2xl border border-slate-200 bg-white px-4 text-sm font-semibold outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
             bind:value={filterDiscipline}
             disabled={loadingDisciplines}
             on:change={applySearchNow}
@@ -1216,34 +1214,9 @@
             {/each}
           </select>
         </label>
-        <a href="#elenco-palestre" class="inline-flex min-h-[3.35rem] items-center justify-center rounded-xl px-5 text-center text-sm font-bold text-white transition sc-button" on:click={applySearchNow}>
+        <a href="#elenco-palestre" class="inline-flex min-h-[42px] items-center justify-center rounded-xl px-5 text-center text-sm font-bold text-white transition sc-button" on:click={applySearchNow}>
           Trova palestra
         </a>
-      </div>
-      <p class="mt-2 text-sm font-semibold leading-6 text-slate-600">
-        Esempi: Palestre a Varese, Boxe a Lugano, MMA vicino a me
-      </p>
-      <div class="mt-3 grid gap-3 border-t border-slate-200/70 pt-3 lg:grid-cols-2">
-        <div>
-          <p class="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-slate-500">Discipline</p>
-          <div class="mt-2 flex flex-wrap gap-2">
-            {#each primaryDisciplineLinks.slice(0, 5) as item}
-              <a href={item.href} class="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-bold text-slate-800 transition hover:border-emerald-800/25 hover:bg-emerald-50">
-                {item.label}
-              </a>
-            {/each}
-          </div>
-        </div>
-        <div>
-          <p class="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-slate-500">Zone</p>
-          <div class="mt-2 flex flex-wrap gap-2">
-            {#each primaryZoneLinks.slice(0, 5) as item}
-              <a href={item.href} class="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-bold text-slate-800 transition hover:border-emerald-800/25 hover:bg-emerald-50">
-                {item.label}
-              </a>
-            {/each}
-          </div>
-        </div>
       </div>
       <datalist id="quick-search-suggestions">
         {#each quickSearchSuggestions as suggestion}
@@ -1251,47 +1224,83 @@
         {/each}
       </datalist>
 
-      <div class="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-slate-200/70 pt-3">
-          <button
-            type="button"
-            class="inline-flex min-h-[2.7rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button-muted lg:hidden"
-            aria-expanded={filtersExpanded}
-            aria-controls="advanced-search-filters"
-            aria-label={`${filtersExpanded ? 'Nascondi' : 'Mostra'} filtri avanzati`}
-            on:click={() => (filtersExpanded = !filtersExpanded)}
-          >
-          Filtri{activeFilterCount ? ` (${activeFilterCount})` : ''}
+      <div class="mt-3 flex flex-wrap items-center gap-2 border-t border-slate-200/70 pt-3">
+        <span class="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-slate-500">Rapide</span>
+        {#each primaryDisciplineLinks.slice(0, 5) as item}
+          <a href={item.href} class="rounded-full px-3 py-1.5 text-sm font-bold transition sc-quick-chip--teal">
+            {item.label}
+          </a>
+        {/each}
+        {#each primaryZoneLinks.slice(0, 5) as item}
+          <a href={item.href} class="rounded-full px-3 py-1.5 text-sm font-bold transition sc-quick-chip--zone">
+            {item.label}
+          </a>
+        {/each}
+        <a href="/zone" class="ml-auto inline-flex items-center gap-1 whitespace-nowrap text-sm font-bold sc-detail-link">
+          Tutte le zone →
+        </a>
+      </div>
+
+      <div class="mt-3 flex flex-wrap items-center gap-2 border-t border-slate-200/70 pt-3">
+        <button
+          type="button"
+          class={`inline-flex min-h-[34px] items-center justify-center rounded-full px-3 text-sm font-bold transition sc-open-toggle ${filterOpenState === 'open' ? 'sc-open-toggle--active' : ''}`}
+          aria-pressed={filterOpenState === 'open'}
+          on:click={() => (filterOpenState = filterOpenState === 'open' ? 'all' : 'open')}
+        >
+          <span class="sc-open-toggle-dot" aria-hidden="true"></span>
+          Aperte adesso
         </button>
-        {#if locationReady}
-          <button
-            type="button"
-            class="inline-flex min-h-[2.7rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button-ghost lg:hidden"
-            on:click={clearLocation}
-          >
-            Posizione attiva
-          </button>
-        {:else}
-          <button
-            type="button"
-            class="inline-flex min-h-[2.7rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button lg:hidden"
-            on:click={detectLocation}
-            disabled={locating}
-          >
-            {locating ? 'Rilevamento...' : 'Usa posizione'}
-          </button>
-        {/if}
-        <p class="min-w-0 text-sm font-semibold text-slate-600" aria-live="polite">
+
+        <select
+          id="sort-filter"
+          name="sort-filter"
+          class="min-h-[34px] rounded-full border border-slate-200 bg-white px-3 text-sm font-semibold outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
+          aria-label="Ordina risultati"
+          bind:value={sortMode}
+        >
+          <option value="recommended">Consigliato</option>
+          <option value="name">Nome A-Z</option>
+          <option value="open">Aperte prima</option>
+          <option value="distance" disabled={!locationReady}>Distanza</option>
+        </select>
+
+        <select
+          id="radius-filter"
+          name="radius-filter"
+          class="min-h-[34px] rounded-full border border-slate-200 bg-white px-3 text-sm font-semibold outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
+          aria-label="Raggio di ricerca"
+          bind:value={locationRadius}
+          disabled={!locationReady}
+          aria-disabled={!locationReady}
+        >
+          <option value={5}>Entro 5 km</option>
+          <option value={10}>Entro 10 km</option>
+          <option value={20}>Entro 20 km</option>
+          <option value={30}>Entro 30 km</option>
+          <option value={50}>Entro 50 km</option>
+        </select>
+
+        <button
+          type="button"
+          class={`inline-flex min-h-[34px] items-center justify-center gap-1.5 rounded-full px-3 text-sm font-bold transition sc-location-button ${locationReady ? 'sc-location-button--active' : ''}`}
+          on:click={locationReady ? clearLocation : detectLocation}
+          disabled={locating}
+        >
+          <svg viewBox="0 0 20 20" class="h-4 w-4" fill="none" focusable="false" aria-hidden="true">
+            <path d="M10 2.2c-3 0-5.4 2.4-5.4 5.4 0 4 5.4 9.8 5.4 9.8s5.4-5.8 5.4-9.8c0-3-2.4-5.4-5.4-5.4Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+            <circle cx="10" cy="7.6" r="1.8" stroke="currentColor" stroke-width="1.6" />
+          </svg>
+          {locating ? 'Rilevamento...' : locationReady ? 'Posizione attiva' : 'Usa posizione'}
+        </button>
+
+        <p class="ml-auto min-w-0 text-sm font-semibold text-slate-600" aria-live="polite">
           {resultsCountLabel}
         </p>
-        {#if hasActiveFilters}
-          <button type="button" class="inline-flex min-h-[2.7rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button-ghost" on:click={resetFilters}>
-            Reset
-          </button>
-        {/if}
       </div>
 
       {#if hasActiveFilters}
-        <div class="mt-3 flex flex-wrap gap-2" aria-label="Filtri attivi">
+        <div class="mt-3 flex flex-wrap items-center gap-2" aria-label="Filtri attivi">
           {#if searchInput.trim()}
             <button type="button" class="rounded-full px-3 py-1.5 text-xs font-bold sc-active-filter-chip" aria-label="Rimuovi filtro testo" on:click={() => { searchInput = ''; scheduledSearchValue = ''; filterText = ''; }}>
               Testo: {searchInput.trim()} x
@@ -1317,94 +1326,11 @@
               Ordine: {sortMode === 'name' ? 'Nome' : sortMode === 'open' ? 'Apertura' : 'Distanza'} x
             </button>
           {/if}
+          <button type="button" class="rounded-full px-3 py-1.5 text-xs font-bold sc-button-ghost" on:click={resetFilters}>
+            Reset
+          </button>
         </div>
       {/if}
-
-      <div
-        id="advanced-search-filters"
-        class={`mt-3 gap-3 sm:grid-cols-2 lg:grid lg:grid-cols-[minmax(155px,0.75fr)_minmax(140px,0.6fr)_minmax(135px,0.55fr)_max-content_auto] lg:items-end ${filtersExpanded ? 'grid' : 'hidden'}`}
-      >
-        <label class="grid gap-2">
-          <span class="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-slate-500">Apertura</span>
-          <select
-            id="open-state-filter"
-            name="open-state-filter"
-            class="min-h-[3rem] rounded-2xl border border-slate-200 bg-white px-4 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
-            bind:value={filterOpenState}
-          >
-            <option value="all">Aperte e chiuse</option>
-            <option value="open">Aperte adesso</option>
-            <option value="closed">Chiuse adesso</option>
-          </select>
-        </label>
-
-        <label class="grid gap-2">
-          <span class="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-slate-500">Ordina</span>
-          <select
-            id="sort-filter"
-            name="sort-filter"
-            class="min-h-[3rem] rounded-2xl border border-slate-200 bg-white px-4 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
-            bind:value={sortMode}
-          >
-            <option value="recommended">Consigliato</option>
-            <option value="name">Nome A-Z</option>
-            <option value="open">Aperte prima</option>
-            <option value="distance" disabled={!locationReady}>Distanza</option>
-          </select>
-        </label>
-
-        <label class="grid gap-2">
-          <span class="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-slate-500">Distanza</span>
-          <select
-            id="radius-filter"
-            name="radius-filter"
-            class="min-h-[3rem] rounded-2xl border border-slate-200 bg-white px-4 text-sm outline-none ring-slate-900 transition focus:ring-2 sc-input sc-filter-field"
-            bind:value={locationRadius}
-            disabled={!locationReady}
-          >
-            <option value={5}>5 km</option>
-            <option value={10}>10 km</option>
-            <option value={20}>20 km</option>
-            <option value={30}>30 km</option>
-            <option value={50}>50 km</option>
-          </select>
-        </label>
-
-        <label class={`inline-flex min-h-[3rem] items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 sc-pill sc-filter-toggle sc-radius-toggle ${!locationReady ? 'opacity-60' : ''}`}>
-          <input id="nearby-only" name="nearby-only" type="checkbox" bind:checked={nearbyOnly} disabled={!locationReady} />
-          <span>Usa raggio</span>
-        </label>
-
-        {#if locationReady}
-          <button type="button" class="hidden min-h-[3rem] items-center justify-center rounded-xl bg-white px-4 text-sm font-bold text-emerald-800 transition hover:bg-slate-100 sc-button-ghost lg:inline-flex" on:click={clearLocation}>
-            Rimuovi posizione
-          </button>
-        {:else}
-          <button type="button" class="hidden min-h-[3rem] items-center justify-center rounded-xl bg-white px-4 text-sm font-bold text-slate-700 transition hover:bg-slate-100 sc-button-ghost lg:inline-flex" on:click={detectLocation} disabled={locating}>
-            {locating ? 'Rilevamento...' : 'Usa posizione'}
-          </button>
-        {/if}
-      </div>
-
-      <div class="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p class="text-sm font-semibold text-slate-600">
-          {locationReady ? 'Risultati ordinati dalla tua posizione.' : 'Attiva la posizione per ordinare per distanza.'}
-        </p>
-        <div class="grid grid-cols-2 gap-2 sm:flex sm:justify-end">
-          <a
-            href="/zone"
-            class="sc-secondary-cta sc-secondary-cta--zone"
-          >
-            Sfoglia zone
-          </a>
-          <a
-            href="/discipline"
-            class="sc-secondary-cta sc-secondary-cta--discipline"
-          >
-            Sfoglia discipline
-          </a>
-        </div>
-      </div>
 
       {#if locationError}
         <div class="mt-3 rounded-2xl border border-red-200 bg-red-50/85 px-4 py-3 text-sm font-semibold text-red-700">
