@@ -5,6 +5,12 @@ import { PUBLIC_CATALOG_NUMBERS } from '$lib/trust';
 
 const INITIAL_GYM_LIMIT = 24;
 
+export const config = {
+  isr: {
+    expiration: 3600
+  }
+};
+
 export async function load() {
   const listing = await readPublicGymListing({ limit: INITIAL_GYM_LIMIT, offset: 0 });
   const gyms = listing.items.filter(isPublicActiveGym);

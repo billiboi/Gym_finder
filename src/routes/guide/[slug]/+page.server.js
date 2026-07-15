@@ -1,6 +1,12 @@
 import { error } from '@sveltejs/kit';
 import { getEditorialGuide, relatedGuidesForGuide } from '$lib/editorial';
 
+export const config = {
+  isr: {
+    expiration: 21600
+  }
+};
+
 export async function load({ params }) {
   const guide = getEditorialGuide(params.slug);
 

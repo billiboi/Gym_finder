@@ -209,6 +209,12 @@ function resolveDiscipline(slug) {
   return { discipline, canonicalSlug, isAlias: false };
 }
 
+export const config = {
+  isr: {
+    expiration: 3600
+  }
+};
+
 export async function load({ params }) {
   const { discipline, canonicalSlug, isAlias } = resolveDiscipline(params.slug);
 

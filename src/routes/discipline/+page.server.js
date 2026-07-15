@@ -70,6 +70,12 @@ async function readDisciplineIndexGyms() {
   return readPublicRouteGyms();
 }
 
+export const config = {
+  isr: {
+    expiration: 3600
+  }
+};
+
 export async function load() {
   const gyms = await readDisciplineIndexGyms();
   const disciplines = buildSeoDisciplineEntries(gyms);

@@ -72,6 +72,12 @@ async function readZoneIndexGyms() {
   return readPublicRouteGyms();
 }
 
+export const config = {
+  isr: {
+    expiration: 3600
+  }
+};
+
 export async function load() {
   const gyms = await readZoneIndexGyms();
   const locations = buildSeoLocationEntries(gyms);

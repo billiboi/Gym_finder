@@ -364,6 +364,12 @@ function isPublicReviewGym(gym) {
   );
 }
 
+export const config = {
+  isr: {
+    expiration: 3600
+  }
+};
+
 export async function load({ params }) {
   const found = await findGymCandidate(params.slug);
   let gym = found?.matchType === 'canonical' ? found.gym : null;

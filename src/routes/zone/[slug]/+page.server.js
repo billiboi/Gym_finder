@@ -192,6 +192,12 @@ async function readDynamicCityGyms(slug) {
   };
 }
 
+export const config = {
+  isr: {
+    expiration: 3600
+  }
+};
+
 export async function load({ params }) {
   let location = getSeoLocation(params.slug);
   let dynamicLocation = false;

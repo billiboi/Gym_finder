@@ -195,6 +195,12 @@ async function readDisciplineGyms(discipline) {
   return sliceWithHasMore(matched);
 }
 
+export const config = {
+  isr: {
+    expiration: 3600
+  }
+};
+
 export async function load({ params }) {
   const canonicalSlug = canonicalSlugForDisciplineSlug(params.slug) || params.slug;
   if (!isPublicDisciplineSlug(canonicalSlug)) {

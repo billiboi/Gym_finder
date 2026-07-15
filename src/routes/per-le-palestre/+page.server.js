@@ -13,6 +13,12 @@ function normalizePlan(value) {
   return ALLOWED_PLANS.has(plan) ? plan : 'Scheda verificata';
 }
 
+export const config = {
+  isr: {
+    expiration: 21600
+  }
+};
+
 export async function load() {
   return {
     catalogTotalGyms: PUBLIC_CATALOG_NUMBERS.activeGyms,
