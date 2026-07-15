@@ -66,6 +66,10 @@ body {
 
 html {
   scroll-padding-top: 6.25rem;
+  /* .sc-hero breaks out to 100vw for the full-bleed band; 100vw is wider
+     than the visible viewport when a vertical scrollbar is present, which
+     would otherwise introduce a few px of horizontal overflow/scroll */
+  overflow-x: hidden;
 }
 
 body {
@@ -456,8 +460,95 @@ textarea:disabled,
    Hero (navy identity band, reused across pages)
    ============================================================ */
 .sc-hero {
+  /* inversion context: any component reading these tokens (borders, muted
+     text, chip surfaces) automatically flips to the light-on-navy scale
+     inside the hero band, instead of needing a per-utility-class override */
+  --ink: var(--on-navy);
+  --ink-muted: var(--on-navy-muted);
+  --ink-soft: rgba(238, 243, 247, 0.55);
+  --border: rgba(255, 255, 255, 0.16);
+  --border-strong: rgba(255, 255, 255, 0.28);
+  position: relative;
+  left: 50%;
+  width: 100vw;
+  margin-left: -50vw;
+  padding-left: max(1rem, calc((100vw - 80rem) / 2 + 1rem)) !important;
+  padding-right: max(1rem, calc((100vw - 80rem) / 2 + 1rem)) !important;
   background: var(--navy-900) !important;
   color: var(--on-navy);
+}
+
+@media (min-width: 640px) {
+  .sc-hero {
+    padding-left: max(1.5rem, calc((100vw - 80rem) / 2 + 1.5rem)) !important;
+    padding-right: max(1.5rem, calc((100vw - 80rem) / 2 + 1.5rem)) !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .sc-hero {
+    padding-left: max(2rem, calc((100vw - 80rem) / 2 + 2rem)) !important;
+    padding-right: max(2rem, calc((100vw - 80rem) / 2 + 2rem)) !important;
+  }
+}
+
+.sc-hero-lede {
+  color: var(--on-navy-muted) !important;
+}
+
+.sc-hero-trust-pill {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #fff !important;
+}
+
+.sc-button--hero-primary {
+  border-color: var(--lime-500) !important;
+  background: var(--lime-500) !important;
+  color: var(--navy-900) !important;
+}
+
+.sc-button--hero-primary:hover {
+  border-color: var(--lime-600) !important;
+  background: var(--lime-600) !important;
+  color: var(--navy-900) !important;
+}
+
+.sc-hero-secondary-cta {
+  border-color: rgba(255, 255, 255, 0.45) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #fff !important;
+}
+
+.sc-hero-secondary-cta:hover {
+  border-color: #fff !important;
+  background: rgba(255, 255, 255, 0.16) !important;
+  color: #fff !important;
+}
+
+.sc-hero .sc-secondary-cta {
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #fff !important;
+}
+
+.sc-hero .sc-secondary-cta:hover {
+  border-color: #fff !important;
+  background: rgba(255, 255, 255, 0.18) !important;
+  color: #fff !important;
+}
+
+.sc-hero [class~="sc-filter-chip"] {
+  border-color: rgba(15, 163, 163, 0.4) !important;
+  background: rgba(15, 163, 163, 0.18) !important;
+  color: #fff !important;
+}
+
+.sc-hero [class~="sc-filter-chip"]:hover {
+  border-color: var(--teal-500) !important;
+  background: rgba(15, 163, 163, 0.28) !important;
 }
 
 .sc-hero h1 {
@@ -1564,6 +1655,20 @@ main article.rounded-2xl.border.bg-white:hover {
    light bg-white/* chip are excluded so nested light pills keep
    their dark ink text.
    ============================================================ */
+
+/* the hero markup still carries the old "card" utility classes
+   (rounded-3xl, border, shadow-xl, backdrop-blur-sm); the neutralization
+   block above maps rounded-3xl/shadow-xl/backdrop-blur-sm at .sc-page
+   [class~=...] specificity, so this needs to match or beat that to turn
+   the hero into a true full-bleed band with no card chrome */
+.sc-page .sc-hero,
+.sc-page .sc-error-shell {
+  border-radius: 0 !important;
+  border-width: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
 .sc-hero [class~="text-emerald-800"]:not([class*="bg-white"]),
 .sc-hero [class~="text-emerald-900"]:not([class*="bg-white"]) {
   color: var(--on-navy) !important;

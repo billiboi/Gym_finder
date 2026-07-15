@@ -24,14 +24,14 @@
       <div class="min-w-0">
         <p class="text-[0.72rem] font-bold uppercase tracking-[0.24em] text-emerald-800">{status}</p>
         <h1 class="mt-3 max-w-3xl text-3xl font-bold leading-tight text-slate-900 sm:text-5xl">{title}</h1>
-        <p class="mt-4 max-w-2xl text-base leading-8 text-slate-600">{description}</p>
+        <p class="mt-4 max-w-2xl text-base leading-8 sc-hero-lede">{description}</p>
 
         {#if message && message !== title}
-          <p class="mt-3 max-w-2xl text-sm font-semibold text-slate-500">{message}</p>
+          <p class="mt-3 max-w-2xl text-sm font-semibold sc-hero-lede">{message}</p>
         {/if}
 
         <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-          <a href="/" class="inline-flex min-h-[2.9rem] items-center justify-center rounded-xl px-5 text-sm font-bold text-white sc-button">
+          <a href="/" class="inline-flex min-h-[2.9rem] items-center justify-center rounded-xl px-5 text-sm font-bold sc-button sc-button--hero-primary">
             Torna alla ricerca
           </a>
           <a href="/zone" class="sc-secondary-cta sc-secondary-cta--zone">

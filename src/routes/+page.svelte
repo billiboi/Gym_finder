@@ -1040,10 +1040,10 @@
             Palestre in Zona
           </div>
           <h1 class="mt-4 text-3xl leading-tight sm:text-5xl">Cerca una palestra in zona</h1>
-          <p class="mt-4 max-w-2xl text-sm leading-7 text-slate-600 sm:text-[1.05rem]">
+          <p class="mt-4 max-w-2xl text-sm leading-7 sm:text-[1.05rem] sc-hero-lede">
             Filtra per città, disciplina o nome. Apri la scheda e controlla orari, indirizzo e contatti prima di chiamare.
           </p>
-          <p class="mt-3 flex flex-wrap items-center gap-2 text-sm font-bold text-emerald-900">
+          <p class="mt-3 flex flex-wrap items-center gap-2 text-sm font-bold sc-hero-lede">
             <span>Schede consultabili</span>
             <span aria-hidden="true">&bull;</span>
             <span>Zone e discipline organizzate</span>
@@ -1053,21 +1053,21 @@
           <div class="mt-5 flex flex-wrap gap-3 sc-hero-actions">
             <a
               href="#home-search"
-              class="inline-flex min-h-[3rem] items-center justify-center rounded-xl px-5 text-sm font-bold text-white transition sc-button"
+              class="inline-flex min-h-[3rem] items-center justify-center rounded-xl px-5 text-sm font-bold transition sc-button sc-button--hero-primary"
               on:click={focusSearchBox}
             >
               Cerca ora
             </a>
             <a
               href="/rivendica-scheda"
-              class="inline-flex min-h-[3rem] items-center justify-center rounded-xl px-5 text-sm font-bold transition sc-button sc-button--secondary sc-hero-secondary-cta"
+              class="inline-flex min-h-[3rem] items-center justify-center rounded-xl px-5 text-sm font-bold transition sc-button sc-hero-secondary-cta"
             >
               Verifica scheda
             </a>
           </div>
-          <div class="mt-4 flex flex-wrap gap-2 text-xs font-bold text-slate-700">
+          <div class="mt-4 flex flex-wrap gap-2 text-xs font-bold">
             {#each homepageTrustPoints as point}
-              <span class="rounded-full border border-emerald-900/10 bg-white/75 px-3 py-1.5 text-slate-700">{point}</span>
+              <span class="rounded-full px-3 py-1.5 sc-hero-trust-pill">{point}</span>
             {/each}
           </div>
         </div>

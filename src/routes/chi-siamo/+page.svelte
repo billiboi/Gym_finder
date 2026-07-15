@@ -64,7 +64,7 @@
           <h1 class="mt-3 max-w-4xl text-4xl font-bold leading-tight text-slate-950 sm:text-5xl">
             Una directory locale pensata per scegliere una palestra con meno attrito
           </h1>
-          <p class="mt-4 max-w-3xl text-base leading-8 text-slate-600">
+          <p class="mt-4 max-w-3xl text-base leading-8 sc-hero-lede">
             Palestre in Zona organizza schede, discipline, zone, contatti e orari in un percorso semplice. Il punto non è fare rumore: è aiutare persone e strutture a incontrarsi con informazioni più chiare.
           </p>
         </div>

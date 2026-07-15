@@ -33,7 +33,7 @@
     <section class="rounded-3xl border border-white/80 bg-white/80 p-5 shadow-xl backdrop-blur-sm sc-hero sm:p-7">
       <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Privacy</p>
       <h1 class="mt-2 text-3xl font-bold text-slate-900 sm:text-5xl">Informativa essenziale</h1>
-      <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-600 sm:text-base">
+      <p class="mt-3 max-w-3xl text-sm leading-7 sm:text-base sc-hero-lede">
         Palestre in Zona è un progetto editoriale e informativo. Questa pagina descrive in modo semplice quali dati possono essere trattati durante l'uso del sito.
       </p>
     </section>

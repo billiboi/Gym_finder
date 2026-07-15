@@ -48,7 +48,7 @@
     <section class="rounded-3xl border border-white/80 bg-white/80 p-5 shadow-xl backdrop-blur-sm sc-hero sm:p-7">
       <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Guide</p>
       <h1 class="mt-2 text-3xl font-bold text-slate-900 sm:text-5xl">Scegli palestra e disciplina con più criterio</h1>
-      <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-600 sm:text-base">
+      <p class="mt-3 max-w-3xl text-sm leading-7 sm:text-base sc-hero-lede">
         Articoli brevi e collegati al catalogo: ogni guida porta verso discipline, zone e schede utili per passare dalla lettura alla ricerca.
       </p>
       <div class="mt-5 flex flex-wrap gap-2">

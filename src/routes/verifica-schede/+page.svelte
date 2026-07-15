@@ -62,11 +62,11 @@
       <h1 class="mt-3 max-w-4xl text-4xl font-bold leading-tight text-slate-950 sm:text-5xl">
         Come controlliamo aggiornamenti, fonti e richieste sulle schede
       </h1>
-      <p class="mt-4 max-w-3xl text-base leading-8 text-slate-600">
+      <p class="mt-4 max-w-3xl text-base leading-8 sc-hero-lede">
         La fiducia non nasce da un badge messo a caso. Nasce da un processo leggibile: chi chiede la modifica, quale dato cambia, da dove arriva l’informazione e quando viene pubblicata.
       </p>
       <div class="mt-6 flex flex-wrap gap-3">
-        <a href="/rivendica-scheda" class="inline-flex min-h-[3rem] items-center justify-center rounded-xl bg-slate-900 px-5 text-sm font-bold text-white transition hover:bg-slate-800 sc-button">Richiedi verifica</a>
+        <a href="/rivendica-scheda" class="inline-flex min-h-[3rem] items-center justify-center rounded-xl px-5 text-sm font-bold transition sc-button sc-button--hero-primary">Richiedi verifica</a>
         <a href="/chi-siamo" class="inline-flex min-h-[3rem] items-center justify-center rounded-xl border border-slate-200 bg-white px-5 text-sm font-bold text-slate-950 transition hover:bg-slate-50">Chi siamo</a>
       </div>
     </section>

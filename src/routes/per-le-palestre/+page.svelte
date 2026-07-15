@@ -142,14 +142,14 @@
           <h1 class="mt-3 max-w-4xl text-4xl font-bold leading-tight text-slate-950 sm:text-5xl">
             Verifica e correggi la scheda della tua palestra
           </h1>
-          <p class="mt-4 max-w-2xl text-base leading-8 text-slate-600">
+          <p class="mt-4 max-w-2xl text-base leading-8 sc-hero-lede">
             Correggi informazioni, contatti e orari senza obblighi pubblicitari. I servizi a pagamento richiedono una richiesta separata.
           </p>
           <div class="mt-6 flex flex-wrap gap-3">
             <a
               href="#lead"
               on:click={() => trackPartnerEvent({ posizione: 'hero', cta: 'richiedi_verifica' })}
-              class="inline-flex min-h-[3rem] items-center justify-center rounded-xl px-5 text-sm font-bold transition sc-button sc-button--primary"
+              class="inline-flex min-h-[3rem] items-center justify-center rounded-xl px-5 text-sm font-bold transition sc-button sc-button--hero-primary"
             >
               Richiedi verifica gratuita
             </a>

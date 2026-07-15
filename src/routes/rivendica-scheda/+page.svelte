@@ -134,7 +134,7 @@
           ? 'Apri un contatto commerciale con una richiesta più seria e più chiara'
           : 'Aggiorna la pagina della tua palestra senza passaggi confusi'}
       </h1>
-      <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-600 sm:text-base">
+      <p class="mt-3 max-w-3xl text-sm leading-7 sm:text-base sc-hero-lede">
         {selectedFlow.value === 'Collaborazione commerciale'
           ? 'Se gestisci una struttura già presente nel catalogo, qui puoi partire nel modo giusto: obiettivo chiaro, referente chiaro e richiesta più facile da valutare lato commerciale.'
           : 'Se gestisci una struttura presente nel catalogo, usa questo form per richiedere correzioni, integrazioni o la rivendicazione della pagina pubblica.'}
