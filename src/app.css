@@ -1064,11 +1064,6 @@ main article.rounded-2xl.border.bg-white:hover {
   background: #fff !important;
 }
 
-.sc-detail-hero {
-  background: rgba(15, 163, 163, 0.06);
-  border: 1px solid var(--border);
-}
-
 .sc-panel .rounded-2xl,
 .sc-panel .rounded-3xl {
   box-shadow: none;
@@ -1558,11 +1553,6 @@ main article.rounded-2xl.border.bg-white:hover {
   .sc-detail-title {
     font-size: 2.2rem !important;
     line-height: 1.02;
-  }
-
-  .sc-detail-hero {
-    padding: 1rem !important;
-    border-radius: var(--radius-lg) !important;
   }
 
   .sc-contact-card {

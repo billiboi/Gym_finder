@@ -336,21 +336,13 @@
               {/if}
             </div>
 
-            <div class="rounded-3xl sc-detail-hero p-3.5 lg:p-4">
-              <h1 class="text-4xl leading-none sm:text-[3.3rem] sc-detail-title">
-                {fixGymText(gym?.name)}
-              </h1>
-            </div>
+            <h1 class="mt-1 text-4xl leading-none sm:text-[3.3rem] sc-detail-title">
+              {fixGymText(gym?.name)}
+            </h1>
 
-            <div class="grid gap-2 sm:grid-cols-2">
-              <div class="rounded-2xl border border-slate-200 bg-white/92 p-2.5 sc-detail-meta">
-                <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Disciplina</p>
-                <p class="mt-2 text-sm font-semibold text-slate-900 sc-detail-value">{primaryDiscipline}</p>
-              </div>
-              <div class="rounded-2xl border border-slate-200 bg-white/92 p-2.5 sc-detail-meta">
-                <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Citt&agrave;</p>
-                <p class="mt-2 text-sm font-semibold text-slate-900 sc-detail-value">{cityLabel}</p>
-              </div>
+            <div class="rounded-2xl border border-slate-200 bg-white/92 p-2.5 sc-detail-meta">
+              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Citt&agrave;</p>
+              <p class="mt-2 text-sm font-semibold text-slate-900 sc-detail-value">{cityLabel}</p>
             </div>
 
             <p class="text-sm leading-7 text-slate-600 sm:text-[0.98rem] sc-detail-copy">{presentation}</p>
@@ -374,29 +366,31 @@
               </div>
             {/if}
 
-            <div class="grid gap-2 sm:grid-cols-3">
+            <div class="flex flex-col gap-2 sm:flex-row">
               <a
                 href={mapsHref}
                 target="_blank"
                 rel="noreferrer"
-                class="inline-flex min-h-[2.8rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button sc-button--secondary"
+                class="inline-flex min-h-[2.8rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button sc-button--secondary sm:flex-1"
                 on:click={() => trackEvent('click_indicazioni', trackingPayload)}
               >
                 Apri mappa
               </a>
-              <a
-                href={hasPhone ? `tel:${phone.replace(/\s+/g, '')}` : mapsHref}
-                class="inline-flex min-h-[2.8rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button sc-button--secondary"
-                on:click={() => trackEvent(hasPhone ? 'click_telefono' : 'click_indicazioni', trackingPayload)}
-              >
-                {hasPhone ? 'Chiama' : 'Indicazioni'}
-              </a>
+              {#if hasPhone}
+                <a
+                  href={`tel:${phone.replace(/\s+/g, '')}`}
+                  class="inline-flex min-h-[2.8rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button sc-button--secondary sm:flex-1"
+                  on:click={() => trackEvent('click_telefono', trackingPayload)}
+                >
+                  Chiama
+                </a>
+              {/if}
               {#if website}
                 <a
                   href={website}
                   target="_blank"
                   rel="noreferrer"
-                  class="inline-flex min-h-[2.8rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button sc-button--secondary"
+                  class="inline-flex min-h-[2.8rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button sc-button--secondary sm:flex-1"
                   on:click={() => trackEvent('click_sito', trackingPayload)}
                 >
                   Apri sito
@@ -404,7 +398,7 @@
               {:else}
                 <a
                   href={claimHref}
-                  class="inline-flex min-h-[2.8rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button sc-button--secondary"
+                  class="inline-flex min-h-[2.8rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button sc-button--secondary sm:flex-1"
                   on:click={() => trackEvent('claim_click', trackingPayload)}
                 >
                   Aggiorna dati
@@ -430,22 +424,7 @@
 
           <div class="rounded-2xl border border-slate-200 bg-white/90 p-4 sc-detail-meta">
             <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Sito web</p>
-            {#if website}
-              <a
-                href={website}
-                target="_blank"
-                rel="noreferrer"
-                class="mt-2 inline-flex text-sm font-semibold text-emerald-800 underline decoration-2 underline-offset-2 sc-detail-link"
-                on:click={() => trackEvent('click_sito', trackingPayload)}
-              >
-                Visita il sito ufficiale
-              </a>
-              {#if hostFor(website)}
-                <p class="mt-1 text-xs font-semibold text-slate-500">{hostFor(website)}</p>
-              {/if}
-            {:else}
-              <p class="mt-2 text-sm font-semibold text-slate-900 sm:text-base sc-detail-value">Non disponibile</p>
-            {/if}
+            <p class="mt-2 text-sm font-semibold text-slate-900 sm:text-base sc-detail-value">{website ? hostFor(website) || website : 'Non disponibile'}</p>
           </div>
 
           {#if hasCoordinates}
@@ -490,7 +469,7 @@
     </section>
 
     <div class="grid gap-3 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
-      <div class="order-2 flex min-w-0 flex-col gap-3 lg:order-1">
+      <div class="flex min-w-0 flex-col gap-3">
         {#if hasOfficialData}
           <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sm:p-5">
             <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
@@ -633,18 +612,12 @@
 
       </div>
 
-      <aside class="order-1 flex min-w-0 flex-col gap-3 lg:order-2 lg:sticky lg:top-24">
+      <aside class="flex min-w-0 flex-col gap-3 lg:sticky lg:top-24">
         <section class="rounded-3xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur-sm sc-panel sc-detail-section sm:p-5">
           <div>
             <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Dati pubblici</p>
             <h2 class="mt-2 text-xl font-bold text-slate-900">Rappresenti questa palestra?</h2>
             <p class="mt-3 text-sm leading-7 text-slate-600 sc-detail-copy">Puoi richiedere la verifica gratuita della scheda e segnalarci informazioni da correggere.</p>
-          </div>
-
-          <div class="mt-4 grid gap-2 text-sm font-semibold text-slate-700">
-            <div class="rounded-xl border border-slate-200 bg-white/80 px-3 py-2 sc-detail-card">Contatti, sito e canali ufficiali</div>
-            <div class="rounded-xl border border-slate-200 bg-white/80 px-3 py-2 sc-detail-card">Orari, indirizzo e posizione</div>
-            <div class="rounded-xl border border-slate-200 bg-white/80 px-3 py-2 sc-detail-card">Discipline, descrizione e informazioni pubbliche</div>
           </div>
 
           <div class="mt-4 flex flex-col gap-2">
