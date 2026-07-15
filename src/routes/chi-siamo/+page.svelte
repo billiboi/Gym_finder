@@ -1,5 +1,5 @@
 <script>
-  import BrandMark from '$lib/components/BrandMark.svelte';
+  import Logo from '$lib/components/Logo.svelte';
   import TrustBadges from '$lib/components/TrustBadges.svelte';
   import { BRAND_PROOF_ITEMS } from '$lib/trust';
   import { SITE_CONTACT_EMAIL, SITE_CONTACT_MAILTO, SITE_NAME, absoluteUrl, jsonLdScript } from '$lib/site';
@@ -57,7 +57,7 @@
 <div class="min-h-screen w-full sc-page">
   <main class="mx-auto w-full max-w-6xl px-4 pb-10 pt-4 sm:px-6 lg:px-8">
     <section class="rounded-3xl border border-white/80 bg-white/80 p-5 shadow-xl backdrop-blur-sm sc-hero sm:p-7 lg:p-9">
-      <BrandMark />
+      <Logo variant="light" />
       <div class="mt-7 grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-end">
         <div>
           <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Chi siamo</p>

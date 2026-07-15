@@ -357,23 +357,34 @@ textarea:disabled,
   white-space: nowrap;
 }
 
-.brand-mark-picture {
+.sc-logo {
   display: inline-flex;
   align-items: center;
   flex: 0 0 auto;
 }
 
-.brand-mark-img {
+.sc-logo-svg {
   display: block;
+}
+
+.sc-logo-svg--desktop {
   width: clamp(180px, 18vw, 220px);
   height: 44px;
-  object-fit: contain;
+}
+
+.sc-logo-svg--mobile {
+  display: none;
+  width: 44px;
+  height: 44px;
 }
 
 @media (max-width: 767px) {
-  .brand-mark-img {
-    width: 44px;
-    height: 44px;
+  .sc-logo-svg--desktop {
+    display: none;
+  }
+
+  .sc-logo-svg--mobile {
+    display: block;
   }
 }
 
@@ -1589,40 +1600,6 @@ main article.rounded-2xl.border.bg-white:hover {
 
   .sc-contact-card .sc-detail-copy {
     max-width: none;
-  }
-}
-
-.brand-mark {
-  display: inline-flex;
-  align-items: center;
-  flex: 0 0 auto;
-  min-width: 0;
-  text-decoration: none;
-}
-
-.brand-mark__logo {
-  display: block;
-  object-fit: contain;
-}
-
-.brand-mark__logo--desktop {
-  width: clamp(190px, 18vw, 280px);
-  height: 44px;
-}
-
-.brand-mark__logo--mobile {
-  display: none;
-  width: 44px;
-  height: 44px;
-}
-
-@media (max-width: 720px) {
-  .brand-mark__logo--desktop {
-    display: none;
-  }
-
-  .brand-mark__logo--mobile {
-    display: block;
   }
 }
 
