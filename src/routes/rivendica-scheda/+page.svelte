@@ -128,7 +128,7 @@
 <div class="min-h-screen w-full sc-page">
   <main class="mx-auto w-full max-w-5xl px-4 pb-10 pt-4 sm:px-6 lg:px-8">
     <section class="rounded-3xl border border-white/80 bg-white/80 p-5 shadow-xl backdrop-blur-sm sc-hero sm:p-7">
-      <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Rivendica una scheda</p>
+      <p class="text-xs font-bold uppercase tracking-[0.24em] sc-hero-kicker">Rivendica una scheda</p>
       <h1 class="mt-2 max-w-4xl text-3xl font-bold leading-tight text-slate-900 sm:text-5xl">
         {selectedFlow.value === 'Collaborazione commerciale'
           ? 'Apri un contatto commerciale con una richiesta più seria e più chiara'

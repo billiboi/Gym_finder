@@ -60,7 +60,7 @@
       <Logo variant="light" />
       <div class="mt-7 grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-end">
         <div>
-          <p class="text-xs font-bold uppercase tracking-[0.24em] text-emerald-800">Chi siamo</p>
+          <p class="text-xs font-bold uppercase tracking-[0.24em] sc-hero-kicker">Chi siamo</p>
           <h1 class="mt-3 max-w-4xl text-4xl font-bold leading-tight text-slate-950 sm:text-5xl">
             Una directory locale pensata per scegliere una palestra con meno attrito
           </h1>

@@ -507,6 +507,10 @@ textarea:disabled,
   color: var(--on-navy-muted) !important;
 }
 
+.sc-hero-kicker {
+  color: var(--on-navy) !important;
+}
+
 .sc-hero-trust-pill {
   display: inline-flex;
   align-items: center;
