@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bun install)",
+      "Bash(bun run dev:*)",
+      "Bash(bun run check)",
+      "Bash(bun run check:*)",
+      "Bash(bun run build)",
+      "Bash(bun run preview:*)",
+      "Bash(git status)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+      "Bash(git branch:*)",
+      "Bash(git fetch:*)",
+      "Bash(git stash list)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Bash(bun run sync:gyms:prod)",
+      "Bash(bun run prices:reassign:apply)",
+      "Bash(bun run descriptions:apply)",
+      "Bash(bun run editorial:apply)",
+      "Bash(bun run audit:gyms:contamination:apply)",
+      "Bash(git push --force:*)",
+      "Bash(rm -rf:*)"
+    ]
+  }
+}

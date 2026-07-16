@@ -29,3 +29,5 @@ data/osm-cache/
 static/preview.png
 /audit/
 .env*
+
+.claude/settings.local.json
