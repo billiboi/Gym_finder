@@ -340,11 +340,6 @@
               {fixGymText(gym?.name)}
             </h1>
 
-            <div class="rounded-2xl border border-slate-200 bg-white/92 p-2.5 sc-detail-meta">
-              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 sc-detail-label">Citt&agrave;</p>
-              <p class="mt-2 text-sm font-semibold text-slate-900 sc-detail-value">{cityLabel}</p>
-            </div>
-
             <p class="text-sm leading-7 text-slate-600 sm:text-[0.98rem] sc-detail-copy">{presentation}</p>
             {#if quarantineNotice}
               <p class="rounded-2xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-900">
