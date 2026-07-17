@@ -82,9 +82,6 @@
       sizes="(min-width: 1280px) 31vw, (min-width: 640px) 48vw, 100vw"
       on:error={(event) => handleImageError(event, image)}
     />
-    <span class="absolute left-3 top-3 rounded-full px-2.5 py-1 text-xs font-bold text-white sc-badge sc-badge--accent">
-      {disciplinePreview.primary}
-    </span>
   </div>
   <div class="space-y-3 p-3 sm:p-4">
     <div class="space-y-1 rounded-2xl sc-gym-card-head p-3">

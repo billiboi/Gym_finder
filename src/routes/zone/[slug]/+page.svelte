@@ -6,7 +6,9 @@
   import { absoluteUrl, SITE_NAME, jsonLdScript } from '$lib/site';
   import { buildLocationSeoMeta } from '$lib/seo-meta';
   import { formatCount } from '$lib/text-format';
+  import { contextualCardDescription } from '$lib/gym-description';
   import GymCard from '$lib/components/GymCard.svelte';
+  import GymMapCluster from '$lib/components/GymMapCluster.svelte';
 
   export let data;
 
@@ -42,50 +44,12 @@
     count,
     href: `/zone/${slugifySeoName(city)}`
   }));
-  const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
   const coordinateNumber = (value) => {
     const number = Number(value);
     return Number.isFinite(number) ? number : null;
   };
   const isMappableGym = (gym) => coordinateNumber(gym?.latitude) !== null && coordinateNumber(gym?.longitude) !== null;
-  const boundsForGyms = (items) => {
-    const points = items
-      .map((gym) => ({ lat: coordinateNumber(gym?.latitude), lng: coordinateNumber(gym?.longitude) }))
-      .filter((point) => point.lat !== null && point.lng !== null);
-    if (!points.length) return null;
-
-    const lats = points.map((point) => point.lat);
-    const lngs = points.map((point) => point.lng);
-    let south = Math.min(...lats);
-    let north = Math.max(...lats);
-    let west = Math.min(...lngs);
-    let east = Math.max(...lngs);
-    const latSpread = Math.max(north - south, 0.012);
-    const lngSpread = Math.max(east - west, 0.014);
-
-    south -= Math.max(latSpread * 0.22, 0.006);
-    north += Math.max(latSpread * 0.22, 0.006);
-    west -= Math.max(lngSpread * 0.22, 0.007);
-    east += Math.max(lngSpread * 0.22, 0.007);
-
-    return { south, north, west, east };
-  };
   $: mappableGyms = gyms.filter(isMappableGym);
-  $: zoneMapBounds = boundsForGyms(mappableGyms);
-  $: zoneMapHref = zoneMapBounds
-    ? `https://www.openstreetmap.org/export/embed.html?bbox=${zoneMapBounds.west}%2C${zoneMapBounds.south}%2C${zoneMapBounds.east}%2C${zoneMapBounds.north}&layer=mapnik`
-    : '';
-  $: zoneMapOpenHref = zoneMapBounds
-    ? `https://www.openstreetmap.org/?bbox=${zoneMapBounds.west}%2C${zoneMapBounds.south}%2C${zoneMapBounds.east}%2C${zoneMapBounds.north}`
-    : '';
-  function markerStyle(gym) {
-    if (!zoneMapBounds) return '';
-    const lat = coordinateNumber(gym?.latitude);
-    const lng = coordinateNumber(gym?.longitude);
-    const x = ((lng - zoneMapBounds.west) / (zoneMapBounds.east - zoneMapBounds.west)) * 100;
-    const y = (1 - (lat - zoneMapBounds.south) / (zoneMapBounds.north - zoneMapBounds.south)) * 100;
-    return `left:${clamp(x, 4, 96)}%;top:${clamp(y, 6, 94)}%;`;
-  }
   const INITIAL_VISIBLE_GYMS = 24;
   let visibleLimit = INITIAL_VISIBLE_GYMS;
   $: visibleGyms = gyms.slice(0, visibleLimit);
@@ -248,41 +212,14 @@
         </div>
       </div>
 
-      {#if zoneMapHref}
-        <div class="relative mt-4 h-[18rem] overflow-hidden rounded-2xl border border-slate-200 bg-white sc-zone-map sm:h-[24rem]">
-          <iframe
-            title={`Mappa palestre a ${location.name}`}
-            src={zoneMapHref}
-            class="h-full w-full"
-            loading="lazy"
-            width="1120"
-            height="384"
-          ></iframe>
-          <div class="pointer-events-none absolute inset-0">
-            {#each mappableGyms as gym, i}
-              <a
-                href={gymHref(gym)}
-                class="pointer-events-auto absolute grid h-8 w-8 -translate-x-1/2 -translate-y-full place-items-center rounded-full bg-slate-900 text-xs font-black text-white shadow-lg ring-2 ring-white transition hover:scale-110 focus-visible:scale-110 sc-zone-map-marker"
-                style={markerStyle(gym)}
-                aria-label={`Apri la scheda di ${gym.name}`}
-                title={gym.name}
-              >
-                {i + 1}
-              </a>
-            {/each}
-          </div>
-        </div>
-        <div class="mt-3 flex flex-col gap-2 sm:flex-row">
-          <a href={zoneMapOpenHref} target="_blank" rel="noreferrer" class="inline-flex min-h-[2.75rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button sc-button--secondary">
-            Apri mappa grande
-          </a>
+      <div class="mt-4">
+        <GymMapCluster gyms={mappableGyms} />
+      </div>
+      {#if mappableGyms.length}
+        <div class="mt-3">
           <a href="#palestre-zona" class="inline-flex min-h-[2.75rem] items-center justify-center rounded-xl px-4 text-sm font-bold transition sc-button sc-button--primary">
             Vai alle schede
           </a>
-        </div>
-      {:else}
-        <div class="mt-4 rounded-2xl border border-dashed border-slate-300 bg-white/80 p-6 text-sm font-semibold text-slate-600">
-          Le coordinate delle palestre in questa zona sono ancora in verifica. Le schede disponibili sono subito sotto.
         </div>
       {/if}
     </section>
@@ -294,9 +231,10 @@
         </div>
       {:else}
         {#each visibleGyms as gym, i}
-          <GymCard {gym} index={i} kicker={location.name} let:disciplinePreview>
-            <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Disciplina:</strong> {disciplinePreview.primary}</p>
-            <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm text-slate-700"><strong>Zona:</strong> {gym.city || location.name}</p>
+          <GymCard {gym} index={i} kicker={location.name}>
+            <p class="rounded-xl sc-gym-card-row px-3 py-2 text-sm leading-6 text-slate-700">
+              {contextualCardDescription(gym) || 'Descrizione in verifica editoriale'}
+            </p>
           </GymCard>
         {/each}
         {#if hasMoreGyms}
@@ -410,38 +348,3 @@
   </main>
 </div>
 
-<style>
-  .sc-zone-map {
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.38),
-      0 14px 28px rgba(31, 54, 45, 0.08);
-  }
-
-  .sc-zone-map iframe {
-    border: 0;
-    pointer-events: none;
-  }
-
-  .sc-zone-map-marker {
-    z-index: 2;
-  }
-
-  .sc-zone-map-marker::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    top: 100%;
-    width: 0.55rem;
-    height: 0.55rem;
-    background: #173129;
-    transform: translate(-50%, -55%) rotate(45deg);
-    z-index: -1;
-  }
-
-  @media (max-width: 640px) {
-    .sc-zone-map-marker {
-      height: 2.25rem;
-      width: 2.25rem;
-    }
-  }
-</style>
