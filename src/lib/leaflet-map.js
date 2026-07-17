@@ -71,6 +71,14 @@ export function createClusterIcon(cluster) {
   });
 }
 
+export function createUserLocationIcon() {
+  return window.L.divIcon({
+    html: '<span class="sc-user-location-dot"></span>',
+    className: 'sc-user-location-icon',
+    iconSize: window.L.point(18, 18)
+  });
+}
+
 export function escapeHtml(value) {
   return String(value || '')
     .replace(/&/g, '&amp;')

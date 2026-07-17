@@ -9,7 +9,7 @@
   import { buildHomepageSeoMeta } from '$lib/seo-meta';
   import { repairMojibake } from '$lib/text-repair';
   import { gymTrackingPayload, trackEvent } from '$lib/tracking';
-  import { ensureLeaflet, createClusterIcon, escapeHtml } from '$lib/leaflet-map';
+  import { ensureLeaflet, createClusterIcon, createUserLocationIcon, escapeHtml } from '$lib/leaflet-map';
   import TrustBadges from '$lib/components/TrustBadges.svelte';
   export let data;
 
@@ -808,7 +808,9 @@
 
     if (userLocation) {
       userMarker = window.L.marker([userLocation.latitude, userLocation.longitude], {
-        title: 'La tua posizione'
+        title: 'La tua posizione',
+        icon: createUserLocationIcon(),
+        zIndexOffset: 1000
       }).addTo(mapInstance);
 
       if (nearbyOnly) {
@@ -1133,7 +1135,7 @@
             {/each}
           </select>
         </label>
-        <a href="#elenco-palestre" class="inline-flex min-h-[42px] items-center justify-center rounded-xl px-5 text-center text-sm font-bold text-white transition sc-button" on:click={applySearchNow}>
+        <a href="#elenco-palestre" class="inline-flex min-h-[42px] items-center justify-center rounded-xl px-5 text-center text-sm font-bold transition sc-button sc-button--hero-primary" on:click={applySearchNow}>
           Trova palestra
         </a>
       </div>
