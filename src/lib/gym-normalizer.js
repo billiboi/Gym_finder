@@ -80,11 +80,11 @@ export const GYM_SUPABASE_COLUMN_CANDIDATES = [
   ...GYM_LEGACY_FIELDS
 ];
 
-function clean(value) {
+export function clean(value) {
   return repairMojibake(value).trim();
 }
 
-function firstValue(record, keys, fallback = '') {
+export function firstValue(record, keys, fallback = '') {
   for (const key of keys) {
     const value = record?.[key];
     if (value !== null && value !== undefined && clean(value) !== '') return value;
@@ -130,13 +130,13 @@ function sourcePriorityScore(gym) {
   return Number.isFinite(value) ? value : 0;
 }
 
-function hasCoordinates(gym) {
+export function hasCoordinates(gym) {
   const lat = toNumberOrNull(firstValue(gym, ['lat', 'latitude']));
   const lng = toNumberOrNull(firstValue(gym, ['lng', 'longitude']));
   return Number.isFinite(lat) && Number.isFinite(lng);
 }
 
-function hasUsableHours(value) {
+export function hasUsableHours(value) {
   const hours = clean(value);
   return Boolean(hours && !/orari da verificare|da verificare|non disponibili|n\/d/i.test(hours));
 }
