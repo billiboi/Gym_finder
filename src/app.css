@@ -15,6 +15,11 @@
   --lime-600: #5a9a30;
   --accent-orange: #f08c3e;
   --accent-orange-strong: #d9701f;
+  /* Lighter than --accent-orange-strong on purpose: navy text on this
+     background must stay >=4.5:1 (WCAG AA); --accent-orange-strong only
+     needs to clear the lower bar required for hover-only link text on
+     white and would fail as a button background. */
+  --accent-orange-hover-bg: #e07f34;
 
   --font-wordmark:
     "Plus Jakarta Sans",
@@ -580,8 +585,8 @@ textarea:disabled,
 }
 
 .sc-button--hero-primary:hover {
-  border-color: var(--accent-orange-strong) !important;
-  background: var(--accent-orange-strong) !important;
+  border-color: var(--accent-orange-hover-bg) !important;
+  background: var(--accent-orange-hover-bg) !important;
   color: var(--navy-900) !important;
 }
 

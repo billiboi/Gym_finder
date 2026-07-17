@@ -762,7 +762,7 @@
       const popupDiscipline = escapeHtml(disciplineListForGym(gym).join(' | '));
       const popupAddress = escapeHtml(formatAddressForDisplay(gym));
 
-      const marker = window.L.marker([lat, lng]).bindPopup(
+      const marker = window.L.marker([lat, lng], { title: displayName(gym.name) }).bindPopup(
           `<div class="sc-map-popup">
             <div class="sc-map-popup-title">${popupName}</div>
             <div class="sc-map-popup-row">

@@ -213,7 +213,7 @@
       </div>
 
       <div class="mt-4">
-        <GymMapCluster gyms={mappableGyms} />
+        <GymMapCluster gyms={mappableGyms} label={`Mappa interattiva delle palestre a ${location.name}`} />
       </div>
       {#if mappableGyms.length}
         <div class="mt-3">

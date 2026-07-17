@@ -5,6 +5,7 @@
 
   export let gyms = [];
   export let heightClass = 'h-[18rem] sm:h-[24rem]';
+  export let label = 'Mappa interattiva delle palestre';
 
   let sectionEl;
   let mapContainer;
@@ -66,7 +67,7 @@
     for (const gym of mappableGyms) {
       const lat = Number(gym.latitude);
       const lng = Number(gym.longitude);
-      window.L.marker([lat, lng])
+      window.L.marker([lat, lng], { title: String(gym.name || '').trim() })
         .bindPopup(popupHtml(gym), {
           autoPan: true,
           className: 'sc-map-popup-shell',
@@ -137,7 +138,7 @@
     bind:this={sectionEl}
     class={`relative overflow-hidden rounded-2xl border border-slate-200 bg-white sc-zone-map ${heightClass}`}
   >
-    <div bind:this={mapContainer} class="h-full w-full"></div>
+    <div bind:this={mapContainer} class="h-full w-full" aria-label={label}></div>
   </div>
 {:else}
   <div class="rounded-2xl border border-dashed border-slate-300 bg-white/80 p-6 text-sm font-semibold text-slate-600">
