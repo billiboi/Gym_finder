@@ -11,7 +11,7 @@
   <meta name="robots" content="noindex,nofollow" />
 </svelte:head>
 
-<main class="mx-auto min-h-screen w-full max-w-5xl px-4 pb-10 pt-6 sm:px-6 lg:px-8">
+<main class="mx-auto min-h-screen w-full max-w-5xl px-4 pb-10 pt-6 sm:px-6 lg:px-8 sc-page">
   <section class="rounded-3xl border border-white/80 bg-white/85 p-5 shadow-xl backdrop-blur-sm sm:p-7">
     <p class="text-xs font-bold uppercase tracking-[0.22em] text-emerald-800">Dashboard proprietario</p>
     {#if !claim}

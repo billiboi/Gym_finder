@@ -554,12 +554,12 @@
               </div>
               <div class="flex flex-wrap gap-2">
                 {#if relatedDiscipline}
-                  <a href={`/discipline/${relatedDiscipline.slug}`} class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:border-slate-300 hover:bg-slate-50">
+                  <a href={`/discipline/${relatedDiscipline.slug}`} class="inline-flex min-h-[2.75rem] items-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-bold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50">
                     Altre palestre di {relatedDiscipline.name}
                   </a>
                 {/if}
                 {#if relatedLocation}
-                  <a href={`/zone/${relatedLocation.slug}`} class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:border-slate-300 hover:bg-slate-50">
+                  <a href={`/zone/${relatedLocation.slug}`} class="inline-flex min-h-[2.75rem] items-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-bold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50">
                     Esplora {relatedLocation.name}
                   </a>
                 {/if}

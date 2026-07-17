@@ -149,6 +149,6 @@
   .sc-zone-map {
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.38),
-      0 14px 28px rgba(31, 54, 45, 0.08);
+      var(--shadow-md);
   }
 </style>

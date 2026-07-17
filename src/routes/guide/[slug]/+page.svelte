@@ -118,11 +118,11 @@
         <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 sc-gym-card-kicker">Link interni</p>
         <h2 class="mt-1 text-2xl font-bold text-slate-900">Continua la ricerca nel catalogo</h2>
         <div class="mt-4 grid gap-3 sm:grid-cols-2">
-          <a href="/" class="rounded-2xl border border-slate-200 bg-white p-4 transition hover:-translate-y-0.5 hover:shadow-md">
+          <a href="/" class="rounded-2xl border border-slate-200 bg-white p-4 transition hover:-translate-y-0.5 hover:shadow-md sc-detail-card">
             <h3 class="text-base font-bold text-slate-900">Cerca palestre sulla mappa</h3>
             <p class="mt-2 text-sm leading-6 text-slate-600">Apri la ricerca principale e confronta schede, distanza e risultati.</p>
           </a>
-          <a href="/discipline" class="rounded-2xl border border-slate-200 bg-white p-4 transition hover:-translate-y-0.5 hover:shadow-md">
+          <a href="/discipline" class="rounded-2xl border border-slate-200 bg-white p-4 transition hover:-translate-y-0.5 hover:shadow-md sc-detail-card">
             <h3 class="text-base font-bold text-slate-900">Sfoglia le discipline</h3>
             <p class="mt-2 text-sm leading-6 text-slate-600">Passa dalle guide alle landing disciplina con schede collegate.</p>
           </a>
@@ -149,7 +149,7 @@
         <h2 class="mt-1 text-2xl font-bold text-slate-900">Altri percorsi utili</h2>
         <div class="mt-5 grid gap-3 sm:grid-cols-3">
           {#each relatedGuides as related}
-            <a href={editorialGuideHref(related)} class="rounded-2xl border border-slate-200 bg-white/90 p-4 transition hover:-translate-y-0.5 hover:shadow-md">
+            <a href={editorialGuideHref(related)} class="rounded-2xl border border-slate-200 bg-white/90 p-4 transition hover:-translate-y-0.5 hover:shadow-md sc-detail-card">
               <h3 class="text-base font-bold leading-tight text-slate-900">{related.title}</h3>
               <p class="mt-2 text-sm leading-6 text-slate-600">{related.description}</p>
             </a>
