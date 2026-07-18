@@ -1,11 +1,31 @@
 import { dedupeDisciplines } from '$lib/disciplines';
-import { canonicalizeDiscipline, DISCIPLINE_MASTER, isPublicDisciplineSlug } from '$lib/discipline-taxonomy';
+import {
+  canonicalizeDiscipline,
+  DISCIPLINE_MASTER,
+  getDisciplineBySlug,
+  isPublicDisciplineSlug
+} from '$lib/discipline-taxonomy';
 import { isIndexableGym } from '$lib/gym-detail';
 import { isSuspiciousZoneName, publicCityForGym } from '$lib/location-quality';
-import { SEO_DISCIPLINES, gymsForSeoDiscipline } from '$lib/seo-disciplines';
-import { SEO_LOCATIONS, gymsForSeoLocation } from '$lib/seo-locations';
+import { SEO_DISCIPLINES, gymsForSeoDiscipline, getSeoDiscipline } from '$lib/seo-disciplines';
+import { SEO_LOCATIONS, gymsForSeoLocation, getSeoLocation } from '$lib/seo-locations';
 
 export const SEO_LANDING_MIN_INDEXABLE_COUNT = 2;
+
+// Discipline+city combos confirmed, during the 2026-07-18 sitemap audit, to
+// have real matching gyms in the full in-memory catalog (so they pass the
+// verification below) but still 404 live on
+// /discipline/[slug]/[citySlug]/+page.server.js -- that route's SQL ILIKE
+// prefilter (readDisciplineGymPool -> disciplineOrFilter) drops candidates
+// the in-memory taxonomy matching here would keep. Root cause is in that
+// route's query construction, out of scope for a sitemap-hygiene fix;
+// excluded here so the sitemap never advertises a URL the live route can't
+// currently serve. Revisit if disciplineOrFilter's ILIKE terms are widened.
+const SITEMAP_LIVE_ROUTE_MISMATCH_COMBOS = new Set([
+  'functional-training::lugano',
+  'functional-training::saronno',
+  'personal-training::lavertezzo'
+]);
 
 export function slugifySeoName(name) {
   return String(name || '')
@@ -140,8 +160,36 @@ export function buildSeoDisciplineCityEntries(gyms, { minCount = SEO_LANDING_MIN
     }
   }
 
+  // Verify each surviving candidate against the exact same matching functions
+  // /discipline/[slug]/[citySlug]/+page.server.js uses at request time
+  // (gymsForSeoDiscipline + gymsForSeoLocation, or exact-citySlug fallback).
+  // The counting pass above uses a different, gym-tag-driven method that can
+  // disagree with the live route's keyword-driven matching (confirmed during
+  // the 2026-07-18 sitemap audit: it silently listed disciplines that were
+  // never registered, like a stray "Tennis" tag, and a few combos whose
+  // curated SEO_DISCIPLINES keyword list is narrower than the full taxonomy
+  // alias set) -- this closes that gap so the sitemap can never advertise a
+  // combo the live route would 404 on.
   return [...counts.values()]
     .filter((entry) => entry.count >= minCount)
+    .filter((entry) => !SITEMAP_LIVE_ROUTE_MISMATCH_COMBOS.has(`${entry.disciplineSlug}::${entry.citySlug}`))
+    .filter((entry) => {
+      const discipline = getSeoDiscipline(entry.disciplineSlug) || (() => {
+        const canonical = getDisciplineBySlug(entry.disciplineSlug);
+        return canonical && canonical.slug === entry.disciplineSlug
+          ? { slug: canonical.slug, name: canonical.name, keywords: [canonical.name, ...(canonical.aliases || [])] }
+          : null;
+      })();
+      if (!discipline) return false;
+
+      const disciplineGyms = gymsForSeoDiscipline(indexableGyms, discipline);
+      const location = getSeoLocation(entry.citySlug);
+      const matchedGyms = location
+        ? gymsForSeoLocation(disciplineGyms, location)
+        : disciplineGyms.filter((gym) => slugifySeoName(publicCityForGym(gym)) === entry.citySlug);
+
+      return matchedGyms.length > 0;
+    })
     .sort(
       (left, right) =>
         right.count - left.count ||
