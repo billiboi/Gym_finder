@@ -99,3 +99,21 @@ export function findOrphanedLegacySlugMatch(slug, canonicalGyms) {
   const matches = canonicalGyms.filter((gym) => baseGymSlug(gym) === stripped);
   return matches.length === 1 ? matches[0] : null;
 }
+
+// Matches old full-format slugs (name-city-street, from before duplicate-name
+// disambiguation could drop the street when the city alone was enough) against
+// today's shorter canonical slug, on a hyphen boundary. Returns every gym whose
+// canonical slug is a prefix of `slug` -- the caller decides what to do with
+// zero (no match), one (safe redirect target), or 2+ (ambiguous, do not guess).
+export function findCanonicalPrefixMatches(slug, canonicalGyms) {
+  const target = String(slug || '');
+  if (!target) return [];
+
+  const matches = canonicalGyms.filter(
+    (gym) => gym._canonical_slug && (target === gym._canonical_slug || target.startsWith(`${gym._canonical_slug}-`))
+  );
+  if (matches.length <= 1) return matches;
+
+  const maxLen = Math.max(...matches.map((gym) => gym._canonical_slug.length));
+  return matches.filter((gym) => gym._canonical_slug.length === maxLen);
+}

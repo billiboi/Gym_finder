@@ -6,7 +6,8 @@ import { normalizeGym } from '$lib/gym-normalizer';
 import { seoLocationForGym } from '$lib/seo-locations';
 import { seoDisciplineForGym } from '$lib/seo-disciplines';
 import { sanitizePublicGymData } from '$lib/public-data-sanitizer';
-import { findOrphanedLegacySlugMatch, withCanonicalGymSlugs } from '$lib/gym-canonical-slug';
+import { baseGymSlug, findCanonicalPrefixMatches, findOrphanedLegacySlugMatch, withCanonicalGymSlugs } from '$lib/gym-canonical-slug';
+import { LEGACY_SLUG_GONE, LEGACY_SLUG_REDIRECTS } from '$lib/legacy-gym-redirects';
 
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL || '';
 const SUPABASE_READ_KEY =
@@ -17,10 +18,6 @@ const SUPABASE_READ_KEY =
   '';
 const SUPABASE_GYMS_TABLE = process.env.SUPABASE_GYMS_TABLE || 'gyms';
 const hasSupabaseRead = Boolean(SUPABASE_URL && SUPABASE_READ_KEY);
-
-const LEGACY_SLUG_REDIRECTS = {
-  'urban-fitness-varese-csv-633': 'urban-fitness-varese'
-};
 
 const DETAIL_GYM_COLUMNS = [
   'id',
@@ -184,9 +181,57 @@ async function readFullActiveCatalog() {
   return gyms;
 }
 
+const DELETED_CATALOG_CACHE_KEY = '__gymfinder_detail_deleted_catalog__';
+
+// Mirrors readFullActiveCatalog() but for archived rows, used only to decide
+// whether an unresolvable legacy URL should 410 (gym existed, now archived)
+// instead of a plain 404 (never existed / can't tell). Cached the same way.
+async function readDeletedCatalog() {
+  if (!hasSupabaseRead) return [];
+
+  const cached = globalThis[DELETED_CATALOG_CACHE_KEY];
+  if (cached && Date.now() - cached.at < FULL_CATALOG_CACHE_TTL_MS) {
+    return cached.gyms;
+  }
+
+  const rows = await fetchGymRows(DETAIL_GYM_COLUMNS, [
+    'deleted_at=not.is.null',
+    'limit=5000'
+  ]);
+  const gyms = rows.map((row, index) => normalizeGym(row, row?.id || `detail-deleted-${index + 1}`));
+  globalThis[DELETED_CATALOG_CACHE_KEY] = { gyms, at: Date.now() };
+  return gyms;
+}
+
 function legacyIdFromSlug(slug) {
   const match = String(slug || '').match(/(?:^|-)(csv-[a-z0-9-]+|\d+)$/i);
   return match?.[1] || '';
+}
+
+// Decides whether an unresolvable legacy `/palestre/[slug]` URL should serve
+// 410 (the gym existed and was later archived, or was reviewed individually
+// during the 2026-07-18 audit and confirmed gone) rather than a plain 404.
+// Never guesses a redirect target here -- only yes/no on "is this gone".
+async function resolveGoneStatus(slug) {
+  if (LEGACY_SLUG_GONE.has(slug)) return true;
+
+  const deletedCatalog = await readDeletedCatalog();
+  if (!deletedCatalog.length) return false;
+
+  const legacyId = legacyIdFromSlug(slug);
+  if (legacyId && deletedCatalog.some((gym) => String(gym.id) === legacyId)) return true;
+
+  // Exact base-name match against the archived catalog. Checked directly
+  // (rather than via findOrphanedLegacySlugMatch, which only ever fires for
+  // -csv-NNN-suffixed slugs) so this also catches the "clean"/non-csv legacy
+  // URLs that resolve to an archived row by name alone.
+  const stripped = slug.replace(/-(?:csv-[a-z0-9-]+|\d+)$/i, '');
+  // Check both the stripped and the raw slug: a trailing number that looks
+  // like a legacy id suffix can legitimately be part of the business name
+  // (e.g. "Vela Club 33"), so stripping it can undershoot.
+  if (deletedCatalog.some((gym) => baseGymSlug(gym) === stripped || baseGymSlug(gym) === slug)) return true;
+
+  return false;
 }
 
 function slugSearchTerms(slug) {
@@ -210,8 +255,28 @@ async function findGymCandidate(slug) {
   const catalogLegacyMatch = catalog.find((gym) => gym._legacy_slug === slug);
   if (catalogLegacyMatch) return { gym: catalogLegacyMatch, matchType: 'legacy' };
 
+  // Old full-format slugs (name-city-street) whose current canonical slug
+  // dropped the street because the city alone was enough to disambiguate.
+  // Tried on both the raw slug and the -csv-NNN-stripped slug.
+  const strippedForPrefix = slug.replace(/-(?:csv-[a-z0-9-]+|\d+)$/i, '');
+  for (const candidate of [slug, strippedForPrefix]) {
+    const prefixMatches = findCanonicalPrefixMatches(candidate, catalog);
+    if (prefixMatches.length === 1) return { gym: prefixMatches[0], matchType: 'legacy' };
+    if (prefixMatches.length > 1) return { gym: null, matchType: 'ambiguous' };
+  }
+
   const orphanedLegacyMatch = findOrphanedLegacySlugMatch(slug, catalog);
   if (orphanedLegacyMatch) return { gym: orphanedLegacyMatch, matchType: 'legacy' };
+
+  // findOrphanedLegacySlugMatch() above returns null both when nothing shares
+  // the base name and when 2+ gyms do (it never guesses). Distinguish those
+  // here: multiple active gyms sharing the name is a genuine ambiguous case
+  // (410, not a plain 404) -- e.g. a multi-location chain's old un-suffixed
+  // URL, where the specific original location can no longer be determined.
+  if (strippedForPrefix !== slug) {
+    const sameBaseNameCount = catalog.filter((gym) => baseGymSlug(gym) === strippedForPrefix).length;
+    if (sameBaseNameCount > 1) return { gym: null, matchType: 'ambiguous' };
+  }
 
   if (!hasSupabaseRead) {
     const fallbackGyms = await readPublicRouteGyms();
@@ -372,6 +437,11 @@ export const config = {
 
 export async function load({ params }) {
   const found = await findGymCandidate(params.slug);
+
+  if (found?.matchType === 'ambiguous') {
+    throw error(410, 'Scheda rimossa');
+  }
+
   let gym = found?.matchType === 'canonical' ? found.gym : null;
   const legacyTargetSlug = LEGACY_SLUG_REDIRECTS[params.slug];
 
@@ -404,6 +474,9 @@ export async function load({ params }) {
   }
 
   if (!gym || !isIndexableGym(gym)) {
+    if (await resolveGoneStatus(params.slug)) {
+      throw error(410, 'Scheda rimossa');
+    }
     throw error(404, 'Palestra non trovata');
   }
 
