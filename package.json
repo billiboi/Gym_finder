@@ -40,6 +40,7 @@
     "descriptions:levels:apply": "bun scripts/apply-description-levels-preview.ts --env-file=.env.staging.local",
     "descriptions:generate:dry": "bun scripts/generate-gym-descriptions.ts --mode=dry-run --env-file=.env.staging.local",
     "descriptions:apply": "bun scripts/generate-gym-descriptions.ts --mode=apply --env-file=.env.staging.local",
+    "facts:enrich:dry": "bun scripts/enrich-gym-facts.ts --env-file=.env.staging.local --limit=10",
     "audit:gyms:contamination": "bun scripts/audit-gym-contamination.ts --env-file=.env.staging.local",
     "audit:gyms:contamination:preview": "bun scripts/fix-gym-contamination-preview.ts --env-file=.env.staging.local",
     "audit:gyms:contamination:apply": "bun scripts/apply-gym-contamination-fixes.ts --env-file=.env.staging.local",
@@ -53,6 +54,7 @@
     "sync:gyms:prod": "bun scripts/sync-supabase-gyms.mjs --env-file=.env.vercel.production.check"
   },
   "devDependencies": {
+    "@anthropic-ai/sdk": "^0.112.3",
     "@sveltejs/adapter-auto": "^7.0.1",
     "@sveltejs/adapter-vercel": "^6.3.3",
     "@sveltejs/kit": "^2.17.1",
