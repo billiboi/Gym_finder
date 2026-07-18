@@ -12,6 +12,15 @@ import {
   isPublicDisciplineSlug
 } from '$lib/discipline-taxonomy';
 
+// Discipline slugs that were once indexed but no longer resolve to any
+// content: `vaculab` is deliberately excluded from the taxonomy (see
+// EXCLUDED_DISCIPLINE_ALIASES in discipline-taxonomy.js), and the other four
+// were dropped from the taxonomy in an earlier revision with no trace of a
+// replacement category. Reviewed during the 2026-07-18 404 audit (see
+// data/seo-404-audit-2026-07-18/REPORT.md §5) -- served as 410 rather than a
+// plain 404 since these URLs previously existed.
+const GONE_DISCIPLINE_SLUGS = new Set(['vaculab', 'kettlebell', 'tabata', 'ginnastica-posturale', 'pancafit']);
+
 const INITIAL_DISCIPLINE_GYMS = 72;
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL || '';
 const SUPABASE_READ_KEY =
@@ -202,6 +211,10 @@ export const config = {
 };
 
 export async function load({ params }) {
+  if (GONE_DISCIPLINE_SLUGS.has(params.slug)) {
+    throw error(410, 'Disciplina rimossa');
+  }
+
   const canonicalSlug = canonicalSlugForDisciplineSlug(params.slug) || params.slug;
   if (!isPublicDisciplineSlug(canonicalSlug)) {
     throw error(410, 'Disciplina rimossa');
