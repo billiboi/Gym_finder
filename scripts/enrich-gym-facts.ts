@@ -124,7 +124,7 @@ const FACT_SCHEMA = {
     },
     confidence: {
       type: 'string',
-      description: 'Confidenza sul valore. Se identity_match e false, non puo superare "low". "high" solo da official_site o google_business chiaramente corrispondente; "medium" da social ufficiali; "low" da fonti terze o dati ambigui; "none" se il campo e vuoto.',
+      description: 'Confidenza sul valore. Se identity_match e false, non puo superare "low". "high" SOLO da official_site o google_business chiaramente corrispondente; le fonti "article" (directory/aggregatori) non superano mai "medium", nemmeno se piu directory concordano; "medium" da social ufficiali o article corroborati; "low" da singola fonte terza isolata o dati ambigui; "none" se il campo e vuoto.',
       enum: ['high', 'medium', 'low', 'none']
     }
   },
@@ -166,18 +166,19 @@ function buildSystemPrompt() {
     'ESTRAZIONE DATI:',
     '4. Estrai solo questi campi: telefono, sito web ufficiale, orari di apertura, informazioni su prezzo o abbonamento.',
     '5. Fonti in ordine di affidabilita: sito ufficiale > scheda Google Business > pagine social ufficiali (Facebook, Instagram). Evita aggregatori e directory di terze parti che si limitano a ripubblicare dati: sono una fonte tipica di contaminazione tra omonimi. Usali solo come conferma secondaria, mai come unica fonte.',
-    '6. La confidence di OGNI campo dipende dall\'identita: se identity_match e false, nessun campo puo superare "low". Se identity_match e true: "high" solo da sito ufficiale o Google Business chiaramente corrispondente, "medium" da social ufficiali, "low" da fonti terze o dati ambigui.',
-    '7. Non inventare mai un valore. Se non trovi un dato con ragionevole certezza, lascialo vuoto con value "", confidence "none" e source_type "none". Meglio un campo vuoto che un dato sbagliato.',
-    '8. source_url deve puntare alla pagina specifica da cui hai letto il dato (es. la pagina contatti o orari), non alla sola homepage quando puoi essere piu preciso.',
+    '6. Non usare MAI palestreinzona.it come fonte: e il sito che stiamo arricchendo, quindi citarlo non conferma nulla. Ignora anche le pagine che si limitano a ripubblicare i suoi dati. Se l\'unica fonte per un campo e palestreinzona.it, quel campo non ha conferma indipendente: lascialo vuoto o abbassane la confidence di conseguenza.',
+    '7. La confidence di OGNI campo dipende dall\'identita E dal tipo di fonte. Se identity_match e false, nessun campo puo superare "low". Se identity_match e true: "high" SOLO da official_site o google_business chiaramente corrispondente. Le fonti "article" (aggregatori, directory, paginegialle, reteimprese, ecc.) non possono MAI superare "medium", nemmeno se piu directory concordano: spesso si copiano a vicenda, quindi la corroborazione tra directory non equivale a conferme indipendenti. "medium" per social ufficiali e per article corroborati da piu fonti; "low" per una singola fonte terza isolata o per dati ambigui.',
+    '8. Non inventare mai un valore. Se non trovi un dato con ragionevole certezza, lascialo vuoto con value "", confidence "none" e source_type "none". Meglio un campo vuoto che un dato sbagliato.',
+    '9. source_url deve puntare alla pagina specifica da cui hai letto il dato (es. la pagina contatti o orari), non alla sola homepage quando puoi essere piu preciso.',
     '',
     'CONFRONTO CON L\'ARCHIVIO:',
-    '9. I valori "gia noti in archivio" nel messaggio utente sono indizi da verificare, non da ricopiare. Confermali solo se una fonte indipendente li conferma davvero.',
-    '10. Se trovi un valore che contraddice quello in archivio (es. un telefono diverso), riporta comunque il valore trovato con la sua fonte e segnala la discrepanza in identity_notes.',
+    '10. I valori "gia noti in archivio" nel messaggio utente sono indizi da verificare, non da ricopiare. Confermali solo se una fonte indipendente li conferma davvero.',
+    '11. Se trovi un valore che contraddice quello in archivio (es. un telefono diverso), riporta comunque il valore trovato con la sua fonte e segnala la discrepanza in identity_notes.',
     '',
     'FORMATO:',
-    '11. Telefono: formato italiano leggibile (es. "+39 0332 123456" o "0332 123456"). Orari: testo conciso e leggibile (es. "Lun-Ven 9:00-22:00, Sab 9:00-13:00"). Prezzo: testo conciso che indica a cosa si riferisce (es. "Abbonamento mensile da 40 euro").',
+    '12. Telefono: formato italiano leggibile (es. "+39 0332 123456" o "0332 123456"). Orari: testo conciso e leggibile (es. "Lun-Ven 9:00-22:00, Sab 9:00-13:00"). Prezzo: testo conciso che indica a cosa si riferisce (es. "Abbonamento mensile da 40 euro").',
     '',
-    '12. Quando hai finito la ricerca, chiama record_gym_facts esattamente una volta con il risultato completo. Non chiamarlo piu di una volta e non continuare a cercare dopo averlo chiamato.'
+    '13. Quando hai finito la ricerca, chiama record_gym_facts esattamente una volta con il risultato completo. Non chiamarlo piu di una volta e non continuare a cercare dopo averlo chiamato.'
   ].join('\n');
 }
 
