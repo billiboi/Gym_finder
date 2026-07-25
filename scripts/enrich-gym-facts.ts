@@ -119,10 +119,12 @@ const FACT_SCHEMA = {
     },
     source_type: {
       type: 'string',
+      description: 'Tipo di fonte da cui viene il valore. "article" copre aggregatori/directory di terze parti (usali solo come conferma secondaria). "none" se il campo e vuoto.',
       enum: ['official_site', 'google_business', 'social', 'article', 'none']
     },
     confidence: {
       type: 'string',
+      description: 'Confidenza sul valore. Se identity_match e false, non puo superare "low". "high" solo da official_site o google_business chiaramente corrispondente; "medium" da social ufficiali; "low" da fonti terze o dati ambigui; "none" se il campo e vuoto.',
       enum: ['high', 'medium', 'low', 'none']
     }
   },
@@ -156,13 +158,26 @@ function buildSystemPrompt() {
     'Sei un agente di raccolta dati per palestreinzona.it, una directory italiana di palestre.',
     'Il tuo compito e verificare e arricchire i dati di UNA specifica palestra usando la ricerca web.',
     '',
-    'Regole:',
-    '1. Prima di estrarre qualsiasi dato, verifica che le fonti trovate si riferiscano esattamente a questa palestra: stesso nome, stessa citta, stesso indirizzo (se disponibile). Se trovi una palestra con nome simile ma indirizzo o citta diversi, non usarla come fonte.',
-    '2. Cerca solo tra queste fonti: sito ufficiale, scheda Google Business, pagine social ufficiali (Facebook, Instagram), articoli di terze parti affidabili.',
-    '3. Estrai solo questi campi: telefono, sito web ufficiale, orari di apertura, informazioni su prezzo o abbonamento.',
-    '4. Non inventare mai un valore. Se non trovi un dato con ragionevole certezza, lascialo vuoto con confidence "none" e source_type "none".',
-    '5. Assegna confidence "high" solo se il dato viene dal sito ufficiale o da una scheda Google Business chiaramente corrispondente. "medium" per social ufficiali. "low" per fonti terze o dati ambigui.',
-    '6. Quando hai finito la ricerca, chiama record_gym_facts esattamente una volta con il risultato completo. Non chiamarlo piu di una volta e non continuare a cercare dopo averlo chiamato.'
+    'VERIFICA IDENTITA (passo piu importante):',
+    '1. Prima di estrarre qualsiasi dato, conferma che la fonte si riferisca esattamente a questa palestra e non a una sede diversa o a un\'attivita omonima. L\'indirizzo e il segnale decisivo: se corrisponde nome e citta ma l\'indirizzo e diverso, e un\'altra sede o un omonimo, non usarla.',
+    '2. Se l\'indirizzo non e disponibile in archivio, l\'identita e piu debole: confermala con almeno un altro segnale forte (il telefono gia noto, o il dominio del sito gia noto) prima di superare confidence "low". In mancanza di corroborazione, resta prudente.',
+    '3. Imposta identity_match a true solo se sei ragionevolmente sicuro. In caso di dubbio, identity_match = false e spiega brevemente in identity_notes cosa hai trovato e perche e incerto.',
+    '',
+    'ESTRAZIONE DATI:',
+    '4. Estrai solo questi campi: telefono, sito web ufficiale, orari di apertura, informazioni su prezzo o abbonamento.',
+    '5. Fonti in ordine di affidabilita: sito ufficiale > scheda Google Business > pagine social ufficiali (Facebook, Instagram). Evita aggregatori e directory di terze parti che si limitano a ripubblicare dati: sono una fonte tipica di contaminazione tra omonimi. Usali solo come conferma secondaria, mai come unica fonte.',
+    '6. La confidence di OGNI campo dipende dall\'identita: se identity_match e false, nessun campo puo superare "low". Se identity_match e true: "high" solo da sito ufficiale o Google Business chiaramente corrispondente, "medium" da social ufficiali, "low" da fonti terze o dati ambigui.',
+    '7. Non inventare mai un valore. Se non trovi un dato con ragionevole certezza, lascialo vuoto con value "", confidence "none" e source_type "none". Meglio un campo vuoto che un dato sbagliato.',
+    '8. source_url deve puntare alla pagina specifica da cui hai letto il dato (es. la pagina contatti o orari), non alla sola homepage quando puoi essere piu preciso.',
+    '',
+    'CONFRONTO CON L\'ARCHIVIO:',
+    '9. I valori "gia noti in archivio" nel messaggio utente sono indizi da verificare, non da ricopiare. Confermali solo se una fonte indipendente li conferma davvero.',
+    '10. Se trovi un valore che contraddice quello in archivio (es. un telefono diverso), riporta comunque il valore trovato con la sua fonte e segnala la discrepanza in identity_notes.',
+    '',
+    'FORMATO:',
+    '11. Telefono: formato italiano leggibile (es. "+39 0332 123456" o "0332 123456"). Orari: testo conciso e leggibile (es. "Lun-Ven 9:00-22:00, Sab 9:00-13:00"). Prezzo: testo conciso che indica a cosa si riferisce (es. "Abbonamento mensile da 40 euro").',
+    '',
+    '12. Quando hai finito la ricerca, chiama record_gym_facts esattamente una volta con il risultato completo. Non chiamarlo piu di una volta e non continuare a cercare dopo averlo chiamato.'
   ].join('\n');
 }
 
@@ -178,10 +193,10 @@ function buildUserPrompt(gym: Gym) {
     `- Nome: ${name}`,
     `- Citta: ${city || 'non disponibile'}`,
     `- Indirizzo: ${address || 'non disponibile'}`,
-    `- Sito gia noto in archivio: ${website || 'nessuno'}`,
-    `- Telefono gia noto in archivio: ${phone || 'nessuno'}`,
+    `- Sito gia noto in archivio (da verificare, non da ricopiare): ${website || 'nessuno'}`,
+    `- Telefono gia noto in archivio (da verificare, non da ricopiare): ${phone || 'nessuno'}`,
     '',
-    'Cerca sul web e conferma o completa telefono, sito ufficiale, orari e informazioni sul prezzo per QUESTA specifica palestra.'
+    'Prima verifica l\'identita di QUESTA specifica palestra (indirizzo decisivo), poi conferma o completa telefono, sito ufficiale, orari e informazioni sul prezzo.'
   ].join('\n');
 }
 
