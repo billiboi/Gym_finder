@@ -41,6 +41,7 @@
     "descriptions:generate:dry": "bun scripts/generate-gym-descriptions.ts --mode=dry-run --env-file=.env.staging.local",
     "descriptions:apply": "bun scripts/generate-gym-descriptions.ts --mode=apply --env-file=.env.staging.local",
     "facts:enrich:dry": "bun scripts/enrich-gym-facts.ts --env-file=.env.staging.local --limit=10",
+    "facts:apply:plan": "bun scripts/apply-gym-facts.ts --env-file=.env.vercel.production.check",
     "audit:gyms:contamination": "bun scripts/audit-gym-contamination.ts --env-file=.env.staging.local",
     "audit:gyms:contamination:preview": "bun scripts/fix-gym-contamination-preview.ts --env-file=.env.staging.local",
     "audit:gyms:contamination:apply": "bun scripts/apply-gym-contamination-fixes.ts --env-file=.env.staging.local",
