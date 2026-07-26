@@ -41,6 +41,7 @@ const redoStatuses = new Set(
 );
 const maxSearchUses = Number(args.get('--max-search-uses') || '4');
 const maxIterations = Number(args.get('--max-iterations') || '6');
+const maxConsecutiveErrors = Number(args.get('--max-consecutive-errors') || '5');
 const stamp = new Date().toISOString().replace(/[:.]/g, '-');
 const jsonOut = args.get('--json-out') || `data/gym-facts-dry-run-${stamp}.json`;
 
@@ -224,6 +225,21 @@ function buildUserPrompt(gym: Gym) {
   ].join('\n');
 }
 
+// Errors that will hit every remaining gym identically: retrying them just
+// burns wall time. An exhausted credit balance did exactly that on the
+// 2026-07-26 run - 116 consecutive failed calls after the balance ran out.
+function isFatalError(message: string) {
+  const text = message.toLowerCase();
+  return (
+    text.includes('credit balance') ||
+    text.includes('authentication_error') ||
+    text.includes('permission_error') ||
+    text.includes('invalid x-api-key') ||
+    text.includes('401') ||
+    text.includes('403')
+  );
+}
+
 async function enrichGym(anthropic: Anthropic, gym: Gym) {
   let captured: Record<string, any> | null = null;
 
@@ -262,6 +278,7 @@ async function enrichGym(anthropic: Anthropic, gym: Gym) {
   }
 
   return {
+    fatal: isFatalError(errorMessage),
     id: idOf(gym),
     nome: nameOf(gym),
     citta: cityOf(gym),
@@ -314,6 +331,8 @@ if (!candidates.length) {
 
 const anthropic = new Anthropic();
 const results: Record<string, any>[] = [];
+let consecutiveErrors = 0;
+let aborted = false;
 
 function buildSummary() {
   return {
@@ -358,9 +377,26 @@ for (const gym of candidates) {
       ` [${results.length}/${candidates.length}]`
   );
   await writeReport(false);
+
+  if (result.fatal) {
+    console.error(
+      `[enrich-gym-facts:dry-run] STOP: errore non recuperabile, le chiamate successive fallirebbero uguale.\n  ${result.error}`
+    );
+    aborted = true;
+    break;
+  }
+
+  consecutiveErrors = result.error ? consecutiveErrors + 1 : 0;
+  if (consecutiveErrors >= maxConsecutiveErrors) {
+    console.error(
+      `[enrich-gym-facts:dry-run] STOP: ${consecutiveErrors} errori consecutivi (--max-consecutive-errors=${maxConsecutiveErrors}).`
+    );
+    aborted = true;
+    break;
+  }
 }
 
-await writeReport(true);
+await writeReport(!aborted);
 
 console.log(`[enrich-gym-facts:dry-run] ${JSON.stringify(buildSummary())}`);
 console.log(`[enrich-gym-facts:dry-run] json=${jsonOut}`);
