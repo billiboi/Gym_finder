@@ -26,8 +26,19 @@ const args = new Map(
 );
 
 const envFile = args.get('--env-file') || '.env.staging.local';
+const envFiles = envFile.split(',').map((value) => value.trim()).filter(Boolean);
 const table = args.get('--table') || process.env.SUPABASE_GYMS_TABLE || 'gyms';
 const limit = Number(args.get('--limit') || '10');
+// Wave tracking: gyms already processed by a previous run carry a non-pending
+// source_discovery_status (written by apply-gym-facts.ts). Without this filter
+// every run re-searches the same first N candidates. Pass e.g.
+// --redo-status=no_sources_found to deliberately retry an earlier outcome.
+const redoStatuses = new Set(
+  (args.get('--redo-status') || '')
+    .split(',')
+    .map((value) => clean(value))
+    .filter(Boolean)
+);
 const maxSearchUses = Number(args.get('--max-search-uses') || '4');
 const maxIterations = Number(args.get('--max-iterations') || '6');
 const stamp = new Date().toISOString().replace(/[:.]/g, '-');
@@ -70,6 +81,18 @@ function activeGym(gym: Gym) {
 
 function idOf(gym: Gym) {
   return clean(gym.id);
+}
+
+// Treats a missing column as 'pending' so the script still works against an
+// environment where the enrichment migration is not readable (staging's
+// PostgREST schema cache is stuck on these columns).
+function discoveryStatusOf(gym: Gym) {
+  return clean(gym.source_discovery_status) || 'pending';
+}
+
+function notYetProcessed(gym: Gym) {
+  const status = discoveryStatusOf(gym);
+  return status === 'pending' || redoStatuses.has(status);
 }
 
 function nameOf(gym: Gym) {
@@ -247,6 +270,7 @@ async function enrichGym(anthropic: Anthropic, gym: Gym) {
     telefono_esistente: phoneOf(gym),
     readiness_score_before: computeDescriptionReadinessScore(gym),
     gating_fields_present_before: descriptionGatingFieldsPresent(gym),
+    source_discovery_status_before: discoveryStatusOf(gym),
     stop_reason: stopReason,
     tool_called: Boolean(captured),
     error: errorMessage,
@@ -254,7 +278,12 @@ async function enrichGym(anthropic: Anthropic, gym: Gym) {
   };
 }
 
-await loadEnvFile(path.resolve(envFile));
+// Accepts a comma-separated list so Supabase credentials and ANTHROPIC_API_KEY
+// can live in different env files. Loaded left to right; the first file that
+// defines a key wins, so put the intended Supabase target first.
+for (const file of envFiles) {
+  await loadEnvFile(path.resolve(file));
+}
 
 if (!process.env.ANTHROPIC_API_KEY) {
   throw new Error(
@@ -268,9 +297,20 @@ if (!readKey) throw new Error('Missing Supabase read key.');
 
 const allRows = await readGyms(supabaseUrl, readKey);
 const activeRows = allRows.filter(activeGym);
-const candidates = activeRows.filter((gym) => !meetsDescriptionThreshold(gym)).slice(0, limit);
+const belowThreshold = activeRows.filter((gym) => !meetsDescriptionThreshold(gym));
+const pending = belowThreshold.filter(notYetProcessed);
+const candidates = pending.slice(0, limit);
 
-console.log(`[enrich-gym-facts:dry-run] env=${envFile} total=${allRows.length} active=${activeRows.length} candidates=${candidates.length}`);
+console.log(
+  `[enrich-gym-facts:dry-run] env=${envFile} total=${allRows.length} active=${activeRows.length} ` +
+    `below_threshold=${belowThreshold.length} not_yet_processed=${pending.length} candidates=${candidates.length}` +
+    (redoStatuses.size ? ` redo_status=${[...redoStatuses].join(',')}` : '')
+);
+
+if (!candidates.length) {
+  console.log('[enrich-gym-facts:dry-run] nessun candidato da processare. Usa --redo-status=... per rilanciare esiti precedenti.');
+  process.exit(0);
+}
 
 const anthropic = new Anthropic();
 const results = [];
