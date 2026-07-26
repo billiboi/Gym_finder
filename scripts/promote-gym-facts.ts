@@ -20,8 +20,16 @@
 
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { clean, firstValue, hasUsableHours } from '../src/lib/gym-normalizer.js';
+import { clean, firstValue } from '../src/lib/gym-normalizer.js';
 import { computeDescriptionReadinessScore, descriptionGatingFieldsPresent } from '../src/lib/description-readiness.js';
+import {
+  CONFIDENCE_RANK,
+  FIELD_TARGETS,
+  betterFact,
+  buildPromotionPatch,
+  factText,
+  promotionBlockReason
+} from '../src/lib/gym-facts-promotion.js';
 
 type Gym = Record<string, any>;
 type Fact = Record<string, any>;
@@ -44,19 +52,6 @@ const stamp = new Date().toISOString().replace(/[:.]/g, '-');
 const backupOut = args.get('--backup-out') || `data/gym-facts-promote-backup-${stamp}.json`;
 const logOut = args.get('--log-out') || `data/gym-facts-promote-log-${stamp}.json`;
 
-// Maps a gym_facts.field onto the canonical column written, plus every column
-// the app would read for that field - a value in any of them means the field is
-// already covered and must not be touched. Precedence comes from
-// firstValue() in gym-normalizer.js / description-readiness.js.
-const FIELD_TARGETS: Record<string, { column: string; readColumns: string[] }> = {
-  telefono: { column: 'telefono', readColumns: ['telefono', 'phone'] },
-  sito: { column: 'sito', readColumns: ['sito', 'website'] },
-  orari: { column: 'orari', readColumns: ['orari', 'hours_info'] },
-  prezzo: { column: 'price_info', readColumns: ['price_info'] }
-};
-
-const CONFIDENCE_RANK: Record<string, number> = { high: 3, medium: 2, low: 1 };
-const SOURCE_RANK: Record<string, number> = { official_site: 4, google_business: 3, social: 2, article: 1 };
 
 function parseEnvValue(value: string) {
   const trimmed = clean(value);
@@ -108,20 +103,6 @@ function ensureApplyAllowed(supabaseUrl: string) {
   }
 }
 
-function factText(fact: Fact) {
-  const value = fact?.value;
-  if (value && typeof value === 'object' && !Array.isArray(value)) return clean(value.text);
-  return clean(value);
-}
-
-// A field counts as already covered if ANY column the app reads for it holds a
-// value - otherwise promotion could write `telefono` while the app is already
-// showing `phone`, silently creating two competing values.
-function fieldIsEmpty(gym: Gym, field: string) {
-  const target = FIELD_TARGETS[field];
-  if (!target) return false;
-  return !clean(firstValue(gym, target.readColumns));
-}
 
 function meetsConfidence(fact: Fact) {
   const rank = CONFIDENCE_RANK[clean(fact.confidence)] || 0;
@@ -129,13 +110,6 @@ function meetsConfidence(fact: Fact) {
   return rank >= floor;
 }
 
-// Best fact wins: stronger source first, then more recent extraction. Only ever
-// called on facts that already cleared the confidence floor.
-function betterFact(a: Fact, b: Fact) {
-  const sourceDelta = (SOURCE_RANK[clean(b.source_type)] || 0) - (SOURCE_RANK[clean(a.source_type)] || 0);
-  if (sourceDelta !== 0) return sourceDelta;
-  return String(b.extracted_at || '').localeCompare(String(a.extracted_at || ''));
-}
 
 async function fetchPendingFacts(supabaseUrl: string, key: string) {
   const response = await fetch(
@@ -215,34 +189,25 @@ for (const fact of pendingFacts) {
   const text = factText(fact);
   const gym = gymById.get(gymId);
 
-  if (!gym) {
-    skipped.push({ fact_id: fact.id, gym_id: gymId, field, reason: 'gym_non_trovato' });
-    continue;
-  }
-  if (!FIELD_TARGETS[field]) {
-    skipped.push({ fact_id: fact.id, gym_id: gymId, field, reason: 'campo_non_mappato' });
-    continue;
-  }
-  if (!text) {
-    skipped.push({ fact_id: fact.id, gym_id: gymId, field, reason: 'valore_vuoto' });
-    continue;
-  }
+  // Confidence is this script's own gate - the admin queue deliberately has no
+  // floor, since a human is looking at the value and its source.
   if (!meetsConfidence(fact)) {
     skipped.push({ fact_id: fact.id, gym_id: gymId, field, reason: 'confidence_sotto_soglia', confidence: fact.confidence });
     continue;
   }
-  if (!fieldIsEmpty(gym, field)) {
+
+  const blockReason = promotionBlockReason(gym, fact);
+  if (blockReason) {
     skipped.push({
       fact_id: fact.id,
       gym_id: gymId,
       field,
-      reason: 'campo_gia_valorizzato',
-      esistente: clean(firstValue(gym, FIELD_TARGETS[field].readColumns))
+      reason: blockReason,
+      ...(blockReason === 'campo_gia_valorizzato'
+        ? { esistente: clean(firstValue(gym, FIELD_TARGETS[field].readColumns)) }
+        : {}),
+      ...(blockReason === 'orari_non_utilizzabili' ? { value: text } : {})
     });
-    continue;
-  }
-  if (field === 'orari' && !hasUsableHours(text)) {
-    skipped.push({ fact_id: fact.id, gym_id: gymId, field, reason: 'orari_non_utilizzabili', value: text });
     continue;
   }
 
@@ -279,7 +244,7 @@ for (const gymId of gymIds) {
     const target = FIELD_TARGETS[field];
     const text = factText(fact);
 
-    patch[target.column] = text;
+    Object.assign(patch, buildPromotionPatch(fact));
     projected[target.column] = text;
     changes.push({
       fact_id: fact.id,
@@ -290,13 +255,6 @@ for (const gymId of gymIds) {
       source_type: fact.source_type,
       confidence: fact.confidence
     });
-
-    // Keep the price provenance columns consistent with the existing price
-    // pipeline, which treats these three as one unit.
-    if (field === 'prezzo') {
-      patch.price_source_url = clean(fact.source_url);
-      patch.price_updated_at = new Date().toISOString();
-    }
   }
 
   // Recomputed here because this is exactly the moment the column's comment

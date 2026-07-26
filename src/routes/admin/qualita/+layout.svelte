@@ -6,7 +6,8 @@
     { label: 'Panoramica', href: '/admin/qualita', active: pathname === '/admin/qualita' },
     { label: 'Riclassifica', href: '/admin/qualita/riclassifica', active: pathname === '/admin/qualita/riclassifica' },
     { label: 'Descrizioni', href: '/admin/qualita/descrizioni', active: pathname === '/admin/qualita/descrizioni' },
-    { label: 'Contenuti', href: '/admin/qualita/contenuti', active: pathname === '/admin/qualita/contenuti' }
+    { label: 'Contenuti', href: '/admin/qualita/contenuti', active: pathname === '/admin/qualita/contenuti' },
+    { label: 'Fatti', href: '/admin/qualita/fatti', active: pathname === '/admin/qualita/fatti' }
   ];
 </script>
 
