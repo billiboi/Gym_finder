@@ -313,39 +313,54 @@ if (!candidates.length) {
 }
 
 const anthropic = new Anthropic();
-const results = [];
+const results: Record<string, any>[] = [];
+
+function buildSummary() {
+  return {
+    candidates: results.length,
+    tool_called: results.filter((row) => row.tool_called).length,
+    identity_match_true: results.filter((row) => row.facts?.identity_match === true).length,
+    errors: results.filter((row) => row.error).length
+  };
+}
+
+// Rewritten after every gym, not just at the end: a long wave is minutes of
+// paid API work, and a fatal error partway through (auth, network, rate limit)
+// would otherwise discard everything already searched. The partial file is a
+// valid report, so apply-gym-facts.ts can consume it as-is.
+async function writeReport(complete: boolean) {
+  await writeFile(
+    jsonOut,
+    JSON.stringify(
+      {
+        generated_at: new Date().toISOString(),
+        source: { env_file: envFile, table, mode: 'dry_run_read_only' },
+        model: 'claude-haiku-4-5',
+        complete,
+        planned_candidates: candidates.length,
+        summary: buildSummary(),
+        rows: results
+      },
+      null,
+      2
+    )
+  );
+}
+
+await mkdir(path.dirname(jsonOut), { recursive: true });
 
 for (const gym of candidates) {
   console.log(`[enrich-gym-facts:dry-run] searching id=${idOf(gym)} nome="${nameOf(gym)}" citta="${cityOf(gym)}"`);
   const result = await enrichGym(anthropic, gym);
   results.push(result);
   console.log(
-    `  -> tool_called=${result.tool_called} identity_match=${result.facts?.identity_match ?? 'n/a'} error=${result.error || 'none'}`
+    `  -> tool_called=${result.tool_called} identity_match=${result.facts?.identity_match ?? 'n/a'} error=${result.error || 'none'}` +
+      ` [${results.length}/${candidates.length}]`
   );
+  await writeReport(false);
 }
 
-const summary = {
-  candidates: results.length,
-  tool_called: results.filter((row) => row.tool_called).length,
-  identity_match_true: results.filter((row) => row.facts?.identity_match === true).length,
-  errors: results.filter((row) => row.error).length
-};
+await writeReport(true);
 
-await mkdir(path.dirname(jsonOut), { recursive: true });
-await writeFile(
-  jsonOut,
-  JSON.stringify(
-    {
-      generated_at: new Date().toISOString(),
-      source: { env_file: envFile, table, mode: 'dry_run_read_only' },
-      model: 'claude-haiku-4-5',
-      summary,
-      rows: results
-    },
-    null,
-    2
-  )
-);
-
-console.log(`[enrich-gym-facts:dry-run] ${JSON.stringify(summary)}`);
+console.log(`[enrich-gym-facts:dry-run] ${JSON.stringify(buildSummary())}`);
 console.log(`[enrich-gym-facts:dry-run] json=${jsonOut}`);
