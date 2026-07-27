@@ -171,7 +171,6 @@
   });
   $: seoTitle = officialOverride?.seoTitle ? appendSiteName(fixGymText(officialOverride.seoTitle)) : fallbackGymSeo.title;
   $: seoDescription = fixGymText(officialOverride?.seoDescription) || fallbackGymSeo.description;
-  $: quarantineNotice = publicDataQuarantine ? 'Alcuni dettagli sono in fase di verifica.' : '';
   $: claimHref = `/rivendica-scheda?gym=${encodeURIComponent(fixGymText(gym?.name))}&url=${encodeURIComponent(pageUrl)}&reason=${encodeURIComponent('Rivendicazione scheda')}&gym_id=${encodeURIComponent(gym?.id || '')}`;
   $: trackingPayload = gymTrackingPayload({ ...gym, slug: data.gymSlug, discipline: primaryDiscipline, city: cityLabel });
 
@@ -341,11 +340,6 @@
             </h1>
 
             <p class="text-sm leading-7 text-slate-600 sm:text-[0.98rem] sc-detail-copy">{presentation}</p>
-            {#if quarantineNotice}
-              <p class="rounded-2xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-900">
-                {quarantineNotice}
-              </p>
-            {/if}
 
             {#if officialScheduleCards.length}
               <div class="grid gap-2 sm:grid-cols-3">

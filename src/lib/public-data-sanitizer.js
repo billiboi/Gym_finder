@@ -1,5 +1,8 @@
 import { getSafePublicDescription } from './gym-description.js';
 
+// Codice interno: marca i campi oscurati sul payload pubblico senza esporre testo leggibile.
+const PUBLIC_QUARANTINE_CODE = 'public_data_quarantine';
+
 const CONTAMINATED_PUBLIC_GYM_FIXES = {
   'csv-210': {
     reason: 'Scheda con possibile contaminazione tra sedi First Studio.',
@@ -345,13 +348,12 @@ function detectedCityMismatch(gym) {
 function quarantinePublicEditorialFields(gym, reason, fields = UNSAFE_EDITORIAL_FIELDS) {
   const sanitized = { ...gym };
   const safeDescription = clean(gym?.safe_public_description) || getSafePublicDescription(gym);
-  const publicReason = 'Alcuni dettagli della scheda sono in fase di verifica.';
   const publicFlag = reason
     ? [
         {
-          type: 'public_data_quarantine',
+          type: PUBLIC_QUARANTINE_CODE,
           severity: 'high',
-          reason: publicReason
+          reason: PUBLIC_QUARANTINE_CODE
         }
       ]
     : [];
@@ -368,18 +370,18 @@ function quarantinePublicEditorialFields(gym, reason, fields = UNSAFE_EDITORIAL_
   sanitized.descrizione_source = 'fallback_sicuro';
   sanitized.descrizione_needs_review = true;
   sanitized.needs_review = true;
-  sanitized.review_reason = publicReason;
+  sanitized.review_reason = PUBLIC_QUARANTINE_CODE;
   sanitized.data_quality_flags = publicFlag;
 
   if (sanitized.weekly_hours && typeof sanitized.weekly_hours === 'object') {
     sanitized.weekly_hours = {
       ...sanitized.weekly_hours,
-      _public_data_quarantine: publicReason,
+      _public_data_quarantine: PUBLIC_QUARANTINE_CODE,
       _needs_review: true
     };
   } else {
     sanitized.weekly_hours = {
-      _public_data_quarantine: publicReason,
+      _public_data_quarantine: PUBLIC_QUARANTINE_CODE,
       _needs_review: true
     };
   }
