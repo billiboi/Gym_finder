@@ -161,14 +161,17 @@ const FULL_CATALOG_CACHE_TTL_MS = 60_000;
 // always resolves here, and legacy -csv-NNN URLs redirect reliably. Cached
 // briefly per warm serverless instance to avoid a full-table read on every
 // detail pageview.
+// Returns { gyms, degraded }. `degraded` means the list did not come from
+// Supabase and may be incomplete, so callers must not conclude "this gym is
+// gone" from a miss against it.
 async function readFullActiveCatalog() {
   if (!hasSupabaseRead) {
-    return withCanonicalGymSlugs(await readPublicRouteGyms());
+    return { gyms: withCanonicalGymSlugs(await readPublicRouteGyms()), degraded: true };
   }
 
   const cached = globalThis[FULL_CATALOG_CACHE_KEY];
   if (cached && Date.now() - cached.at < FULL_CATALOG_CACHE_TTL_MS) {
-    return cached.gyms;
+    return { gyms: cached.gyms, degraded: false };
   }
 
   const rows = await fetchGymRows(DETAIL_GYM_COLUMNS, [
@@ -176,9 +179,23 @@ async function readFullActiveCatalog() {
     'order=updated_at.desc.nullslast,nome.asc.nullslast,id.asc',
     'limit=5000'
   ]);
+
+  // fetchGymRows() returns [] both for "no rows" and for "the request failed"
+  // (it swallows non-2xx and network errors). The active catalog is never
+  // legitimately empty, so an empty result here means Supabase is unreachable
+  // -- and without this branch every /palestre/[slug] URL 404s at once, which
+  // is what took the whole catalog out of Google's index in 2026-08. Degrade
+  // to the bundled local catalog instead: stale contact data is far less
+  // damaging than a site-wide 404. Same fallback the sitemap and the zone
+  // index already use. Deliberately not cached, so the real catalog comes
+  // back on the next request once Supabase answers again.
+  if (!rows.length) {
+    return { gyms: withCanonicalGymSlugs(await readPublicRouteGyms()), degraded: true };
+  }
+
   const gyms = normalizeRows(rows, 'detail-catalog');
   globalThis[FULL_CATALOG_CACHE_KEY] = { gyms, at: Date.now() };
-  return gyms;
+  return { gyms, degraded: false };
 }
 
 const DELETED_CATALOG_CACHE_KEY = '__gymfinder_detail_deleted_catalog__';
@@ -247,13 +264,13 @@ function slugSearchTerms(slug) {
 }
 
 async function findGymCandidate(slug) {
-  const catalog = await readFullActiveCatalog();
+  const { gyms: catalog, degraded } = await readFullActiveCatalog();
 
   const catalogCanonicalMatch = catalog.find((gym) => gym._canonical_slug === slug);
-  if (catalogCanonicalMatch) return { gym: catalogCanonicalMatch, matchType: 'canonical' };
+  if (catalogCanonicalMatch) return { gym: catalogCanonicalMatch, matchType: 'canonical', degraded };
 
   const catalogLegacyMatch = catalog.find((gym) => gym._legacy_slug === slug);
-  if (catalogLegacyMatch) return { gym: catalogLegacyMatch, matchType: 'legacy' };
+  if (catalogLegacyMatch) return { gym: catalogLegacyMatch, matchType: 'legacy', degraded };
 
   // Old full-format slugs (name-city-street) whose current canonical slug
   // dropped the street because the city alone was enough to disambiguate.
@@ -261,12 +278,12 @@ async function findGymCandidate(slug) {
   const strippedForPrefix = slug.replace(/-(?:csv-[a-z0-9-]+|\d+)$/i, '');
   for (const candidate of [slug, strippedForPrefix]) {
     const prefixMatches = findCanonicalPrefixMatches(candidate, catalog);
-    if (prefixMatches.length === 1) return { gym: prefixMatches[0], matchType: 'legacy' };
-    if (prefixMatches.length > 1) return { gym: null, matchType: 'ambiguous' };
+    if (prefixMatches.length === 1) return { gym: prefixMatches[0], matchType: 'legacy', degraded };
+    if (prefixMatches.length > 1) return { gym: null, matchType: 'ambiguous', degraded };
   }
 
   const orphanedLegacyMatch = findOrphanedLegacySlugMatch(slug, catalog);
-  if (orphanedLegacyMatch) return { gym: orphanedLegacyMatch, matchType: 'legacy' };
+  if (orphanedLegacyMatch) return { gym: orphanedLegacyMatch, matchType: 'legacy', degraded };
 
   // findOrphanedLegacySlugMatch() above returns null both when nothing shares
   // the base name and when 2+ gyms do (it never guesses). Distinguish those
@@ -275,17 +292,17 @@ async function findGymCandidate(slug) {
   // URL, where the specific original location can no longer be determined.
   if (strippedForPrefix !== slug) {
     const sameBaseNameCount = catalog.filter((gym) => baseGymSlug(gym) === strippedForPrefix).length;
-    if (sameBaseNameCount > 1) return { gym: null, matchType: 'ambiguous' };
+    if (sameBaseNameCount > 1) return { gym: null, matchType: 'ambiguous', degraded };
   }
 
   if (!hasSupabaseRead) {
     const fallbackGyms = await readPublicRouteGyms();
 
     const fallbackCanonicalMatch = fallbackGyms.find((gym) => slugifyGym(gym) === slug || gym?.slug === slug);
-    if (fallbackCanonicalMatch) return { gym: fallbackCanonicalMatch, matchType: 'canonical' };
+    if (fallbackCanonicalMatch) return { gym: fallbackCanonicalMatch, matchType: 'canonical', degraded };
 
     const fallbackLegacyMatch = fallbackGyms.find((gym) => legacySlugifyGym(gym) === slug || gym?._legacy_slug === slug);
-    if (fallbackLegacyMatch) return { gym: fallbackLegacyMatch, matchType: 'legacy' };
+    if (fallbackLegacyMatch) return { gym: fallbackLegacyMatch, matchType: 'legacy', degraded };
 
     const terms = slugSearchTerms(slug);
     for (const term of terms) {
@@ -293,10 +310,10 @@ async function findGymCandidate(slug) {
       const candidates = Array.isArray(result?.items) ? result.items : [];
 
       const canonicalMatch = candidates.find((gym) => slugifyGym(gym) === slug || gym?.slug === slug);
-      if (canonicalMatch) return { gym: canonicalMatch, matchType: 'canonical' };
+      if (canonicalMatch) return { gym: canonicalMatch, matchType: 'canonical', degraded };
 
       const legacyMatch = candidates.find((gym) => legacySlugifyGym(gym) === slug || gym?._legacy_slug === slug);
-      if (legacyMatch) return { gym: legacyMatch, matchType: 'legacy' };
+      if (legacyMatch) return { gym: legacyMatch, matchType: 'legacy', degraded };
     }
 
     return null;
@@ -438,8 +455,13 @@ export const config = {
 export async function load({ params }) {
   const found = await findGymCandidate(params.slug);
 
+  // A 410 tells Google to drop the URL permanently, so it must never be
+  // decided from a catalog we already know is incomplete. While degraded, an
+  // unresolvable slug serves 404 (retryable) instead.
+  const canServeGone = !found?.degraded;
+
   if (found?.matchType === 'ambiguous') {
-    throw error(410, 'Scheda rimossa');
+    throw canServeGone ? error(410, 'Scheda rimossa') : error(404, 'Palestra non trovata');
   }
 
   let gym = found?.matchType === 'canonical' ? found.gym : null;
