@@ -80,6 +80,30 @@ const DETAIL_GYM_COLUMNS = [
   'data_verified_at'
 ];
 
+// Slug resolution needs the name/city/address fields withCanonicalGymSlugs()
+// hashes on, plus deleted_at and weekly_hours so isPublicActiveGym() keeps
+// behaving exactly as it does on a full row. Nothing else: pulling all 58
+// DETAIL_GYM_COLUMNS for the whole catalog on every cache miss cost 2.15 MB a
+// go, ~38% of it editorial/enrichment text that slug matching never reads, and
+// is what exhausted the Supabase egress quota in 2026-08. The matched gym's
+// full row is fetched separately, one row, by readFullGymRow().
+const RESOLVER_GYM_COLUMNS = [
+  'id',
+  'slug',
+  'nome',
+  'name',
+  'citta',
+  'city',
+  'indirizzo',
+  'address',
+  'deleted_at',
+  'updated_at',
+  'weekly_hours'
+];
+
+// resolveGoneStatus() only matches on id and base name.
+const DELETED_RESOLVER_COLUMNS = ['id', 'nome', 'name'];
+
 const RELATED_GYM_COLUMNS = [
   'id',
   'slug',
@@ -174,7 +198,7 @@ async function readFullActiveCatalog() {
     return { gyms: cached.gyms, degraded: false };
   }
 
-  const rows = await fetchGymRows(DETAIL_GYM_COLUMNS, [
+  const rows = await fetchGymRows(RESOLVER_GYM_COLUMNS, [
     'deleted_at=is.null',
     'order=updated_at.desc.nullslast,nome.asc.nullslast,id.asc',
     'limit=5000'
@@ -211,13 +235,36 @@ async function readDeletedCatalog() {
     return cached.gyms;
   }
 
-  const rows = await fetchGymRows(DETAIL_GYM_COLUMNS, [
+  const rows = await fetchGymRows(DELETED_RESOLVER_COLUMNS, [
     'deleted_at=not.is.null',
     'limit=5000'
   ]);
   const gyms = rows.map((row, index) => normalizeGym(row, row?.id || `detail-deleted-${index + 1}`));
   globalThis[DELETED_CATALOG_CACHE_KEY] = { gyms, at: Date.now() };
   return gyms;
+}
+
+// Pulls the full row for the one gym we are about to render. The resolution
+// catalog above carries only RESOLVER_GYM_COLUMNS, which is not enough for
+// isIndexableGym(), the sanitizer or the page itself.
+async function readFullGymRow(gym) {
+  if (!hasSupabaseRead || !gym?.id) return gym;
+
+  const rows = await fetchGymRows(DETAIL_GYM_COLUMNS, [
+    `id=eq.${encodeURIComponent(String(gym.id))}`,
+    'limit=1'
+  ]);
+  if (!rows.length) return gym;
+
+  const full = normalizeGym(rows[0], rows[0]?.id || gym.id);
+
+  // Carry over the slugs computed across the whole catalog. Recomputing them
+  // from a single row would drop the duplicate-name disambiguation, so
+  // slugifyGym() could stop agreeing with the URL and bounce the request
+  // between two 301s.
+  full._canonical_slug = gym._canonical_slug;
+  full._legacy_slug = gym._legacy_slug;
+  return full;
 }
 
 function legacyIdFromSlug(slug) {
@@ -319,7 +366,7 @@ async function findGymCandidate(slug) {
     return null;
   }
 
-const directRows = await fetchGymRows(DETAIL_GYM_COLUMNS, [
+const directRows = await fetchGymRows(RESOLVER_GYM_COLUMNS, [
   `slug=eq.${encodeURIComponent(slug)}`,
   'deleted_at=is.null',
   'limit=1'
@@ -330,7 +377,7 @@ const directRows = await fetchGymRows(DETAIL_GYM_COLUMNS, [
 
   const legacyId = legacyIdFromSlug(slug);
   if (legacyId) {
-const idRows = await fetchGymRows(DETAIL_GYM_COLUMNS, [
+const idRows = await fetchGymRows(RESOLVER_GYM_COLUMNS, [
   `id=eq.${encodeURIComponent(legacyId)}`,
   'deleted_at=is.null',
   'limit=1'
@@ -349,7 +396,7 @@ const idRows = await fetchGymRows(DETAIL_GYM_COLUMNS, [
 
   const preciseTerms = terms.slice(0, 3);
   for (const column of ['nome', 'name']) {
-  const preciseRows = await fetchGymRows(DETAIL_GYM_COLUMNS, [
+  const preciseRows = await fetchGymRows(RESOLVER_GYM_COLUMNS, [
   ...preciseTerms.map((term) => `${column}=ilike.${encodeURIComponent(`*${term}*`)}`),
   'deleted_at=is.null',
   'order=priority_score.desc.nullslast,nome.asc.nullslast',
@@ -368,7 +415,7 @@ const idRows = await fetchGymRows(DETAIL_GYM_COLUMNS, [
     const encodedTerm = encodeURIComponent(`*${term}*`);
     return [`nome.ilike.${encodedTerm}`, `name.ilike.${encodedTerm}`];
   });
-  const candidateRows = await fetchGymRows(DETAIL_GYM_COLUMNS, [
+  const candidateRows = await fetchGymRows(RESOLVER_GYM_COLUMNS, [
   `or=(${nameClauses.join(',')})`,
   'deleted_at=is.null',
   'order=priority_score.desc.nullslast,nome.asc.nullslast',
@@ -493,6 +540,13 @@ export async function load({ params }) {
 
   if (gym && slugifyGym(gym) !== params.slug) {
     throw redirect(301, `/palestre/${slugifyGym(gym)}`);
+  }
+
+  // Every branch above only needs slugs and visibility, which the reduced
+  // resolution catalog carries. From here on we render, so this one gym needs
+  // its full row -- one row, instead of 58 columns for the whole catalog.
+  if (gym) {
+    gym = await readFullGymRow(gym);
   }
 
   if (!gym || !isIndexableGym(gym)) {
