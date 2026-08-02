@@ -106,6 +106,7 @@ export async function GET() {
   };
   const staticEntries = [
     { loc: `${SITE_URL}/`, changefreq: 'daily', priority: '1.0', lastmod: today },
+    { loc: `${SITE_URL}/palestre`, changefreq: 'daily', priority: '0.9', lastmod: today },
     { loc: `${SITE_URL}/zone`, changefreq: 'weekly', priority: '0.8', lastmod: today },
     { loc: `${SITE_URL}/discipline`, changefreq: 'weekly', priority: '0.8', lastmod: today },
     { loc: `${SITE_URL}/guide`, changefreq: 'weekly', priority: '0.7', lastmod: today },

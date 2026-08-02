@@ -19,6 +19,7 @@
   $: if (path) mobileMenuOpen = false;
 
   const navItems = [
+    { href: '/palestre', label: 'Palestre' },
     { href: '/zone', label: 'Zone' },
     { href: '/discipline', label: 'Discipline' },
     { href: '/per-le-palestre', label: 'Per le palestre', event: true },
@@ -87,7 +88,7 @@
           </button>
         </div>
 
-        <nav class={`sc-header-nav hidden gap-5 md:flex md:items-center md:justify-end ${showReturnToList ? 'sc-header-nav--with-return' : ''}`} aria-label="Navigazione pubblica">
+        <nav class={`sc-header-nav hidden min-w-0 flex-wrap gap-x-5 gap-y-1 md:flex md:items-center md:justify-end ${showReturnToList ? 'sc-header-nav--with-return' : ''}`} aria-label="Navigazione pubblica">
           {#if showReturnToList}
             <a href={listHref} on:click={showHeaderForNavigation} class={`sc-header-link sc-header-return sc-button sc-button--secondary px-3.5 py-2 text-sm ${isHome ? 'sc-header-return--home' : ''}`}>
               Torna all'elenco

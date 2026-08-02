@@ -13,6 +13,7 @@
       </div>
 
       <nav class="flex flex-wrap gap-2 text-sm" aria-label="Link utili">
+        <a href="/palestre" class="sc-ui-pill px-3 py-2">Tutte le palestre</a>
         <a href="/guide" class="sc-ui-pill px-3 py-2">Guide</a>
         <a href="/discipline" class="sc-ui-pill px-3 py-2">Discipline</a>
         <a href="/chi-siamo" class="sc-ui-pill px-3 py-2">Chi siamo</a>
